@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content="Bedankt pagina (template)"/>
+  <title>Bedankt — TheorieBoost</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="logo" aria-hidden="true"></span>
+        <b>TheorieBoost</b>
+      </a>
+      <div class="navlinks">
+        <a href="index.html#wat" data-scroll>Wat krijg je?</a>
+        <a href="index.html#reviews" data-scroll>Resultaten</a>
+        <a href="index.html#prijs" data-scroll>Prijs</a>
+        <a class="btn small" href="index.html#prijs" data-scroll>Start nu</a>
+      </div>
+    </div>
+
+    
+<div class="section">
+  <h1>Bedankt! 🎉</h1>
+  <p class="lead">Dit is een voorbeeld “na betaling” pagina. Normaal stuurt je betaalplatform (Gumroad/Lemon Squeezy/Stripe) de klant hiernaartoe.</p>
+
+  <div class="card">
+    <h3>Wat nu?</h3>
+    <ul class="list">
+      <li><span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span><div><b>Check je e-mail</b><div class="small">Je ontvangt een bevestiging + toegang/links.</div></div></li>
+      <li><span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span><div><b>Open je cursusomgeving</b><div class="small">Plaats hier de link naar je cursus (bijv. Notion, Teachable, Kajabi, of een verborgen pagina).</div></div></li>
+      <li><span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></span><div><b>Support</b><div class="small">Vragen? Mail naar jij@jouwdomein.nl</div></div></li>
+    </ul>
+    <hr/>
+    <p class="notice"><b>Disclaimer:</b> Niet verbonden aan het CBR. Eigen oefenvragen en uitleg.</p>
+  </div>
+
+  <div style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
+    <a class="btn secondary" href="index.html">Terug naar home</a>
+    <a class="btn" href="contact.html">Support</a>
+  </div>
+</div>
+
+
+    <div class="footer">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div>© <span id="y"></span> TheorieBoost — <span class="small">Niet verbonden aan het CBR.</span></div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="voorwaarden.html">Voorwaarden</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <script>
+        document.getElementById('y').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </div>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

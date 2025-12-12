@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content="Contactpagina (template)"/>
+  <title>Contact — TheorieBoost</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="logo" aria-hidden="true"></span>
+        <b>TheorieBoost</b>
+      </a>
+      <div class="navlinks">
+        <a href="index.html#wat" data-scroll>Wat krijg je?</a>
+        <a href="index.html#reviews" data-scroll>Resultaten</a>
+        <a href="index.html#prijs" data-scroll>Prijs</a>
+        <a class="btn small" href="index.html#prijs" data-scroll>Start nu</a>
+      </div>
+    </div>
+
+    
+<div class="section">
+  <h1>Contact</h1>
+  <p class="lead">Gebruik dit formulier als layout. Koppelen kan via Formspree, Netlify Forms of een eigen backend.</p>
+
+  <div class="grid cols2">
+    <div class="card">
+      <h3>Snel contact</h3>
+      <p class="small">E-mail: <b>jij@jouwdomein.nl</b> (vervang)</p>
+      <p class="small">KVK: <b>—</b> (vervang)</p>
+      <p class="small">Adres: <b>—</b> (optioneel)</p>
+      <hr/>
+      <p class="small">Tip: zet hier ook je responstijd (“binnen 24 uur”).</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuur een bericht</h3>
+      <form method="post" action="#">
+        <div class="formrow">
+          <div>
+            <label>Naam</label>
+            <input name="name" placeholder="Je naam" required/>
+          </div>
+          <div>
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="jij@email.nl" required/>
+          </div>
+        </div>
+
+        <label>Bericht</label>
+        <textarea name="message" placeholder="Waar kan ik je mee helpen?" required></textarea>
+
+        <div style="display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn" type="submit">Verstuur</button>
+          <span class="small">Let op: dit is een template. Koppel het formulier aan een service.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    <div class="footer">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div>© <span id="y"></span> TheorieBoost — <span class="small">Niet verbonden aan het CBR.</span></div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="voorwaarden.html">Voorwaarden</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <script>
+        document.getElementById('y').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </div>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
