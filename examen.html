@@ -2,78 +2,118 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <title>GeefGas – Examen</title>
+  <title>GeefGas – Oefenexamen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
-  <script src="exam-data.js" defer></script>
+
+  <!-- BELANGRIJK: data eerst laden -->
+  <script src="exam-data.js"></script>
 </head>
 <body>
 
 <header class="topbar">
   <div class="container topbar__inner">
-    <span class="brand__name">GeefGas – Examen</span>
+    <span class="brand__name">GeefGas – Oefenexamen</span>
     <span class="timer" id="timer">05:00</span>
   </div>
 </header>
 
 <main class="section">
   <div class="container">
-    <h3 id="questionText"></h3>
+
+    <h3 id="questionText">Laden…</h3>
+
     <div id="answers" class="answers"></div>
 
     <div class="previewcard__footer">
-      <span id="progress"></span>
+      <span id="progress" class="muted"></span>
       <button class="btn btn--gold" id="nextBtn">Volgende</button>
     </div>
+
   </div>
 </main>
 
 <script>
-let index = 0;
-let score = 0;
-let time = 300;
+/* ===============================
+   VEILIGE EXAM ENGINE
+   =============================== */
 
-const qText = document.getElementById("questionText");
-const answersDiv = document.getElementById("answers");
-const progress = document.getElementById("progress");
+if (typeof EXAM_QUESTIONS === "undefined" || EXAM_QUESTIONS.length === 0) {
+  document.getElementById("questionText").textContent =
+    "⚠️ Geen vragen gevonden. Controleer exam-data.js";
+} else {
 
-function renderQuestion() {
-  const q = EXAM_QUESTIONS[index];
-  qText.textContent = q.question;
-  progress.textContent = `Vraag ${index + 1} van ${EXAM_QUESTIONS.length}`;
-  answersDiv.innerHTML = "";
+  let index = 0;
+  let score = 0;
+  let time = 300;
 
-  q.answers.forEach((a, i) => {
-    const btn = document.createElement("button");
-    btn.className = "answer";
-    btn.textContent = a;
-    btn.onclick = () => {
-      if (i === q.correct) score++;
-      index++;
-      index < EXAM_QUESTIONS.length
-        ? renderQuestion()
-        : finishExam();
-    };
-    answersDiv.appendChild(btn);
-  });
+  const qText = document.getElementById("questionText");
+  const answersDiv = document.getElementById("answers");
+  const progress = document.getElementById("progress");
+  const nextBtn = document.getElementById("nextBtn");
+
+  let selected = null;
+
+  function renderQuestion() {
+    const q = EXAM_QUESTIONS[index];
+    qText.textContent = q.question;
+    progress.textContent = `Vraag ${index + 1} van ${EXAM_QUESTIONS.length}`;
+    answersDiv.innerHTML = "";
+    selected = null;
+
+    q.answers.forEach((answer, i) => {
+      const btn = document.createElement("button");
+      btn.className = "answer";
+      btn.textContent = answer;
+
+      btn.onclick = () => {
+        document.querySelectorAll(".answer").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selected = i;
+      };
+
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  nextBtn.onclick = () => {
+    if (selected === null) {
+      alert("Kies eerst een antwoord.");
+      return;
+    }
+
+    if (selected === EXAM_QUESTIONS[index].correct) {
+      score++;
+    }
+
+    index++;
+
+    if (index < EXAM_QUESTIONS.length) {
+      renderQuestion();
+    } else {
+      localStorage.setItem("score", score);
+      localStorage.setItem("total", EXAM_QUESTIONS.length);
+      window.location.href = "resultaat.html";
+    }
+  };
+
+  /* TIMER */
+  setInterval(() => {
+    time--;
+    document.getElementById("timer").textContent =
+      String(Math.floor(time / 60)).padStart(2, "0") + ":" +
+      String(time % 60).padStart(2, "0");
+
+    if (time <= 0) {
+      localStorage.setItem("score", score);
+      localStorage.setItem("total", EXAM_QUESTIONS.length);
+      window.location.href = "resultaat.html";
+    }
+  }, 1000);
+
+  renderQuestion();
 }
-
-function finishExam() {
-  localStorage.setItem("score", score);
-  window.location.href = "resultaat.html";
-}
-
-setInterval(() => {
-  time--;
-  document.getElementById("timer").textContent =
-    String(Math.floor(time / 60)).padStart(2, "0") +
-    ":" +
-    String(time % 60).padStart(2, "0");
-  if (time <= 0) finishExam();
-}, 1000);
-
-renderQuestion();
 </script>
 
 </body>
 </html>
-
