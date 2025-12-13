@@ -1,4 +1,4 @@
-ame: Generate ElevenLabs Audio
+name: Generate ElevenLabs Audio
 
 on:
   workflow_dispatch:
