@@ -1,0 +1,61 @@
+name: Generate ElevenLabs Audio
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate audio
+        env:
+          ELEVEN_API_KEY: ${{ secrets.ELEVEN_API_KEY }}
+          ELEVEN_VOICE_ID: ${{ secrets.ELEVEN_VOICE_ID }}
+        run: |
+          node -e "
+          const fs=require('fs');
+          const path=require('path');
+          const fetch=global.fetch;
+
+          const key=process.env.ELEVEN_API_KEY;
+          const voice=process.env.ELEVEN_VOICE_ID;
+
+          const bank=JSON.parse(fs.readFileSync('assets/vragen.json','utf8'));
+          fs.mkdirSync('assets/audio',{recursive:true});
+
+          const pad=n=>String(n).padStart(4,'0');
+
+          (async()=>{
+            for(let i=0;i<Math.min(20,bank.length);i++){
+              const q=bank[i];
+              const txt=\`\${q.vraag}\n\nAntwoord A: \${q.opties[0]}.\n\nAntwoord B: \${q.opties[1]}.\n\nAntwoord C: \${q.opties[2]}.\`;
+              const r=await fetch(\`https://api.elevenlabs.io/v1/text-to-speech/\${voice}\`,{
+                method:'POST',
+                headers:{
+                  'xi-api-key':key,
+                  'Content-Type':'application/json',
+                  'Accept':'audio/mpeg'
+                },
+                body:JSON.stringify({text:txt,model_id:'eleven_multilingual_v2'})
+              });
+              const b=Buffer.from(await r.arrayBuffer());
+              const f=\`assets/audio/q_\${pad(q.id)}.mp3\`;
+              fs.writeFileSync(f,b);
+              q.audio=f;
+            }
+            fs.writeFileSync('assets/vragen.json',JSON.stringify(bank,null,2));
+          })();
+          "
+
+      - run: |
+          git config user.name "geefgas-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/audio assets/vragen.json
+          git commit -m "Generate ElevenLabs audio" || true
+          git push
