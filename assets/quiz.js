@@ -17,24 +17,22 @@ function shuffle(arr){
   return arr;
 }
 
-function buildSession(){
+function setTabSession(){
   const cat = $('#cat').value;
   const mode = $('#mode').value;
   let count = parseInt($('#count').value || '25', 10);
   if(isNaN(count) || count < 5) count = 5;
+  if(count > 50) count = 50;
 
   let pool = BANK.filter(q => cat === 'ALL' ? true : q.categorie === cat);
 
-  // Exam-ish: mix if ALL, else keep category
-  if(mode === 'EXAM' && cat === 'ALL'){
-    // simple mixing by tags
-    // prefer priority tags: voorrang, snelheid, borden, manoeuvres, gevaar
-    const tags = ['voorrang','snelheid','borden','manoeuvre','gevaar','verlichting','parkeren','milieu','techniek'];
+  // Examenmodus: iets “netter” mixen op tags (als ze er zijn)
+  if(mode === 'EXAM'){
+    const tags = ['voorrang','borden','snelheid','gevaar','manoeuvre','verlichting','parkeren','techniek','milieu'];
     let mixed = [];
     for(const t of tags){
       mixed.push(...pool.filter(q => (q.tags||[]).includes(t)));
     }
-    // add remaining
     mixed.push(...pool.filter(q => !mixed.includes(q)));
     pool = mixed;
   } else {
@@ -42,13 +40,15 @@ function buildSession(){
   }
 
   const picked = pool.slice(0, Math.min(count, pool.length));
+
   session = {
     cat, mode,
     i: 0,
     items: picked,
-    answers: [], // {id, pick, correct}
+    answers: [],
     score: 0
   };
+
   renderQuestion();
   $('#startPanel').style.display = 'none';
   $('#quizPanel').style.display = 'block';
@@ -58,6 +58,7 @@ function buildSession(){
 function renderQuestion(){
   const total = session.items.length;
   const q = session.items[session.i];
+
   $('#qNum').textContent = (session.i+1).toString();
   $('#qTotal').textContent = total.toString();
   $('#qText').textContent = q.vraag;
@@ -66,7 +67,17 @@ function renderQuestion(){
   const pct = Math.round((session.i/total)*100);
   $('#progBar').style.width = pct + '%';
 
-  // clear options
+  // image (optional)
+  const img = $('#qImg');
+  if(q.img){
+    img.src = q.img;
+    img.style.display = 'block';
+  } else {
+    img.style.display = 'none';
+    img.removeAttribute('src');
+  }
+
+  // options
   const wrap = $('#options');
   wrap.innerHTML = '';
   q.opties.forEach((opt, idx) => {
@@ -104,6 +115,7 @@ function grade(){
   if(correct) session.score += 1;
 
   const pill = correct ? '<span class="pillOk">✅ Goed</span>' : '<span class="pillBad">❌ Fout</span>';
+
   $('#feedback').innerHTML = `
     <div class="card" style="margin-top:12px;">
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
@@ -132,18 +144,19 @@ function showResults(){
   const total = session.items.length;
   const score = session.score;
   const pct = Math.round((score/total)*100);
+
   $('#resScore').textContent = `${score} / ${total}`;
   $('#resPct').textContent = `${pct}%`;
-  $('#progBar').style.width = '100%';
 
-  // simple pass rule (placeholder): 80%
   const pass = pct >= 80;
-  $('#resPass').innerHTML = pass ? '<span class="pillOk">✅ Ruim voldoende</span>' : '<span class="pillBad">❌ Nog even oefenen</span>';
+  $('#resPass').innerHTML = pass
+    ? '<span class="pillOk">✅ Ruim voldoende</span>'
+    : '<span class="pillBad">❌ Nog even oefenen</span>';
 
-  // list wrong
   const wrong = session.answers.filter(a => !a.correct);
   const list = $('#wrongList');
   list.innerHTML = '';
+
   if(wrong.length === 0){
     list.innerHTML = '<div class="small">Top! Alles goed.</div>';
   } else {
@@ -152,7 +165,12 @@ function showResults(){
       const el = document.createElement('div');
       el.className = 'card';
       el.style.marginTop = '10px';
-      el.innerHTML = `<b>Vraag:</b> ${q.vraag}<hr/><div class="small">Jij: <b>${String.fromCharCode(65+w.pick)}</b> • Correct: <b>${String.fromCharCode(65+q.antwoordIndex)}</b></div><div style="margin-top:10px;">${q.uitleg}</div>`;
+      el.innerHTML = `
+        <b>Vraag:</b> ${q.vraag}
+        <hr/>
+        <div class="small">Jij: <b>${String.fromCharCode(65+w.pick)}</b> • Correct: <b>${String.fromCharCode(65+q.antwoordIndex)}</b></div>
+        <div style="margin-top:10px;">${q.uitleg}</div>
+      `;
       list.appendChild(el);
     });
   }
@@ -168,9 +186,33 @@ function reset(){
   $('#resultPanel').style.display = 'none';
 }
 
-$('#startBtn').addEventListener('click', buildSession);
+/* 🔊 Voorlezen (NL) */
+function speakCurrent(){
+  if(!session) return;
+  const q = session.items[session.i];
+  const lines = [
+    q.vraag,
+    `A: ${q.opties[0]}`,
+    `B: ${q.opties[1]}`,
+    `C: ${q.opties[2]}`
+  ].join('. ');
+
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(lines);
+    u.lang = 'nl-NL';
+    u.rate = 1.0;
+    u.pitch = 1.0;
+    window.speechSynthesis.speak(u);
+  } catch(e){
+    alert('Voorlezen werkt niet op dit toestel/browser.');
+  }
+}
+
+$('#startBtn').addEventListener('click', setTabSession);
 $('#submitBtn').addEventListener('click', grade);
 $('#nextBtn').addEventListener('click', next);
 $('#resetBtn').addEventListener('click', reset);
+$('#speakBtn').addEventListener('click', speakCurrent);
 
 loadBank();
