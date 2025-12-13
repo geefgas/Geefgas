@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content="Geefgas: oefenplatform met grote vragenbank (eigen vragen)."/>
+  <title>Geefgas — Oefenplatform</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Geefgas home">
+        <span class="badgeLogo" aria-hidden="true"></span>
+        <div><b>Geefgas</b><small>Online theorie oefenen</small></div>
+      </a>
+      <nav class="nav" aria-label="Navigatie">
+        <a href="index.html">Home</a>
+        <a href="quiz.html">Oefentoets</a>
+        <a href="index.html#plan" data-scroll>Leerplan</a>
+        <a class="btn small" href="quiz.html">Oefen nu</a>
+      </nav>
+    </header>
+    
+<section class="section">
+  <h1>Geefgas oefenplatform</h1>
+  <p class="sub">Complete oefenbank met categorieën en uitleg. Start direct met de <b>oefentoets</b>.</p>
+
+  <div class="grid cols2">
+    <div class="card">
+      <h3>Wat je krijgt</h3>
+      <ul class="small">
+        <li>✅ Grote oefenbank (eigen vragen) met uitleg</li>
+        <li>✅ Auto / Motor / Bromfiets + mix</li>
+        <li>✅ Foutanalyse in de oefentoets</li>
+        <li>✅ Examenmodus (mix examengericht)</li>
+      </ul>
+      <div style="margin-top:12px;" class="notice">
+        <b>Let op:</b> Niet verbonden aan het CBR. Dit zijn eigen oefenvragen. Geen “echte examenvragen”.
+      </div>
+      <div style="margin-top:12px;">
+        <a class="btn" href="quiz.html">Start oefentoets</a>
+        <a class="btn secondary" href="assets/vragen.json" target="_blank" rel="noopener">Bekijk vragenbank</a>
+      </div>
+    </div>
+
+    <div class="card" id="plan">
+      <h3>Leerplan (1x slagen focus)</h3>
+      <p class="small"><b>Dag 1:</b> Voorrang + borden (2 toetsen van 25)</p>
+      <p class="small"><b>Dag 2:</b> Gevaarherkenning + snelheid/afstand (2 toetsen)</p>
+      <p class="small"><b>Dag 3:</b> Manoeuvres + parkeren + verlichting (2 toetsen)</p>
+      <p class="small"><b>Dag 4–5:</b> Examenmodus (mix) tot je 3× achter elkaar ≥ 80% scoort</p>
+      <p class="small"><b>Dag 6–7:</b> Alleen je fouten herhalen + nog 2 examenmodi</p>
+      <hr/>
+      <div class="small">Geen enkele cursus kan een garantie geven, maar dit schema maximaliseert je kans op slagen.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <b>Bankgrootte:</b> <span id="count">—</span> vragen
+      <div class="small">Auto 350 • Motor 125 • Bromfiets 125</div>
+    </div>
+    <script>
+      fetch('assets/vragen.json').then(r=>r.json()).then(d=>{document.getElementById('count').textContent=d.length;});
+    </script>
+  </div>
+</section>
+
+    <footer class="footer">
+      <div class="footerGrid">
+        <div>
+          <b>Geefgas</b>
+          <div class="small">Niet verbonden aan het CBR. Eigen uitleg en eigen oefenvragen. Geen garantie; wel een compleet leerpad.</div>
+          <div class="small" style="margin-top:8px;">© <span id="y"></span> Geefgas</div>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+          <a href="voorwaarden.html">Voorwaarden</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+    </footer>
+  </div>
+  <script src="assets/script.js"></script>
+</body>
+</html>
