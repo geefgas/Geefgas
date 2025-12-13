@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content="Oefentoets met categorieën, foto's en voorlezen."/>
+  <title>Oefentoets — Geefgas</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Geefgas home">
+        <span class="badgeLogo" aria-hidden="true"></span>
+        <div>
+          <b>Geefgas</b>
+          <small>Online theorie oefenen</small>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Navigatie">
+        <a href="index.html">Home</a>
+        <a href="quiz.html">Oefentoets</a>
+        <a class="btn small" href="quiz.html">Oefen nu</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="qTop">
+        <div>
+          <h2>Oefentoets</h2>
+          <p class="sub">Kies categorie + aantal vragen. Bank: <b id="bankCount">—</b> vragen.</p>
+        </div>
+        <a class="btn secondary" href="index.html">← Terug</a>
+      </div>
+
+      <div class="quizWrap">
+        <div class="card" id="startPanel">
+          <h3>Start</h3>
+
+          <label>Categorie</label>
+          <select id="cat">
+            <option value="ALL">Alles (mix)</option>
+            <option value="Auto">Auto</option>
+            <option value="Motor">Motor</option>
+            <option value="Bromfiets">Bromfiets</option>
+          </select>
+
+          <label>Modus</label>
+          <select id="mode">
+            <option value="PRACTICE">Oefenen (random)</option>
+            <option value="EXAM">Examenmodus (mix, examengericht)</option>
+          </select>
+
+          <label>Aantal vragen</label>
+          <input id="count" type="number" min="5" max="50" value="25"/>
+
+          <div class="actions" style="margin-top:14px;">
+            <button class="btn" id="startBtn" type="button">Start toets</button>
+            <a class="btn secondary" href="assets/vragen.json" target="_blank" rel="noopener">Bekijk bank</a>
+          </div>
+
+          <hr/>
+          <div class="small">Let op: niet verbonden aan het CBR. Eigen oefenvragen en uitleg.</div>
+        </div>
+
+        <div class="card" id="quizPanel" style="display:none;">
+          <div class="qTop">
+            <div>
+              <b>Vraag <span id="qNum">1</span>/<span id="qTotal">25</span></b>
+              <div class="small">Kies 1 antwoord, klik “Check” of laat het voorlezen.</div>
+            </div>
+            <div style="min-width:220px;">
+              <div class="progress" aria-label="Voortgang"><div id="progBar"></div></div>
+            </div>
+          </div>
+
+          <hr/>
+
+          <div id="qText" style="font-size:18px; font-weight:900;"></div>
+          <img id="qImg" class="qImg" alt="Situatie afbeelding">
+
+          <div id="options" style="margin-top:12px;"></div>
+
+          <div class="actions" style="margin-top:14px;">
+            <button class="btn secondary" id="speakBtn" type="button">🔊 Voorlezen</button>
+            <button class="btn" id="submitBtn" type="button">Check</button>
+            <button class="btn secondary" id="nextBtn" type="button" disabled>Volgende →</button>
+          </div>
+
+          <div id="feedback"></div>
+        </div>
+
+        <div class="card" id="resultPanel" style="display:none;">
+          <h3>Resultaat</h3>
+          <div class="actions" style="margin-top:10px;">
+            <span class="pillOk">Score: <span id="resScore"></span></span>
+            <span class="pillOk">Percentage: <span id="resPct"></span></span>
+            <span id="resPass"></span>
+          </div>
+          <hr/>
+          <b>Fouten (max 20 getoond)</b>
+          <div id="wrongList" style="margin-top:10px;"></div>
+          <div class="actions" style="margin-top:14px;">
+            <button class="btn" id="resetBtn" type="button">Nieuwe toets</button>
+            <a class="btn secondary" href="index.html">Home</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Snelle tips</h3>
+          <p class="small">1) Oefen in blokken van 25 vragen.</p>
+          <p class="small">2) Herhaal fouten 2×.</p>
+          <p class="small">3) Doe daarna examenmodus.</p>
+          <hr/>
+          <div class="notice">
+            <b>Foto’s:</b> deze versie gebruikt originele <b>illustraties</b> per onderwerp (in <b>assets/img/</b>).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footerGrid">
+        <div>
+          <b>Geefgas</b>
+          <div class="small">Niet verbonden aan het CBR. Eigen uitleg en eigen oefenvragen.</div>
+          <div class="small" style="margin-top:8px;">© <span id="y"></span> Geefgas</div>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
+          <a href="voorwaarden.html">Voorwaarden</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+    </footer>
+  </div>
+
+  <script src="assets/quiz.js"></script>
+</body>
+</html>
