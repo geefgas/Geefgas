@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- BELANGRIJK: data eerst laden -->
+  <!-- Data eerst laden -->
   <script src="exam-data.js"></script>
 </head>
 <body>
@@ -21,13 +21,31 @@
 <main class="section">
   <div class="container">
 
-    <h3 id="questionText">Laden…</h3>
+    <div class="examcard">
+      <div class="examcard__media">
+        <img id="qImage" alt="Verkeerssituatie" />
+      </div>
 
-    <div id="answers" class="answers"></div>
+      <div class="examcard__body">
+        <div class="examcard__meta">
+          <span class="chip" id="themeChip">Thema</span>
+          <span class="muted" id="progress">Vraag 1 van 5</span>
+        </div>
 
-    <div class="previewcard__footer">
-      <span id="progress" class="muted"></span>
-      <button class="btn btn--gold" id="nextBtn">Volgende</button>
+        <h3 id="questionText">Laden…</h3>
+
+        <div id="answers" class="answers"></div>
+
+        <div id="explainBox" class="explain" hidden>
+          <div class="explain__title" id="explainTitle">Uitleg</div>
+          <div class="explain__text" id="explainText"></div>
+        </div>
+
+        <div class="examcard__footer">
+          <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+          <button class="btn btn--gold" id="nextBtn" type="button" disabled>Volgende</button>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -35,80 +53,153 @@
 
 <script>
 /* ===============================
-   VEILIGE EXAM ENGINE
+   GeefGas Exam Engine v2
+   - image + uitleg
+   - iPhone friendly
    =============================== */
 
-if (typeof EXAM_QUESTIONS === "undefined" || EXAM_QUESTIONS.length === 0) {
-  document.getElementById("questionText").textContent =
-    "⚠️ Geen vragen gevonden. Controleer exam-data.js";
+if (typeof EXAM_QUESTIONS === "undefined" || !EXAM_QUESTIONS.length) {
+  alert("Geen vragen gevonden. Controleer exam-data.js");
 } else {
-
   let index = 0;
   let score = 0;
-  let time = 300;
+  let time = 300; // 5 min
+  let selected = null;
+  let locked = false;
 
+  // Store per question for results
+  const attempt = EXAM_QUESTIONS.map(q => ({ id: q.id, chosen: null, correct: q.correct }));
+
+  const qImage = document.getElementById("qImage");
   const qText = document.getElementById("questionText");
   const answersDiv = document.getElementById("answers");
   const progress = document.getElementById("progress");
-  const nextBtn = document.getElementById("nextBtn");
+  const themeChip = document.getElementById("themeChip");
 
-  let selected = null;
+  const explainBox = document.getElementById("explainBox");
+  const explainTitle = document.getElementById("explainTitle");
+  const explainText = document.getElementById("explainText");
+
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
   function renderQuestion() {
     const q = EXAM_QUESTIONS[index];
+
+    // Media
+    qImage.src = q.image;
+    qImage.onerror = () => {
+      qImage.alt = "Afbeelding kon niet laden.";
+    };
+
+    themeChip.textContent = q.theme || "Thema";
     qText.textContent = q.question;
     progress.textContent = `Vraag ${index + 1} van ${EXAM_QUESTIONS.length}`;
+
+    // Reset UI
     answersDiv.innerHTML = "";
     selected = null;
+    locked = false;
+    explainBox.hidden = true;
+    nextBtn.disabled = true;
 
+    // Prev enabled?
+    prevBtn.disabled = index === 0;
+
+    // Answers
     q.answers.forEach((answer, i) => {
       const btn = document.createElement("button");
+      btn.type = "button";
       btn.className = "answer";
-      btn.textContent = answer;
+      btn.innerHTML = `<span class="answer__key">${String.fromCharCode(65+i)}</span>${answer}`;
 
-      btn.onclick = () => {
+      btn.addEventListener("click", () => {
+        if (locked) return;
+
+        // select
         document.querySelectorAll(".answer").forEach(b => b.classList.remove("selected"));
         btn.classList.add("selected");
         selected = i;
-      };
+
+        // lock + show feedback + explanation
+        locked = true;
+        attempt[index].chosen = selected;
+
+        const isCorrect = selected === q.correct;
+        if (isCorrect) {
+          score = calculateScore(); // recalc from attempt
+          explainTitle.textContent = "✅ Goed!";
+          explainBox.classList.remove("explain--bad");
+          explainBox.classList.add("explain--good");
+        } else {
+          explainTitle.textContent = "❌ Niet goed";
+          explainBox.classList.remove("explain--good");
+          explainBox.classList.add("explain--bad");
+
+          // mark correct answer
+          const answerButtons = Array.from(document.querySelectorAll(".answer"));
+          answerButtons[q.correct]?.classList.add("correct");
+          answerButtons[selected]?.classList.add("wrong");
+        }
+
+        // Also mark correct when correct chosen
+        if (isCorrect) {
+          const answerButtons = Array.from(document.querySelectorAll(".answer"));
+          answerButtons[selected]?.classList.add("correct");
+        }
+
+        explainText.textContent = q.explanation || "Uitleg volgt.";
+        explainBox.hidden = false;
+
+        nextBtn.disabled = false;
+        nextBtn.textContent = (index === EXAM_QUESTIONS.length - 1) ? "Afronden" : "Volgende";
+      });
 
       answersDiv.appendChild(btn);
     });
   }
 
-  nextBtn.onclick = () => {
-    if (selected === null) {
-      alert("Kies eerst een antwoord.");
-      return;
+  function calculateScore() {
+    let s = 0;
+    for (let i = 0; i < attempt.length; i++) {
+      if (attempt[i].chosen !== null && attempt[i].chosen === attempt[i].correct) s++;
     }
+    return s;
+  }
 
-    if (selected === EXAM_QUESTIONS[index].correct) {
-      score++;
-    }
+  function finishExam() {
+    // save attempt & score
+    localStorage.setItem("gg_attempt_v1", JSON.stringify(attempt));
+    localStorage.setItem("gg_score_v1", String(calculateScore()));
+    localStorage.setItem("gg_total_v1", String(EXAM_QUESTIONS.length));
+    window.location.href = "resultaat.html";
+  }
 
-    index++;
+  nextBtn.addEventListener("click", () => {
+    if (nextBtn.disabled) return;
 
-    if (index < EXAM_QUESTIONS.length) {
+    if (index < EXAM_QUESTIONS.length - 1) {
+      index++;
       renderQuestion();
     } else {
-      localStorage.setItem("score", score);
-      localStorage.setItem("total", EXAM_QUESTIONS.length);
-      window.location.href = "resultaat.html";
+      finishExam();
     }
-  };
+  });
 
-  /* TIMER */
+  prevBtn.addEventListener("click", () => {
+    if (index === 0) return;
+    index--;
+    renderQuestion();
+  });
+
+  // Timer
   setInterval(() => {
     time--;
-    document.getElementById("timer").textContent =
-      String(Math.floor(time / 60)).padStart(2, "0") + ":" +
-      String(time % 60).padStart(2, "0");
+    const m = String(Math.floor(time / 60)).padStart(2, "0");
+    const s = String(time % 60).padStart(2, "0");
+    document.getElementById("timer").textContent = `${m}:${s}`;
 
-    if (time <= 0) {
-      localStorage.setItem("score", score);
-      localStorage.setItem("total", EXAM_QUESTIONS.length);
-      window.location.href = "resultaat.html";
-    }
+    if (time <= 0) finishExam();
   }, 1000);
 
   renderQuestion();
