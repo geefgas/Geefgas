@@ -1,1 +1,28 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <title>GeefGas – Resultaat</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main class="section">
+  <div class="container">
+    <h2>Examen afgerond</h2>
+    <p class="muted" id="resultText"></p>
+
+    <a href="examens.html" class="btn btn--gold">Nieuw examen</a>
+    <a href="index.html" class="btn btn--ghost">Terug naar home</a>
+  </div>
+</main>
+
+<script>
+const score = localStorage.getItem("score") || 0;
+document.getElementById("resultText").textContent =
+  `Je score: ${score} van 5`;
+</script>
+
+</body>
+</html>
 
