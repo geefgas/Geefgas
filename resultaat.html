@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
-<body>
+
+<body class="theme">
 
 <header class="topbar">
   <div class="container topbar__inner">
@@ -19,46 +20,41 @@
   </div>
 </header>
 
-<main class="section">
-  <div class="container">
-    <div class="wrap">
+<main class="page">
+  <div class="container page__inner">
 
-      <section class="panel">
-        <h2 style="margin:0 0 6px;">Resultaat</h2>
-        <p class="muted" id="resultText" style="margin:0; line-height:1.6;"></p>
-        <div id="passBox" class="note" style="margin-top:12px;"></div>
-      </section>
+    <section class="card">
+      <h2 style="margin:0 0 6px;">Resultaat</h2>
+      <p class="muted" id="resultText" style="margin:0; line-height:1.6;"></p>
+      <div id="passBox" class="note" style="margin-top:12px;"></div>
+    </section>
 
-      <section class="panel" id="reviewPanel">
-        <h3 style="margin:0 0 10px;">Fouten + uitleg</h3>
-        <div id="reviewList" class="review__list"></div>
-      </section>
+    <section class="card" id="reviewPanel">
+      <h3 style="margin:0 0 10px;">Fouten + uitleg</h3>
+      <div id="reviewList" class="reviewList"></div>
+    </section>
 
-      <section class="panel">
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="btn btn--gold" href="examens.html">Nieuw examen</a>
-          <a class="btn btn--ghost" href="index.html">Home</a>
-        </div>
-      </section>
+    <section class="card">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn--gold" href="examens.html">Nieuw examen</a>
+        <a class="btn btn--ghost" href="index.html">Home</a>
+      </div>
+    </section>
 
-    </div>
   </div>
 </main>
 
 <script>
 (function(){
-  // === Taxi norm ===
-  // 80% goed = geslaagd. Bij 40 vragen => 32 goed => max 8 fouten.
   const PASS_PERCENT = 0.80;
 
   const score = Number(localStorage.getItem("gg_score_v2") || "0");
   const total = Number(localStorage.getItem("gg_total_v2") || "0");
   const title = localStorage.getItem("gg_examSetTitle_v2") || "Examen";
-  const mode = localStorage.getItem("gg_revealMode_v2") || "instant";
+  const mode  = localStorage.getItem("gg_revealMode_v2") || "instant";
 
   const requiredCorrect = total > 0 ? Math.ceil(total * PASS_PERCENT) : 0;
   const maxMistakes = total > 0 ? (total - requiredCorrect) : 0;
-
   const passed = total > 0 && score >= requiredCorrect;
 
   document.getElementById("resultText").textContent =
@@ -71,33 +67,26 @@
   } else if (passed) {
     passBox.innerHTML =
       `<strong>✅ Geslaagd!</strong><br>` +
-      `Je hebt minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
-      `Je mag maximaal <strong>${maxMistakes}</strong> fouten hebben.`;
+      `Minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   } else {
     passBox.innerHTML =
       `<strong>❌ Gezakt</strong><br>` +
-      `Je hebt minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
-      `Je mag maximaal <strong>${maxMistakes}</strong> fouten hebben.`;
+      `Minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   }
 
   const raw = localStorage.getItem("gg_attempt_v2");
   const list = document.getElementById("reviewList");
   const panel = document.getElementById("reviewPanel");
 
-  if (!raw) {
-    panel.style.display = "none";
-    return;
-  }
+  if (!raw) { panel.style.display = "none"; return; }
 
   const attempt = JSON.parse(raw);
   const wrong = attempt.filter(a => a.chosen !== null && a.chosen !== a.correct);
 
   if (!wrong.length) {
-    list.innerHTML =
-      `<div class="review__item">` +
-        `<div class="review__q">Top! 🎉 Alles goed.</div>` +
-        `<div class="muted">Blijf dit herhalen om het vast te houden.</div>` +
-      `</div>`;
+    list.innerHTML = `<div class="reviewItem"><div class="reviewQ">Top! 🎉 Alles goed.</div><div class="reviewA">Blijf dit herhalen om het vast te houden.</div></div>`;
     return;
   }
 
@@ -109,20 +98,13 @@
     const correctText = q.answers[q.correct] || "(onbekend)";
 
     const el = document.createElement("div");
-    el.className = "review__item";
+    el.className = "reviewItem";
     el.innerHTML = `
-      <div class="review__meta">
-        <span class="chip">${q.category || "Taxi"}</span>
-        <span class="muted">${q.difficulty || ""}</span>
-      </div>
-      <div class="review__q">${q.question}</div>
-      <div class="review__a">
-        <div><strong>Jouw antwoord:</strong> <span class="bad">${chosenText}</span></div>
-        <div><strong>Goed antwoord:</strong> <span class="good">${correctText}</span></div>
-      </div>
-      <div class="explain explain--bad" style="margin-top:10px;">
-        <div class="explain__title">Uitleg</div>
-        <div class="explain__text">${q.explanation || ""}</div>
+      <div class="reviewQ">${q.question}</div>
+      <div class="reviewA">
+        <div><strong>Jouw antwoord:</strong> <span class="badText">${chosenText}</span></div>
+        <div><strong>Goed antwoord:</strong> <span class="goodText">${correctText}</span></div>
+        <div style="margin-top:10px;"><strong>Uitleg:</strong> ${q.explanation || ""}</div>
       </div>
     `;
     list.appendChild(el);
