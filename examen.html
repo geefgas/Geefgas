@@ -7,49 +7,51 @@
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
-<body>
+
+<body class="theme">
 
 <header class="topbar">
-  <div class="container topbar__inner">
-    <span class="brand__name" id="examTitle">GeefGas – Examen</span>
-    <span class="timer" id="timer">00:00</span>
+  <div class="examTop">
+    <div class="examTop__title" id="examTitle">GeefGas – Taxi Examen</div>
+    <div class="pillTimer" id="timer">00:00</div>
   </div>
 </header>
 
-<main class="section">
-  <div class="container">
-    <div class="examWrap">
-      <div class="examcard">
-        <div class="examcard__media">
-          <img id="qImage" alt="Situatie" />
-        </div>
+<main class="page">
+  <div class="container page__inner">
 
-        <div class="examcard__body">
-          <div class="examcard__meta">
-            <span class="chip" id="categoryChip">Taxi</span>
-            <span class="muted" id="progress">Vraag 1 van 40</span>
-          </div>
-
-          <h3 id="questionText" style="margin:0 0 10px;">Laden…</h3>
-          <div id="answers" class="answers"></div>
-
-          <div id="explainBox" class="explain" hidden>
-            <div class="explain__title" id="explainTitle">Uitleg</div>
-            <div class="explain__text" id="explainText"></div>
-          </div>
-
-          <div class="examcard__footer">
-            <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
-            <div style="display:flex; gap:10px;">
-              <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-              <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
-            </div>
-          </div>
-
-          <p class="muted" id="modeHint" style="margin:12px 0 0; line-height:1.6;"></p>
-        </div>
+    <section class="examCard">
+      <div class="examMedia">
+        <img id="qImage" alt="Visual bij vraag" />
       </div>
-    </div>
+
+      <div class="examBody">
+        <div class="examMeta">
+          <span class="chip" id="categoryChip">Taxi</span>
+          <span class="muted" id="progress">Vraag 1 van 40</span>
+        </div>
+
+        <h3 id="questionText" style="margin:0 0 10px;">Laden…</h3>
+
+        <div id="answers" class="answers"></div>
+
+        <div id="explainBox" class="explain" hidden>
+          <div class="explainTitle" id="explainTitle">Uitleg</div>
+          <div class="explainText" id="explainText"></div>
+        </div>
+
+        <div class="examFooter">
+          <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+          </div>
+        </div>
+
+        <p class="muted" id="modeHint" style="margin:12px 0 0; line-height:1.6;"></p>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -96,8 +98,8 @@
   examTitle.textContent = `GeefGas – ${set.title}`;
   modeHint.textContent =
     (revealMode === "instant")
-      ? `Mode: direct feedback. Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`
-      : `Mode: antwoorden pas na examen. Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`;
+      ? `Mode: direct feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`
+      : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`;
 
   function formatTime(sec){
     const m = String(Math.floor(sec / 60)).padStart(2, "0");
@@ -115,7 +117,7 @@
   function bestVoice(voices){
     const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
     const list = nl.length ? nl : voices;
-    const prefs = ["siri", "enhanced", "premium", "natural", "neural"];
+    const prefs = ["siri","enhanced","premium","natural","neural"];
     for (const p of prefs) {
       const found = list.find(v => (v.name || "").toLowerCase().includes(p));
       if (found) return found;
@@ -132,7 +134,7 @@
 
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
-    u.rate = 0.95;  // rustiger = minder robot
+    u.rate = 0.95;
     u.pitch = 1.05;
 
     const preferred = voices.find(v => v.name === voiceName) || bestVoice(voices);
@@ -155,9 +157,6 @@
     progress.textContent = `Vraag ${index + 1} van ${total}`;
 
     qImage.src = q.image || "";
-    qImage.alt = "Visual bij vraag";
-    qImage.style.display = "block";
-
     questionText.textContent = q.question;
 
     prevBtn.disabled = index === 0;
@@ -165,13 +164,13 @@
 
     answersDiv.innerHTML = "";
     explainBox.hidden = true;
-    explainBox.classList.remove("explain--good","explain--bad");
+    explainBox.classList.remove("good","bad");
 
     q.answers.forEach((txt, i) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "answer";
-      btn.innerHTML = `<span class="answer__key">${String.fromCharCode(65+i)}</span>${txt}`;
+      btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
 
       btn.addEventListener("click", () => {
         attempt[index].chosen = i;
@@ -186,12 +185,12 @@
           if (isCorrect) {
             btns[i]?.classList.add("correct");
             explainTitle.textContent = "✅ Goed!";
-            explainBox.classList.add("explain--good");
+            explainBox.classList.add("good");
           } else {
             btns[i]?.classList.add("wrong");
             btns[q.correct]?.classList.add("correct");
             explainTitle.textContent = "❌ Niet goed";
-            explainBox.classList.add("explain--bad");
+            explainBox.classList.add("bad");
           }
 
           explainText.textContent = q.explanation || "";
@@ -224,7 +223,6 @@
     index++;
     render();
   });
-
   prevBtn.addEventListener("click", () => {
     if (index === 0) return;
     index--;
