@@ -23,9 +23,13 @@
 
     <section class="examCard">
 
-      <!-- VISUAL -->
-      <div class="examMedia">
-        <img id="qImage" src="assets/placeholder.jpg" alt="Visual bij vraag">
+      <!-- VISUAL (met overlay hotspots) -->
+      <div class="examMedia" style="position:relative;">
+        <img id="qImage" src="assets/placeholder.jpg" alt="Visual bij vraag" style="display:block; width:100%; height:auto; border-radius:18px;">
+        <div id="hotspotLayer" aria-label="Klik op de voertuigen" style="
+          position:absolute; inset:0;
+          pointer-events:none;
+        "></div>
       </div>
 
       <!-- CONTENT -->
@@ -37,6 +41,9 @@
         </div>
 
         <h3 id="questionText">Laden…</h3>
+
+        <!-- status voor order-vraag -->
+        <div id="orderStatus" class="muted" style="margin:8px 0 10px; font-weight:850; display:none;"></div>
 
         <div id="answers" class="answers"></div>
 
@@ -63,10 +70,8 @@
 
 <script>
 (function(){
-
   const PASS_PERCENT = 0.80;
 
-  // --- Data ophalen (legacy model) ---
   const examSetId = localStorage.getItem("gg_examSet") || "taxi_v1";
   const set = (window.EXAM_SETS && window.EXAM_SETS[examSetId]) ? window.EXAM_SETS[examSetId] : null;
 
@@ -82,8 +87,8 @@
     .map(id => (window.QUESTIONS || []).find(q => q.id === id))
     .filter(Boolean);
 
-  if (questions.length === 0) {
-    alert("Geen vragen gevonden in deze examenset. Controleer QUESTIONS in exam-data.js");
+  if (!questions.length) {
+    alert("Geen vragen gevonden. Controleer QUESTIONS in exam-data.js");
     return;
   }
 
@@ -94,13 +99,17 @@
   let index = 0;
   let time = set.durationSec || 1500;
 
+  // per vraag bewaren we gekozen antwoord of gekozen volgorde
   const attempt = questions.map(q => ({
     id: q.id,
-    chosen: null,
-    correct: q.correct
+    type: q.type || "mcq",
+    chosen: null,          // bij mcq: index
+    chosenOrder: [],       // bij order: ["A","B","C"]
+    correct: (typeof q.correct === "number" ? q.correct : null),
+    correctOrder: Array.isArray(q.correctOrder) ? q.correctOrder : null
   }));
 
-  // --- Elements ---
+  // Elements
   const examTitle   = document.getElementById("examTitle");
   const timerEl     = document.getElementById("timer");
   const qImage      = document.getElementById("qImage");
@@ -118,19 +127,21 @@
   const readBtn     = document.getElementById("readBtn");
   const modeHint    = document.getElementById("modeHint");
 
+  const hotspotLayer = document.getElementById("hotspotLayer");
+  const orderStatus  = document.getElementById("orderStatus");
+
   examTitle.textContent = `GeefGas – ${set.title || "Examen"}`;
   modeHint.textContent =
     revealMode === "instant"
       ? `Mode: directe feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`
       : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
-  // --- Timer ---
+  // Timer
   function formatTime(sec){
     const m = String(Math.floor(sec / 60)).padStart(2,"0");
     const s = String(sec % 60).padStart(2,"0");
     return `${m}:${s}`;
   }
-
   timerEl.textContent = formatTime(time);
 
   const timer = setInterval(() => {
@@ -140,10 +151,10 @@
     if (time <= 0) finishExam();
   }, 1000);
 
-  // --- Image resolver (probeert meerdere paden/varianten) ---
+  // Image resolver (probeert meerdere varianten, voorkomt caching issues)
   function buildImageCandidates(rawPath){
     const candidates = [];
-    const cacheBust = `?v=${Date.now()}`; // voorkomt caching issues
+    const cacheBust = `?v=${Date.now()}`;
 
     function add(p){
       if (!p) return;
@@ -153,35 +164,26 @@
 
     add(rawPath);
 
-    // Als rawPath iets als assets/q01.PNG is:
-    // extra varianten proberen
     const m = (rawPath || "").match(/(assets\/)(.*)$/i);
     if (m) {
-      const tail = m[2]; // bv "q01.PNG" of "examen1/q01.jpg"
+      const tail = m[2];
       const base = tail.split("/").pop() || "";
-      const dir  = tail.includes("/") ? tail.split("/").slice(0, -1).join("/") + "/" : "";
-
-      // basename zonder extensie
       const dot = base.lastIndexOf(".");
       const name = dot > -1 ? base.slice(0, dot) : base;
+
       const exts = ["PNG","png","JPG","jpg","JPEG","jpeg","WEBP","webp"];
 
-      // Probeer zowel in assets/ als assets/examen1/
       for (const ext of exts) {
-        add(`assets/${dir}${name}.${ext}`);
         add(`assets/${name}.${ext}`);
         add(`assets/examen1/${name}.${ext}`);
       }
-
-      // Ook hoofdletter Q varianten (soms iPhone/Bestanden app)
-      const upperName = name.length ? (name[0].toUpperCase() + name.slice(1)) : name;
+      const upperName = name ? (name[0].toUpperCase() + name.slice(1)) : name;
       for (const ext of exts) {
         add(`assets/${upperName}.${ext}`);
         add(`assets/examen1/${upperName}.${ext}`);
       }
     }
 
-    // cachebuster toevoegen bij het zetten
     return candidates.map(p => p + cacheBust);
   }
 
@@ -201,19 +203,126 @@
     tryNext();
   }
 
-  // --- Render ---
-  function render(){
-    const q = questions[index];
+  // ORDER helpers
+  function clearHotspots(){
+    hotspotLayer.innerHTML = "";
+    hotspotLayer.style.pointerEvents = "none";
+  }
 
-    categoryEl.textContent = q.category || "Taxi";
-    progressEl.textContent = `Vraag ${index + 1} van ${total}`;
-    questionTxt.textContent = q.question;
+  function setOrderStatus(text){
+    orderStatus.style.display = "block";
+    orderStatus.textContent = text;
+  }
 
-    // ✅ probeer meerdere bestandsnamen/paden automatisch
-    setImageWithFallback(q.image);
+  function hideOrderStatus(){
+    orderStatus.style.display = "none";
+    orderStatus.textContent = "";
+  }
 
-    prevBtn.disabled = index === 0;
-    nextBtn.textContent = index === total - 1 ? "Afronden" : "Volgende";
+  function renderOrderQuestion(q, state){
+    // verberg MCQ antwoorden
+    answersDiv.innerHTML = "";
+    hideOrderStatus();
+
+    // reset uitleg box
+    explainBox.hidden = true;
+    explainBox.className = "explain";
+
+    const chosen = state.chosenOrder || [];
+    setOrderStatus(`Gekozen volgorde: ${chosen.length ? chosen.join(" → ") : "nog niets"} (klik op A/B/C in volgorde)`);
+
+    // klikbare hotspots op foto
+    clearHotspots();
+    hotspotLayer.style.pointerEvents = "auto";
+
+    const hs = Array.isArray(q.hotspots) ? q.hotspots : [];
+    hs.forEach(h => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = h.label || h.key || "?";
+
+      // luxe, duidelijk, groot tappunt
+      btn.style.position = "absolute";
+      btn.style.left = (h.x || 50) + "%";
+      btn.style.top  = (h.y || 50) + "%";
+      btn.style.transform = "translate(-50%, -50%)";
+      btn.style.width = "54px";
+      btn.style.height = "54px";
+      btn.style.borderRadius = "999px";
+      btn.style.border = "2px solid rgba(255,255,255,.85)";
+      btn.style.background = "rgba(10,12,16,.72)";
+      btn.style.color = "#fff";
+      btn.style.fontWeight = "950";
+      btn.style.fontSize = "18px";
+      btn.style.boxShadow = "0 10px 24px rgba(0,0,0,.25)";
+      btn.style.cursor = "pointer";
+
+      // highlight als al gekozen
+      const isChosen = chosen.includes(h.key);
+      if (isChosen) {
+        btn.style.background = "rgba(210,170,70,.85)"; // goud-achtig
+        btn.style.color = "#0B0D12";
+        btn.style.border = "2px solid rgba(0,0,0,.15)";
+      }
+
+      btn.onclick = () => {
+        // al gekozen? negeer
+        if ((state.chosenOrder || []).includes(h.key)) return;
+
+        state.chosenOrder = [...(state.chosenOrder || []), h.key];
+
+        // direct feedback (alleen wanneer order compleet is)
+        const needLen = (q.correctOrder || []).length || 3;
+        const now = state.chosenOrder.length;
+
+        if (now < needLen) {
+          setOrderStatus(`Gekozen volgorde: ${state.chosenOrder.join(" → ")} (nog ${needLen - now})`);
+          render(); // re-render om gekozen hotspots te highlighten
+          return;
+        }
+
+        // nu compleet: controleren
+        const correct = Array.isArray(q.correctOrder) ? q.correctOrder : [];
+        const ok = state.chosenOrder.join("|") === correct.join("|");
+
+        if (revealMode === "instant") {
+          explainBox.hidden = false;
+          if (ok) {
+            explainTit.textContent = "✅ Goed";
+            explainBox.className = "explain good";
+          } else {
+            explainTit.textContent = "❌ Niet goed";
+            explainBox.className = "explain bad";
+          }
+          explainTxt.textContent = q.explanation || "";
+        }
+
+        setOrderStatus(`Jouw volgorde: ${state.chosenOrder.join(" → ")} • Correct: ${correct.join(" → ")}`);
+        render(); // highlight
+      };
+
+      hotspotLayer.appendChild(btn);
+    });
+
+    // extra: reset-knop onderaan (alleen voor order)
+    const resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.className = "btn btn--ghost";
+    resetBtn.textContent = "↺ Opnieuw kiezen";
+    resetBtn.style.marginTop = "12px";
+    resetBtn.onclick = () => {
+      state.chosenOrder = [];
+      explainBox.hidden = true;
+      explainBox.className = "explain";
+      render();
+    };
+
+    answersDiv.appendChild(resetBtn);
+  }
+
+  function renderMcqQuestion(q, state){
+    clearHotspots();
+    hideOrderStatus();
 
     answersDiv.innerHTML = "";
     explainBox.hidden = true;
@@ -224,8 +333,11 @@
       btn.className = "answer";
       btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
 
+      // restore selection
+      if (state.chosen === i) btn.classList.add("selected");
+
       btn.onclick = () => {
-        attempt[index].chosen = i;
+        state.chosen = i;
 
         document.querySelectorAll(".answer").forEach(b =>
           b.classList.remove("selected","correct","wrong")
@@ -253,11 +365,39 @@
     });
   }
 
-  // --- Voorlezen ---
+  // Render
+  function render(){
+    const q = questions[index];
+    const state = attempt[index];
+
+    categoryEl.textContent = q.category || "Taxi";
+    progressEl.textContent = `Vraag ${index + 1} van ${total}`;
+    questionTxt.textContent = q.question || "";
+
+    setImageWithFallback(q.image);
+
+    prevBtn.disabled = index === 0;
+    nextBtn.textContent = index === total - 1 ? "Afronden" : "Volgende";
+
+    if ((q.type || "mcq") === "order") {
+      renderOrderQuestion(q, state);
+    } else {
+      renderMcqQuestion(q, state);
+    }
+  }
+
+  // Voorlezen
   readBtn.onclick = () => {
     if (!ttsEnabled || !("speechSynthesis" in window)) return;
     const q = questions[index];
-    const text = q.question + ". " + (q.answers || []).join(". ");
+
+    let text = (q.question || "");
+    if ((q.type || "mcq") === "mcq") {
+      text += ". " + (q.answers || []).join(". ");
+    } else {
+      text += ". Klik op A, B en C in de juiste volgorde.";
+    }
+
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
     u.rate = 0.95;
@@ -273,7 +413,7 @@
     speechSynthesis.speak(u);
   };
 
-  // --- Nav ---
+  // Nav
   nextBtn.onclick = () => {
     if (index === total - 1) return finishExam();
     index++;
@@ -297,9 +437,7 @@
     window.location.href = "resultaat.html";
   }
 
-  // START
   render();
-
 })();
 </script>
 
