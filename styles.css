@@ -1,18 +1,17 @@
 /* ==========================
-   GeefGas – Premium UI v1.2
-   Lichter & frisser (minder donker)
-   Rustige home + examens
+   GeefGas – Stable UI v1.3
+   Fix: iPhone chaos / overflow / schaal issues
+   Home: super strak
+   Exam pages blijven werken
    ========================== */
 
 :root{
-  /* Frissere basis (minder donker) */
   --bg: #0F1116;
 
-  /* Cards lichter */
+  /* iets lichter, vrolijker */
   --surface: #171923;
   --surface2: #1F2230;
 
-  /* Subtielere lijnen */
   --stroke: rgba(255,255,255,.07);
 
   --text: #F7F7FA;
@@ -36,11 +35,18 @@ body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--text);
   background:
-    radial-gradient(900px 420px at 15% 10%, rgba(230,195,106,.12), transparent 60%),
-    radial-gradient(900px 420px at 85% 0%, rgba(230,195,106,.08), transparent 55%),
+    radial-gradient(900px 420px at 15% 10%, rgba(230,195,106,.10), transparent 60%),
+    radial-gradient(900px 420px at 85% 0%, rgba(230,195,106,.07), transparent 55%),
     var(--bg);
+  overflow-x: hidden; /* KEY: voorkomt rare horizontale overflow */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg, video, canvas{
+  max-width:100%;
+  height:auto;
+  display:block;
 }
 
 a{ color:inherit; text-decoration:none; }
@@ -54,10 +60,11 @@ a{ color:inherit; text-decoration:none; }
   position: sticky;
   top:0;
   z-index: 50;
-  background: rgba(15,17,22,.82);
+  background: rgba(15,17,22,.84);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--stroke);
 }
+
 .topbar__inner{
   display:flex;
   align-items:center;
@@ -65,21 +72,15 @@ a{ color:inherit; text-decoration:none; }
   gap:12px;
   padding: 12px 0;
 }
+
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
   min-width: 140px;
 }
-.brand__logo{
-  height:30px;
-  width:auto;
-  display:block;
-}
-.brand__name{
-  font-weight: 850;
-  letter-spacing: .2px;
-}
+.brand__logo{ height:30px; width:auto; }
+.brand__name{ font-weight: 850; letter-spacing: .2px; }
 
 /* Nav */
 .nav{
@@ -87,21 +88,19 @@ a{ color:inherit; text-decoration:none; }
   align-items:center;
   gap:14px;
 }
-.nav__link{
-  font-weight: 650;
-  color: var(--muted);
-}
+.nav__link{ font-weight: 650; color: var(--muted); }
 .nav__link:hover{ color: var(--text); }
+
 .nav__cta{
   padding: .6rem .95rem;
   border-radius: 999px;
   background: var(--gold-strong);
-  color: #111;
+  color:#111;
   font-weight: 950;
   border: 1px solid rgba(0,0,0,.15);
 }
 
-/* Mobile */
+/* Mobile menu */
 .nav__mobile{
   display:none;
   background: transparent;
@@ -118,6 +117,7 @@ a{ color:inherit; text-decoration:none; }
   margin:4px 0;
   opacity:.9;
 }
+
 .mobilemenu{
   border-top: 1px solid var(--stroke);
   background: rgba(15,17,22,.92);
@@ -145,8 +145,9 @@ a{ color:inherit; text-decoration:none; }
   text-align:center;
 }
 
-/* ====== Layout / Typography ====== */
+/* ====== Layout ====== */
 .section{ padding: 16px 0; }
+
 .wrap{
   width: min(760px, 100%);
   margin: 0 auto;
@@ -154,6 +155,7 @@ a{ color:inherit; text-decoration:none; }
   flex-direction:column;
   gap: 14px;
 }
+
 h1,h2,h3{
   margin: 0 0 10px;
   letter-spacing: -0.3px;
@@ -162,7 +164,7 @@ h1{ font-size: clamp(1.55rem, 4.5vw, 2.2rem); line-height: 1.12; }
 h2{ font-size: clamp(1.35rem, 3.2vw, 1.9rem); }
 h3{ font-size: 1.15rem; }
 
-/* ====== Panels ====== */
+/* Panels */
 .panel{
   background: rgba(255,255,255,.035);
   border: 1px solid var(--stroke);
@@ -170,31 +172,12 @@ h3{ font-size: 1.15rem; }
   box-shadow: var(--shadow);
   padding: 16px;
 }
+
 .panel--hero{
   background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
 }
-.panel--preview{
-  padding: 0;
-  overflow:hidden;
-}
-.panelHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--stroke);
-  background: rgba(255,255,255,.02);
-}
-.panelBody{
-  padding: 14px 16px 16px;
-}
-.panelTitle{
-  margin:0 0 8px;
-  font-weight: 900;
-}
 
-/* Hero text */
+/* Hero */
 .kicker{
   font-weight: 800;
   color: var(--muted);
@@ -224,28 +207,6 @@ h3{ font-size: 1.15rem; }
   border-radius: 999px;
   border: 1px solid var(--stroke);
   background: rgba(255,255,255,.02);
-}
-
-/* Preview media */
-.previewMedia img{
-  width:100%;
-  height:auto;
-  display:block;
-}
-
-/* Bullets block */
-.bullets{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.bullet{
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.02);
-  border: 1px solid var(--stroke);
-  color: var(--muted);
-  font-weight: 750;
 }
 
 /* Pricing */
@@ -292,23 +253,19 @@ h3{ font-size: 1.15rem; }
   gap: 10px;
 }
 
-/* ====== Buttons ====== */
+/* Buttons */
 .btn{
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  padding: .9rem 1.05rem;
-  border-radius: 14px;
-  font-weight: 950;
-  letter-spacing: .1px;
-  transition: transform .08s ease, filter .12s ease, border-color .12s ease, background .12s ease;
+  appearance:none;
+  border:none;
+  cursor:pointer;
+  padding:.9rem 1.05rem;
+  border-radius:14px;
+  font-weight:950;
+  letter-spacing:.1px;
   -webkit-tap-highlight-color: transparent;
 }
 .btn:active{ transform: translateY(1px); }
-.btn--gold{
-  background: var(--gold-strong);
-  color:#111;
-}
+.btn--gold{ background: var(--gold-strong); color:#111; }
 .btn--ghost{
   background: transparent;
   border: 1px solid var(--stroke);
@@ -316,7 +273,7 @@ h3{ font-size: 1.15rem; }
 }
 .btn--ghost:hover{ color: var(--text); }
 
-/* Chips/Timer */
+/* Chips/Timer (used on exam pages too) */
 .chip{
   padding: .3rem .55rem;
   border-radius: 999px;
@@ -336,7 +293,7 @@ h3{ font-size: 1.15rem; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ====== Existing exam + answers (kept compatible) ====== */
+/* ====== Exam pages (compat) ====== */
 .examWrap{ width: min(760px, 100%); margin: 0 auto; }
 
 .examcard{
@@ -417,7 +374,7 @@ h3{ font-size: 1.15rem; }
 .explain__title{ font-weight: 950; margin-bottom: 6px; }
 .explain__text{ color: var(--muted); line-height: 1.55; font-weight: 650; }
 
-/* ====== Responsive ====== */
+/* Responsive */
 @media (max-width: 520px){
   .topbar__inner{ padding: 10px 0; }
   .brand__logo{ height: 28px; }
@@ -425,9 +382,7 @@ h3{ font-size: 1.15rem; }
   .timer{ font-size: .95rem; }
   .btn{ padding: .85rem .95rem; }
   .panel{ padding: 14px; }
-  .bullets{ grid-template-columns: 1fr; }
 }
-
 @media (max-width: 980px){
   .nav{ display:none; }
   .nav__mobile{ display:inline-block; }
