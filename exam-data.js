@@ -1,13 +1,8 @@
 /* =========================================================
    GeefGas – exam-data.js
-   ✔ Volledig compatibel met examen.html
-   ✔ Examen 1 – 40 vragen
-   ✔ Foto’s via assets/examen1/qXX.jpg
+   Examen 1 (40 vragen)
+   Afbeeldingen: assets/q01.PNG t/m assets/q40.PNG
    ========================================================= */
-
-/* ======================
-   QUESTIONS (ALLE VRAGEN)
-   ====================== */
 
 const QUESTIONS = [
   {
@@ -15,25 +10,25 @@ const QUESTIONS = [
     category: "Voorrang",
     question: "Je nadert een gelijkwaardig kruispunt. Van rechts komt een fietser rechtdoor. Wat doe je?",
     answers: [
-      "Je rijdt door, want je bent sneller",
+      "Je rijdt door",
       "Je laat de fietser voorgaan",
       "Je mindert vaart maar rijdt door"
     ],
     correct: 1,
-    image: "assets/examen1/q01.jpg",
-    explanation: "Op een gelijkwaardig kruispunt gaat verkeer van rechts voor."
+    image: "assets/q01.PNG",
+    explanation: "Op een gelijkwaardig kruispunt moet je verkeer van rechts voor laten gaan."
   },
   {
     id: 2,
     category: "Voorrang",
     question: "Je slaat linksaf. Een tegenligger gaat rechtdoor. Wat is juist?",
     answers: [
-      "Je gaat eerst, want je slaat af",
+      "Je gaat eerst",
       "Je laat de tegenligger voorgaan",
-      "Je rijdt tegelijk door"
+      "Je rijdt tegelijk"
     ],
     correct: 1,
-    image: "assets/examen1/q02.jpg",
+    image: "assets/q02.PNG",
     explanation: "Bij links afslaan moet je rechtdoorgaand verkeer voor laten gaan."
   },
   {
@@ -41,12 +36,12 @@ const QUESTIONS = [
     category: "Verkeerslichten",
     question: "Je nadert een kruising. Het verkeerslicht wordt geel. Wat is juist?",
     answers: [
-      "Je rijdt altijd door",
+      "Je rijdt door",
       "Je stopt altijd direct",
       "Je stopt, tenzij stoppen niet meer veilig kan"
     ],
     correct: 2,
-    image: "assets/examen1/q03.jpg",
+    image: "assets/q03.PNG",
     explanation: "Geel betekent stoppen, behalve als dat niet meer veilig kan."
   },
   {
@@ -59,7 +54,7 @@ const QUESTIONS = [
       "Je remt later"
     ],
     correct: 1,
-    image: "assets/examen1/q04.jpg",
+    image: "assets/q04.PNG",
     explanation: "Op nat wegdek is de remweg langer."
   },
   {
@@ -72,12 +67,12 @@ const QUESTIONS = [
       "Je geeft extra gas"
     ],
     correct: 1,
-    image: "assets/examen1/q05.jpg",
+    image: "assets/q05.PNG",
     explanation: "Inhalen mag alleen als je voldoende zicht en ruimte hebt."
   }
 ];
 
-// Automatisch aanvullen tot 40 vragen (zelfde niveau, veilige fallback)
+// automatisch aanvullen tot 40 vragen
 for (let i = QUESTIONS.length + 1; i <= 40; i++) {
   QUESTIONS.push({
     id: i,
@@ -89,27 +84,20 @@ for (let i = QUESTIONS.length + 1; i <= 40; i++) {
       "Je rijdt zo snel mogelijk"
     ],
     correct: 1,
-    image: `assets/examen1/q${String(i).padStart(2, "0")}.jpg`,
-    explanation: "Goed rijgedrag betekent anticiperen op anderen."
+    image: `assets/q${String(i).padStart(2, "0")}.PNG`,
+    explanation: "Goed rijgedrag betekent anticiperen op andere weggebruikers."
   });
 }
-
-/* ======================
-   EXAM SETS
-   ====================== */
 
 const EXAM_SETS = {
   taxi_v1: {
     id: "taxi_v1",
-    title: "Taxi Examen 1 (40 vragen)",
-    durationSec: 1500, // 25 minuten
+    title: "Examen 1 (40 vragen)",
+    durationSec: 1500,
     questionIds: QUESTIONS.map(q => q.id)
   }
 };
 
-/* ======================
-   EXPORT (BELANGRIJK)
-   ====================== */
-
 window.QUESTIONS = QUESTIONS;
 window.EXAM_SETS = EXAM_SETS;
+
