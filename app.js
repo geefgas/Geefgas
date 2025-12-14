@@ -1,50 +1,77 @@
-/* GeefGas – app.js (COMPLETE)
-   - Mobiel menu toggle
-   - Jaar automatisch invullen (als #year bestaat)
-*/
+/* =========================================================
+   GeefGas – app.js
+   - Mobile menu toggle (stabiel)
+   - Best NL voice selection + save preference
+   ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Year (optional)
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-  // Mobile menu
+(function(){
+  // ---------- Mobile menu ----------
   const btn = document.getElementById("mobileMenuBtn");
   const menu = document.getElementById("mobileMenu");
 
   if (btn && menu) {
-    const closeMenu = () => {
-      menu.setAttribute("hidden", "");
-      btn.setAttribute("aria-expanded", "false");
-    };
-
-    const openMenu = () => {
-      menu.removeAttribute("hidden");
-      btn.setAttribute("aria-expanded", "true");
-    };
-
     btn.addEventListener("click", () => {
-      const isClosed = menu.hasAttribute("hidden");
-      if (isClosed) openMenu();
-      else closeMenu();
+      const open = menu.hasAttribute("hidden") ? false : true;
+      if (open) {
+        menu.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        menu.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+      }
     });
 
-    // Close when clicking a link in the menu
-    menu.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", closeMenu);
-    });
-
-    // Close when tapping outside menu area (mobile UX)
-    document.addEventListener("click", (e) => {
-      if (menu.hasAttribute("hidden")) return;
-      const clickedInsideMenu = menu.contains(e.target);
-      const clickedButton = btn.contains(e.target);
-      if (!clickedInsideMenu && !clickedButton) closeMenu();
-    });
-
-    // Close on ESC key (desktop)
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
+    // close menu when clicking a link
+    menu.addEventListener("click", (e) => {
+      const a = e.target.closest("a");
+      if (a) {
+        menu.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+      }
     });
   }
-});
+
+  // ---------- Voice helpers ----------
+  function pickBestNLVoice(voices){
+    const nl = voices.filter(v => (v.lang || "").toLowerCase().startsWith("nl"));
+    const list = nl.length ? nl : voices;
+
+    // prefer human-like voices on iOS/macOS (Siri) and higher-quality voices
+    const prefs = ["siri", "enhanced", "premium", "natural", "neural"];
+    for (const p of prefs) {
+      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
+      if (found) return found;
+    }
+    return list[0] || null;
+  }
+
+  // Warm up voices list (some browsers populate async)
+  function loadVoices(){
+    return new Promise(resolve => {
+      if (!("speechSynthesis" in window)) return resolve([]);
+      let voices = speechSynthesis.getVoices();
+      if (voices && voices.length) return resolve(voices);
+
+      const onChange = () => {
+        voices = speechSynthesis.getVoices();
+        speechSynthesis.removeEventListener("voiceschanged", onChange);
+        resolve(voices || []);
+      };
+      speechSynthesis.addEventListener("voiceschanged", onChange);
+      setTimeout(() => resolve(speechSynthesis.getVoices() || []), 800);
+    });
+  }
+
+  // Store a good default voice once
+  (async function initVoice(){
+    if (!("speechSynthesis" in window)) return;
+
+    const saved = localStorage.getItem("gg_voiceName");
+    if (saved) return; // already chosen
+
+    const voices = await loadVoices();
+    const best = pickBestNLVoice(voices);
+    if (best) localStorage.setItem("gg_voiceName", best.name);
+  })();
+
+})();
