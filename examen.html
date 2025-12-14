@@ -63,116 +63,45 @@
 
 <script>
 (function(){
+
   const PASS_PERCENT = 0.80;
 
-  // ----------------------------
-  // Helpers: safe access
-  // ----------------------------
-  function qsParam(name){
-    try {
-      const u = new URL(location.href);
-      return u.searchParams.get(name);
-    } catch { return null; }
+  // --- Data ophalen (legacy model) ---
+  const examSetId = localStorage.getItem("gg_examSet") || "taxi_v1";
+  const set = (window.EXAM_SETS && window.EXAM_SETS[examSetId]) ? window.EXAM_SETS[examSetId] : null;
+
+  if (!set) {
+    alert("Examenset niet gevonden. Controleer EXAM_SETS in exam-data.js");
+    return;
   }
 
-  function formatTime(sec){
-    const m = String(Math.floor(sec / 60)).padStart(2,"0");
-    const s = String(sec % 60).padStart(2,"0");
-    return `${m}:${s}`;
-  }
-
-  function showFatal(msg){
-    alert(msg);
-    document.getElementById("questionText").textContent = msg;
-  }
-
-  // ----------------------------
-  // Detect data model
-  // Supports:
-  //  A) legacy: EXAM_SETS + QUESTIONS
-  //  B) newer: EXAM_DATA/EXAMS (list of exams with embedded questions)
-  // ----------------------------
-  const hasLegacy = (typeof window.EXAM_SETS !== "undefined") && (typeof window.QUESTIONS !== "undefined");
-  const hasNew =
-    (Array.isArray(window.EXAMS) && window.EXAMS.length) ||
-    (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams) && window.EXAM_DATA.exams.length);
-
-  // ----------------------------
-  // Read settings
-  // ----------------------------
   const revealMode = localStorage.getItem("gg_revealMode") || "instant";
   const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
 
-  // ----------------------------
-  // Decide which exam to load
-  // Priority:
-  // 1) URL ?set=taxi_v1
-  // 2) localStorage gg_examSet
-  // 3) fallback to taxi_v1
-  // 4) fallback to first available exam
-  // ----------------------------
-  const requestedSet = qsParam("set");
-  const examSetId = requestedSet || localStorage.getItem("gg_examSet") || "taxi_v1";
+  const questions = (set.questionIds || [])
+    .map(id => (window.QUESTIONS || []).find(q => q.id === id))
+    .filter(Boolean);
 
-  // ----------------------------
-  // Build normalized exam object:
-  // { title, durationSec, questions:[{question, answers[], correct, explanation, image, category}] }
-  // ----------------------------
-  let examTitleText = "Taxi Examen";
-  let durationSec = 1500;
-  let questions = [];
-
-  if (hasLegacy) {
-    const set = window.EXAM_SETS[examSetId] || window.EXAM_SETS["taxi_v1"];
-    if (!set) {
-      const keys = Object.keys(window.EXAM_SETS || {});
-      if (!keys.length) return showFatal("Geen examensets gevonden in exam-data.js.");
-      const fallback = window.EXAM_SETS[keys[0]];
-      examTitleText = fallback?.title || "Taxi Examen";
-      durationSec = fallback?.durationSec || 1500;
-      questions = (fallback?.questionIds || [])
-        .map(id => (window.QUESTIONS || []).find(q => q.id === id))
-        .filter(Boolean);
-    } else {
-      examTitleText = set.title || "Taxi Examen";
-      durationSec = set.durationSec || 1500;
-      questions = (set.questionIds || [])
-        .map(id => (window.QUESTIONS || []).find(q => q.id === id))
-        .filter(Boolean);
-    }
-  } else if (hasNew) {
-    const list = (Array.isArray(window.EXAMS) && window.EXAMS.length)
-      ? window.EXAMS
-      : (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams) ? window.EXAM_DATA.exams : []);
-
-    // try match by id
-    let ex = list.find(e => (e.id || "").toLowerCase() === String(examSetId).toLowerCase());
-    // if not found: take first exam
-    if (!ex) ex = list[0];
-
-    examTitleText = ex.title || "Taxi Examen";
-    durationSec = (ex.durationMinutes ? ex.durationMinutes * 60 : 1500);
-
-    questions = (ex.questions || []).map((q) => ({
-      category: ex.category || q.category || "Taxi",
-      question: q.prompt || q.question || "",
-      answers: q.options || q.answers || [],
-      correct: typeof q.correctIndex === "number" ? q.correctIndex : (typeof q.correct === "number" ? q.correct : 0),
-      explanation: q.explanation || "",
-      image: q.image || ""
-    }));
-  } else {
-    return showFatal("exam-data.js bevat geen herkenbare examendata (EXAM_SETS/QUESTIONS of EXAM_DATA/EXAMS).");
+  if (questions.length === 0) {
+    alert("Geen vragen gevonden in deze examenset. Controleer QUESTIONS in exam-data.js");
+    return;
   }
 
-  if (!questions || questions.length === 0) {
-    return showFatal("Geen vragen gevonden. Controleer exam-data.js.");
-  }
+  const total = questions.length;
+  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
+  const maxMistakes = total - requiredCorrect;
 
-  // ----------------------------
-  // ELEMENTS
-  // ----------------------------
-  const examTitleEl = document.getElementById("examTitle");
+  let index = 0;
+  let time = set.durationSec || 1500;
+
+  const attempt = questions.map(q => ({
+    id: q.id,
+    chosen: null,
+    correct: q.correct
+  }));
+
+  // --- Elements ---
+  const examTitle   = document.getElementById("examTitle");
   const timerEl     = document.getElementById("timer");
   const qImage      = document.getElementById("qImage");
   const questionTxt = document.getElementById("questionText");
@@ -189,27 +118,19 @@
   const readBtn     = document.getElementById("readBtn");
   const modeHint    = document.getElementById("modeHint");
 
-  const total = questions.length;
-  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
-  const maxMistakes = total - requiredCorrect;
-
-  examTitleEl.textContent = `GeefGas – ${examTitleText}`;
+  examTitle.textContent = `GeefGas – ${set.title || "Examen"}`;
   modeHint.textContent =
     revealMode === "instant"
       ? `Mode: directe feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`
       : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
-  // Attempt structure
-  const attempt = questions.map((q, idx) => ({
-    idx,
-    chosen: null,
-    correct: q.correct
-  }));
+  // --- Timer ---
+  function formatTime(sec){
+    const m = String(Math.floor(sec / 60)).padStart(2,"0");
+    const s = String(sec % 60).padStart(2,"0");
+    return `${m}:${s}`;
+  }
 
-  // ----------------------------
-  // TIMER
-  // ----------------------------
-  let time = durationSec;
   timerEl.textContent = formatTime(time);
 
   const timer = setInterval(() => {
@@ -219,20 +140,77 @@
     if (time <= 0) finishExam();
   }, 1000);
 
-  // ----------------------------
-  // RENDER
-  // ----------------------------
-  let index = 0;
+  // --- Image resolver (probeert meerdere paden/varianten) ---
+  function buildImageCandidates(rawPath){
+    const candidates = [];
+    const cacheBust = `?v=${Date.now()}`; // voorkomt caching issues
 
+    function add(p){
+      if (!p) return;
+      const clean = p.replace(/\?.*$/, "");
+      if (!candidates.includes(clean)) candidates.push(clean);
+    }
+
+    add(rawPath);
+
+    // Als rawPath iets als assets/q01.PNG is:
+    // extra varianten proberen
+    const m = (rawPath || "").match(/(assets\/)(.*)$/i);
+    if (m) {
+      const tail = m[2]; // bv "q01.PNG" of "examen1/q01.jpg"
+      const base = tail.split("/").pop() || "";
+      const dir  = tail.includes("/") ? tail.split("/").slice(0, -1).join("/") + "/" : "";
+
+      // basename zonder extensie
+      const dot = base.lastIndexOf(".");
+      const name = dot > -1 ? base.slice(0, dot) : base;
+      const exts = ["PNG","png","JPG","jpg","JPEG","jpeg","WEBP","webp"];
+
+      // Probeer zowel in assets/ als assets/examen1/
+      for (const ext of exts) {
+        add(`assets/${dir}${name}.${ext}`);
+        add(`assets/${name}.${ext}`);
+        add(`assets/examen1/${name}.${ext}`);
+      }
+
+      // Ook hoofdletter Q varianten (soms iPhone/Bestanden app)
+      const upperName = name.length ? (name[0].toUpperCase() + name.slice(1)) : name;
+      for (const ext of exts) {
+        add(`assets/${upperName}.${ext}`);
+        add(`assets/examen1/${upperName}.${ext}`);
+      }
+    }
+
+    // cachebuster toevoegen bij het zetten
+    return candidates.map(p => p + cacheBust);
+  }
+
+  function setImageWithFallback(rawPath){
+    const candidates = buildImageCandidates(rawPath || "");
+    let i = 0;
+
+    function tryNext(){
+      if (i >= candidates.length) {
+        qImage.src = "assets/placeholder.jpg";
+        return;
+      }
+      qImage.src = candidates[i++];
+    }
+
+    qImage.onerror = tryNext;
+    tryNext();
+  }
+
+  // --- Render ---
   function render(){
     const q = questions[index];
 
     categoryEl.textContent = q.category || "Taxi";
     progressEl.textContent = `Vraag ${index + 1} van ${total}`;
-    questionTxt.textContent = q.question || "";
+    questionTxt.textContent = q.question;
 
-    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
-    qImage.src = q.image || "assets/placeholder.jpg";
+    // ✅ probeer meerdere bestandsnamen/paden automatisch
+    setImageWithFallback(q.image);
 
     prevBtn.disabled = index === 0;
     nextBtn.textContent = index === total - 1 ? "Afronden" : "Volgende";
@@ -262,8 +240,7 @@
             explainBox.classList.add("good");
           } else {
             btn.classList.add("wrong");
-            const correctBtn = document.querySelectorAll(".answer")[q.correct];
-            if (correctBtn) correctBtn.classList.add("correct");
+            document.querySelectorAll(".answer")[q.correct]?.classList.add("correct");
             explainTit.textContent = "❌ Niet goed";
             explainBox.classList.add("bad");
           }
@@ -276,19 +253,15 @@
     });
   }
 
-  // ----------------------------
-  // VOORLEZEN
-  // ----------------------------
+  // --- Voorlezen ---
   readBtn.onclick = () => {
     if (!ttsEnabled || !("speechSynthesis" in window)) return;
-
     const q = questions[index];
-    const text = (q.question || "") + ". " + (q.answers || []).join(". ");
+    const text = q.question + ". " + (q.answers || []).join(". ");
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
     u.rate = 0.95;
 
-    // Use saved best voice if exists (set by app.js)
     const preferred = localStorage.getItem("gg_voiceName");
     if (preferred) {
       const voices = speechSynthesis.getVoices();
@@ -300,9 +273,7 @@
     speechSynthesis.speak(u);
   };
 
-  // ----------------------------
-  // NAV
-  // ----------------------------
+  // --- Nav ---
   nextBtn.onclick = () => {
     if (index === total - 1) return finishExam();
     index++;
@@ -317,17 +288,12 @@
 
   function finishExam(){
     clearInterval(timer);
-
-    // Save result (compatible)
-    const result = {
-      examTitle: examTitleText,
+    localStorage.setItem("gg_result", JSON.stringify({
       total,
       requiredCorrect,
       maxMistakes,
       attempt
-    };
-    localStorage.setItem("gg_result", JSON.stringify(result));
-
+    }));
     window.location.href = "resultaat.html";
   }
 
