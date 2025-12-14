@@ -1,7 +1,7 @@
 /* ==========================
-   GeefGas – Premium UI v1
+   GeefGas – Premium UI v1.1
    Black + Gold (clean, consistent)
-   Mobile-first, iPhone friendly
+   Examens pagina strakker
    ========================== */
 
 :root{
@@ -15,8 +15,8 @@
   --text: #F5F5F7;
   --muted: #A9A9B3;
 
-  --gold: #E6C36A;        /* soft gold */
-  --gold-strong: #CFAE55; /* CTA gold */
+  --gold: #E6C36A;
+  --gold-strong: #CFAE55;
 
   --danger: #FF5A5A;
   --success: #2ECC71;
@@ -101,7 +101,7 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(0,0,0,.15);
 }
 
-/* Mobile menu button (als je hem gebruikt) */
+/* Mobile menu button */
 .nav__mobile{
   display:none;
   background: transparent;
@@ -145,8 +145,8 @@ a{ color:inherit; text-decoration:none; }
   text-align:center;
 }
 
-/* ====== Sections / Typography ====== */
-.section{ padding: 18px 0; }
+/* ====== Layout / Typography ====== */
+.section{ padding: 16px 0; }
 
 h1,h2,h3{
   margin: 0 0 10px;
@@ -158,7 +158,7 @@ h2{
 }
 
 h3{
-  font-size: 1.2rem;
+  font-size: 1.18rem;
 }
 
 /* ====== Buttons ====== */
@@ -223,7 +223,65 @@ h3{
   margin: 0 auto;
 }
 
-/* ====== Exam Card ====== */
+/* ====== Generic cards ====== */
+.feature{
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.03);
+}
+
+/* ====== Exam list blocks ====== */
+.examList{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.examBlock{
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,.03);
+  padding: 16px;
+}
+
+.examBlock__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.examBlock__cta{
+  white-space: nowrap;
+}
+
+.examBlock__what{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.examBlock__item{
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--stroke);
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.examBlock__note{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--stroke);
+  font-weight: 650;
+}
+
+/* ====== Exam screen ====== */
 .examcard{
   background: var(--surface);
   border: 1px solid var(--stroke);
@@ -382,33 +440,20 @@ h3{
 .good{ color: var(--success); font-weight: 900; }
 .bad{ color: var(--danger); font-weight: 900; }
 
-/* Simple card helper */
-.feature{
-  padding: 16px;
-  border-radius: var(--radius);
-  border: 1px solid var(--stroke);
-  background: rgba(255,255,255,.03);
-}
-
-.feature h3{ margin:0 0 8px; }
-.feature p{ margin:0; color: var(--muted); line-height: 1.5; }
-
-/* ====== Mobile adjustments ====== */
+/* ====== Responsive ====== */
 @media (max-width: 520px){
-  .section{ padding: 14px 0; }
+  .section{ padding: 12px 0; }
   .topbar__inner{ padding: 10px 0; }
   .brand__logo{ height: 28px; }
   .brand__name{ font-size: .98rem; }
   .timer{ font-size: .95rem; }
-
-  .examcard__body{ padding: 12px; }
-  .answer{ padding: 12px 12px; }
-  .answer__key{ width: 28px; height: 28px; border-radius: 9px; }
-
   .btn{ padding: .85rem .95rem; }
+
+  .examBlock__what{
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ====== Hide desktop nav on smaller screens if needed ====== */
 @media (max-width: 980px){
   .nav{ display:none; }
   .nav__mobile{ display:inline-block; }
