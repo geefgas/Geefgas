@@ -10,7 +10,6 @@
 </head>
 
 <body>
-  <!-- Topbar -->
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="index.html" aria-label="GeefGas Home">
@@ -38,134 +37,91 @@
     </div>
   </header>
 
-  <main>
-    <!-- HERO (strak + vrolijker door lichtere background en rustige card) -->
-    <section class="section">
-      <div class="container">
-        <div class="wrap">
-          <div class="panel panel--hero">
-            <div class="kicker">Premium theorieplatform • Taxi</div>
+  <main class="section">
+    <div class="container">
+      <div class="wrap">
 
-            <h1 class="heroTitle">
-              Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">realistische</span> oefenexamens.
-            </h1>
+        <!-- HERO (strak, rustig) -->
+        <section class="panel panel--hero">
+          <div class="kicker">Premium theorieplatform • Taxi</div>
 
-            <p class="heroText">
-              Rustig oefenen op je telefoon. Kies een antwoord, zie direct goed/fout + uitleg en herhaal je fouten.
-              Alles met eigen visuals (later volledig uitgebreid).
-            </p>
+          <h1 class="heroTitle">
+            Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">realistische</span> oefenexamens.
+          </h1>
 
-            <div class="heroActions">
-              <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
-              <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
+          <p class="heroText">
+            Oefen op je telefoon met rustige schermen. Kies een antwoord, zie direct goed/fout + uitleg en herhaal je fouten.
+            Later breiden we dit uit met veel meer taxi-content en eigen visuals.
+          </p>
+
+          <div class="heroActions">
+            <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
+            <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
+          </div>
+
+          <div class="heroChecks">
+            <div>✔ Direct oefenen</div>
+            <div>✔ Uitleg per vraag</div>
+            <div>✔ Foutenoverzicht</div>
+          </div>
+        </section>
+
+        <!-- PAKKETTEN (ook strak) -->
+        <section class="panel" id="pakketten">
+          <h2 style="margin:0 0 6px;">Kies je pakket</h2>
+          <p class="muted" style="margin:0 0 14px; line-height:1.6;">
+            Testfase: knoppen sturen je direct door naar oefenen (zonder betaling).
+          </p>
+
+          <div class="priceList">
+            <div class="priceRow priceRow--best">
+              <div>
+                <span class="chip">Aanbevolen</span>
+                <div class="priceTitle">31 dagen toegang</div>
+                <div class="muted">€50 • beste waarde</div>
+              </div>
+              <a class="btn btn--gold" href="examens.html">Start</a>
             </div>
 
-            <div class="heroChecks">
-              <div>✔ Direct oefenen</div>
-              <div>✔ Uitleg per vraag</div>
-              <div>✔ Foutenoverzicht</div>
+            <div class="priceRow">
+              <div>
+                <div class="priceTitle">21 dagen toegang</div>
+                <div class="muted">€40</div>
+              </div>
+              <a class="btn btn--ghost" href="examens.html">Start</a>
+            </div>
+
+            <div class="priceRow">
+              <div>
+                <div class="priceTitle">7 dagen toegang</div>
+                <div class="muted">€25</div>
+              </div>
+              <a class="btn btn--ghost" href="examens.html">Start</a>
             </div>
           </div>
 
-          <!-- PREVIEW (1 rustige card i.p.v. veel losse elementen) -->
-          <div class="panel panel--preview">
-            <div class="panelHead">
-              <span class="chip">Oefenexamen</span>
-              <span class="timer">24:58</span>
-            </div>
-
-            <div class="previewMedia">
-              <img
-                src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?> <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='520' viewBox='0 0 1200 520'> <defs><linearGradient id='bg' x1='0' x2='1'><stop offset='0' stop-color='%2313161d'/><stop offset='1' stop-color='%23101318'/></linearGradient></defs> <rect width='1200' height='520' fill='url(%23bg)'/> <circle cx='980' cy='140' r='160' fill='%23E6C36A' opacity='0.14'/> <circle cx='1010' cy='160' r='210' fill='%23E6C36A' opacity='0.08'/> <text x='60' y='110' font-family='Arial' font-size='40' fill='%23F7F7FA' font-weight='700'>Rustig oefenen (voorbeeld)</text> <text x='60' y='160' font-family='Arial' font-size='22' fill='%23B7B9C6'>Eigen visuals + uitleg per vraag</text> <rect x='60' y='220' width='1080' height='220' rx='22' fill='%231F2230' stroke='rgba(255,255,255,0.08)'/> <text x='90' y='290' font-family='Arial' font-size='22' fill='%23F7F7FA' font-weight='700'>Wat betekent dit bord?</text> <rect x='90' y='320' width='520' height='70' rx='16' fill='%23171923' stroke='rgba(255,255,255,0.08)'/> <text x='120' y='365' font-family='Arial' font-size='18' fill='%23B7B9C6'>A • verkeersdrempel</text> <rect x='880' y='330' width='230' height='70' rx='18' fill='%23CFAE55'/> <text x='995' y='375' font-family='Arial' font-size='22' fill='%23111' font-weight='900' text-anchor='middle'>Volgende</text> </svg>"
-                alt="Voorbeeld van oefenvraag"
-              />
-            </div>
-
-            <div class="panelBody">
-              <h3 class="panelTitle">Zo voelt het in de praktijk</h3>
-              <p class="muted" style="margin:0; line-height:1.6;">
-                Duidelijke knoppen, geen drukke rommel. Na elke vraag meteen uitleg.
-              </p>
-              <div class="panelActions">
-                <a class="btn btn--gold" href="examens.html">Start demo-examen</a>
-                <a class="btn btn--ghost" href="#pakketten">Bekijk pakketten</a>
-              </div>
-            </div>
+          <div class="note">
+            <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
+            Vragen/visuals zijn eigen ontwikkeld.
           </div>
+        </section>
 
-          <!-- WAT JE KRIJGT (één compact blok i.p.v. 3 losse) -->
-          <div class="panel">
-            <h3 class="panelTitle">Wat je krijgt</h3>
-            <div class="bullets">
-              <div class="bullet">⏱️ Examens met timer</div>
-              <div class="bullet">✅ Direct feedback + uitleg</div>
-              <div class="bullet">📊 Resultaat + foutenoverzicht</div>
-              <div class="bullet">📱 Perfect op telefoon</div>
+        <!-- FOOTER -->
+        <footer class="panel">
+          <div class="footerRow">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="assets/geefgas.png" alt="GeefGas" style="height:28px; width:auto;" />
+              <strong>GeefGas</strong>
             </div>
-            <p class="muted" style="margin:12px 0 0; line-height:1.6;">
-              Nu testen we met een kleine set. Daarna bouwen we dit uit naar volledige taxi-content en meer examens.
-            </p>
+            <div class="muted">© <span id="year"></span></div>
           </div>
+          <p class="muted" style="margin:10px 0 0; line-height:1.6;">
+            Taxi nu • later meer categorieën.
+          </p>
+        </footer>
 
-          <!-- PAKKETTEN -->
-          <section class="section" id="pakketten" style="padding-top:0;">
-            <div class="panel">
-              <h2 style="margin:0 0 6px;">Kies je pakket</h2>
-              <p class="muted" style="margin:0 0 14px; line-height:1.6;">
-                In de testfase sturen deze knoppen je direct door naar oefenen (zonder betaling).
-              </p>
-
-              <div class="priceList">
-                <div class="priceRow priceRow--best">
-                  <div>
-                    <span class="chip">Aanbevolen</span>
-                    <div class="priceTitle">31 dagen toegang</div>
-                    <div class="muted">€50 • beste waarde</div>
-                  </div>
-                  <a class="btn btn--gold" href="examens.html">Start</a>
-                </div>
-
-                <div class="priceRow">
-                  <div>
-                    <div class="priceTitle">21 dagen toegang</div>
-                    <div class="muted">€40</div>
-                  </div>
-                  <a class="btn btn--ghost" href="examens.html">Start</a>
-                </div>
-
-                <div class="priceRow">
-                  <div>
-                    <div class="priceTitle">7 dagen toegang</div>
-                    <div class="muted">€25</div>
-                  </div>
-                  <a class="btn btn--ghost" href="examens.html">Start</a>
-                </div>
-              </div>
-
-              <div class="note">
-                <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
-                Vragen/visuals zijn eigen ontwikkeld.
-              </div>
-            </div>
-          </section>
-
-          <!-- Footer -->
-          <div class="panel">
-            <div class="footerRow">
-              <div style="display:flex; align-items:center; gap:10px;">
-                <img src="assets/geefgas.png" alt="GeefGas" style="height:28px; width:auto;" />
-                <strong>GeefGas</strong>
-              </div>
-              <div class="muted">© <span id="year"></span></div>
-            </div>
-            <p class="muted" style="margin:10px 0 0; line-height:1.6;">
-              Taxi nu • later meer categorieën.
-            </p>
-          </div>
-
-        </div>
       </div>
-    </section>
+    </div>
   </main>
 
   <script src="app.js"></script>
