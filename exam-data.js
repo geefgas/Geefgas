@@ -1,81 +1,107 @@
 /* =========================================================
    GeefGas – exam-data.js
    Examen 1 (40 vragen)
-   Afbeeldingen: assets/q01.PNG t/m assets/q40.PNG
+   Afbeeldingen: assets/q01.PNG t/m assets/q40.PNG (zoals jij uploadt)
+   Inclusief klik-vragen (voorrang) waarbij je op de foto klikt.
    ========================================================= */
 
 const QUESTIONS = [
+  // 1–5: KLIK-VRAGEN (voorrang/volgorde)
   {
     id: 1,
+    type: "order",
     category: "Voorrang",
-    question: "Je nadert een gelijkwaardig kruispunt. Van rechts komt een fietser rechtdoor. Wat doe je?",
-    answers: [
-      "Je rijdt door",
-      "Je laat de fietser voorgaan",
-      "Je mindert vaart maar rijdt door"
-    ],
-    correct: 1,
+    question: "Klik in de juiste volgorde wie er mag rijden.",
+    // jouw testimage (mag PNG/JPG, examen.html zoekt meerdere varianten)
     image: "assets/q01.PNG",
-    explanation: "Op een gelijkwaardig kruispunt moet je verkeer van rechts voor laten gaan."
+    // hotspots: percentages (0–100). Jij kunt later makkelijk positions tunen.
+    hotspots: [
+      { key: "A", label: "A", x: 18, y: 60 }, // fietser
+      { key: "B", label: "B", x: 55, y: 78 }, // auto onder
+      { key: "C", label: "C", x: 78, y: 50 }  // auto links
+    ],
+    correctOrder: ["A", "B", "C"],
+    explanation: "Op een gelijkwaardig kruispunt gaat verkeer van rechts voor. Daarna pas jij, daarna de ander."
   },
   {
     id: 2,
+    type: "order",
     category: "Voorrang",
-    question: "Je slaat linksaf. Een tegenligger gaat rechtdoor. Wat is juist?",
-    answers: [
-      "Je gaat eerst",
-      "Je laat de tegenligger voorgaan",
-      "Je rijdt tegelijk"
-    ],
-    correct: 1,
+    question: "Klik in de juiste volgorde wie er mag rijden.",
     image: "assets/q02.PNG",
-    explanation: "Bij links afslaan moet je rechtdoorgaand verkeer voor laten gaan."
+    hotspots: [
+      { key: "A", label: "A", x: 25, y: 65 },
+      { key: "B", label: "B", x: 70, y: 45 },
+      { key: "C", label: "C", x: 55, y: 25 }
+    ],
+    correctOrder: ["C", "B", "A"],
+    explanation: "Rechtdoorgaand verkeer gaat voor. Daarna pas afslaand verkeer."
   },
   {
     id: 3,
-    category: "Verkeerslichten",
-    question: "Je nadert een kruising. Het verkeerslicht wordt geel. Wat is juist?",
-    answers: [
-      "Je rijdt door",
-      "Je stopt altijd direct",
-      "Je stopt, tenzij stoppen niet meer veilig kan"
-    ],
-    correct: 2,
+    type: "order",
+    category: "Rotonde / voorrang",
+    question: "Klik in de juiste volgorde wie er mag rijden.",
     image: "assets/q03.PNG",
-    explanation: "Geel betekent stoppen, behalve als dat niet meer veilig kan."
+    hotspots: [
+      { key: "A", label: "A", x: 60, y: 40 }, // auto op rotonde
+      { key: "B", label: "B", x: 20, y: 70 }, // auto voor haaientanden
+      { key: "C", label: "C", x: 50, y: 70 }  // fietser op rotonde
+    ],
+    correctOrder: ["A", "C", "B"],
+    explanation: "Verkeer op de rotonde gaat voor. Vervolgens de fietser op de rotonde. Jij pas daarna."
   },
   {
     id: 4,
-    category: "Weersomstandigheden",
-    question: "Het regent en het wegdek is nat. Wat is juist rijgedrag?",
-    answers: [
-      "Je rijdt hetzelfde als normaal",
-      "Je vergroot je volgafstand",
-      "Je remt later"
-    ],
-    correct: 1,
+    type: "order",
+    category: "Voetganger / afslaan",
+    question: "Klik in de juiste volgorde wie er mag rijden.",
     image: "assets/q04.PNG",
-    explanation: "Op nat wegdek is de remweg langer."
+    hotspots: [
+      { key: "A", label: "A", x: 55, y: 60 }, // auto rechtdoor
+      { key: "B", label: "B", x: 28, y: 70 }, // auto linksaf
+      { key: "C", label: "C", x: 70, y: 30 }  // voetganger
+    ],
+    correctOrder: ["A", "C", "B"],
+    explanation: "Rechtdoorgaand verkeer eerst. Daarna voetganger. Linksaf als laatste."
   },
   {
     id: 5,
-    category: "Inhalen",
-    question: "Je wilt inhalen, maar het zicht is beperkt. Wat doe je?",
-    answers: [
-      "Je haalt toch in",
-      "Je wacht tot je voldoende zicht hebt",
-      "Je geeft extra gas"
-    ],
-    correct: 1,
+    type: "order",
+    category: "Zebrapad / voorrang",
+    question: "Klik in de juiste volgorde wie er mag rijden.",
     image: "assets/q05.PNG",
-    explanation: "Inhalen mag alleen als je voldoende zicht en ruimte hebt."
+    hotspots: [
+      { key: "A", label: "A", x: 55, y: 35 }, // voetganger
+      { key: "B", label: "B", x: 35, y: 70 }, // auto
+      { key: "C", label: "C", x: 72, y: 75 }  // fietser
+    ],
+    correctOrder: ["A", "B", "C"],
+    explanation: "Voetgangers op een zebrapad laat je voorgaan. Daarna pas de overige voertuigen."
+  },
+
+  // 6–40: meerkeuze (voor nu)
+  {
+    id: 6,
+    type: "mcq",
+    category: "Verkeersinzicht",
+    question: "Je rijdt in druk verkeer. Wat is juist?",
+    answers: [
+      "Je past je snelheid aan om mee te rijden met het verkeer",
+      "Je probeert zo min mogelijk te remmen",
+      "Je rijdt rustig en anticipeert op andere weggebruikers"
+    ],
+    correct: 2,
+    image: "assets/q06.PNG",
+    explanation: "Anticiperen en rustig rijden voorkomt onnodig remmen en vergroot de veiligheid."
   }
 ];
 
-// automatisch aanvullen tot 40 vragen
+// automatisch aanvullen tot 40 vragen (placeholder-vragen + image pad)
 for (let i = QUESTIONS.length + 1; i <= 40; i++) {
   QUESTIONS.push({
     id: i,
+    type: "mcq",
     category: "Verkeersinzicht",
     question: `Voorbeeldvraag ${i}. Wat is het juiste rijgedrag?`,
     answers: [
@@ -100,4 +126,3 @@ const EXAM_SETS = {
 
 window.QUESTIONS = QUESTIONS;
 window.EXAM_SETS = EXAM_SETS;
-
