@@ -2,8 +2,8 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <title>GeefGas – Resultaat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeefGas – Resultaat</title>
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
@@ -11,7 +11,7 @@
 
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="index.html">
+    <a class="brand" href="index.html" aria-label="GeefGas Home">
       <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
       <span class="brand__name">GeefGas</span>
     </a>
@@ -21,73 +21,113 @@
 
 <main class="section">
   <div class="container">
+    <div class="wrap">
 
-    <div class="section__head">
-      <h2>Examen afgerond</h2>
-      <p class="muted" id="resultText"></p>
+      <section class="panel">
+        <h2 style="margin:0 0 6px;">Resultaat</h2>
+        <p class="muted" id="resultText" style="margin:0; line-height:1.6;"></p>
+        <div id="passBox" class="note" style="margin-top:12px;"></div>
+      </section>
+
+      <section class="panel" id="reviewPanel">
+        <h3 style="margin:0 0 10px;">Fouten + uitleg</h3>
+        <div id="reviewList" class="review__list"></div>
+      </section>
+
+      <section class="panel">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn--gold" href="examens.html">Nieuw examen</a>
+          <a class="btn btn--ghost" href="index.html">Home</a>
+        </div>
+      </section>
+
     </div>
-
-    <div id="reviewBox" class="review"></div>
-
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-      <a href="examens.html" class="btn btn--gold">Nieuw examen</a>
-      <a href="index.html" class="btn btn--ghost">Terug naar home</a>
-    </div>
-
   </div>
 </main>
 
 <script>
-const score = Number(localStorage.getItem("gg_score_v1") || "0");
-const total = Number(localStorage.getItem("gg_total_v1") || "0");
-document.getElementById("resultText").textContent = `Je score: ${score} van ${total}`;
+(function(){
+  // === Taxi norm ===
+  // 80% goed = geslaagd. Bij 40 vragen => 32 goed => max 8 fouten.
+  const PASS_PERCENT = 0.80;
 
-const attemptRaw = localStorage.getItem("gg_attempt_v1");
-const reviewBox = document.getElementById("reviewBox");
+  const score = Number(localStorage.getItem("gg_score_v2") || "0");
+  const total = Number(localStorage.getItem("gg_total_v2") || "0");
+  const title = localStorage.getItem("gg_examSetTitle_v2") || "Examen";
+  const mode = localStorage.getItem("gg_revealMode_v2") || "instant";
 
-if (!attemptRaw) {
-  reviewBox.innerHTML = `<div class="feature"><h3>Geen poging gevonden</h3><p class="muted">Start een nieuw examen om resultaten te zien.</p></div>`;
-} else {
-  const attempt = JSON.parse(attemptRaw);
+  const requiredCorrect = total > 0 ? Math.ceil(total * PASS_PERCENT) : 0;
+  const maxMistakes = total > 0 ? (total - requiredCorrect) : 0;
 
-  // Map question by id
-  const byId = new Map(EXAM_QUESTIONS.map(q => [q.id, q]));
+  const passed = total > 0 && score >= requiredCorrect;
 
+  document.getElementById("resultText").textContent =
+    `${title} • Score: ${score} van ${total}` +
+    (mode === "after" ? " • Antwoorden pas na examen" : " • Directe feedback");
+
+  const passBox = document.getElementById("passBox");
+  if (total === 0) {
+    passBox.innerHTML = `<strong>Geen score gevonden.</strong> Start opnieuw een examen.`;
+  } else if (passed) {
+    passBox.innerHTML =
+      `<strong>✅ Geslaagd!</strong><br>` +
+      `Je hebt minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Je mag maximaal <strong>${maxMistakes}</strong> fouten hebben.`;
+  } else {
+    passBox.innerHTML =
+      `<strong>❌ Gezakt</strong><br>` +
+      `Je hebt minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Je mag maximaal <strong>${maxMistakes}</strong> fouten hebben.`;
+  }
+
+  const raw = localStorage.getItem("gg_attempt_v2");
+  const list = document.getElementById("reviewList");
+  const panel = document.getElementById("reviewPanel");
+
+  if (!raw) {
+    panel.style.display = "none";
+    return;
+  }
+
+  const attempt = JSON.parse(raw);
   const wrong = attempt.filter(a => a.chosen !== null && a.chosen !== a.correct);
 
-  if (wrong.length === 0) {
-    reviewBox.innerHTML = `<div class="feature"><h3>Top! 🎉</h3><p class="muted">Alles goed. Ga door met oefenen om dit vast te houden.</p></div>`;
-  } else {
-    let html = `<div class="feature"><h3>Fouten (met uitleg)</h3><p class="muted">Hier zie je wat er fout ging en waarom.</p></div>`;
-    html += `<div class="review__list">`;
-
-    wrong.forEach((w, idx) => {
-      const q = byId.get(w.id);
-      const chosenText = q.answers[w.chosen] ?? "(geen)";
-      const correctText = q.answers[q.correct] ?? "(onbekend)";
-      html += `
-        <div class="review__item">
-          <div class="review__meta">
-            <span class="chip">${q.theme || "Thema"}</span>
-            <span class="muted">Vraag ${idx+1} fout</span>
-          </div>
-          <div class="review__q">${q.question}</div>
-          <div class="review__a">
-            <div><strong>Jouw antwoord:</strong> <span class="bad">${chosenText}</span></div>
-            <div><strong>Goed antwoord:</strong> <span class="good">${correctText}</span></div>
-          </div>
-          <div class="explain explain--bad" style="margin-top:10px;">
-            <div class="explain__title">Uitleg</div>
-            <div class="explain__text">${q.explanation || ""}</div>
-          </div>
-        </div>
-      `;
-    });
-
-    html += `</div>`;
-    reviewBox.innerHTML = html;
+  if (!wrong.length) {
+    list.innerHTML =
+      `<div class="review__item">` +
+        `<div class="review__q">Top! 🎉 Alles goed.</div>` +
+        `<div class="muted">Blijf dit herhalen om het vast te houden.</div>` +
+      `</div>`;
+    return;
   }
-}
+
+  wrong.forEach(w => {
+    const q = (typeof getQuestionById === "function") ? getQuestionById(w.id) : null;
+    if (!q) return;
+
+    const chosenText = (w.chosen === null) ? "(geen)" : (q.answers[w.chosen] || "(onbekend)");
+    const correctText = q.answers[q.correct] || "(onbekend)";
+
+    const el = document.createElement("div");
+    el.className = "review__item";
+    el.innerHTML = `
+      <div class="review__meta">
+        <span class="chip">${q.category || "Taxi"}</span>
+        <span class="muted">${q.difficulty || ""}</span>
+      </div>
+      <div class="review__q">${q.question}</div>
+      <div class="review__a">
+        <div><strong>Jouw antwoord:</strong> <span class="bad">${chosenText}</span></div>
+        <div><strong>Goed antwoord:</strong> <span class="good">${correctText}</span></div>
+      </div>
+      <div class="explain explain--bad" style="margin-top:10px;">
+        <div class="explain__title">Uitleg</div>
+        <div class="explain__text">${q.explanation || ""}</div>
+      </div>
+    `;
+    list.appendChild(el);
+  });
+})();
 </script>
 
 </body>
