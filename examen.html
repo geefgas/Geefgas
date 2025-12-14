@@ -63,51 +63,116 @@
 
 <script>
 (function(){
-
-  /* ======================
-     INIT
-     ====================== */
-
   const PASS_PERCENT = 0.80;
 
-  const examSetId = localStorage.getItem("gg_examSet") || "taxi_v1";
-  const set = EXAM_SETS[examSetId];
-
-  if (!set) {
-    alert("Examenset niet gevonden.");
-    return;
+  // ----------------------------
+  // Helpers: safe access
+  // ----------------------------
+  function qsParam(name){
+    try {
+      const u = new URL(location.href);
+      return u.searchParams.get(name);
+    } catch { return null; }
   }
 
+  function formatTime(sec){
+    const m = String(Math.floor(sec / 60)).padStart(2,"0");
+    const s = String(sec % 60).padStart(2,"0");
+    return `${m}:${s}`;
+  }
+
+  function showFatal(msg){
+    alert(msg);
+    document.getElementById("questionText").textContent = msg;
+  }
+
+  // ----------------------------
+  // Detect data model
+  // Supports:
+  //  A) legacy: EXAM_SETS + QUESTIONS
+  //  B) newer: EXAM_DATA/EXAMS (list of exams with embedded questions)
+  // ----------------------------
+  const hasLegacy = (typeof window.EXAM_SETS !== "undefined") && (typeof window.QUESTIONS !== "undefined");
+  const hasNew =
+    (Array.isArray(window.EXAMS) && window.EXAMS.length) ||
+    (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams) && window.EXAM_DATA.exams.length);
+
+  // ----------------------------
+  // Read settings
+  // ----------------------------
   const revealMode = localStorage.getItem("gg_revealMode") || "instant";
   const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
 
-  const questions = set.questionIds
-    .map(id => QUESTIONS.find(q => q.id === id))
-    .filter(Boolean);
+  // ----------------------------
+  // Decide which exam to load
+  // Priority:
+  // 1) URL ?set=taxi_v1
+  // 2) localStorage gg_examSet
+  // 3) fallback to taxi_v1
+  // 4) fallback to first available exam
+  // ----------------------------
+  const requestedSet = qsParam("set");
+  const examSetId = requestedSet || localStorage.getItem("gg_examSet") || "taxi_v1";
 
-  if (questions.length === 0) {
-    alert("Geen vragen gevonden in deze examenset.");
-    return;
+  // ----------------------------
+  // Build normalized exam object:
+  // { title, durationSec, questions:[{question, answers[], correct, explanation, image, category}] }
+  // ----------------------------
+  let examTitleText = "Taxi Examen";
+  let durationSec = 1500;
+  let questions = [];
+
+  if (hasLegacy) {
+    const set = window.EXAM_SETS[examSetId] || window.EXAM_SETS["taxi_v1"];
+    if (!set) {
+      const keys = Object.keys(window.EXAM_SETS || {});
+      if (!keys.length) return showFatal("Geen examensets gevonden in exam-data.js.");
+      const fallback = window.EXAM_SETS[keys[0]];
+      examTitleText = fallback?.title || "Taxi Examen";
+      durationSec = fallback?.durationSec || 1500;
+      questions = (fallback?.questionIds || [])
+        .map(id => (window.QUESTIONS || []).find(q => q.id === id))
+        .filter(Boolean);
+    } else {
+      examTitleText = set.title || "Taxi Examen";
+      durationSec = set.durationSec || 1500;
+      questions = (set.questionIds || [])
+        .map(id => (window.QUESTIONS || []).find(q => q.id === id))
+        .filter(Boolean);
+    }
+  } else if (hasNew) {
+    const list = (Array.isArray(window.EXAMS) && window.EXAMS.length)
+      ? window.EXAMS
+      : (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams) ? window.EXAM_DATA.exams : []);
+
+    // try match by id
+    let ex = list.find(e => (e.id || "").toLowerCase() === String(examSetId).toLowerCase());
+    // if not found: take first exam
+    if (!ex) ex = list[0];
+
+    examTitleText = ex.title || "Taxi Examen";
+    durationSec = (ex.durationMinutes ? ex.durationMinutes * 60 : 1500);
+
+    questions = (ex.questions || []).map((q) => ({
+      category: ex.category || q.category || "Taxi",
+      question: q.prompt || q.question || "",
+      answers: q.options || q.answers || [],
+      correct: typeof q.correctIndex === "number" ? q.correctIndex : (typeof q.correct === "number" ? q.correct : 0),
+      explanation: q.explanation || "",
+      image: q.image || ""
+    }));
+  } else {
+    return showFatal("exam-data.js bevat geen herkenbare examendata (EXAM_SETS/QUESTIONS of EXAM_DATA/EXAMS).");
   }
 
-  const total = questions.length;
-  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
-  const maxMistakes = total - requiredCorrect;
+  if (!questions || questions.length === 0) {
+    return showFatal("Geen vragen gevonden. Controleer exam-data.js.");
+  }
 
-  let index = 0;
-  let time = set.durationSec || 1500;
-
-  const attempt = questions.map(q => ({
-    id: q.id,
-    chosen: null,
-    correct: q.correct
-  }));
-
-  /* ======================
-     ELEMENTS
-     ====================== */
-
-  const examTitle   = document.getElementById("examTitle");
+  // ----------------------------
+  // ELEMENTS
+  // ----------------------------
+  const examTitleEl = document.getElementById("examTitle");
   const timerEl     = document.getElementById("timer");
   const qImage      = document.getElementById("qImage");
   const questionTxt = document.getElementById("questionText");
@@ -122,44 +187,51 @@
   const prevBtn     = document.getElementById("prevBtn");
   const nextBtn     = document.getElementById("nextBtn");
   const readBtn     = document.getElementById("readBtn");
-  const modeHint   = document.getElementById("modeHint");
+  const modeHint    = document.getElementById("modeHint");
 
-  examTitle.textContent = `GeefGas – ${set.title}`;
+  const total = questions.length;
+  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
+  const maxMistakes = total - requiredCorrect;
+
+  examTitleEl.textContent = `GeefGas – ${examTitleText}`;
   modeHint.textContent =
     revealMode === "instant"
       ? `Mode: directe feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`
       : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
-  /* ======================
-     TIMER
-     ====================== */
+  // Attempt structure
+  const attempt = questions.map((q, idx) => ({
+    idx,
+    chosen: null,
+    correct: q.correct
+  }));
 
-  function formatTime(sec){
-    const m = String(Math.floor(sec / 60)).padStart(2,"0");
-    const s = String(sec % 60).padStart(2,"0");
-    return `${m}:${s}`;
-  }
-
+  // ----------------------------
+  // TIMER
+  // ----------------------------
+  let time = durationSec;
   timerEl.textContent = formatTime(time);
 
   const timer = setInterval(() => {
     time--;
+    if (time < 0) time = 0;
     timerEl.textContent = formatTime(time);
     if (time <= 0) finishExam();
   }, 1000);
 
-  /* ======================
-     RENDER
-     ====================== */
+  // ----------------------------
+  // RENDER
+  // ----------------------------
+  let index = 0;
 
   function render(){
     const q = questions[index];
 
     categoryEl.textContent = q.category || "Taxi";
     progressEl.textContent = `Vraag ${index + 1} van ${total}`;
-    questionTxt.textContent = q.question;
+    questionTxt.textContent = q.question || "";
 
-    qImage.onerror = () => qImage.src = "assets/placeholder.jpg";
+    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
     qImage.src = q.image || "assets/placeholder.jpg";
 
     prevBtn.disabled = index === 0;
@@ -169,7 +241,7 @@
     explainBox.hidden = true;
     explainBox.className = "explain";
 
-    q.answers.forEach((txt, i) => {
+    (q.answers || []).forEach((txt, i) => {
       const btn = document.createElement("button");
       btn.className = "answer";
       btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
@@ -190,7 +262,8 @@
             explainBox.classList.add("good");
           } else {
             btn.classList.add("wrong");
-            document.querySelectorAll(".answer")[q.correct]?.classList.add("correct");
+            const correctBtn = document.querySelectorAll(".answer")[q.correct];
+            if (correctBtn) correctBtn.classList.add("correct");
             explainTit.textContent = "❌ Niet goed";
             explainBox.classList.add("bad");
           }
@@ -203,25 +276,33 @@
     });
   }
 
-  /* ======================
-     VOORLEZEN
-     ====================== */
-
+  // ----------------------------
+  // VOORLEZEN
+  // ----------------------------
   readBtn.onclick = () => {
     if (!ttsEnabled || !("speechSynthesis" in window)) return;
+
     const q = questions[index];
-    const text = q.question + ". " + q.answers.join(". ");
+    const text = (q.question || "") + ". " + (q.answers || []).join(". ");
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
     u.rate = 0.95;
+
+    // Use saved best voice if exists (set by app.js)
+    const preferred = localStorage.getItem("gg_voiceName");
+    if (preferred) {
+      const voices = speechSynthesis.getVoices();
+      const match = voices.find(v => v.name === preferred);
+      if (match) u.voice = match;
+    }
+
     speechSynthesis.cancel();
     speechSynthesis.speak(u);
   };
 
-  /* ======================
-     NAV
-     ====================== */
-
+  // ----------------------------
+  // NAV
+  // ----------------------------
   nextBtn.onclick = () => {
     if (index === total - 1) return finishExam();
     index++;
@@ -236,11 +317,21 @@
 
   function finishExam(){
     clearInterval(timer);
-    localStorage.setItem("gg_result", JSON.stringify(attempt));
+
+    // Save result (compatible)
+    const result = {
+      examTitle: examTitleText,
+      total,
+      requiredCorrect,
+      maxMistakes,
+      attempt
+    };
+    localStorage.setItem("gg_result", JSON.stringify(result));
+
     window.location.href = "resultaat.html";
   }
 
-  /* START */
+  // START
   render();
 
 })();
