@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Examens</title>
-  <meta name="description" content="Start oefenexamens voor taxi theorie met uitleg per vraag, timer en resultatenoverzicht." />
   <link rel="stylesheet" href="styles.css">
+  <script src="exam-data.js"></script>
 </head>
 <body>
 
@@ -19,7 +19,7 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="examen.html">Start nu</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start</a>
     </nav>
 
     <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
@@ -31,115 +31,142 @@
     <div class="container mobilemenu__inner">
       <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
       <a class="mobilemenu__link" href="examens.html">Examens</a>
-      <a class="mobilemenu__cta" href="examen.html">Start nu</a>
+      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start</a>
     </div>
   </div>
 </header>
 
-<main>
-  <section class="section">
-    <div class="container">
-      <div class="examWrap">
+<main class="section">
+  <div class="container">
+    <div class="wrap">
 
-        <div class="feature">
-          <h2 style="margin-bottom:6px;">Kies je oefenexamen</h2>
-          <p class="muted" style="margin:0; line-height:1.6;">
-            Rustig oefenen zoals het echt voelt. Na elke vraag zie je goed/fout + uitleg.
-            Na afloop krijg je je fouten met uitleg terug.
-          </p>
+      <section class="panel">
+        <h2 style="margin:0 0 6px;">Taxi Examens</h2>
+        <p class="muted" style="margin:0; line-height:1.6;">
+          Examenmodus: kies of je antwoorden meteen ziet, of pas na afloop.
+          Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong> / max 8 fouten).
+        </p>
+      </section>
+
+      <section class="panel">
+        <h3 style="margin:0 0 10px;">Instellingen</h3>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="rowCard">
+            <div>
+              <div style="font-weight:900;">Antwoorden tonen</div>
+              <div class="muted" style="margin-top:4px;">Meteen na elke vraag of pas na het examen.</div>
+            </div>
+            <select id="revealMode" class="select">
+              <option value="instant">Meteen (na elke vraag)</option>
+              <option value="after">Pas na examen</option>
+            </select>
+          </div>
+
+          <div class="rowCard">
+            <div>
+              <div style="font-weight:900;">Voorlezen</div>
+              <div class="muted" style="margin-top:4px;">Laat vragen + antwoorden voorlezen.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="ttsEnabled">
+              <span class="switch__ui"></span>
+            </label>
+          </div>
+
+          <div class="rowCard" id="voiceRow" style="display:none;">
+            <div>
+              <div style="font-weight:900;">Stem kiezen</div>
+              <div class="muted" style="margin-top:4px;">Kies de beste beschikbare stem op je toestel.</div>
+            </div>
+            <select id="voiceSelect" class="select"></select>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3 style="margin:0 0 8px;">Taxi Examen v1 (40 vragen)</h3>
+        <p class="muted" style="margin:0; line-height:1.6;">
+          Mix van verkeersinzicht (taxi-context) + taxi-regelgeving (taxipas, KIWA, BCT, tarieven, handhaving).
+        </p>
+
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn--gold" href="#" id="startBtn">Start examen</a>
+          <a class="btn btn--ghost" href="index.html">Terug</a>
         </div>
 
-        <div class="examList">
-
-          <!-- EXAMEN 1 -->
-          <article class="examBlock">
-            <div class="examBlock__top">
-              <div>
-                <div class="chip">Aanbevolen</div>
-                <h3 style="margin:10px 0 6px;">Taxi Mix Examen</h3>
-                <p class="muted" style="margin:0; line-height:1.6;">
-                  Een volledige mix van onderwerpen (voorrang, borden, veiligheid, taxi-situaties).
-                </p>
-              </div>
-              <a class="btn btn--gold examBlock__cta" href="examen.html">Start examen</a>
-            </div>
-
-            <div class="examBlock__what">
-              <div class="examBlock__item">⏱️ Timer (5 min)</div>
-              <div class="examBlock__item">✅ Direct feedback + uitleg</div>
-              <div class="examBlock__item">📌 Vorige/Volgende</div>
-              <div class="examBlock__item">📊 Resultaat + foutenoverzicht</div>
-            </div>
-
-            <div class="examBlock__note muted">
-              Testversie: nu 5 vragen. Later wordt dit 40 vragen per examen + meerdere varianten.
-            </div>
-          </article>
-
-          <!-- EXAMEN 2 -->
-          <article class="examBlock">
-            <div class="examBlock__top">
-              <div>
-                <div class="chip">Thema</div>
-                <h3 style="margin:10px 0 6px;">Voorrang & Kruispunten</h3>
-                <p class="muted" style="margin:0; line-height:1.6;">
-                  Focus op voorrang, rotondes en kruispunten. Ideaal als dit je zwakke punt is.
-                </p>
-              </div>
-              <a class="btn btn--ghost examBlock__cta" href="examen.html">Start</a>
-            </div>
-
-            <div class="examBlock__what">
-              <div class="examBlock__item">🎯 Gericht oefenen</div>
-              <div class="examBlock__item">✅ Uitleg per vraag</div>
-              <div class="examBlock__item">🧠 Sneller begrijpen</div>
-              <div class="examBlock__item">📊 Fouten herhalen</div>
-            </div>
-
-            <div class="examBlock__note muted">
-              (Volgende stap) We koppelen dit aan echte themasets zodra we meer vragen toevoegen.
-            </div>
-          </article>
-
-          <!-- EXAMEN 3 -->
-          <article class="examBlock">
-            <div class="examBlock__top">
-              <div>
-                <div class="chip">Thema</div>
-                <h3 style="margin:10px 0 6px;">Verkeersborden & Markeringen</h3>
-                <p class="muted" style="margin:0; line-height:1.6;">
-                  Bordherkenning, betekenis en wegmarkeringen. Met duidelijke visuals.
-                </p>
-              </div>
-              <a class="btn btn--ghost examBlock__cta" href="examen.html">Start</a>
-            </div>
-
-            <div class="examBlock__what">
-              <div class="examBlock__item">🪧 Borden uitleg</div>
-              <div class="examBlock__item">🛣️ Markeringen</div>
-              <div class="examBlock__item">✅ Feedback + uitleg</div>
-              <div class="examBlock__item">📊 Overzicht achteraf</div>
-            </div>
-
-            <div class="examBlock__note muted">
-              (Volgende stap) Hier zetten we “borden trainer” en “markeringen trainer” onder.
-            </div>
-          </article>
-
+        <div class="note" style="margin-top:12px;">
+          Vragen zijn eigen geschreven en examengericht. Geen CBR-teksten of CBR-foto’s.
         </div>
+      </section>
 
-        <div class="feature">
-          <p class="muted" style="margin:0; line-height:1.6;">
-            <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
-            Vragen/visuals zijn eigen ontwikkeld.
-          </p>
-        </div>
-
-      </div>
     </div>
-  </section>
+  </div>
 </main>
 
 <script src="app.js"></script>
+<script>
+(function(){
+  const revealMode = document.getElementById("revealMode");
+  const ttsEnabled = document.getElementById("ttsEnabled");
+  const voiceRow = document.getElementById("voiceRow");
+  const voiceSelect = document.getElementById("voiceSelect");
+
+  revealMode.value = localStorage.getItem("gg_revealMode") || "instant";
+  ttsEnabled.checked = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
+  voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
+
+  revealMode.addEventListener("change", () => {
+    localStorage.setItem("gg_revealMode", revealMode.value);
+  });
+
+  ttsEnabled.addEventListener("change", () => {
+    localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
+    voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
+  });
+
+  function loadVoices(){
+    if (!("speechSynthesis" in window)) return;
+    const voices = window.speechSynthesis.getVoices() || [];
+    voiceSelect.innerHTML = "";
+
+    const nlVoices = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
+    const use = nlVoices.length ? nlVoices : voices;
+
+    use.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v.name;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+
+    const saved = localStorage.getItem("gg_voiceName");
+    if (saved) voiceSelect.value = saved;
+
+    voiceSelect.addEventListener("change", () => {
+      localStorage.setItem("gg_voiceName", voiceSelect.value);
+    });
+  }
+  if ("speechSynthesis" in window) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function startExam(){
+    localStorage.setItem("gg_revealMode", revealMode.value);
+    localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
+    if (voiceSelect.value) localStorage.setItem("gg_voiceName", voiceSelect.value);
+
+    localStorage.setItem("gg_examSet", "taxi_examen_v1");
+    window.location.href = "examen.html";
+  }
+
+  document.getElementById("startBtn").addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
+  const top = document.getElementById("startTopBtn");
+  if (top) top.addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
+  const topM = document.getElementById("startTopBtnMobile");
+  if (topM) topM.addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
+})();
+</script>
 </body>
 </html>
