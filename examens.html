@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeefGas – Examens</title>
+  <title>GeefGas – Taxi examens</title>
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
-<body>
+
+<body class="theme">
 
 <header class="topbar">
   <div class="container topbar__inner">
@@ -19,7 +20,7 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start examen</a>
     </nav>
 
     <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
@@ -31,79 +32,82 @@
     <div class="container mobilemenu__inner">
       <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
       <a class="mobilemenu__link" href="examens.html">Examens</a>
-      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start</a>
+      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start examen</a>
     </div>
   </div>
 </header>
 
-<main class="section">
-  <div class="container">
-    <div class="wrap">
+<main class="page">
+  <div class="container page__inner">
 
-      <section class="panel">
-        <h2 style="margin:0 0 6px;">Taxi Examens</h2>
-        <p class="muted" style="margin:0; line-height:1.6;">
-          Kies hoe je oefent: directe feedback of pas na afloop. Taxi-norm: <strong>80%</strong>.
-        </p>
-      </section>
-
-      <section class="panel">
-        <h3 style="margin:0 0 10px;">Instellingen</h3>
-
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <div class="rowCard">
-            <div>
-              <div style="font-weight:900;">Antwoorden tonen</div>
-              <div class="muted" style="margin-top:4px;">Meteen na elke vraag of pas na het examen.</div>
-            </div>
-            <select id="revealMode" class="select">
-              <option value="instant">Meteen (na elke vraag)</option>
-              <option value="after">Pas na examen</option>
-            </select>
-          </div>
-
-          <div class="rowCard">
-            <div>
-              <div style="font-weight:900;">Voorlezen</div>
-              <div class="muted" style="margin-top:4px;">Gebruik de beste NL-stem van je toestel.</div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="ttsEnabled">
-              <span class="switch__ui"></span>
-            </label>
-          </div>
-
-          <div class="rowCard" id="voiceRow" style="display:none;">
-            <div>
-              <div style="font-weight:900;">Stem kiezen</div>
-              <div class="muted" style="margin-top:4px;">Tip: kies een Siri/Enhanced stem als die bestaat.</div>
-            </div>
-            <select id="voiceSelect" class="select"></select>
-          </div>
-
-          <div class="rowCard" id="testRow" style="display:none;">
-            <div>
-              <div style="font-weight:900;">Test</div>
-              <div class="muted" style="margin-top:4px;">Test even of de stem prettig klinkt.</div>
-            </div>
-            <button class="btn btn--ghost" id="testVoiceBtn" type="button">Test stem</button>
-          </div>
+    <section class="card">
+      <div class="sectionHead" style="margin-bottom:0;">
+        <div>
+          <h2 class="sectionHead__title">Taxi examens</h2>
+          <p class="sectionHead__sub">
+            Examenmodus + voorlezen instellen. Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong>).
+          </p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="panel">
-        <h3 style="margin:0 0 8px;">Taxi Examen v1 (40 vragen)</h3>
-        <p class="muted" style="margin:0; line-height:1.6;">
-          Taxi-regelgeving + verkeersinzicht (taxi-context). Norm: bij 40 vragen minimaal 32 goed.
-        </p>
+    <section class="card">
+      <h3 style="margin:0 0 12px;">Instellingen</h3>
 
-        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="btn btn--gold" href="#" id="startBtn">Start examen</a>
-          <a class="btn btn--ghost" href="index.html">Terug</a>
+      <div class="stack">
+        <div class="rowCard">
+          <div>
+            <div class="rowCard__title">Antwoorden tonen</div>
+            <div class="rowCard__sub">Kies of je feedback direct ziet, of pas na afloop.</div>
+          </div>
+          <select id="revealMode" class="select">
+            <option value="instant">Meteen (na elke vraag)</option>
+            <option value="after">Pas na examen</option>
+          </select>
         </div>
-      </section>
 
-    </div>
+        <div class="rowCard">
+          <div>
+            <div class="rowCard__title">Voorlezen</div>
+            <div class="rowCard__sub">Gebruik de beste NL-stem van je toestel (als beschikbaar).</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="ttsEnabled">
+            <span class="switch__ui"></span>
+          </label>
+        </div>
+
+        <div class="rowCard" id="voiceRow" style="display:none;">
+          <div>
+            <div class="rowCard__title">Stem</div>
+            <div class="rowCard__sub">Tip: kies Siri/Enhanced (klinkt menselijker).</div>
+          </div>
+          <select id="voiceSelect" class="select"></select>
+        </div>
+
+        <div class="rowCard" id="testRow" style="display:none;">
+          <div>
+            <div class="rowCard__title">Test stem</div>
+            <div class="rowCard__sub">Even checken of het prettig klinkt.</div>
+          </div>
+          <button class="btn btn--ghost" id="testVoiceBtn" type="button">Test</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0 0 6px;">Taxi Examen v1</h3>
+      <p class="muted" style="margin:0; line-height:1.6;">
+        40 vragen • timer • taxi-regelgeving + taxi-verkeersinzicht • uitleg per vraag.
+      </p>
+
+      <button class="btn btn--primary" id="startBtn" type="button" style="margin-top:14px;">Start examen</button>
+
+      <div class="note">
+        Vragen zijn eigen geschreven (geen CBR-teksten/foto’s). Doel: examengericht oefenen op begrip.
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -122,10 +126,7 @@
   voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
   testRow.style.display  = ttsEnabled.checked ? "flex" : "none";
 
-  revealMode.addEventListener("change", () => {
-    localStorage.setItem("gg_revealMode", revealMode.value);
-  });
-
+  revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
   ttsEnabled.addEventListener("change", () => {
     localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
     voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
@@ -135,9 +136,7 @@
   function bestVoice(voices){
     const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
     const list = nl.length ? nl : voices;
-
-    // voorkeur: Siri/Enhanced/Neural-achtige namen (verschilt per toestel)
-    const prefs = ["siri", "enhanced", "premium", "natural", "neural"];
+    const prefs = ["siri","enhanced","premium","natural","neural"];
     for (const p of prefs) {
       const found = list.find(v => (v.name || "").toLowerCase().includes(p));
       if (found) return found;
@@ -171,28 +170,25 @@
       }
     }
 
-    voiceSelect.addEventListener("change", () => {
-      localStorage.setItem("gg_voiceName", voiceSelect.value);
-    });
+    voiceSelect.addEventListener("change", () => localStorage.setItem("gg_voiceName", voiceSelect.value));
   }
 
   function speakTest(){
-    if (!("speechSynthesis" in window)) return;
     const enabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
     if (!enabled) return;
+    if (!("speechSynthesis" in window)) return;
 
     const voiceName = localStorage.getItem("gg_voiceName") || "";
     const voices = window.speechSynthesis.getVoices() || [];
-
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance("Hallo! Ik ben GeefGas. Dit is een test van de voorleesstem.");
+
+    const u = new SpeechSynthesisUtterance("Hallo! Dit is de GeefGas stemtest. Klinkt dit prettig?");
     u.lang = "nl-NL";
-    u.rate = 0.95;   // iets rustiger = minder robot
+    u.rate = 0.95;
     u.pitch = 1.05;
 
     const v = voices.find(x => x.name === voiceName) || bestVoice(voices);
     if (v) u.voice = v;
-
     window.speechSynthesis.speak(u);
   }
 
@@ -212,7 +208,7 @@
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startBtn").addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
+  document.getElementById("startBtn").addEventListener("click", startExam);
   const top = document.getElementById("startTopBtn");
   if (top) top.addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
   const topM = document.getElementById("startTopBtnMobile");
