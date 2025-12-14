@@ -1,66 +1,236 @@
-<body>
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeefGas – Taxi Examen</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="exam-data.js"></script>
+</head>
 
-<header class="examHeader">
-  <div class="examHeaderInner">
-    <div class="examTitle">GeefGas – Taxi Examen</div>
-    <div class="examTimer" id="timer">24:50</div>
+<body class="theme">
+
+<header class="topbar">
+  <div class="examTop">
+    <div class="examTop__title" id="examTitle">GeefGas – Taxi Examen</div>
+    <div class="pillTimer" id="timer">00:00</div>
   </div>
 </header>
 
-<main class="examWrap">
+<main class="page">
+  <div class="container page__inner">
 
-  <section class="questionCard">
-
-    <div class="questionImage">
-      <img src="assets/placeholder-taxi.jpg" alt="Verkeerssituatie">
-    </div>
-
-    <div class="questionMeta">
-      <div class="metaChip">Taxi • Voorrang</div>
-      <div class="metaProgress">Vraag 1 van 40</div>
-    </div>
-
-    <div class="questionText">
-      Je nadert als taxi een gelijkwaardig kruispunt.
-      Van rechts komt een fietser. Wat doe je?
-    </div>
-
-    <div class="answers">
-      <button class="answer">
-        <div class="answerKey">A</div>
-        Ik rijd door, ik ben taxi
-      </button>
-
-      <button class="answer">
-        <div class="answerKey">B</div>
-        Ik laat de fietser van rechts voorgaan
-      </button>
-
-      <button class="answer">
-        <div class="answerKey">C</div>
-        Ik geef extra gas om eerder te zijn
-      </button>
-    </div>
-
-    <div class="explanation" hidden>
-      <strong>Uitleg</strong>
-      Op een gelijkwaardig kruispunt gaat verkeer van rechts voor,
-      ook als jij taxi bent.
-    </div>
-
-    <div class="examFooter">
-      <div class="footerLeft">
-        <button class="btn btnGhost">🔊 Voorlezen</button>
-        <button class="btn btnGhost">Vorige</button>
+    <section class="examCard">
+      <div class="examMedia">
+        <img id="qImage" alt="Visual bij vraag" />
       </div>
-      <button class="btn btnGold">Volgende</button>
-    </div>
 
-    <div class="modeInfo">
-      Mode: antwoorden pas na examen • Norm: 32/40 goed (max 8 fouten)
-    </div>
+      <div class="examBody">
+        <div class="examMeta">
+          <span class="chip" id="categoryChip">Taxi</span>
+          <span class="muted" id="progress">Vraag 1 van 40</span>
+        </div>
 
-  </section>
+        <h3 id="questionText" style="margin:0 0 10px;">Laden…</h3>
 
+        <div id="answers" class="answers"></div>
+
+        <div id="explainBox" class="explain" hidden>
+          <div class="explainTitle" id="explainTitle">Uitleg</div>
+          <div class="explainText" id="explainText"></div>
+        </div>
+
+        <div class="examFooter">
+          <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+          </div>
+        </div>
+
+        <p class="muted" id="modeHint" style="margin:12px 0 0; line-height:1.6;"></p>
+      </div>
+    </section>
+
+  </div>
 </main>
+
+<script>
+(function(){
+  const PASS_PERCENT = 0.80;
+
+  const examSetId = localStorage.getItem("gg_examSet") || "taxi_examen_v1";
+  const set = (typeof EXAM_SETS !== "undefined" && EXAM_SETS[examSetId]) ? EXAM_SETS[examSetId] : null;
+  if (!set) { alert("Examenset niet gevonden."); return; }
+
+  const revealMode = localStorage.getItem("gg_revealMode") || "instant";
+  const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
+  const voiceName  = localStorage.getItem("gg_voiceName") || "";
+
+  const questions = set.questionIds.map(getQuestionById).filter(Boolean);
+  const total = questions.length;
+
+  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
+  const maxMistakes = total - requiredCorrect;
+
+  const attempt = questions.map(q => ({ id: q.id, chosen: null, correct: q.correct }));
+
+  let index = 0;
+  let time = set.durationSec || 1500;
+
+  const examTitle = document.getElementById("examTitle");
+  const timerEl = document.getElementById("timer");
+  const qImage = document.getElementById("qImage");
+  const questionText = document.getElementById("questionText");
+  const answersDiv = document.getElementById("answers");
+  const progress = document.getElementById("progress");
+  const categoryChip = document.getElementById("categoryChip");
+
+  const explainBox = document.getElementById("explainBox");
+  const explainTitle = document.getElementById("explainTitle");
+  const explainText = document.getElementById("explainText");
+
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const readBtn = document.getElementById("readBtn");
+  const modeHint = document.getElementById("modeHint");
+
+  examTitle.textContent = `GeefGas – ${set.title}`;
+  modeHint.textContent =
+    (revealMode === "instant")
+      ? `Mode: direct feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`
+      : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`;
+
+  function formatTime(sec){
+    const m = String(Math.floor(sec / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  }
+  timerEl.textContent = formatTime(time);
+
+  const timer = setInterval(() => {
+    time--;
+    timerEl.textContent = formatTime(time);
+    if (time <= 0) finishExam();
+  }, 1000);
+
+  function bestVoice(voices){
+    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
+    const list = nl.length ? nl : voices;
+    const prefs = ["siri","enhanced","premium","natural","neural"];
+    for (const p of prefs) {
+      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
+      if (found) return found;
+    }
+    return list[0] || null;
+  }
+
+  function speak(text){
+    if (!ttsEnabled) return;
+    if (!("speechSynthesis" in window)) return;
+
+    const voices = window.speechSynthesis.getVoices() || [];
+    window.speechSynthesis.cancel();
+
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "nl-NL";
+    u.rate = 0.95;
+    u.pitch = 1.05;
+
+    const preferred = voices.find(v => v.name === voiceName) || bestVoice(voices);
+    if (preferred) u.voice = preferred;
+
+    window.speechSynthesis.speak(u);
+  }
+
+  function speakCurrent(){
+    const q = questions[index];
+    const lettered = q.answers.map((a,i)=> `${String.fromCharCode(65+i)}. ${a}`).join(". ");
+    speak(`${q.question}. Antwoorden: ${lettered}.`);
+  }
+  readBtn.addEventListener("click", speakCurrent);
+
+  function render(){
+    const q = questions[index];
+
+    categoryChip.textContent = q.category || "Taxi";
+    progress.textContent = `Vraag ${index + 1} van ${total}`;
+
+    qImage.src = q.image || "";
+    questionText.textContent = q.question;
+
+    prevBtn.disabled = index === 0;
+    nextBtn.textContent = (index === total - 1) ? "Afronden" : "Volgende";
+
+    answersDiv.innerHTML = "";
+    explainBox.hidden = true;
+    explainBox.classList.remove("good","bad");
+
+    q.answers.forEach((txt, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "answer";
+      btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
+
+      btn.addEventListener("click", () => {
+        attempt[index].chosen = i;
+
+        Array.from(document.querySelectorAll(".answer")).forEach(b => b.classList.remove("selected","correct","wrong"));
+        btn.classList.add("selected");
+
+        if (revealMode === "instant") {
+          const isCorrect = i === q.correct;
+          const btns = Array.from(document.querySelectorAll(".answer"));
+
+          if (isCorrect) {
+            btns[i]?.classList.add("correct");
+            explainTitle.textContent = "✅ Goed!";
+            explainBox.classList.add("good");
+          } else {
+            btns[i]?.classList.add("wrong");
+            btns[q.correct]?.classList.add("correct");
+            explainTitle.textContent = "❌ Niet goed";
+            explainBox.classList.add("bad");
+          }
+
+          explainText.textContent = q.explanation || "";
+          explainBox.hidden = false;
+        }
+      });
+
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  function calcScore(){
+    let s = 0;
+    for (const a of attempt) if (a.chosen !== null && a.chosen === a.correct) s++;
+    return s;
+  }
+
+  function finishExam(){
+    clearInterval(timer);
+    localStorage.setItem("gg_attempt_v2", JSON.stringify(attempt));
+    localStorage.setItem("gg_score_v2", String(calcScore()));
+    localStorage.setItem("gg_total_v2", String(total));
+    localStorage.setItem("gg_examSetTitle_v2", set.title);
+    localStorage.setItem("gg_revealMode_v2", revealMode);
+    window.location.href = "resultaat.html";
+  }
+
+  nextBtn.addEventListener("click", () => {
+    if (index === total - 1) return finishExam();
+    index++;
+    render();
+  });
+  prevBtn.addEventListener("click", () => {
+    if (index === 0) return;
+    index--;
+    render();
+  });
+
+  render();
+})();
+</script>
 </body>
+</html>
