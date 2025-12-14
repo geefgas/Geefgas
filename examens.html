@@ -16,24 +16,11 @@
       <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
       <span class="brand__name">GeefGas</span>
     </a>
-
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start examen</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start v1</a>
     </nav>
-
-    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <div class="mobilemenu" id="mobileMenu" hidden>
-    <div class="container mobilemenu__inner">
-      <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
-      <a class="mobilemenu__link" href="examens.html">Examens</a>
-      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start examen</a>
-    </div>
   </div>
 </header>
 
@@ -41,14 +28,10 @@
   <div class="container page__inner">
 
     <section class="card">
-      <div class="sectionHead" style="margin-bottom:0;">
-        <div>
-          <h2 class="sectionHead__title">Taxi examens</h2>
-          <p class="sectionHead__sub">
-            Examenmodus + voorlezen instellen. Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong>).
-          </p>
-        </div>
-      </div>
+      <h2 style="margin:0 0 6px;">Taxi examens</h2>
+      <p class="muted" style="margin:0; line-height:1.6;">
+        Examens met timer + uitleg. Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong>).
+      </p>
     </section>
 
     <section class="card">
@@ -69,151 +52,52 @@
         <div class="rowCard">
           <div>
             <div class="rowCard__title">Voorlezen</div>
-            <div class="rowCard__sub">Gebruik de beste NL-stem van je toestel (als beschikbaar).</div>
+            <div class="rowCard__sub">Gebruik NL-stem van je toestel (als beschikbaar).</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="ttsEnabled">
             <span class="switch__ui"></span>
           </label>
         </div>
-
-        <div class="rowCard" id="voiceRow" style="display:none;">
-          <div>
-            <div class="rowCard__title">Stem</div>
-            <div class="rowCard__sub">Tip: kies Siri/Enhanced (klinkt menselijker).</div>
-          </div>
-          <select id="voiceSelect" class="select"></select>
-        </div>
-
-        <div class="rowCard" id="testRow" style="display:none;">
-          <div>
-            <div class="rowCard__title">Test stem</div>
-            <div class="rowCard__sub">Even checken of het prettig klinkt.</div>
-          </div>
-          <button class="btn btn--ghost" id="testVoiceBtn" type="button">Test</button>
-        </div>
       </div>
     </section>
 
     <section class="card">
       <h3 style="margin:0 0 6px;">Taxi Examen v1</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">
-        40 vragen • timer • taxi-regelgeving + taxi-verkeersinzicht • uitleg per vraag.
-      </p>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • timer • verkeer & situaties • uitleg per vraag</p>
+      <button class="btn btn--primary" id="startV1" type="button" style="margin-top:14px;">Start examen v1</button>
+    </section>
 
-      <button class="btn btn--primary" id="startBtn" type="button" style="margin-top:14px;">Start examen</button>
-
-      <div class="note">
-        Vragen zijn eigen geschreven (geen CBR-teksten/foto’s). Doel: examengericht oefenen op begrip.
-      </div>
+    <section class="card">
+      <h3 style="margin:0 0 6px;">Taxi Examen v2</h3>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • timer • regels & professionaliteit • uitleg per vraag</p>
+      <button class="btn btn--primary" id="startV2" type="button" style="margin-top:14px;">Start examen v2</button>
     </section>
 
   </div>
 </main>
 
-<script src="app.js"></script>
 <script>
 (function(){
   const revealMode = document.getElementById("revealMode");
   const ttsEnabled = document.getElementById("ttsEnabled");
-  const voiceRow = document.getElementById("voiceRow");
-  const testRow  = document.getElementById("testRow");
-  const voiceSelect = document.getElementById("voiceSelect");
-  const testBtn = document.getElementById("testVoiceBtn");
 
   revealMode.value = localStorage.getItem("gg_revealMode") || "instant";
   ttsEnabled.checked = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-  voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
-  testRow.style.display  = ttsEnabled.checked ? "flex" : "none";
 
   revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
-  ttsEnabled.addEventListener("change", () => {
-    localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
-    voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
-    testRow.style.display  = ttsEnabled.checked ? "flex" : "none";
-  });
+  ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
 
-  function bestVoice(voices){
-    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
-    const list = nl.length ? nl : voices;
-    const prefs = ["siri","enhanced","premium","natural","neural"];
-    for (const p of prefs) {
-      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
-      if (found) return found;
-    }
-    return list[0] || null;
-  }
-
-  function loadVoices(){
-    if (!("speechSynthesis" in window)) return;
-    const voices = window.speechSynthesis.getVoices() || [];
-    voiceSelect.innerHTML = "";
-
-    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
-    const use = nl.length ? nl : voices;
-
-    use.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v.name;
-      opt.textContent = `${v.name} (${v.lang})`;
-      voiceSelect.appendChild(opt);
-    });
-
-    const saved = localStorage.getItem("gg_voiceName");
-    if (saved && [...voiceSelect.options].some(o => o.value === saved)) {
-      voiceSelect.value = saved;
-    } else {
-      const bv = bestVoice(use);
-      if (bv) {
-        voiceSelect.value = bv.name;
-        localStorage.setItem("gg_voiceName", bv.name);
-      }
-    }
-
-    voiceSelect.addEventListener("change", () => localStorage.setItem("gg_voiceName", voiceSelect.value));
-  }
-
-  function speakTest(){
-    const enabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-    if (!enabled) return;
-    if (!("speechSynthesis" in window)) return;
-
-    const voiceName = localStorage.getItem("gg_voiceName") || "";
-    const voices = window.speechSynthesis.getVoices() || [];
-    window.speechSynthesis.cancel();
-
-    const u = new SpeechSynthesisUtterance("Hallo! Dit is de GeefGas stemtest. Klinkt dit prettig?");
-    u.lang = "nl-NL";
-    u.rate = 0.95;
-    u.pitch = 1.05;
-
-    const v = voices.find(x => x.name === voiceName) || bestVoice(voices);
-    if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
-  }
-
-  if ("speechSynthesis" in window) {
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-  }
-
-  testBtn.addEventListener("click", speakTest);
-
-  function startExam(){
-    localStorage.setItem("gg_revealMode", revealMode.value);
-    localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
-    if (voiceSelect.value) localStorage.setItem("gg_voiceName", voiceSelect.value);
-
-    localStorage.setItem("gg_examSet", "taxi_examen_v1");
+  function start(setId){
+    localStorage.setItem("gg_examSet", setId);
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startBtn").addEventListener("click", startExam);
-  const top = document.getElementById("startTopBtn");
-  if (top) top.addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
-  const topM = document.getElementById("startTopBtnMobile");
-  if (topM) topM.addEventListener("click", (e)=>{ e.preventDefault(); startExam(); });
+  document.getElementById("startV1").addEventListener("click", ()=> start("taxi_v1"));
+  document.getElementById("startV2").addEventListener("click", ()=> start("taxi_v2"));
+  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); start("taxi_v1"); });
 })();
 </script>
+
 </body>
 </html>
