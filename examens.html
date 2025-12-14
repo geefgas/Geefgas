@@ -21,7 +21,7 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start v1</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start examen</a>
     </nav>
   </div>
 </header>
@@ -67,16 +67,18 @@
       </div>
     </section>
 
+    <!-- ✅ Nog maar 1 examen (A: oude 2 examens verwijderd) -->
     <section class="card">
-      <h3 style="margin:0 0 6px;">Taxi Examen v1</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • timer • verkeer & situaties • uitleg per vraag</p>
-      <button class="btn btn--primary" id="startV1" type="button" style="margin-top:14px;">Start examen v1</button>
-    </section>
-
-    <section class="card">
-      <h3 style="margin:0 0 6px;">Taxi Examen v2</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • timer • regels & professionaliteit • uitleg per vraag</p>
-      <button class="btn btn--primary" id="startV2" type="button" style="margin-top:14px;">Start examen v2</button>
+      <h3 style="margin:0 0 6px;">Examen 1</h3>
+      <p class="muted" style="margin:0; line-height:1.6;">
+        40 vragen • timer • examengericht • uitleg per vraag
+      </p>
+      <button class="btn btn--primary" id="startExam1" type="button" style="margin-top:14px;">
+        Start Examen 1
+      </button>
+      <p class="muted" style="margin:10px 0 0; line-height:1.6;">
+        Norm: minimaal <strong>32/40</strong> goed (max 8 fouten).
+      </p>
     </section>
 
   </div>
@@ -93,14 +95,15 @@
   revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
   ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
 
-  function start(setId){
-    localStorage.setItem("gg_examSet", setId);
+  // ✅ A: altijd alleen Examen 1 starten
+  function startExam1(){
+    // We gebruiken jouw bestaande key zodat examen.html niets breekt
+    localStorage.setItem("gg_examSet", "taxi_v1");
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startV1").addEventListener("click", ()=> start("taxi_v1"));
-  document.getElementById("startV2").addEventListener("click", ()=> start("taxi_v2"));
-  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); start("taxi_v1"); });
+  document.getElementById("startExam1").addEventListener("click", startExam1);
+  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); startExam1(); });
   document.getElementById("reloadBtn").addEventListener("click", (e)=>{ e.preventDefault(); location.reload(); });
 })();
 </script>
