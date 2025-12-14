@@ -43,8 +43,7 @@
       <section class="panel">
         <h2 style="margin:0 0 6px;">Taxi Examens</h2>
         <p class="muted" style="margin:0; line-height:1.6;">
-          Examenmodus: kies of je antwoorden meteen ziet, of pas na afloop.
-          Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong> / max 8 fouten).
+          Kies hoe je oefent: directe feedback of pas na afloop. Taxi-norm: <strong>80%</strong>.
         </p>
       </section>
 
@@ -66,7 +65,7 @@
           <div class="rowCard">
             <div>
               <div style="font-weight:900;">Voorlezen</div>
-              <div class="muted" style="margin-top:4px;">Laat vragen + antwoorden voorlezen.</div>
+              <div class="muted" style="margin-top:4px;">Gebruik de beste NL-stem van je toestel.</div>
             </div>
             <label class="switch">
               <input type="checkbox" id="ttsEnabled">
@@ -77,9 +76,17 @@
           <div class="rowCard" id="voiceRow" style="display:none;">
             <div>
               <div style="font-weight:900;">Stem kiezen</div>
-              <div class="muted" style="margin-top:4px;">Kies de beste beschikbare stem op je toestel.</div>
+              <div class="muted" style="margin-top:4px;">Tip: kies een Siri/Enhanced stem als die bestaat.</div>
             </div>
             <select id="voiceSelect" class="select"></select>
+          </div>
+
+          <div class="rowCard" id="testRow" style="display:none;">
+            <div>
+              <div style="font-weight:900;">Test</div>
+              <div class="muted" style="margin-top:4px;">Test even of de stem prettig klinkt.</div>
+            </div>
+            <button class="btn btn--ghost" id="testVoiceBtn" type="button">Test stem</button>
           </div>
         </div>
       </section>
@@ -87,16 +94,12 @@
       <section class="panel">
         <h3 style="margin:0 0 8px;">Taxi Examen v1 (40 vragen)</h3>
         <p class="muted" style="margin:0; line-height:1.6;">
-          Mix van verkeersinzicht (taxi-context) + taxi-regelgeving (taxipas, KIWA, BCT, tarieven, handhaving).
+          Taxi-regelgeving + verkeersinzicht (taxi-context). Norm: bij 40 vragen minimaal 32 goed.
         </p>
 
         <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
           <a class="btn btn--gold" href="#" id="startBtn">Start examen</a>
           <a class="btn btn--ghost" href="index.html">Terug</a>
-        </div>
-
-        <div class="note" style="margin-top:12px;">
-          Vragen zijn eigen geschreven en examengericht. Geen CBR-teksten of CBR-foto’s.
         </div>
       </section>
 
@@ -110,11 +113,14 @@
   const revealMode = document.getElementById("revealMode");
   const ttsEnabled = document.getElementById("ttsEnabled");
   const voiceRow = document.getElementById("voiceRow");
+  const testRow  = document.getElementById("testRow");
   const voiceSelect = document.getElementById("voiceSelect");
+  const testBtn = document.getElementById("testVoiceBtn");
 
   revealMode.value = localStorage.getItem("gg_revealMode") || "instant";
   ttsEnabled.checked = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
   voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
+  testRow.style.display  = ttsEnabled.checked ? "flex" : "none";
 
   revealMode.addEventListener("change", () => {
     localStorage.setItem("gg_revealMode", revealMode.value);
@@ -123,15 +129,29 @@
   ttsEnabled.addEventListener("change", () => {
     localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
     voiceRow.style.display = ttsEnabled.checked ? "flex" : "none";
+    testRow.style.display  = ttsEnabled.checked ? "flex" : "none";
   });
+
+  function bestVoice(voices){
+    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
+    const list = nl.length ? nl : voices;
+
+    // voorkeur: Siri/Enhanced/Neural-achtige namen (verschilt per toestel)
+    const prefs = ["siri", "enhanced", "premium", "natural", "neural"];
+    for (const p of prefs) {
+      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
+      if (found) return found;
+    }
+    return list[0] || null;
+  }
 
   function loadVoices(){
     if (!("speechSynthesis" in window)) return;
     const voices = window.speechSynthesis.getVoices() || [];
     voiceSelect.innerHTML = "";
 
-    const nlVoices = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
-    const use = nlVoices.length ? nlVoices : voices;
+    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
+    const use = nl.length ? nl : voices;
 
     use.forEach(v => {
       const opt = document.createElement("option");
@@ -141,16 +161,47 @@
     });
 
     const saved = localStorage.getItem("gg_voiceName");
-    if (saved) voiceSelect.value = saved;
+    if (saved && [...voiceSelect.options].some(o => o.value === saved)) {
+      voiceSelect.value = saved;
+    } else {
+      const bv = bestVoice(use);
+      if (bv) {
+        voiceSelect.value = bv.name;
+        localStorage.setItem("gg_voiceName", bv.name);
+      }
+    }
 
     voiceSelect.addEventListener("change", () => {
       localStorage.setItem("gg_voiceName", voiceSelect.value);
     });
   }
+
+  function speakTest(){
+    if (!("speechSynthesis" in window)) return;
+    const enabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
+    if (!enabled) return;
+
+    const voiceName = localStorage.getItem("gg_voiceName") || "";
+    const voices = window.speechSynthesis.getVoices() || [];
+
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance("Hallo! Ik ben GeefGas. Dit is een test van de voorleesstem.");
+    u.lang = "nl-NL";
+    u.rate = 0.95;   // iets rustiger = minder robot
+    u.pitch = 1.05;
+
+    const v = voices.find(x => x.name === voiceName) || bestVoice(voices);
+    if (v) u.voice = v;
+
+    window.speechSynthesis.speak(u);
+  }
+
   if ("speechSynthesis" in window) {
     loadVoices();
     window.speechSynthesis.onvoiceschanged = loadVoices;
   }
+
+  testBtn.addEventListener("click", speakTest);
 
   function startExam(){
     localStorage.setItem("gg_revealMode", revealMode.value);
