@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GeefGas – Taxi theorie & oefenexamens</title>
-  <meta name="description" content="Taxi theorie oefenen met examengerichte vragen, uitleg en oefenexamens. Kies 7, 21 of 31 dagen toegang." />
-  <meta name="theme-color" content="#0F1116" />
+  <title>GeefGas – Taxi theorie oefenen</title>
+  <meta name="description" content="GeefGas: Taxi theorie oefenen met examengerichte vragen en duidelijke uitleg. Kies je pakket en start direct." />
+  <meta name="theme-color" content="#0B0D12" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body>
+<body class="theme">
+
+  <!-- TOPBAR (zwart) -->
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="index.html" aria-label="GeefGas Home">
@@ -37,128 +39,182 @@
     </div>
   </header>
 
-  <main class="section">
-    <div class="container">
-      <div class="wrap">
+  <main class="page">
+    <div class="container page__inner">
 
-        <!-- HERO (strak, niks overlapt) -->
-        <section class="panel panel--hero">
-          <div class="kicker">Premium theorieplatform • Taxi</div>
+      <!-- HERO (wit kaart, luxe) -->
+      <section class="card hero">
+        <div class="hero__badge">Premium theorieplatform • Taxi</div>
+        <h1 class="hero__title">
+          Taxi theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
+        </h1>
+        <p class="hero__text">
+          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na het examen.
+          Taxi-specifiek: taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
+        </p>
 
-          <h1 class="heroTitle">
-            Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">examengerichte</span> oefenexamens.
-          </h1>
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
+          <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
+        </div>
 
-          <p class="heroText">
-            Rustig oefenen op je telefoon. Per vraag duidelijke uitleg (direct of pas na afloop).
-            Taxi-specifiek: o.a. taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
-          </p>
+        <div class="hero__checks" aria-label="Voordelen">
+          <div class="check">✔ Direct oefenen</div>
+          <div class="check">✔ Uitleg per vraag</div>
+          <div class="check">✔ Foutenoverzicht</div>
+        </div>
+      </section>
 
-          <div class="heroActions">
-            <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
-            <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
+      <!-- PAKKETTEN (zoals voorbeeld, maar luxe) -->
+      <section class="card" id="pakketten">
+        <div class="sectionHead">
+          <div>
+            <h2 class="sectionHead__title">Kies je pakket</h2>
+            <p class="sectionHead__sub">Testfase: de knop stuurt je direct door naar oefenen (zonder betaling).</p>
           </div>
-
-          <div class="badgeRow" aria-label="Voordelen">
-            <span class="badge">✔ Examengericht</span>
-            <span class="badge">✔ Uitleg per vraag</span>
-            <span class="badge">✔ Foutenoverzicht</span>
+          <div class="rating">
+            <span class="rating__score">4.9</span>
+            <span class="rating__stars" aria-label="5 sterren">★★★★★</span>
+            <span class="rating__muted">Google reviews</span>
           </div>
-        </section>
+        </div>
 
-        <!-- PAKKETTEN (3 nette blokken) -->
-        <section class="panel" id="pakketten">
-          <h2 style="margin:0 0 6px;">Kies je pakket</h2>
-          <p class="muted" style="margin:0 0 14px; line-height:1.6;">
-            Testfase: knoppen sturen je direct door naar oefenen (zonder betaling).
-          </p>
+        <!-- Tabs (voor later). Taxi actief. -->
+        <div class="tabs" role="tablist" aria-label="Categorieën">
+          <button class="tab" type="button" aria-selected="false" disabled>Auto</button>
+          <button class="tab" type="button" aria-selected="false" disabled>Motor</button>
+          <button class="tab" type="button" aria-selected="false" disabled>Bromfiets</button>
+          <button class="tab tab--active" type="button" aria-selected="true">Taxi</button>
+          <button class="tab" type="button" aria-selected="false" disabled>Vracht</button>
+        </div>
 
-          <div class="packGrid">
+        <div class="pkgList" role="radiogroup" aria-label="Pakketkeuze">
+          <!-- Deluxe -->
+          <label class="pkg pkg--best">
+            <input class="pkg__radio" type="radio" name="pkg" value="deluxe" checked />
+            <span class="pkg__dot" aria-hidden="true"></span>
 
-            <!-- Deluxe (bovenaan) -->
-            <article class="pack pack--best">
-              <div class="pack__top">
+            <div class="pkg__main">
+              <div class="pkg__top">
                 <div>
-                  <div class="pack__title">Taxi Deluxe</div>
-                  <div class="muted">31 dagen toegang</div>
+                  <div class="pkg__name">Taxi Deluxe</div>
+                  <div class="pkg__desc">31 dagen toegang</div>
                 </div>
-                <div class="pack__price">€50</div>
+                <div class="pkg__price">€50</div>
               </div>
 
-              <div class="pack__features">
-                <div>• Volledig examen (40 vragen)</div>
-                <div>• Keuze: uitleg direct / na afloop</div>
-                <div>• Foutenlijst + herhalen</div>
+              <div class="pkg__meta">
+                <span class="pill pill--gold">Aanbevolen</span>
+                <span class="pill">Examengericht</span>
+                <span class="pill">Uitleg + foutenlijst</span>
               </div>
-
-              <a class="btn btn--gold pack__cta" href="examens.html">Start</a>
-              <div class="pack__tag">Aanbevolen • beste waarde</div>
-            </article>
-
-            <!-- Premium -->
-            <article class="pack">
-              <div class="pack__top">
-                <div>
-                  <div class="pack__title">Taxi Premium</div>
-                  <div class="muted">21 dagen toegang</div>
-                </div>
-                <div class="pack__price">€40</div>
-              </div>
-
-              <div class="pack__features">
-                <div>• Examens oefenen</div>
-                <div>• Uitleg per vraag</div>
-                <div>• Foutenoverzicht</div>
-              </div>
-
-              <a class="btn btn--ghost pack__cta" href="examens.html">Start</a>
-            </article>
-
-            <!-- Lite -->
-            <article class="pack">
-              <div class="pack__top">
-                <div>
-                  <div class="pack__title">Taxi Lite</div>
-                  <div class="muted">7 dagen toegang</div>
-                </div>
-                <div class="pack__price">€25</div>
-              </div>
-
-              <div class="pack__features">
-                <div>• Snel oefenen</div>
-                <div>• Basis uitleg</div>
-                <div>• Perfect voor last-minute</div>
-              </div>
-
-              <a class="btn btn--ghost pack__cta" href="examens.html">Start</a>
-            </article>
-
-          </div>
-
-          <div class="note">
-            <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
-            Vragen/visuals zijn eigen ontwikkeld.
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="panel">
-          <div class="footerRow">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <img src="assets/geefgas.png" alt="GeefGas" style="height:28px; width:auto;" />
-              <strong>GeefGas</strong>
             </div>
-            <div class="muted">© <span id="year"></span></div>
-          </div>
-          <p class="muted" style="margin:10px 0 0; line-height:1.6;">
-            Taxi nu • later meer categorieën.
-          </p>
-        </footer>
+          </label>
 
-      </div>
+          <!-- Premium -->
+          <label class="pkg">
+            <input class="pkg__radio" type="radio" name="pkg" value="premium" />
+            <span class="pkg__dot" aria-hidden="true"></span>
+
+            <div class="pkg__main">
+              <div class="pkg__top">
+                <div>
+                  <div class="pkg__name">Taxi Premium</div>
+                  <div class="pkg__desc">21 dagen toegang</div>
+                </div>
+                <div class="pkg__price">€40</div>
+              </div>
+
+              <div class="pkg__meta">
+                <span class="pill">Examens oefenen</span>
+                <span class="pill">Uitleg per vraag</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Lite -->
+          <label class="pkg">
+            <input class="pkg__radio" type="radio" name="pkg" value="lite" />
+            <span class="pkg__dot" aria-hidden="true"></span>
+
+            <div class="pkg__main">
+              <div class="pkg__top">
+                <div>
+                  <div class="pkg__name">Taxi Lite</div>
+                  <div class="pkg__desc">7 dagen toegang</div>
+                </div>
+                <div class="pkg__price">€25</div>
+              </div>
+
+              <div class="pkg__meta">
+                <span class="pill">Snel oefenen</span>
+                <span class="pill">Perfect last-minute</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <button class="btn btn--primary" id="startNowBtn" type="button">
+          Direct starten
+        </button>
+
+        <div class="featuresGrid" aria-label="Wat je krijgt">
+          <div class="feature">✔ Rustige interface</div>
+          <div class="feature">✔ Examens met timer</div>
+          <div class="feature">✔ Uitleg per vraag</div>
+          <div class="feature">✔ Fouten terugzien</div>
+        </div>
+
+        <div class="note">
+          <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
+          Vragen/visuals zijn eigen ontwikkeld.
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer__left">
+          <img src="assets/geefgas.png" alt="GeefGas" class="footer__logo" />
+          <div>
+            <div class="footer__brand">GeefGas</div>
+            <div class="footer__muted">Taxi nu • later meer categorieën</div>
+          </div>
+        </div>
+        <div class="footer__right">© <span id="year"></span></div>
+      </footer>
+
     </div>
   </main>
 
   <script src="app.js"></script>
+  <script>
+    // Pakket select + direct starten (nu naar oefenen; later Mollie/checkout)
+    (function(){
+      const btn = document.getElementById("startNowBtn");
+      const radios = Array.from(document.querySelectorAll('input[name="pkg"]'));
+
+      const packages = {
+        deluxe: { label:"Taxi Deluxe", days:31, price:50 },
+        premium:{ label:"Taxi Premium", days:21, price:40 },
+        lite:   { label:"Taxi Lite", days:7,  price:25 }
+      };
+
+      function getSelected(){
+        const sel = radios.find(r => r.checked)?.value || "deluxe";
+        return packages[sel] || packages.deluxe;
+      }
+
+      btn.addEventListener("click", () => {
+        const p = getSelected();
+        localStorage.setItem("gg_selectedPackage", JSON.stringify(p));
+        // In testfase direct naar oefenen:
+        window.location.href = "examens.html";
+      });
+
+      // Year
+      const y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
 </body>
 </html>
