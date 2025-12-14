@@ -694,3 +694,20 @@ a{ color:inherit; text-decoration:none; }
     border-radius: 2px !important;
   }
 }
+
+/* =========================================================
+   FIX: Examenvraag blokkeert foto niet meer
+   ========================================================= */
+
+.examMedia{
+  max-height: none !important;
+  height: clamp(240px, 38vh, 460px);
+  overflow: visible !important;
+}
+
+.examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
