@@ -11,7 +11,6 @@
 
 <body class="theme">
 
-  <!-- TOPBAR (zwart) -->
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="index.html" aria-label="GeefGas Home">
@@ -42,14 +41,13 @@
   <main class="page">
     <div class="container page__inner">
 
-      <!-- HERO (wit kaart, luxe) -->
       <section class="card hero">
         <div class="hero__badge">Premium theorieplatform • Taxi</div>
         <h1 class="hero__title">
           Taxi theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
         </h1>
         <p class="hero__text">
-          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na het examen.
+          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na afloop.
           Taxi-specifiek: taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
         </p>
 
@@ -59,13 +57,59 @@
         </div>
 
         <div class="hero__checks" aria-label="Voordelen">
-          <div class="check">✔ Direct oefenen</div>
+          <div class="check">✔ Examengericht</div>
           <div class="check">✔ Uitleg per vraag</div>
           <div class="check">✔ Foutenoverzicht</div>
         </div>
       </section>
 
-      <!-- PAKKETTEN (zoals voorbeeld, maar luxe) -->
+      <!-- CATEGORIEËN (zoals voorbeeld, maar luxe + binnenkort labels) -->
+      <section class="card">
+        <div class="sectionHead" style="margin-bottom:14px;">
+          <div>
+            <h2 class="sectionHead__title">Categorieën</h2>
+            <p class="sectionHead__sub">Taxi is nu beschikbaar. De rest komt binnenkort.</p>
+          </div>
+        </div>
+
+        <div class="catGrid">
+          <a class="catCard catCard--active" href="examens.html" aria-label="Taxi actief">
+            <div class="catCard__tag catCard__tag--active">ACTIEF</div>
+            <div class="catCard__icon">🚕</div>
+            <div class="catCard__title">Taxi</div>
+            <div class="catCard__sub">Start direct met oefenen</div>
+          </a>
+
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__tag">BINNENKORT</div>
+            <div class="catCard__icon">🚗</div>
+            <div class="catCard__title">Auto</div>
+            <div class="catCard__sub">Volgende release</div>
+          </div>
+
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__tag">BINNENKORT</div>
+            <div class="catCard__icon">🏍️</div>
+            <div class="catCard__title">Motor</div>
+            <div class="catCard__sub">Volgende release</div>
+          </div>
+
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__tag">BINNENKORT</div>
+            <div class="catCard__icon">🛵</div>
+            <div class="catCard__title">Bromfiets</div>
+            <div class="catCard__sub">Volgende release</div>
+          </div>
+
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__tag">BINNENKORT</div>
+            <div class="catCard__icon">🚚</div>
+            <div class="catCard__title">Vracht</div>
+            <div class="catCard__sub">Volgende release</div>
+          </div>
+        </div>
+      </section>
+
       <section class="card" id="pakketten">
         <div class="sectionHead">
           <div>
@@ -79,17 +123,7 @@
           </div>
         </div>
 
-        <!-- Tabs (voor later). Taxi actief. -->
-        <div class="tabs" role="tablist" aria-label="Categorieën">
-          <button class="tab" type="button" aria-selected="false" disabled>Auto</button>
-          <button class="tab" type="button" aria-selected="false" disabled>Motor</button>
-          <button class="tab" type="button" aria-selected="false" disabled>Bromfiets</button>
-          <button class="tab tab--active" type="button" aria-selected="true">Taxi</button>
-          <button class="tab" type="button" aria-selected="false" disabled>Vracht</button>
-        </div>
-
         <div class="pkgList" role="radiogroup" aria-label="Pakketkeuze">
-          <!-- Deluxe -->
           <label class="pkg pkg--best">
             <input class="pkg__radio" type="radio" name="pkg" value="deluxe" checked />
             <span class="pkg__dot" aria-hidden="true"></span>
@@ -111,7 +145,6 @@
             </div>
           </label>
 
-          <!-- Premium -->
           <label class="pkg">
             <input class="pkg__radio" type="radio" name="pkg" value="premium" />
             <span class="pkg__dot" aria-hidden="true"></span>
@@ -132,7 +165,6 @@
             </div>
           </label>
 
-          <!-- Lite -->
           <label class="pkg">
             <input class="pkg__radio" type="radio" name="pkg" value="lite" />
             <span class="pkg__dot" aria-hidden="true"></span>
@@ -154,9 +186,7 @@
           </label>
         </div>
 
-        <button class="btn btn--primary" id="startNowBtn" type="button">
-          Direct starten
-        </button>
+        <button class="btn btn--primary" id="startNowBtn" type="button">Direct starten</button>
 
         <div class="featuresGrid" aria-label="Wat je krijgt">
           <div class="feature">✔ Rustige interface</div>
@@ -171,7 +201,6 @@
         </div>
       </section>
 
-      <!-- FOOTER -->
       <footer class="footer">
         <div class="footer__left">
           <img src="assets/geefgas.png" alt="GeefGas" class="footer__logo" />
@@ -188,7 +217,6 @@
 
   <script src="app.js"></script>
   <script>
-    // Pakket select + direct starten (nu naar oefenen; later Mollie/checkout)
     (function(){
       const btn = document.getElementById("startNowBtn");
       const radios = Array.from(document.querySelectorAll('input[name="pkg"]'));
@@ -207,11 +235,9 @@
       btn.addEventListener("click", () => {
         const p = getSelected();
         localStorage.setItem("gg_selectedPackage", JSON.stringify(p));
-        // In testfase direct naar oefenen:
         window.location.href = "examens.html";
       });
 
-      // Year
       const y = document.getElementById("year");
       if (y) y.textContent = String(new Date().getFullYear());
     })();
