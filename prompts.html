@@ -1,1 +1,138 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeefGas – Foto-prompts export</title>
+  <link rel="stylesheet" href="styles.css?v=9999">
+  <script src="exam-data.js"></script>
+  <script src="image-prompts.js"></script>
+</head>
 
+<body class="theme">
+
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="index.html" aria-label="GeefGas Home">
+      <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
+      <span class="brand__name">GeefGas</span>
+    </a>
+
+    <nav class="nav" aria-label="Hoofdmenu">
+      <a class="nav__link" href="index.html">Home</a>
+      <a class="nav__link" href="examens.html">Examens</a>
+      <a class="nav__cta" href="examens.html">Start oefenen</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container page__inner">
+
+    <section class="card">
+      <h2 style="margin:0 0 6px;">Foto-prompts exporteren</h2>
+      <p class="muted" style="margin:0; line-height:1.6;">
+        Dit genereert in één keer alle prompts voor AI-foto’s: Nederlands straatbeeld + Mercedes taxi + dakbord “GEEF GAS” + blauw kenteken “GEEF GAS”.
+      </p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+        <select id="setPick" style="padding:10px 12px; border-radius:14px; border:1px solid rgba(16,19,26,.12); font-weight:850;">
+          <option value="taxi_v1">Taxi v1 (40)</option>
+          <option value="taxi_v2">Taxi v2 (40)</option>
+          <option value="all">Alles (80)</option>
+        </select>
+
+        <button class="btn btn--gold" id="buildBtn" type="button">Genereer prompts</button>
+        <button class="btn btn--ghost" id="copyBtn" type="button">Kopieer</button>
+        <button class="btn btn--ghost" id="downloadBtn" type="button">Download .txt</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0 0 10px;">Output</h3>
+      <textarea id="out"
+        style="width:100%; min-height:55vh; border-radius:16px; border:1px solid rgba(16,19,26,.12); padding:12px; font-weight:750; line-height:1.5;"
+        placeholder="Klik op ‘Genereer prompts’..."></textarea>
+      <p class="muted" style="margin:10px 0 0; line-height:1.6;">
+        Tip: genereer eerst “Taxi v1”, maak beelden (q01–q40), upload naar <strong>assets/exams/taxi/exam1/</strong>. Daarna “Taxi v2” naar <strong>assets/exams/taxi/exam2/</strong>.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<script>
+(function(){
+  const setPick = document.getElementById("setPick");
+  const buildBtn = document.getElementById("buildBtn");
+  const copyBtn = document.getElementById("copyBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const out = document.getElementById("out");
+
+  function getIds(choice){
+    if (choice === "all") {
+      return [
+        ...EXAM_SETS.taxi_v1.questionIds,
+        ...EXAM_SETS.taxi_v2.questionIds
+      ];
+    }
+    return EXAM_SETS[choice]?.questionIds || [];
+  }
+
+  function build(choice){
+    const ids = getIds(choice);
+    const blocks = [];
+
+    ids.forEach((id) => {
+      const q = QUESTIONS.find(x => x.id === id);
+      if (!q) return;
+
+      // Bestandsnaam afleiden (q01.jpg etc.) op basis van image pad
+      const img = q.image || "";
+      const file = img.split("/").slice(-1)[0] || "(geen pad)";
+
+      const prompt = (typeof buildGeefGasPrompt === "function")
+        ? buildGeefGasPrompt(q)
+        : `ERROR: buildGeefGasPrompt ontbreekt. Controleer image-prompts.js`;
+
+      blocks.push(
+`# ${id}  |  ${q.category || "Taxi"}  |  ${file}
+${prompt}
+`
+      );
+    });
+
+    out.value = blocks.join("\n---\n\n");
+  }
+
+  buildBtn.addEventListener("click", () => build(setPick.value));
+
+  copyBtn.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(out.value || "");
+      alert("Gekopieerd ✅");
+    }catch(e){
+      out.select();
+      document.execCommand("copy");
+      alert("Gekopieerd ✅");
+    }
+  });
+
+  downloadBtn.addEventListener("click", () => {
+    const choice = setPick.value;
+    const name = (choice === "all") ? "geefgas_prompts_all.txt" : `geefgas_prompts_${choice}.txt`;
+    const blob = new Blob([out.value || ""], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+
+</body>
+</html>
