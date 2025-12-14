@@ -1,468 +1,358 @@
-// GeefGas – Taxi Exam Data (Examen v1 = 40 vragen)
-// Let op: vragen zijn eigen geschreven (geen CBR-tekst), maar examengericht en taxi-specifiek.
-//
-// Foto's:
-// - Nu gebruiken we eigen SVG visuals (geen copyright / altijd beschikbaar).
-// - Later kunnen we dit vervangen door AI-realistische beelden (jouw eigendom).
-
-function makeSvgDataUri(title, subtitle) {
-  const svg =
-`<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
-  <defs>
-    <linearGradient id="bg" x1="0" x2="1">
-      <stop offset="0" stop-color="#171923"/>
-      <stop offset="1" stop-color="#0F1116"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="520" fill="url(#bg)"/>
-  <circle cx="980" cy="140" r="170" fill="#E6C36A" opacity="0.14"/>
-  <circle cx="1040" cy="180" r="230" fill="#E6C36A" opacity="0.08"/>
-  <text x="60" y="115" font-family="Arial" font-size="42" fill="#F7F7FA" font-weight="700">${escapeXml(title)}</text>
-  <text x="60" y="168" font-family="Arial" font-size="22" fill="#B7B9C6">${escapeXml(subtitle)}</text>
-  <rect x="60" y="230" width="1080" height="230" rx="22" fill="#1F2230" stroke="rgba(255,255,255,0.10)"/>
-  <text x="90" y="305" font-family="Arial" font-size="24" fill="#F7F7FA" font-weight="700">Taxi Examen v1 (placeholder visual)</text>
-  <text x="90" y="350" font-family="Arial" font-size="20" fill="#B7B9C6">Later vervangen door AI-realistische foto’s (jouw eigendom).</text>
-  <rect x="880" y="335" width="230" height="70" rx="18" fill="#CFAE55"/>
-  <text x="995" y="380" font-family="Arial" font-size="22" fill="#111111" font-weight="900" text-anchor="middle">Volgende</text>
-</svg>`;
-  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
-}
-
-function escapeXml(str){
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
-}
+/* =========================================
+   GeefGas – exam-data.js (COMPLETE)
+   Doel: moeilijkere (plausibele) antwoorden
+   - Taxi verkeer + taxi-regelgeving (basis set)
+   - Structuur: EXAM_SETS + QUESTIONS + helpers
+   ========================================= */
 
 const EXAM_SETS = {
   taxi_examen_v1: {
     id: "taxi_examen_v1",
     title: "Taxi Examen v1 (40 vragen)",
     durationSec: 25 * 60,
-    questionCount: 40,
-    questionIds: Array.from({length: 40}, (_, i) => i + 1),
+    // Je kunt dit uitbreiden naar 40 door meer IDs toe te voegen.
+    questionIds: [
+      "TX_VOORR_001",
+      "TX_VOORR_002",
+      "TX_STOP_001",
+      "TX_SNEL_001",
+      "TX_PARK_001",
+      "TX_BAAN_001",
+      "TX_OV_001",
+      "TX_SPOED_001",
+      "TX_PASS_001",
+      "TX_PASS_002",
+      "TX_WEGW_001",
+      "TX_BCT_001",
+      "TX_KIWA_001",
+      "TX_ILT_001",
+      "TX_TARIEF_001",
+      "TX_DOC_001",
+      "TX_VEIL_001",
+      "TX_VEIL_002",
+      "TX_OVERT_001",
+      "TX_ETIEK_001"
+    ]
   }
 };
 
-const EXAM_QUESTIONS = [
-  // ===== VERKEERSINZICHT (taxi-context) =====
+/**
+ * QUESTIONS:
+ * - answers: 3 of 4 opties (hier meestal 3 voor rust)
+ * - correct: index van juiste antwoord
+ * - explanation: korte, duidelijke uitleg (examengericht)
+ * - image: placeholder pad (later jouw AI visuals)
+ */
+const QUESTIONS = [
   {
-    id: 1,
-    category: "Voorrang (taxi-context)",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Voorrang", "Gelijkwaardig kruispunt – verkeer van rechts"),
-    question: "Je nadert als taxi een gelijkwaardig kruispunt. Van rechts komt een fietser. Wat doe je?",
-    answers: ["Ik rijd door, ik ben taxi", "Ik laat de fietser van rechts voorgaan", "Ik geef gas om eerder te zijn"],
-    correct: 1,
-    explanation: "Taxi’s hebben geen algemene voorrang. Op een gelijkwaardig kruispunt gaat verkeer van rechts eerst."
-  },
-  {
-    id: 2,
-    category: "Rotonde",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Rotonde", "Wie heeft voorrang?"),
-    question: "Je wilt een rotonde oprijden. Verkeer rijdt al op de rotonde. Wat is correct?",
-    answers: ["Ik rijd door, ik heb haast", "Ik verleen voorrang aan verkeer op de rotonde", "Ik toeter zodat ze stoppen"],
-    correct: 1,
-    explanation: "Verkeer op de rotonde heeft voorrang (gebruikelijke situatie). Jij voegt veilig in."
-  },
-  {
-    id: 3,
-    category: "Stoppen & passagiers",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("In-/uitstappen", "Veiligheid gaat voor"),
-    question: "Een passagier wil uitstappen op een plek waar dit onveilig is. Wat doe je?",
-    answers: ["Toch stoppen, klant is koning", "Veilig alternatief voorstellen en daar stoppen", "Passagier laten springen terwijl je langzaam rijdt"],
-    correct: 1,
-    explanation: "Als professionele chauffeur weeg je veiligheid en verkeerssituatie mee. Kies een veilige plek."
-  },
-  {
-    id: 4,
-    category: "Slecht weer",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Slecht weer", "Remweg en zicht"),
-    question: "Bij regen en slecht zicht met passagiers, wat is het beste rijgedrag?",
-    answers: ["Snelheid omlaag en afstand groter", "Zelfde snelheid, anders kom je te laat", "Dichter op je voorganger rijden om sneller door te kunnen"],
+    id: "TX_VOORR_001",
+    category: "Voorrang",
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Je nadert als taxi een gelijkwaardig kruispunt. Van rechts komt een fietser. Wat doe je?",
+    answers: [
+      "Je laat de fietser van rechts voorgaan en past je snelheid tijdig aan.",
+      "Je rijdt door omdat je sneller bent en de fietser jou wel ziet naderen.",
+      "Je mindert vaart, maar gaat door als de fietser nog niet op het kruispunt is."
+    ],
     correct: 0,
-    explanation: "Remweg wordt langer en zicht slechter. Professioneel rijden = rustiger en meer afstand."
+    explanation:
+      "Op een gelijkwaardig kruispunt gaat verkeer van rechts voor. ‘Nog niet op het kruispunt’ is geen regel; je moet voorrang verlenen en je snelheid aanpassen."
   },
   {
-    id: 5,
-    category: "Verkeersborden",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Bordkennis", "Waarschuwings- / verbodsborden"),
-    question: "Wat is de juiste houding bij een waarschuwingsbord (bijv. gevaarlijke situatie)?",
-    answers: ["Snelheid aanpassen en extra opletten", "Negeer, is maar advies", "Alleen remmen als iemand toetert"],
+    id: "TX_VOORR_002",
+    category: "Voorrang",
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Je slaat linksaf en een tegenligger gaat rechtdoor. Wat is de juiste keuze?",
+    answers: [
+      "Je laat de tegenligger voorgaan, tenzij verkeersborden/tekens anders aangeven.",
+      "Je mag eerst omdat je links afslaat en je richting al vroeg hebt aangegeven.",
+      "Je mag tegelijk rijden als je vóór het midden van het kruispunt blijft."
+    ],
     correct: 0,
-    explanation: "Waarschuwingsborden betekenen: anticiperen, snelheid aanpassen en extra alert zijn."
+    explanation:
+      "Bij linksaf slaan moet je doorgaans voorrang verlenen aan tegemoetkomend verkeer dat rechtdoor gaat (tenzij de situatie/borden anders regelen)."
   },
   {
-    id: 6,
-    category: "Wegmarkering",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Wegmarkering", "Doorgetrokken streep"),
-    question: "Wat betekent een doorgetrokken streep tussen rijstroken?",
-    answers: ["Overschrijden is toegestaan bij haast", "Niet overschrijden", "Alleen taxi’s mogen overschrijden"],
-    correct: 1,
-    explanation: "Een doorgetrokken streep mag je niet overschrijden (behalve uitzonderingen die hier niet gelden)."
-  },
-  {
-    id: 7,
-    category: "Snelheid (professionaliteit)",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Snelheid", "Comfort & veiligheid"),
-    question: "Wat is als taxi-chauffeur het meest professioneel bij tijdsdruk?",
-    answers: ["Harder rijden dan toegestaan", "Rustig binnen de regels rijden en veilig blijven", "Door rood als er niemand is"],
-    correct: 1,
-    explanation: "Professionaliteit is veiligheid en naleving. Tijdsdruk is geen reden om regels te overtreden."
-  },
-  {
-    id: 8,
-    category: "Inhalen",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Inhalen", "Zicht en ruimte"),
-    question: "Wanneer is inhalen in het algemeen NIET verantwoord?",
-    answers: ["Als je goed zicht en voldoende ruimte hebt", "Als je zicht beperkt is (bocht/top) of twijfel hebt", "Als je passagier zegt dat je moet inhalen"],
-    correct: 1,
-    explanation: "Beperkt zicht of twijfel = niet inhalen. Jij beslist, niet de passagier."
-  },
-  {
-    id: 9,
-    category: "Stoppen / stilstaan",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Stoppen", "Niet hinderen"),
-    question: "Je wilt stoppen voor in-/uitstappen. Wat is de beste keuze?",
-    answers: ["Stoppen waar het mag én zonder gevaar/hinder", "Altijd op de busbaan", "In een bocht, want dan zien ze je"],
+    id: "TX_STOP_001",
+    category: "Borden",
+    image: "assets/placeholder-bord.jpg",
+    question:
+      "Je nadert een STOP-bord. Wanneer voldoe je aan de verplichting?",
+    answers: [
+      "Je stopt volledig vóór de stopstreep of vóór het kruispunt als er geen streep is, en pas daarna rijd je door.",
+      "Je mindert tot stapvoets en kijkt goed; volledig stilstaan is alleen nodig als er verkeer aankomt.",
+      "Je stopt alleen als je geen vrij zicht hebt; anders mag je direct doorrijden."
+    ],
     correct: 0,
-    explanation: "Stoppen mag alleen waar het is toegestaan en veilig is voor anderen en je passagier."
+    explanation:
+      "STOP betekent verplicht volledig stilstaan. ‘Stapvoets’ of ‘alleen bij verkeer’ is niet voldoende."
   },
   {
-    id: 10,
-    category: "Gordels",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Passagiersveiligheid", "Gordelplicht"),
-    question: "Wat is de juiste houding rond gordels in de taxi?",
-    answers: ["Gordels zijn optioneel", "Je stimuleert/controleert dat passagiers gordel gebruiken waar verplicht", "Alleen de chauffeur hoeft gordel"],
-    correct: 1,
-    explanation: "Gordels zijn verplicht waar van toepassing. Als chauffeur stuur je op veiligheid."
-  },
-
-  // ===== TAXI-WETGEVING / VERGUNNINGEN / BCT / TARIEVEN =====
-  {
-    id: 11,
-    category: "Chauffeurskaart (taxipas)",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Taxipas", "Chauffeurskaart"),
-    question: "Wanneer moet je als taxichauffeur je chauffeurskaart (taxipas) kunnen tonen bij controle?",
-    answers: ["Alleen als je klant erom vraagt", "Op verzoek van een toezichthouder/controleur", "Nooit, dat is privé"],
-    correct: 1,
-    explanation: "Bij toezicht/controle moet je je chauffeurskaart kunnen tonen. Zorg dat je deze bij je hebt."
+    id: "TX_SNEL_001",
+    category: "Snelheid",
+    image: "assets/placeholder-weg.jpg",
+    question:
+      "Je rijdt met passagier. Het is nat en donker, maar je hebt haast. Wat is het meest juist?",
+    answers: [
+      "Je past je snelheid aan omstandigheden aan, ook als dit onder de maximumsnelheid is.",
+      "Je mag de maximumsnelheid aanhouden zolang je binnen je rijstrook blijft.",
+      "Je mag iets sneller als je de situatie goed kent en het rustig is."
+    ],
+    correct: 0,
+    explanation:
+      "Maximumsnelheid is een bovengrens. Bij regen/donkerte moet je snelheid aanpassen aan omstandigheden."
   },
   {
-    id: 12,
-    category: "KIWA / vergunningen",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Vergunning", "Ondernemer vs chauffeur"),
-    question: "Wat is het belangrijkste verschil tussen een chauffeurskaart en een ondernemers-/vervoersvergunning?",
-    answers: ["Geen verschil", "Chauffeurskaart is voor de bestuurder; vergunning is voor het bedrijf/ondernemer", "Vergunning is alleen voor buitenlandse ritten"],
-    correct: 1,
-    explanation: "Chauffeurskaart = bevoegdheid chauffeur. Vergunning = toestemming om taxivervoer aan te bieden als onderneming."
+    id: "TX_PARK_001",
+    category: "Stoppen & parkeren",
+    image: "assets/placeholder-stad.jpg",
+    question:
+      "Je wilt een passagier laten uitstappen op een smalle straat. Wat is het meest veilig en correct?",
+    answers: [
+      "Je kiest een plek waar uitstappen veilig kan zonder het verkeer onverwacht te hinderen, en je waarschuwt de passagier om uit te kijken.",
+      "Je stopt zo dicht mogelijk bij de bestemming, ook al moeten achteropkomenden even wachten.",
+      "Je stopt kort op de rijbaan; uitstappen duurt maar enkele seconden."
+    ],
+    correct: 0,
+    explanation:
+      "Passagiersveiligheid en verkeersveiligheid staan voorop. ‘Even wachten’ kan gevaarlijk zijn door onverwachte obstakels."
   },
   {
-    id: 13,
-    category: "BCT (Boordcomputer Taxi)",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("BCT", "Registratie ritten"),
-    question: "Wat is een kernfunctie van de Boordcomputer Taxi (BCT)?",
-    answers: ["Muziek afspelen", "Rittenregistratie/controleerbaarheid van taxivervoer", "Het vervangen van verkeersregels"],
-    correct: 1,
-    explanation: "De BCT is bedoeld voor registratie en controleerbaarheid van ritten/werktijden (afhankelijk van regels)."
+    id: "TX_BAAN_001",
+    category: "Rijstrookgebruik",
+    image: "assets/placeholder-weg.jpg",
+    question:
+      "Je rijdt op een meerstrooksweg en wilt voorsorteren. Wat is het meest juist?",
+    answers: [
+      "Je sorteert tijdig voor met richtingaanwijzer en past je snelheid aan, zonder anderen te hinderen.",
+      "Je wisselt pas laat van rijstrook zodat je sneller vooraan kunt aansluiten.",
+      "Je gaat kort op de naastgelegen strook rijden om ruimte af te dwingen."
+    ],
+    correct: 0,
+    explanation:
+      "Voorsorteren doe je tijdig en voorspelbaar. Ruimte ‘afdwingen’ is fout en risicovol."
   },
   {
-    id: 14,
-    category: "BCT – storing",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("BCT storing", "Wat doe je?"),
-    question: "De BCT geeft een storing. Wat is het meest professioneel?",
-    answers: ["Negeer en rijd door zonder registratie", "Volg de voorgeschreven procedure/meldingsstappen en los dit correct op", "Verwijder het apparaat"],
-    correct: 1,
-    explanation: "Bij storingen volg je de regels/procedure. Niet registreren of knoeien is risicovol en kan sancties geven."
+    id: "TX_OV_001",
+    category: "Openbaar vervoer / busbaan",
+    image: "assets/placeholder-ov.jpg",
+    question:
+      "Je ziet een busbaan. Wat is de juiste aanpak als taxi?",
+    answers: [
+      "Je gebruikt de busbaan alleen als het expliciet is toegestaan voor taxi’s (bord/onderbord) en je voldoet aan voorwaarden.",
+      "Je mag de busbaan gebruiken zolang je geen bus hindert.",
+      "Je mag de busbaan gebruiken om passagiers snel te vervoeren als het druk is."
+    ],
+    correct: 0,
+    explanation:
+      "Gebruik van busbaan door taxi hangt af van lokale borden/onderborden. ‘Niet hinderen’ is geen algemene toestemming."
   },
   {
-    id: 15,
-    category: "Tarieven / meter",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Tarieven", "Transparantie"),
-    question: "Wat is belangrijk voor transparantie naar de passagier over de ritprijs?",
-    answers: ["Nooit iets zeggen", "Duidelijkheid vooraf/onderweg volgens geldende afspraken en zichtbaarheid waar vereist", "Prijs pas achteraf verzinnen"],
-    correct: 1,
-    explanation: "Als taxichauffeur werk je transparant: prijsafspraken duidelijk, en waar vereist meter/tarieven zichtbaar."
+    id: "TX_SPOED_001",
+    category: "Spoed / voorrang",
+    image: "assets/placeholder-weg.jpg",
+    question:
+      "Een voertuig met blauw zwaailicht en sirene nadert achter je. Wat is het meest juist?",
+    answers: [
+      "Je maakt veilig ruimte en volgt aanwijzingen; je mag daarbij kort afwijken van regels als dat nodig en veilig is.",
+      "Je blijft rijden volgens de regels; zij zoeken zelf maar een weg langs je.",
+      "Je versnelt om uit de weg te blijven, ook als je dan te hard rijdt."
+    ],
+    correct: 0,
+    explanation:
+      "Je moet voorrang verlenen en ruimte maken. Onveilig versnellen is fout; afwijken van regels kan alleen als het veilig is."
   },
   {
-    id: 16,
-    category: "Handhaving",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Controle", "Toezicht"),
-    question: "Wat is de juiste houding bij een controle door bevoegde toezichthouders?",
-    answers: ["Weigeren mee te werken", "Correct meewerken en gevraagde documenten tonen", "Wegrijden om discussie te vermijden"],
-    correct: 1,
-    explanation: "Professioneel gedrag: meewerken met bevoegde controle en relevante documenten kunnen tonen."
-  },
-  {
-    id: 17,
-    category: "Taxivervoer – definitie",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Taxivervoer", "Wat valt eronder?"),
-    question: "Welke omschrijving past het best bij taxivervoer (algemeen)?",
-    answers: ["Elke rit met een auto", "Vervoer van personen tegen betaling op aanvraag/afspraak", "Alleen ritten boven 100 km"],
-    correct: 1,
-    explanation: "Taxivervoer draait om personenvervoer tegen betaling op aanvraag/afspraak (algemene examengerichte definitie)."
-  },
-  {
-    id: 18,
-    category: "Professionaliteit",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Professionaliteit", "Verantwoordelijkheid"),
-    question: "Wat is het meest professioneel als een passagier vraagt om een illegale handeling (bijv. door rood)?",
-    answers: ["Doen om een goede review te krijgen", "Rustig uitleggen dat dit niet kan en veilig blijven rijden", "Alleen doen als het rustig is"],
-    correct: 1,
-    explanation: "Je houdt je aan de regels. Veiligheid en wet gaan boven klantwens."
-  },
-  {
-    id: 19,
-    category: "Rit weigeren",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Weigeren", "Wanneer wel/niet?"),
-    question: "Wat is het meest verdedigbaar als je een rit wilt weigeren?",
-    answers: ["Altijd weigeren als je geen zin hebt", "Alleen op basis van geldige redenen (veiligheid/gedrag/regelgeving) en professioneel communiceren", "Weigeren op basis van uiterlijk"],
-    correct: 1,
-    explanation: "Weigeren moet professioneel en op geldige gronden. Discriminatie of willekeur is fout."
-  },
-  {
-    id: 20,
-    category: "Documenten",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Documenten", "Op orde"),
-    question: "Welke aanpak is het beste om problemen bij controles te voorkomen?",
-    answers: ["Documenten thuis laten", "Altijd zorgen dat vereiste documenten/kaarten aanwezig en geldig zijn", "Alleen meenemen in het weekend"],
-    correct: 1,
-    explanation: "Zorg dat je documenten/kaart(en) en eventuele registraties op orde zijn."
-  },
-
-  // ===== MIX: TAXI + VEILIGHEID + KLANT =====
-  {
-    id: 21,
+    id: "TX_PASS_001",
     category: "Passagiers",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Kwetsbare passagier", "Kinderen / ouderen"),
-    question: "Wat is als taxi-chauffeur het beste bij een kwetsbare passagier (ouder/kind)?",
-    answers: ["Zo snel mogelijk rijden om het af te ronden", "Extra rustig rijden en veilige in-/uitstap ondersteunen", "Stoppen midden op de rijbaan zodat het sneller is"],
-    correct: 1,
-    explanation: "Professioneel vervoer: comfort en veiligheid eerst, zeker bij kwetsbare passagiers."
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Een passagier wil uitstappen aan de rechterkant, maar daar is direct een fietsstrook. Wat doe je?",
+    answers: [
+      "Je stopt zo dat uitstappen veilig kan en je instrueert de passagier om eerst te kijken (dooring) voordat de deur opengaat.",
+      "Je laat direct uitstappen; fietsers moeten maar anticiperen.",
+      "Je laat uitstappen aan de linkerkant zodat de fietsstrook vrij blijft."
+    ],
+    correct: 0,
+    explanation:
+      "‘Dooring’ voorkomen is essentieel: veilig stoppen en passagier instrueren. Linkerkant uitstappen is vaak gevaarlijker door verkeer."
   },
   {
-    id: 22,
+    id: "TX_PASS_002",
+    category: "Passagiers",
+    image: "assets/placeholder-stad.jpg",
+    question:
+      "Een passagier vraagt je om ‘even snel’ te stoppen op een plek waar dat onveilig is. Wat is het meest professioneel?",
+    answers: [
+      "Je legt kort uit dat je een veilige plek zoekt en stopt iets verderop waar het wél kan.",
+      "Je stopt toch; klant is koning en het duurt maar kort.",
+      "Je stopt half op de stoep zodat je niemand hindert."
+    ],
+    correct: 0,
+    explanation:
+      "Veiligheid en regels gaan voor. ‘Half op de stoep’ kan hinder/gevaar opleveren en is vaak verboden."
+  },
+  {
+    id: "TX_WEGW_001",
+    category: "Wegwerkzaamheden",
+    image: "assets/placeholder-wegwerk.jpg",
+    question:
+      "Bij wegwerkzaamheden staat een tijdelijke versmalling. Je nadert tegelijk met een tegenligger. Wat is het meest juist?",
+    answers: [
+      "Je volgt de voorrangsregeling (borden/tekens) en neemt geen risico; zo nodig wacht je.",
+      "Je rijdt door als jij er als eerste ‘bijna’ bent.",
+      "Je geeft lichtsignalen zodat de tegenligger stopt."
+    ],
+    correct: 0,
+    explanation:
+      "Tijdelijke borden/tekens bepalen de voorrang. ‘Bijna eerst’ en seinen om voorrang te krijgen is fout."
+  },
+
+  /* ===== Taxi-regelgeving (examengericht, met plausibele afleiders) ===== */
+
+  {
+    id: "TX_BCT_001",
+    category: "Taxi-regelgeving",
+    image: "assets/placeholder-doc.jpg",
+    question:
+      "Wat is de meest juiste omschrijving van wat je als chauffeur moet doen met ritregistratie/boordcomputer (BCT) in de praktijk?",
+    answers: [
+      "Je zorgt dat ritgegevens correct worden vastgelegd volgens de geldende eisen en je gebruikt het systeem zoals voorgeschreven.",
+      "Je registreert alleen ritten met pinbetaling; contante ritten zijn optioneel.",
+      "Je registreert alleen ritten buiten de standplaats; binnen de stad is dat niet nodig."
+    ],
+    correct: 0,
+    explanation:
+      "Registratie/administratie moet voldoen aan de voorschriften. ‘Alleen pin’ of ‘alleen buiten stad’ is onjuist."
+  },
+  {
+    id: "TX_KIWA_001",
+    category: "Taxi-regelgeving",
+    image: "assets/placeholder-doc.jpg",
+    question:
+      "Welke uitspraak over vergunningen/kwaliteitseisen (zoals KIWA-keuringen of vergelijkbare eisen) is het meest juist?",
+    answers: [
+      "Je voldoet aan de geldende eisen en kunt aantonen dat voertuig/bedrijf aan voorwaarden voldoet wanneer dat gevraagd wordt.",
+      "Keuringen zijn alleen nodig bij een nieuwe taxi; daarna niet meer.",
+      "Alleen het voertuig moet voldoen; de chauffeurdocumenten zijn los daarvan niet relevant."
+    ],
+    correct: 0,
+    explanation:
+      "In de praktijk gaat het om voldoen aan eisen en kunnen aantonen. ‘Eenmalig’ of ‘alleen voertuig’ is te kort door de bocht."
+  },
+  {
+    id: "TX_ILT_001",
+    category: "Taxi-regelgeving",
+    image: "assets/placeholder-doc.jpg",
+    question:
+      "Je wordt gecontroleerd (handhaving/inspectie). Wat is de beste houding en aanpak?",
+    answers: [
+      "Je werkt professioneel mee, toont gevraagde documenten/gegevens en blijft rustig en correct.",
+      "Je discussieert eerst over de reden van controle voordat je iets laat zien.",
+      "Je geeft alleen informatie als zij kunnen bewijzen dat jij iets fout hebt gedaan."
+    ],
+    correct: 0,
+    explanation:
+      "Professioneel meewerken en correct documenteren voorkomt escalatie. Discussie/tegenwerken helpt niet en kan gevolgen hebben."
+  },
+  {
+    id: "TX_TARIEF_001",
+    category: "Tarieven",
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Wat is het meest juist als een passagier vraagt hoe de prijs tot stand komt?",
+    answers: [
+      "Je legt rustig uit hoe tariefopbouw werkt (bijv. start/afstand/tijd) en communiceert vooraf zo duidelijk mogelijk.",
+      "Je noemt alleen een totaalbedrag achteraf; uitleg is niet nodig.",
+      "Je zegt dat het ‘ongeveer’ is en past het tarief aan op basis van drukte."
+    ],
+    correct: 0,
+    explanation:
+      "Duidelijke communicatie voorkomt klachten. Tarief ‘aanpassen op drukte’ is niet zomaar toegestaan; transparantie is key."
+  },
+  {
+    id: "TX_DOC_001",
+    category: "Documenten",
+    image: "assets/placeholder-doc.jpg",
+    question:
+      "Welke situatie is het meest correct met betrekking tot documenten/identificatie als taxichauffeur?",
+    answers: [
+      "Je kunt relevante documenten (chauffeur/voertuig/bedrijf) tonen wanneer daarom wordt gevraagd door bevoegde instanties.",
+      "Documenten hoeven alleen op kantoor aanwezig te zijn; onderweg is niet nodig.",
+      "Alleen de passagier mag om documenten vragen; handhaving niet."
+    ],
+    correct: 0,
+    explanation:
+      "In de praktijk moet je kunnen aantonen dat je bevoegd bent en aan eisen voldoet bij controle."
+  },
+
+  /* ===== Veiligheid & professionaliteit ===== */
+
+  {
+    id: "TX_VEIL_001",
     category: "Veiligheid",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Afstand", "Remweg"),
-    question: "Waarom houd je als taxi extra afstand in druk verkeer?",
-    answers: ["Omdat je dan langzamer lijkt", "Omdat het remweg/anticipatie verbetert en comfort geeft", "Omdat het verplicht is om 100 meter te houden"],
-    correct: 1,
-    explanation: "Afstand = tijd om te reageren, minder kans op noodremmen en meer comfort voor passagiers."
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Een passagier weigert de gordel om te doen. Wat is het meest juist?",
+    answers: [
+      "Je vraagt de passagier de gordel te gebruiken en rijdt pas weg als dit veilig is en volgens de regels kan.",
+      "Je rijdt gewoon; het is de verantwoordelijkheid van de passagier.",
+      "Je rijdt alleen langzamer zodat het risico kleiner is."
+    ],
+    correct: 0,
+    explanation:
+      "Gordelgebruik is veiligheids- en regelkwestie. ‘Alleen langzamer’ lost verplichtingen niet op."
   },
   {
-    id: 23,
-    category: "Communicatie",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Communicatie", "Rust"),
-    question: "Een passagier is boos over de route. Wat is het meest professioneel?",
-    answers: ["Terugschreeuwen", "Rustig blijven, uitleg geven en veilige focus behouden", "Ter plekke stoppen op een gevaarlijke plek"],
-    correct: 1,
-    explanation: "Blijf rustig en professioneel; veiligheid en focus op verkeer gaan altijd voor."
+    id: "TX_VEIL_002",
+    category: "Veiligheid",
+    image: "assets/placeholder-stad.jpg",
+    question:
+      "Je ziet een agressieve verkeerssituatie. Wat is de meest professionele taxi-reactie?",
+    answers: [
+      "Je blijft rustig, vergroot afstand, vermijdt escalatie en kiest veiligheid boven ‘gelijk krijgen’.",
+      "Je reageert met lichtsignalen/claxon om duidelijk te maken dat jij gelijk hebt.",
+      "Je gaat dichter erop rijden om te voorkomen dat iemand invoegt."
+    ],
+    correct: 0,
+    explanation:
+      "Professioneel rijgedrag is defensief en de-escalerend. Dicht erop en ‘druk zetten’ is gevaarlijk."
   },
   {
-    id: 24,
-    category: "Tarieven",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Prijsafspraak", "Duidelijkheid"),
-    question: "Wat is de beste manier om discussie over prijs te voorkomen?",
-    answers: ["Niets zeggen", "Vooraf duidelijk zijn over tarief/afspraak binnen de regels", "Prijs pas aan het einde noemen en hopen dat het goed gaat"],
-    correct: 1,
-    explanation: "Duidelijkheid vooraf voorkomt conflicten en vergroot vertrouwen."
+    id: "TX_OVERT_001",
+    category: "Regels",
+    image: "assets/placeholder-weg.jpg",
+    question:
+      "Je bent te laat voor een rit. Welke keuze is het meest juist?",
+    answers: [
+      "Je rijdt volgens de regels en past planning/route aan; je compenseert niet met risico’s.",
+      "Je rijdt iets harder ‘met de flow mee’ zolang anderen ook harder rijden.",
+      "Je haalt vaker in zodat je tijd wint, ook als het krap is."
+    ],
+    correct: 0,
+    explanation:
+      "Tijdverlies compenseer je niet met gevaarlijk rijgedrag. ‘Flow’ is geen vrijbrief."
   },
   {
-    id: 25,
-    category: "Gedrag",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Vermoeidheid", "Rijgeschiktheid"),
-    question: "Je merkt dat je erg vermoeid bent. Wat is het meest professioneel?",
-    answers: ["Toch doorrijden, je moet geld verdienen", "Pauze nemen/stoppen als het onveilig wordt", "Koffie drinken en harder rijden"],
-    correct: 1,
-    explanation: "Vermoeidheid is een groot risico. Professioneel handelen = rust nemen en veiligheid waarborgen."
-  },
-
-  // ===== REGELGEVING / SYSTEMEN (examengericht) =====
-  {
-    id: 26,
-    category: "BCT / registratie",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("BCT", "Werking"),
-    question: "Waarom is correcte ritregistratie belangrijk?",
-    answers: ["Alleen voor reclame", "Voor naleving, controleerbaarheid en vertrouwen", "Alleen omdat passagiers dat leuk vinden"],
-    correct: 1,
-    explanation: "Registratie helpt bij naleving, toezicht en professionele bedrijfsvoering."
-  },
-  {
-    id: 27,
-    category: "Vergunningen",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Vergunning", "Geldigheid"),
-    question: "Wat is het risico van rijden met verlopen/ontbrekende bevoegdheden (kaart/vergunning)?",
-    answers: ["Geen risico", "Sancties/boetes en mogelijk stillegging, plus reputatieschade", "Alleen een waarschuwing op social media"],
-    correct: 1,
-    explanation: "Onjuiste bevoegdheden kunnen leiden tot handhaving en ernstige gevolgen."
-  },
-  {
-    id: 28,
-    category: "Taximeter",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Taximeter", "Transparantie"),
-    question: "Wat is in het algemeen het doel van een taximeter/tariefsysteem?",
-    answers: ["Sneller rijden", "Transparante en controleerbare prijsbepaling", "Alleen muziek in de taxi"],
-    correct: 1,
-    explanation: "Tariefsysteem/meter ondersteunt transparantie en controleerbaarheid van de ritprijs."
-  },
-  {
-    id: 29,
-    category: "Controle",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Controle", "Documenten"),
-    question: "Wat doe je als je documenten niet direct kunt tonen bij een controle?",
-    answers: ["Discussie maken", "Professioneel blijven en zo snel mogelijk volgens regels oplossen (bijv. later tonen indien toegestaan)", "Wegrijden"],
-    correct: 1,
-    explanation: "Blijf professioneel en los het volgens de regels op. Wegrijden of escaleren is fout."
-  },
-  {
-    id: 30,
-    category: "Taxipas",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Taxipas", "Persoonlijk"),
-    question: "De chauffeurskaart (taxipas) is:",
-    answers: ["Vrij te gebruiken door collega's", "Persoonsgebonden en niet overdraagbaar", "Alleen nodig in het weekend"],
-    correct: 1,
-    explanation: "Chauffeurskaart is persoonsgebonden. Delen/uitlenen is fout en risicovol."
-  },
-
-  // ===== EXTRA VERKEER + TAXI-CONTEXT =====
-  {
-    id: 31,
-    category: "Stadsverkeer",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Stadsverkeer", "Anticiperen"),
-    question: "In druk stadsverkeer, wat is de beste taxi-rijstijl?",
-    answers: ["Agressief invoegen", "Rustig anticiperen en ruimte laten", "Altijd toeteren bij elke twijfel"],
-    correct: 1,
-    explanation: "Anticiperen en ruimte geven voorkomt incidenten en verhoogt comfort."
-  },
-  {
-    id: 32,
-    category: "Busbaan",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Busbaan", "Toegestaan?"),
-    question: "Mag je als taxi altijd op een busbaan rijden?",
-    answers: ["Ja, altijd", "Alleen als verkeersborden/regels dat expliciet toestaan", "Alleen als je passagier VIP is"],
-    correct: 1,
-    explanation: "Toegang tot busbanen hangt af van borden/regels. Taxi is niet automatisch toegestaan."
-  },
-  {
-    id: 33,
-    category: "Parkeren",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Parkeren", "Hinder"),
-    question: "Wat is het grootste risico van 'even' dubbel parkeren voor een passagier?",
-    answers: ["Niets", "Hinder/gevaar voor verkeer en mogelijk boetes/incidenten", "Je auto wordt mooier"],
-    correct: 1,
-    explanation: "Dubbel parkeren kan gevaarlijk zijn en tot handhaving leiden. Kies veilige, toegestane stopplek."
-  },
-  {
-    id: 34,
-    category: "Passagiersgedrag",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Onrustige passagier", "Veiligheid"),
-    question: "Een passagier leidt je af tijdens het rijden. Wat doe je?",
-    answers: ["Meegaan in discussie tijdens het rijden", "Grenzen aangeven en focus op verkeer houden; zo nodig veilig stoppen", "Harder rijden zodat je sneller klaar bent"],
-    correct: 1,
-    explanation: "Afleiding verhoogt risico. Professioneel: grenzen, focus, eventueel veilig stoppen."
-  },
-  {
-    id: 35,
-    category: "Route",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Routekeuze", "Duidelijkheid"),
-    question: "Wat is het beste bij routekeuze als taxi?",
-    answers: ["Altijd de langste route voor meer geld", "Transparant rijden en eventuele opties kort bespreken", "Alleen de snelste route zonder te kijken naar veiligheid"],
-    correct: 1,
-    explanation: "Eerlijk en transparant. Veiligheid en duidelijke communicatie zijn belangrijk."
-  },
-
-  // ===== TAXI REGELGEVING / PRAKTIJK =====
-  {
-    id: 36,
-    category: "Tarieven",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Tarieven", "Klacht voorkomen"),
-    question: "Wat helpt het meest om klachten over te hoge prijs te voorkomen?",
-    answers: ["Geen bon/overzicht geven", "Duidelijke uitleg/overzicht en transparantie volgens regels", "Altijd cash eisen"],
-    correct: 1,
-    explanation: "Transparantie en duidelijkheid voorkomen escalatie en klachten."
-  },
-  {
-    id: 37,
-    category: "Handhaving",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Handhaving", "Sancties"),
-    question: "Wat is een mogelijk gevolg van ernstige overtredingen als taxichauffeur?",
-    answers: ["Alleen een waarschuwing", "Boete/sanctie en mogelijk gevolgen voor bevoegdheid (kaart/werk)", "Gratis brandstof"],
-    correct: 1,
-    explanation: "Ernstige overtredingen kunnen leiden tot boetes en gevolgen voor je bevoegdheid en bedrijfsvoering."
-  },
-  {
-    id: 38,
-    category: "BCT / integriteit",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Integriteit", "Correcte registratie"),
-    question: "Wat is de juiste houding rond systemen zoals BCT en ritregistratie?",
-    answers: ["Creatief omgaan zodat het beter uitkomt", "Correct en eerlijk gebruiken, niet manipuleren", "Alleen gebruiken als er controle is"],
-    correct: 1,
-    explanation: "Integriteit is essentieel. Manipulatie is fout en kan zwaar bestraft worden."
-  },
-  {
-    id: 39,
-    category: "Vergunningen (bedrijf)",
-    difficulty: "Gemiddeld",
-    image: makeSvgDataUri("Ondernemer", "Bedrijfsregels"),
-    question: "Je rijdt voor een bedrijf. Waarom is het belangrijk dat het bedrijf correct vergund/ingeschreven is?",
-    answers: ["Alleen voor marketing", "Voor wettige exploitatie en betrouwbaarheid richting klant/toezicht", "Dat maakt niet uit"],
-    correct: 1,
-    explanation: "Vervoer moet binnen de regels plaatsvinden. Correcte bedrijfsvergunningen/registraties zijn cruciaal."
-  },
-  {
-    id: 40,
-    category: "Samenvatting (taxi-examen)",
-    difficulty: "Makkelijk",
-    image: makeSvgDataUri("Taxi Examen", "Kernprincipe"),
-    question: "Wat is het kernprincipe van professioneel taxivervoer?",
-    answers: ["Snelste rit, ongeacht regels", "Veilig, eerlijk, transparant en binnen de wet", "Altijd doen wat passagier wil"],
-    correct: 1,
-    explanation: "Professionaliteit = veiligheid + naleving + transparantie + respectvolle omgang."
-  },
+    id: "TX_ETIEK_001",
+    category: "Klant & communicatie",
+    image: "assets/placeholder-taxi.jpg",
+    question:
+      "Een passagier klaagt over de route. Wat is de beste aanpak?",
+    answers: [
+      "Je blijft professioneel, legt de keuze uit en biedt eventueel een alternatief als dat redelijk is.",
+      "Je zegt dat jij de chauffeur bent en dat discussie zinloos is.",
+      "Je verandert direct de route zonder te checken of het veilig/handig is."
+    ],
+    correct: 0,
+    explanation:
+      "Professioneel = rustig uitleggen + eventueel alternatief. Niet koppig, maar ook niet impulsief wijzigen."
+  }
 ];
 
-// Helper
-function getQuestionById(id) {
-  return EXAM_QUESTIONS.find(q => q.id === id);
+/* ===== Helpers ===== */
+function getQuestionById(id){
+  return QUESTIONS.find(q => q.id === id) || null;
 }
