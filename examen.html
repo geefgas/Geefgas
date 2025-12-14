@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeefGas – Examen</title>
+  <title>GeefGas – Taxi Examen</title>
+
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
@@ -12,8 +13,8 @@
 
 <header class="topbar">
   <div class="examTop">
-    <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
-    <div class="pillTimer" id="timer">00:00</div>
+    <div class="examTop__title" id="examTitle">GeefGas – Taxi Examen</div>
+    <div class="pillTimer" id="timer">25:00</div>
   </div>
 </header>
 
@@ -21,34 +22,39 @@
   <div class="container page__inner">
 
     <section class="examCard">
+
+      <!-- VISUAL -->
       <div class="examMedia">
-        <img id="qImage" alt="Visual bij vraag" />
+        <img id="qImage" src="assets/placeholder.jpg" alt="Visual bij vraag">
       </div>
 
+      <!-- CONTENT -->
       <div class="examBody">
+
         <div class="examMeta">
           <span class="chip" id="categoryChip">Taxi</span>
           <span class="muted" id="progress">Vraag 1 van 40</span>
         </div>
 
-        <h3 id="questionText" style="margin:0 0 10px;">Laden…</h3>
+        <h3 id="questionText">Laden…</h3>
 
         <div id="answers" class="answers"></div>
 
         <div id="explainBox" class="explain" hidden>
-          <div class="explainTitle" id="explainTitle">Uitleg</div>
+          <div class="explainTitle" id="explainTitle"></div>
           <div class="explainText" id="explainText"></div>
         </div>
 
         <div class="examFooter">
-          <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
+          <button class="btn btn--ghost" id="readBtn">🔊 Voorlezen</button>
           <div style="display:flex; gap:10px;">
-            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+            <button class="btn btn--ghost" id="prevBtn">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn">Volgende</button>
           </div>
         </div>
 
-        <p class="muted" id="modeHint" style="margin:12px 0 0; line-height:1.6;"></p>
+        <p class="muted" id="modeHint" style="margin-top:12px;"></p>
+
       </div>
     </section>
 
@@ -57,55 +63,83 @@
 
 <script>
 (function(){
+
+  /* ======================
+     INIT
+     ====================== */
+
   const PASS_PERCENT = 0.80;
 
   const examSetId = localStorage.getItem("gg_examSet") || "taxi_v1";
-  const set = (typeof EXAM_SETS !== "undefined" && EXAM_SETS[examSetId]) ? EXAM_SETS[examSetId] : null;
-  if (!set) { alert("Examenset niet gevonden."); return; }
+  const set = EXAM_SETS[examSetId];
+
+  if (!set) {
+    alert("Examenset niet gevonden.");
+    return;
+  }
 
   const revealMode = localStorage.getItem("gg_revealMode") || "instant";
   const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-  const voiceName  = localStorage.getItem("gg_voiceName") || "";
 
-  const questions = set.questionIds.map(getQuestionById).filter(Boolean);
+  const questions = set.questionIds
+    .map(id => QUESTIONS.find(q => q.id === id))
+    .filter(Boolean);
+
+  if (questions.length === 0) {
+    alert("Geen vragen gevonden in deze examenset.");
+    return;
+  }
+
   const total = questions.length;
-
   const requiredCorrect = Math.ceil(total * PASS_PERCENT);
   const maxMistakes = total - requiredCorrect;
-
-  const attempt = questions.map(q => ({ id: q.id, chosen: null, correct: q.correct }));
 
   let index = 0;
   let time = set.durationSec || 1500;
 
-  const examTitle = document.getElementById("examTitle");
-  const timerEl = document.getElementById("timer");
-  const qImage = document.getElementById("qImage");
-  const questionText = document.getElementById("questionText");
-  const answersDiv = document.getElementById("answers");
-  const progress = document.getElementById("progress");
-  const categoryChip = document.getElementById("categoryChip");
+  const attempt = questions.map(q => ({
+    id: q.id,
+    chosen: null,
+    correct: q.correct
+  }));
 
-  const explainBox = document.getElementById("explainBox");
-  const explainTitle = document.getElementById("explainTitle");
-  const explainText = document.getElementById("explainText");
+  /* ======================
+     ELEMENTS
+     ====================== */
 
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const readBtn = document.getElementById("readBtn");
-  const modeHint = document.getElementById("modeHint");
+  const examTitle   = document.getElementById("examTitle");
+  const timerEl     = document.getElementById("timer");
+  const qImage      = document.getElementById("qImage");
+  const questionTxt = document.getElementById("questionText");
+  const answersDiv  = document.getElementById("answers");
+  const progressEl  = document.getElementById("progress");
+  const categoryEl  = document.getElementById("categoryChip");
+
+  const explainBox  = document.getElementById("explainBox");
+  const explainTit  = document.getElementById("explainTitle");
+  const explainTxt  = document.getElementById("explainText");
+
+  const prevBtn     = document.getElementById("prevBtn");
+  const nextBtn     = document.getElementById("nextBtn");
+  const readBtn     = document.getElementById("readBtn");
+  const modeHint   = document.getElementById("modeHint");
 
   examTitle.textContent = `GeefGas – ${set.title}`;
   modeHint.textContent =
-    (revealMode === "instant")
-      ? `Mode: direct feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`
-      : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`;
+    revealMode === "instant"
+      ? `Mode: directe feedback • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`
+      : `Mode: antwoorden pas na examen • Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten)`;
+
+  /* ======================
+     TIMER
+     ====================== */
 
   function formatTime(sec){
-    const m = String(Math.floor(sec / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
+    const m = String(Math.floor(sec / 60)).padStart(2,"0");
+    const s = String(sec % 60).padStart(2,"0");
     return `${m}:${s}`;
   }
+
   timerEl.textContent = formatTime(time);
 
   const timer = setInterval(() => {
@@ -114,78 +148,103 @@
     if (time <= 0) finishExam();
   }, 1000);
 
-  function bestVoice(voices){
-    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
-    const list = nl.length ? nl : voices;
-    const prefs = ["siri","enhanced","premium","natural","neural"];
-    for (const p of prefs) {
-      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
-      if (found) return found;
-    }
-    return list[0] || null;
-  }
-
-  function speak(text){
-    if (!ttsEnabled) return;
-    if (!("speechSynthesis" in window)) return;
-
-    const voices = window.speechSynthesis.getVoices() || [];
-    window.speechSynthesis.cancel();
-
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "nl-NL";
-    u.rate = 0.95;
-    u.pitch = 1.05;
-
-    const preferred = voices.find(v => v.name === voiceName) || bestVoice(voices);
-    if (preferred) u.voice = preferred;
-
-    window.speechSynthesis.speak(u);
-  }
-
-  function speakCurrent(){
-    const q = questions[index];
-    const lettered = q.answers.map((a,i)=> `${String.fromCharCode(65+i)}. ${a}`).join(". ");
-    speak(`${q.question}. Antwoorden: ${lettered}.`);
-  }
-  readBtn.addEventListener("click", speakCurrent);
+  /* ======================
+     RENDER
+     ====================== */
 
   function render(){
     const q = questions[index];
 
-    categoryChip.textContent = q.category || "Taxi";
-    progress.textContent = `Vraag ${index + 1} van ${total}`;
+    categoryEl.textContent = q.category || "Taxi";
+    progressEl.textContent = `Vraag ${index + 1} van ${total}`;
+    questionTxt.textContent = q.question;
 
-    // fallback image (voorkomt “kapot icoon”)
-    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
+    qImage.onerror = () => qImage.src = "assets/placeholder.jpg";
     qImage.src = q.image || "assets/placeholder.jpg";
 
-    questionText.textContent = q.question;
-
     prevBtn.disabled = index === 0;
-    nextBtn.textContent = (index === total - 1) ? "Afronden" : "Volgende";
+    nextBtn.textContent = index === total - 1 ? "Afronden" : "Volgende";
 
     answersDiv.innerHTML = "";
     explainBox.hidden = true;
-    explainBox.classList.remove("good","bad");
+    explainBox.className = "explain";
 
     q.answers.forEach((txt, i) => {
       const btn = document.createElement("button");
-      btn.type = "button";
       btn.className = "answer";
       btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
 
-      btn.addEventListener("click", () => {
+      btn.onclick = () => {
         attempt[index].chosen = i;
 
-        Array.from(document.querySelectorAll(".answer")).forEach(b => b.classList.remove("selected","correct","wrong"));
+        document.querySelectorAll(".answer").forEach(b =>
+          b.classList.remove("selected","correct","wrong")
+        );
+
         btn.classList.add("selected");
 
         if (revealMode === "instant") {
-          const isCorrect = i === q.correct;
-          const btns = Array.from(document.querySelectorAll(".answer"));
+          if (i === q.correct) {
+            btn.classList.add("correct");
+            explainTit.textContent = "✅ Goed";
+            explainBox.classList.add("good");
+          } else {
+            btn.classList.add("wrong");
+            document.querySelectorAll(".answer")[q.correct]?.classList.add("correct");
+            explainTit.textContent = "❌ Niet goed";
+            explainBox.classList.add("bad");
+          }
+          explainTxt.textContent = q.explanation || "";
+          explainBox.hidden = false;
+        }
+      };
 
-          if (isCorrect) {
-            btns[i]?.classList.add("correct");
-            explainTitle.textContent = "✅ Goed!";
-            explainBox.classList.add("good
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  /* ======================
+     VOORLEZEN
+     ====================== */
+
+  readBtn.onclick = () => {
+    if (!ttsEnabled || !("speechSynthesis" in window)) return;
+    const q = questions[index];
+    const text = q.question + ". " + q.answers.join(". ");
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "nl-NL";
+    u.rate = 0.95;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  };
+
+  /* ======================
+     NAV
+     ====================== */
+
+  nextBtn.onclick = () => {
+    if (index === total - 1) return finishExam();
+    index++;
+    render();
+  };
+
+  prevBtn.onclick = () => {
+    if (index === 0) return;
+    index--;
+    render();
+  };
+
+  function finishExam(){
+    clearInterval(timer);
+    localStorage.setItem("gg_result", JSON.stringify(attempt));
+    window.location.href = "resultaat.html";
+  }
+
+  /* START */
+  render();
+
+})();
+</script>
+
+</body>
+</html>
