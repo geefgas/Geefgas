@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Taxi examens</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=9999">
   <script src="exam-data.js"></script>
+  <script src="image-prompts.js"></script>
 </head>
 
 <body class="theme">
@@ -16,6 +17,7 @@
       <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
       <span class="brand__name">GeefGas</span>
     </a>
+
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
@@ -30,33 +32,36 @@
     <section class="card">
       <h2 style="margin:0 0 6px;">Taxi examens</h2>
       <p class="muted" style="margin:0; line-height:1.6;">
-        Examens met timer + uitleg. Taxi-norm: <strong>80%</strong> (bij 40 vragen: <strong>minimaal 32 goed</strong>).
+        Kies je examen. Je kan ook meteen alle AI-foto prompts exporteren (NL + GeefGas taxi).
       </p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+        <a class="btn btn--ghost" href="prompts.html">📸 Foto-prompts exporteren</a>
+        <a class="btn btn--gold" href="examens.html" id="reloadBtn">↻ Herladen</a>
+      </div>
     </section>
 
     <section class="card">
       <h3 style="margin:0 0 12px;">Instellingen</h3>
 
-      <div class="stack">
-        <div class="rowCard">
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
           <div>
-            <div class="rowCard__title">Antwoorden tonen</div>
-            <div class="rowCard__sub">Kies of je feedback direct ziet, of pas na afloop.</div>
+            <div style="font-weight:950;">Antwoorden tonen</div>
+            <div class="muted" style="margin-top:2px;">Direct feedback of pas na het examen.</div>
           </div>
-          <select id="revealMode" class="select">
+          <select id="revealMode" style="padding:10px 12px; border-radius:14px; border:1px solid rgba(16,19,26,.12); font-weight:850;">
             <option value="instant">Meteen (na elke vraag)</option>
             <option value="after">Pas na examen</option>
           </select>
         </div>
 
-        <div class="rowCard">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
           <div>
-            <div class="rowCard__title">Voorlezen</div>
-            <div class="rowCard__sub">Gebruik NL-stem van je toestel (als beschikbaar).</div>
+            <div style="font-weight:950;">Voorlezen</div>
+            <div class="muted" style="margin-top:2px;">Gebruik NL-stem van je toestel (beste stem wordt automatisch gekozen).</div>
           </div>
-          <label class="switch">
-            <input type="checkbox" id="ttsEnabled">
-            <span class="switch__ui"></span>
+          <label style="display:flex; align-items:center; gap:10px; font-weight:900;">
+            <input type="checkbox" id="ttsEnabled" style="width:20px; height:20px;">
           </label>
         </div>
       </div>
@@ -96,6 +101,7 @@
   document.getElementById("startV1").addEventListener("click", ()=> start("taxi_v1"));
   document.getElementById("startV2").addEventListener("click", ()=> start("taxi_v2"));
   document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); start("taxi_v1"); });
+  document.getElementById("reloadBtn").addEventListener("click", (e)=>{ e.preventDefault(); location.reload(); });
 })();
 </script>
 
