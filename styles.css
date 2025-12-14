@@ -1,21 +1,24 @@
 /* =========================================================
-   GeefGas – Unified styles (Home + Examens) – v4
-   Wit / Zwart / Goud – Mobile-first
-   Fix: grotere antwoorden + geen chaos op home
+   GeefGas – Master Styles (HOME + EXAMEN)
+   Theme: wit / zwart / goud
+   Doel: Home strak + examen stabiel
    ========================================================= */
 
 :root{
-  --bg:#F5F6F8;
-  --card:#FFFFFF;
-  --ink:#0F1116;
-  --muted:#5A6272;
   --black:#0B0D12;
+  --ink:#10131A;
+  --white:#FFFFFF;
+  --bg:#F5F6F8;
 
   --gold:#D8B55B;
   --gold2:#B9922E;
 
+  --text:#0F1116;
+  --muted:#5A6272;
+
   --stroke: rgba(16,19,26,.12);
   --shadow: 0 18px 40px rgba(16,19,26,.10);
+
   --radius: 18px;
 }
 
@@ -25,7 +28,7 @@ body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   background: var(--bg);
-  color: var(--ink);
+  color: var(--text);
   overflow-x:hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,17 +36,19 @@ body{
 
 img{ max-width:100%; height:auto; display:block; }
 a{ color:inherit; text-decoration:none; }
-.container{ width:min(980px, 92vw); margin:0 auto; }
-.muted{ color:var(--muted); font-weight:700; }
+.container{ width: min(1100px, 92vw); margin: 0 auto; }
 
-/* =========================
-   TOPBAR (Home + pages)
-   ========================= */
+.muted{ color: var(--muted); font-weight: 700; }
+.gold{ color: var(--gold2); }
+
+/* =========================================================
+   TOPBAR (HOME + EXAMENS)
+   ========================================================= */
 .topbar{
   position: sticky;
   top:0;
   z-index: 100;
-  background: rgba(11,13,18,.95);
+  background: rgba(11,13,18,.94);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.10);
 }
@@ -52,181 +57,195 @@ a{ color:inherit; text-decoration:none; }
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  gap: 12px;
   padding: 12px 0;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap: 10px;
   min-width: 140px;
 }
-.brand__logo{
-  height:30px;
-  width:auto;
-}
-.brand__name{
-  color:#fff;
-  font-weight:950;
-  letter-spacing:.2px;
-}
+.brand__logo{ height:30px; width:auto; }
+.brand__name{ color: var(--white); font-weight: 900; letter-spacing: .2px; }
 
-/* desktop nav */
+/* NAV */
 .nav{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap: 14px;
 }
 .nav__link{
   color: rgba(255,255,255,.78);
-  font-weight:800;
+  font-weight: 800;
+  padding: 8px 6px;
 }
-.nav__link:hover{ color:#fff; }
+.nav__link:hover{ color: var(--white); }
 
 .nav__cta{
-  padding: .62rem .95rem;
+  padding: .65rem .95rem;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--gold), var(--gold2));
-  color:#111;
-  font-weight:950;
+  color: #111;
+  font-weight: 950;
   border: 1px solid rgba(0,0,0,.15);
   white-space: nowrap;
 }
 
-/* mobile nav wrap so it never overlaps */
-@media (max-width:560px){
-  .topbar__inner{ flex-wrap:wrap; }
-  .nav{ width:100%; justify-content:flex-end; gap:10px; }
+/* mobiel: nav blijft netjes */
+@media (max-width: 520px){
+  .brand__name{ display:none; }              /* voorkomt overlap */
+  .nav{ gap:10px; }
   .nav__link{ font-size:.95rem; }
-  .nav__cta{ padding:.58rem .85rem; font-size:.95rem; }
+  .nav__cta{ padding:.58rem .80rem; font-size:.95rem; }
 }
 
-/* =========================
-   PAGE + CARDS
-   ========================= */
-.page{ padding: 18px 0 34px; }
-.page__inner{ display:flex; flex-direction:column; gap:14px; }
+/* =========================================================
+   PAGE + CARDS (HOME)
+   ========================================================= */
+.page{ padding: 18px 0 30px; }
+.page__inner{ display:flex; flex-direction:column; gap: 14px; }
 
 .card{
-  background: var(--card);
+  background: var(--white);
   border: 1px solid var(--stroke);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 16px;
 }
 
-.stack{ display:flex; flex-direction:column; gap:12px; }
-.rowCard{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:14px;
-  border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: #FBFBFC;
+/* HERO (HOME) */
+.hero{
+  background: linear-gradient(180deg, rgba(11,13,18,.08), rgba(11,13,18,0));
+  border-radius: var(--radius);
+  padding: 16px;
 }
-.rowCard__title{ font-weight:950; }
-.rowCard__sub{ color:var(--muted); font-weight:700; font-size:.95rem; line-height:1.35; }
+.hero h1{
+  margin: 0 0 10px;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+.hero p{ margin:0; line-height: 1.65; }
 
-.select{
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--stroke);
-  background: #fff;
-  font-weight:800;
+@media (max-width:520px){
+  .hero h1{ font-size: 1.55rem; }
 }
 
-/* switch */
-.switch{ position:relative; width:52px; height:30px; display:inline-block; }
-.switch input{ display:none; }
-.switch__ui{
-  position:absolute; inset:0;
-  border-radius: 999px;
-  background: rgba(16,19,26,.12);
-  border: 1px solid var(--stroke);
-}
-.switch__ui:after{
-  content:"";
-  position:absolute;
-  width:24px; height:24px;
-  left:3px; top:2px;
-  border-radius:999px;
-  background:#fff;
-  box-shadow: 0 10px 18px rgba(0,0,0,.12);
-  transition: transform .18s ease;
-}
-.switch input:checked + .switch__ui{
-  background: rgba(216,181,91,.35);
-  border-color: rgba(185,146,46,.35);
-}
-.switch input:checked + .switch__ui:after{
-  transform: translateX(22px);
-}
-
-/* buttons */
+/* Buttons */
 .btn{
   appearance:none;
-  border:none;
+  border: none;
   cursor:pointer;
   padding: .9rem 1.05rem;
   border-radius: 14px;
-  font-weight:950;
-  letter-spacing:.1px;
+  font-weight: 950;
+  letter-spacing: .1px;
   -webkit-tap-highlight-color: transparent;
   transition: transform .08s ease, filter .12s ease;
 }
 .btn:active{ transform: translateY(1px); }
 
-.btn--primary{
-  width:100%;
-  background: linear-gradient(180deg, #1A1F2A, #0B0D12);
-  color:#fff;
-  border: 1px solid rgba(11,13,18,.2);
-}
-.btn--ghost{
-  background:#fff;
-  color:var(--ink);
-  border: 1px solid var(--stroke);
-}
 .btn--gold{
   background: linear-gradient(180deg, var(--gold), var(--gold2));
-  color:#111;
+  color: #111;
   border: 1px solid rgba(0,0,0,.10);
 }
+.btn--ghost{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--stroke);
+}
+.btn--primary{
+  width: 100%;
+  margin-top: 14px;
+  background: linear-gradient(180deg, #1A1F2A, #0B0D12);
+  color: var(--white);
+  border: 1px solid rgba(11,13,18,.2);
+}
 
-/* =========================
-   EXAMEN PAGE
-   ========================= */
+/* HOME: CTA row (Kies pakket / Probeer demo) */
+.ctaRow{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.ctaRow .btn{ flex: 1 1 160px; }
+
+/* HOME: checklists */
+.checklist{
+  list-style:none;
+  padding:0;
+  margin:10px 0 0;
+  display:grid;
+  gap: 6px;
+}
+.checklist li{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-weight: 800;
+}
+
+/* HOME: categories list */
+.categories{
+  display:grid;
+  gap: 12px;
+}
+.catItem{
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: 14px;
+  background: #fff;
+  display:flex;
+  gap: 12px;
+  align-items:center;
+}
+.catIcon{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(11,13,18,.03);
+  font-size: 22px;
+}
+.catText{ display:flex; flex-direction:column; gap: 2px; }
+.catTitle{ font-weight: 950; }
+.catSub{ color: var(--muted); font-weight: 700; }
+
+/* =========================================================
+   EXAMEN (blijft stabiel)
+   ========================================================= */
 .examTop{
-  width:min(980px, 92vw);
-  margin:0 auto;
+  width: min(1100px, 92vw);
+  margin: 0 auto;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  padding:12px 0;
+  gap: 12px;
+  padding: 12px 0;
 }
-.examTop__title{
-  color:#fff;
-  font-weight:950;
-  letter-spacing:.2px;
-}
+.examTop__title{ color: var(--white); font-weight: 900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
 .pillTimer{
   padding: 8px 10px;
-  border-radius:999px;
+  border-radius: 999px;
   border: 1px solid rgba(255,255,255,.16);
   background: rgba(255,255,255,.08);
-  color:#fff;
-  font-weight:950;
+  color: var(--white);
+  font-weight: 950;
   font-variant-numeric: tabular-nums;
 }
 
 .examCard{
   border-radius: 18px;
   border: 1px solid var(--stroke);
-  background: var(--card);
+  background: var(--white);
   box-shadow: var(--shadow);
   overflow:hidden;
 }
@@ -234,70 +253,76 @@ a{ color:inherit; text-decoration:none; }
 .examMedia{
   background: rgba(16,19,26,.02);
   border-bottom: 1px solid var(--stroke);
-  max-height: 38vh;
-  overflow:hidden;
+  max-height: 42vh;
+  overflow: hidden;
 }
-.examMedia img{ width:100%; height:auto; }
+.examMedia img{
+  width:100%;
+  height:auto;
+  display:block;
+}
 
-.examBody{ padding:16px; }
+.examBody{ padding: 16px; }
 
 .examMeta{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
-  margin-bottom:10px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
+
 .chip{
   padding: 7px 10px;
-  border-radius:999px;
+  border-radius: 999px;
   border: 1px solid rgba(185,146,46,.25);
   background: rgba(216,181,91,.12);
   color:#2A2416;
-  font-weight:950;
-  font-size:.92rem;
+  font-weight: 900;
+  font-size: .90rem;
 }
 
 #questionText{
-  font-size: 1.22rem;
-  line-height:1.45;
-  margin:0 0 10px;
-  font-weight:950;
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  letter-spacing: -.1px;
 }
 
-/* ✅ BIGGER answers but mobile-safe */
+/* ANSWERS bigger */
 .answers{
   display:flex;
   flex-direction:column;
-  gap:12px;
-  margin-top:12px;
+  gap: 12px;
+  margin-top: 12px;
 }
 .answer{
   width:100%;
   text-align:left;
   display:flex;
   align-items:flex-start;
-  gap:12px;
-  padding: 15px 14px;
+  gap: 12px;
+  padding: 14px 14px;
   border-radius: 16px;
   border: 1px solid var(--stroke);
-  background:#FBFBFC;
+  background: #FBFBFC;
   cursor:pointer;
-  font-weight:950;
-  font-size: 1.08rem;     /* bigger */
+  font-weight: 900;
+  font-size: 1.08rem;
   line-height: 1.45;
-  overflow-wrap:anywhere; /* prevents overflow on small screens */
+  overflow-wrap: anywhere;
 }
 .answerKey{
-  flex:0 0 auto;
-  width:36px; height:36px;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
   border-radius: 12px;
   border: 1px solid var(--stroke);
-  background:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:950;
+  background: var(--white);
+  font-weight: 950;
   font-size: 1rem;
   margin-top: 1px;
 }
@@ -307,30 +332,29 @@ a{ color:inherit; text-decoration:none; }
 .answer.wrong{ border-color: rgba(255,90,90,.65); background: rgba(255,90,90,.10); }
 
 .explain{
-  margin-top:12px;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid var(--stroke);
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
   background: rgba(16,19,26,.02);
 }
 .explain.good{ border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.08); }
 .explain.bad{ border-color: rgba(255,90,90,.35); background: rgba(255,90,90,.08); }
-.explainTitle{ font-weight:950; margin-bottom:6px; font-size:1.05rem; }
-.explainText{ color:var(--muted); font-weight:750; line-height:1.6; font-size:1.02rem; }
+.explainTitle{ font-weight: 950; margin-bottom: 6px; font-size: 1.05rem; }
+.explainText{ color: var(--muted); font-weight: 700; line-height: 1.6; font-size: 1.02rem; }
 
 .examFooter{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
-  margin-top:14px;
-  padding-top:12px;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--stroke);
 }
 
-@media (max-width:520px){
-  .examBody{ padding:14px; }
-  #questionText{ font-size: 1.16rem; }
-  .answer{ font-size: 1.06rem; padding:14px 12px; }
-  .answerKey{ width:34px; height:34px; }
+@media (max-width: 520px){
+  #questionText{ font-size: 1.18rem; }
+  .answer{ font-size: 1.06rem; padding: 14px 12px; }
+  .answerKey{ width: 34px; height: 34px; }
 }
