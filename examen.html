@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeefGas – Taxi Examen</title>
+  <title>GeefGas – Examen</title>
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
@@ -12,7 +12,7 @@
 
 <header class="topbar">
   <div class="examTop">
-    <div class="examTop__title" id="examTitle">GeefGas – Taxi Examen</div>
+    <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
     <div class="pillTimer" id="timer">00:00</div>
   </div>
 </header>
@@ -59,7 +59,7 @@
 (function(){
   const PASS_PERCENT = 0.80;
 
-  const examSetId = localStorage.getItem("gg_examSet") || "taxi_examen_v1";
+  const examSetId = localStorage.getItem("gg_examSet") || "taxi_v1";
   const set = (typeof EXAM_SETS !== "undefined" && EXAM_SETS[examSetId]) ? EXAM_SETS[examSetId] : null;
   if (!set) { alert("Examenset niet gevonden."); return; }
 
@@ -156,7 +156,10 @@
     categoryChip.textContent = q.category || "Taxi";
     progress.textContent = `Vraag ${index + 1} van ${total}`;
 
-    qImage.src = q.image || "";
+    // fallback image (voorkomt “kapot icoon”)
+    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
+    qImage.src = q.image || "assets/placeholder.jpg";
+
     questionText.textContent = q.question;
 
     prevBtn.disabled = index === 0;
@@ -185,52 +188,4 @@
           if (isCorrect) {
             btns[i]?.classList.add("correct");
             explainTitle.textContent = "✅ Goed!";
-            explainBox.classList.add("good");
-          } else {
-            btns[i]?.classList.add("wrong");
-            btns[q.correct]?.classList.add("correct");
-            explainTitle.textContent = "❌ Niet goed";
-            explainBox.classList.add("bad");
-          }
-
-          explainText.textContent = q.explanation || "";
-          explainBox.hidden = false;
-        }
-      });
-
-      answersDiv.appendChild(btn);
-    });
-  }
-
-  function calcScore(){
-    let s = 0;
-    for (const a of attempt) if (a.chosen !== null && a.chosen === a.correct) s++;
-    return s;
-  }
-
-  function finishExam(){
-    clearInterval(timer);
-    localStorage.setItem("gg_attempt_v2", JSON.stringify(attempt));
-    localStorage.setItem("gg_score_v2", String(calcScore()));
-    localStorage.setItem("gg_total_v2", String(total));
-    localStorage.setItem("gg_examSetTitle_v2", set.title);
-    localStorage.setItem("gg_revealMode_v2", revealMode);
-    window.location.href = "resultaat.html";
-  }
-
-  nextBtn.addEventListener("click", () => {
-    if (index === total - 1) return finishExam();
-    index++;
-    render();
-  });
-  prevBtn.addEventListener("click", () => {
-    if (index === 0) return;
-    index--;
-    render();
-  });
-
-  render();
-})();
-</script>
-</body>
-</html>
+            explainBox.classList.add("good
