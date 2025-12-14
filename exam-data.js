@@ -11,7 +11,7 @@
     {
       id: "q01",
       category: "Voorrang",
-      question: "Je rijdt rechtdoor op een gelijkwaardig kruispunt. Van rechts komt een fietser rechtdoor. Wie heeft voorrang?",
+      question: "Je rijdt rechtdoor op een gelijkwaardig kruispunt. Van rechts komt een fietser. Wie heeft voorrang?",
       answers: [
         "Jij",
         "De auto",
