@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GeefGas – Taxi theorie & oefenexamens</title>
-  <meta name="description" content="GeefGas: Taxi theorie met oefenexamens, uitleg per vraag en eigen visuals. Kies 7, 21 of 31 dagen toegang." />
+  <meta name="description" content="Taxi theorie oefenen met examengerichte vragen, uitleg en oefenexamens. Kies 7, 21 of 31 dagen toegang." />
   <meta name="theme-color" content="#0F1116" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -13,7 +13,7 @@
   <header class="topbar">
     <div class="container topbar__inner">
       <a class="brand" href="index.html" aria-label="GeefGas Home">
-        <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
+        <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
         <span class="brand__name">GeefGas</span>
       </a>
 
@@ -41,17 +41,17 @@
     <div class="container">
       <div class="wrap">
 
-        <!-- HERO (strak, rustig) -->
+        <!-- HERO (strak, niks overlapt) -->
         <section class="panel panel--hero">
           <div class="kicker">Premium theorieplatform • Taxi</div>
 
           <h1 class="heroTitle">
-            Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">realistische</span> oefenexamens.
+            Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">examengerichte</span> oefenexamens.
           </h1>
 
           <p class="heroText">
-            Oefen op je telefoon met rustige schermen. Kies een antwoord, zie direct goed/fout + uitleg en herhaal je fouten.
-            Later breiden we dit uit met veel meer taxi-content en eigen visuals.
+            Rustig oefenen op je telefoon. Per vraag duidelijke uitleg (direct of pas na afloop).
+            Taxi-specifiek: o.a. taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
           </p>
 
           <div class="heroActions">
@@ -59,45 +59,80 @@
             <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
           </div>
 
-          <div class="heroChecks">
-            <div>✔ Direct oefenen</div>
-            <div>✔ Uitleg per vraag</div>
-            <div>✔ Foutenoverzicht</div>
+          <div class="badgeRow" aria-label="Voordelen">
+            <span class="badge">✔ Examengericht</span>
+            <span class="badge">✔ Uitleg per vraag</span>
+            <span class="badge">✔ Foutenoverzicht</span>
           </div>
         </section>
 
-        <!-- PAKKETTEN (ook strak) -->
+        <!-- PAKKETTEN (3 nette blokken) -->
         <section class="panel" id="pakketten">
           <h2 style="margin:0 0 6px;">Kies je pakket</h2>
           <p class="muted" style="margin:0 0 14px; line-height:1.6;">
             Testfase: knoppen sturen je direct door naar oefenen (zonder betaling).
           </p>
 
-          <div class="priceList">
-            <div class="priceRow priceRow--best">
-              <div>
-                <span class="chip">Aanbevolen</span>
-                <div class="priceTitle">31 dagen toegang</div>
-                <div class="muted">€50 • beste waarde</div>
-              </div>
-              <a class="btn btn--gold" href="examens.html">Start</a>
-            </div>
+          <div class="packGrid">
 
-            <div class="priceRow">
-              <div>
-                <div class="priceTitle">21 dagen toegang</div>
-                <div class="muted">€40</div>
+            <!-- Deluxe (bovenaan) -->
+            <article class="pack pack--best">
+              <div class="pack__top">
+                <div>
+                  <div class="pack__title">Taxi Deluxe</div>
+                  <div class="muted">31 dagen toegang</div>
+                </div>
+                <div class="pack__price">€50</div>
               </div>
-              <a class="btn btn--ghost" href="examens.html">Start</a>
-            </div>
 
-            <div class="priceRow">
-              <div>
-                <div class="priceTitle">7 dagen toegang</div>
-                <div class="muted">€25</div>
+              <div class="pack__features">
+                <div>• Volledig examen (40 vragen)</div>
+                <div>• Keuze: uitleg direct / na afloop</div>
+                <div>• Foutenlijst + herhalen</div>
               </div>
-              <a class="btn btn--ghost" href="examens.html">Start</a>
-            </div>
+
+              <a class="btn btn--gold pack__cta" href="examens.html">Start</a>
+              <div class="pack__tag">Aanbevolen • beste waarde</div>
+            </article>
+
+            <!-- Premium -->
+            <article class="pack">
+              <div class="pack__top">
+                <div>
+                  <div class="pack__title">Taxi Premium</div>
+                  <div class="muted">21 dagen toegang</div>
+                </div>
+                <div class="pack__price">€40</div>
+              </div>
+
+              <div class="pack__features">
+                <div>• Examens oefenen</div>
+                <div>• Uitleg per vraag</div>
+                <div>• Foutenoverzicht</div>
+              </div>
+
+              <a class="btn btn--ghost pack__cta" href="examens.html">Start</a>
+            </article>
+
+            <!-- Lite -->
+            <article class="pack">
+              <div class="pack__top">
+                <div>
+                  <div class="pack__title">Taxi Lite</div>
+                  <div class="muted">7 dagen toegang</div>
+                </div>
+                <div class="pack__price">€25</div>
+              </div>
+
+              <div class="pack__features">
+                <div>• Snel oefenen</div>
+                <div>• Basis uitleg</div>
+                <div>• Perfect voor last-minute</div>
+              </div>
+
+              <a class="btn btn--ghost pack__cta" href="examens.html">Start</a>
+            </article>
+
           </div>
 
           <div class="note">
@@ -106,11 +141,11 @@
           </div>
         </section>
 
-        <!-- FOOTER -->
+        <!-- Footer -->
         <footer class="panel">
           <div class="footerRow">
             <div style="display:flex; align-items:center; gap:10px;">
-              <img src="assets/geefgas.PNG" alt="GeefGas" style="height:28px; width:auto;" />
+              <img src="assets/geefgas.png" alt="GeefGas" style="height:28px; width:auto;" />
               <strong>GeefGas</strong>
             </div>
             <div class="muted">© <span id="year"></span></div>
