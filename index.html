@@ -3,15 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GeefGas – Taxi Theorie & Oefenexamens</title>
-  <meta name="description" content="GeefGas: Taxi theorie leren met duidelijke uitleg, realistische oefenexamens en professionele visuals. Kies 7, 21 of 31 dagen toegang." />
+  <title>GeefGas – Taxi theorie & oefenexamens</title>
+  <meta name="description" content="GeefGas: Taxi theorie met oefenexamens, uitleg per vraag en eigen visuals. Kies 7, 21 of 31 dagen toegang." />
   <meta name="theme-color" content="#0B0B0F" />
-
-  <!-- Social -->
-  <meta property="og:title" content="GeefGas – Taxi Theorie & Oefenexamens" />
-  <meta property="og:description" content="Duidelijke uitleg, realistische oefenexamens, eigen visuals. Kies je pakket en start direct." />
-  <meta property="og:type" content="website" />
-
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -19,18 +13,18 @@
   <!-- Topbar -->
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="brand" href="#top" aria-label="GeefGas Home">
+      <a class="brand" href="index.html" aria-label="GeefGas Home">
         <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
         <span class="brand__name">GeefGas</span>
       </a>
 
       <nav class="nav" aria-label="Hoofdmenu">
         <a class="nav__link" href="#pakketten">Pakketten</a>
-        <a class="nav__link" href="#zo-werkt-het">Zo werkt het</a>
-        <a class="nav__link" href="#faq">FAQ</a>
-        <a class="nav__cta" href="#pakketten">Direct starten</a>
+        <a class="nav__link" href="examens.html">Examens</a>
+        <a class="nav__cta" href="examens.html">Start oefenen</a>
       </nav>
 
+      <!-- (optioneel) mobiele knop; werkt met app.js -->
       <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -39,301 +33,174 @@
     <div class="mobilemenu" id="mobileMenu" hidden>
       <div class="container mobilemenu__inner">
         <a class="mobilemenu__link" href="#pakketten">Pakketten</a>
-        <a class="mobilemenu__link" href="#zo-werkt-het">Zo werkt het</a>
-        <a class="mobilemenu__link" href="#faq">FAQ</a>
-        <a class="mobilemenu__cta" href="#pakketten">Direct starten</a>
+        <a class="mobilemenu__link" href="examens.html">Examens</a>
+        <a class="mobilemenu__cta" href="examens.html">Start oefenen</a>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <main id="top">
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <div class="badge">Premium theorieplatform • Zwart & goud</div>
-          <h1>Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">realistische</span> oefenexamens.</h1>
-          <p class="lead">
-            Oefen met examens (timer, markeren, overzicht), leer per thema en verbeter via je foutenlijst.
-            Alles met eigen visuals en een heldere, rustige interface.
-          </p>
-
-          <div class="hero__actions">
-            <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
-            <button class="btn btn--ghost" id="openDemoBtn">Gratis demo</button>
-          </div>
-
-          <div class="trust">
-            <div class="trust__item">✔ Direct toegang</div>
-            <div class="trust__item">✔ Geen abonnement</div>
-            <div class="trust__item">✔ Veilige betaling (iDEAL)</div>
-          </div>
-        </div>
-
-        <!-- UI Preview -->
-        <div class="hero__preview" aria-label="Voorbeeld oefenexamen">
-          <div class="previewcard">
-            <div class="previewcard__top">
-              <div class="previewcard__left">
-                <div class="dot dot--gold"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-              <div class="previewcard__right">
-                <span class="chip">Oefenexamen</span>
-                <span class="timer" id="heroTimer">24:58</span>
-              </div>
-            </div>
-
-            <div class="previewcard__media">
-              <!-- Deze is een placeholder. Later vervang je dit door jouw eigen gegenereerde afbeelding. -->
-              <div class="mediaPlaceholder">
-                <div class="mediaPlaceholder__icon">🛣️</div>
-                <div class="mediaPlaceholder__text">Eigen verkeerssituatie visual</div>
-              </div>
-            </div>
-
-            <div class="previewcard__body">
-              <h3>Wat betekent dit bord?</h3>
-              <div class="answers">
-                <button class="answer" type="button"><span class="answer__key">A</span> verkeersdrempel</button>
-                <button class="answer" type="button"><span class="answer__key">B</span> werk in uitvoering</button>
-                <button class="answer" type="button"><span class="answer__key">C</span> slecht wegdek</button>
-              </div>
-
-              <div class="previewcard__footer">
-                <span class="muted">Vraag 5 van 40</span>
-                <span class="muted">Volgende →</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glow glow--1"></div>
-      <div class="glow glow--2"></div>
-    </section>
-
-    <!-- Features -->
+  <main>
+    <!-- Hero (super clean, geen chaos) -->
     <section class="section">
       <div class="container">
-        <div class="grid3">
+        <div class="examWrap">
           <div class="feature">
-            <div class="feature__icon">⏱️</div>
-            <h3>Examens met timer</h3>
-            <p>Oefen zoals het echt voelt. Met overzicht, markeren en duidelijke navigatie.</p>
-          </div>
-          <div class="feature">
-            <div class="feature__icon">✅</div>
-            <h3>Uitleg bij elke vraag</h3>
-            <p>Niet alleen het antwoord, maar ook waarom — zodat je het echt begrijpt.</p>
-          </div>
-          <div class="feature">
-            <div class="feature__icon">🎯</div>
-            <h3>Foutenlijst & herhalen</h3>
-            <p>Herhaal slim wat je fout doet. Je ziet direct je zwakke thema’s.</p>
+            <div class="muted" style="font-weight:800; margin-bottom:8px;">
+              Premium theorieplatform • Zwart & goud
+            </div>
+
+            <h2 style="margin-bottom:10px;">
+              Taxi theorie halen met <span class="gold">duidelijke</span> uitleg en <span class="gold">realistische</span> oefenexamens.
+            </h2>
+
+            <p class="muted" style="line-height:1.6; margin-bottom:14px;">
+              Oefen met examens (timer, overzicht), leer per thema en verbeter via je fouten.
+              Alles met eigen visuals en een rustige interface.
+            </p>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
+              <a class="btn btn--ghost" href="examens.html">Gratis demo</a>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:6px; margin-top:14px;">
+              <div class="muted" style="font-weight:750;">✔ Direct toegang</div>
+              <div class="muted" style="font-weight:750;">✔ Geen abonnement</div>
+              <div class="muted" style="font-weight:750;">✔ Testfase: nog zonder betaling</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Pakketten -->
-    <section class="section section--tight" id="pakketten">
+    <!-- Preview (rustige “single card” i.p.v. druk mockup) -->
+    <section class="section">
       <div class="container">
-        <div class="section__head">
-          <h2>Kies je pakket</h2>
-          <p class="muted">Alle pakketten bevatten de volledige taxi theorie + oefenexamens. Kies je toegangstijd.</p>
+        <div class="examWrap">
+          <div class="examcard">
+            <div class="examcard__media">
+              <!-- Placeholder: later vervangen door jouw eigen gegenereerde afbeelding -->
+              <img
+                src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?> <svg xmlns='http://www.w3.org/2000/svg' width='1200' height='520' viewBox='0 0 1200 520'> <rect width='1200' height='520' fill='%230E0E14'/> <text x='60' y='120' font-family='Arial' font-size='42' fill='%23F5F5F7' font-weight='700'>Zo ziet oefenen eruit</text> <text x='60' y='175' font-family='Arial' font-size='22' fill='%23A9A9B3'>Eigen visuals + uitleg per vraag (placeholder)</text> <rect x='60' y='240' width='1080' height='200' rx='22' fill='%231A1A24' stroke='rgba(255,255,255,0.08)'/> <text x='90' y='305' font-family='Arial' font-size='24' fill='%23F5F5F7' font-weight='700'>Vraag</text> <text x='90' y='345' font-family='Arial' font-size='20' fill='%23A9A9B3'>Kies het juiste antwoord en lees direct de uitleg.</text> <rect x='880' y='275' width='230' height='70' rx='18' fill='%23CFAE55'/> <text x='995' y='320' font-family='Arial' font-size='22' fill='%23111' font-weight='900' text-anchor='middle'>Volgende</text> </svg>"
+                alt="Voorbeeld van het oefenexamen"
+              />
+            </div>
+
+            <div class="examcard__body">
+              <div class="examcard__meta">
+                <span class="chip">Oefenexamen</span>
+                <span class="timer">24:58</span>
+              </div>
+
+              <h3 style="margin:0 0 8px;">Duidelijk, rustig en mobielvriendelijk</h3>
+              <p class="muted" style="line-height:1.6; margin:0;">
+                Antwoorden tik je makkelijk aan op je telefoon. Daarna zie je direct goed/fout + uitleg.
+              </p>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                <a class="btn btn--gold" href="examens.html">Start demo-examen</a>
+                <a class="btn btn--ghost" href="#pakketten">Bekijk pakketten</a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="pricing">
-          <!-- Recommended -->
-          <article class="plan plan--recommended" data-plan="31">
-            <div class="plan__badge">⭐ Aanbevolen</div>
-            <h3>31 dagen</h3>
-            <p class="plan__sub">Goedkoopste per dag</p>
-            <div class="plan__price"><span class="euro">€</span>50</div>
-
-            <ul class="plan__list">
-              <li>Volledige theoriecursus (Taxi)</li>
-              <li>Onbeperkt oefenexamens</li>
-              <li>Oefenen per thema</li>
-              <li>Timer, markeren, overzicht</li>
-              <li>Resultaten + foutenlijst</li>
-              <li>Uitleg bij elke vraag</li>
-            </ul>
-
-            <button class="btn btn--gold btn--full startBtn" data-days="31" type="button">Direct starten</button>
-            <p class="plan__note">Slechts <strong>€1,61</strong> per dag</p>
-          </article>
-
-          <article class="plan" data-plan="21">
-            <h3>21 dagen</h3>
-            <p class="plan__sub">Populair voor 3 weken leren</p>
-            <div class="plan__price"><span class="euro">€</span>40</div>
-
-            <ul class="plan__list">
-              <li>Volledige theoriecursus (Taxi)</li>
-              <li>Oefenexamens</li>
-              <li>Oefenen per thema</li>
-              <li>Resultaten + foutenlijst</li>
-              <li>Uitleg bij elke vraag</li>
-            </ul>
-
-            <button class="btn btn--ghost btn--full startBtn" data-days="21" type="button">Starten</button>
-            <p class="plan__note">€1,90 per dag</p>
-          </article>
-
-          <article class="plan" data-plan="7">
-            <h3>7 dagen</h3>
-            <p class="plan__sub">Snel herhalen</p>
-            <div class="plan__price"><span class="euro">€</span>25</div>
-
-            <ul class="plan__list">
-              <li>Volledige theoriecursus (Taxi)</li>
-              <li>Oefenexamens</li>
-              <li>Oefenen per thema</li>
-              <li>Uitleg bij elke vraag</li>
-            </ul>
-
-            <button class="btn btn--ghost btn--full startBtn" data-days="7" type="button">Starten</button>
-            <p class="plan__note">€3,57 per dag</p>
-          </article>
+    <!-- Features (3 rustige kaarten) -->
+    <section class="section">
+      <div class="container">
+        <div class="examWrap">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="feature">
+              <h3>Examens met timer</h3>
+              <p class="muted">Oefen zoals het echt voelt. Rustig scherm, duidelijke knoppen.</p>
+            </div>
+            <div class="feature">
+              <h3>Uitleg bij elke vraag</h3>
+              <p class="muted">Je leert sneller als je begrijpt waarom iets goed of fout is.</p>
+            </div>
+            <div class="feature">
+              <h3>Fouten terugzien</h3>
+              <p class="muted">Na het examen zie je je fouten met uitleg (perfect om te herhalen).</p>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="legalnote">
-          <p>
-            <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform. Niet verbonden aan het CBR.
-            Vragen, uitleg en visuals zijn eigen ontwikkeld.
+    <!-- Pakketten (super simpel, geen extra CSS nodig) -->
+    <section class="section" id="pakketten">
+      <div class="container">
+        <div class="examWrap">
+          <h2 style="margin-bottom:6px;">Kies je pakket</h2>
+          <p class="muted" style="line-height:1.6; margin-top:0; margin-bottom:14px;">
+            In de testfase sturen deze knoppen je direct door naar oefenen (zonder betaling).
           </p>
-        </div>
-      </div>
-    </section>
 
-    <!-- Zo werkt het -->
-    <section class="section" id="zo-werkt-het">
-      <div class="container">
-        <div class="section__head">
-          <h2>Zo werkt het</h2>
-          <p class="muted">In 3 stappen naar zekerheid.</p>
-        </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="feature">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                <div>
+                  <div class="chip" style="display:inline-block; margin-bottom:10px;">Aanbevolen</div>
+                  <h3 style="margin:0;">31 dagen toegang</h3>
+                  <p class="muted" style="margin:6px 0 0;">Beste waarde • €50</p>
+                </div>
+                <a class="btn btn--gold" href="examens.html">Direct starten</a>
+              </div>
+            </div>
 
-        <div class="steps">
-          <div class="step">
-            <div class="step__nr">1</div>
-            <h3>Kies je pakket</h3>
-            <p>7, 21 of 31 dagen toegang. Geen abonnement.</p>
+            <div class="feature">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                <div>
+                  <h3 style="margin:0;">21 dagen toegang</h3>
+                  <p class="muted" style="margin:6px 0 0;">€40</p>
+                </div>
+                <a class="btn btn--ghost" href="examens.html">Starten</a>
+              </div>
+            </div>
+
+            <div class="feature">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                <div>
+                  <h3 style="margin:0;">7 dagen toegang</h3>
+                  <p class="muted" style="margin:6px 0 0;">€25</p>
+                </div>
+                <a class="btn btn--ghost" href="examens.html">Starten</a>
+              </div>
+            </div>
+
+            <div class="feature">
+              <p class="muted" style="margin:0; line-height:1.6;">
+                <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
+                Vragen/visuals zijn eigen ontwikkeld.
+              </p>
+            </div>
           </div>
-          <div class="step">
-            <div class="step__nr">2</div>
-            <h3>Leer per module</h3>
-            <p>Heldere uitleg, voorbeelden en overzichtelijke thema’s.</p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <a class="btn btn--gold" href="examens.html">Ga naar examens</a>
           </div>
-          <div class="step">
-            <div class="step__nr">3</div>
-            <h3>Oefen examens</h3>
-            <p>Timer, markeren, overzicht en een foutenlijst om te herhalen.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="section__head">
-          <h2>FAQ</h2>
-          <p class="muted">Snelle antwoorden.</p>
-        </div>
-
-        <div class="faq">
-          <details class="faq__item">
-            <summary>Is dit een abonnement?</summary>
-            <p>Nee. Je koopt eenmalig toegang voor 7, 21 of 31 dagen.</p>
-          </details>
-
-          <details class="faq__item">
-            <summary>Wanneer krijg ik toegang?</summary>
-            <p>Direct na betaling. Je kunt meteen beginnen met leren en oefenen.</p>
-          </details>
-
-          <details class="faq__item">
-            <summary>Zijn dit officiële CBR vragen?</summary>
-            <p>Nee. Het materiaal is eigen ontwikkeld. Wel behandelen we dezelfde onderwerpen met realistische oefenvragen.</p>
-          </details>
-
-          <details class="faq__item">
-            <summary>Wat zit er in Taxi “alles”?</summary>
-            <p>Complete taxi theorie: verkeersregels, borden, inzicht/veiligheid en taxi-relevante situaties. Inclusief oefenexamens, thematrainers, uitleg en herhalen via foutenlijst.</p>
-          </details>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="container footer__grid">
-        <div>
-          <div class="footer__brand">
-            <img src="assets/geefgas.png" alt="GeefGas" />
-            <span>GeefGas</span>
+    <section class="section">
+      <div class="container">
+        <div class="examWrap">
+          <div class="feature">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="assets/geefgas.png" alt="GeefGas" style="height:28px; width:auto;" />
+              <strong>GeefGas</strong>
+            </div>
+            <p class="muted" style="margin:10px 0 0; line-height:1.6;">
+              Taxi nu • later meer categorieën. © <span id="year"></span>
+            </p>
           </div>
-          <p class="muted">Premium theorieplatform (Taxi nu, meer categorieën binnenkort).</p>
-        </div>
-
-        <div class="footer__links">
-          <a href="#pakketten">Pakketten</a>
-          <a href="#faq">FAQ</a>
-          <a href="#" onclick="alert('Plaats hier je privacybeleid pagina zodra je live gaat.'); return false;">Privacy</a>
-          <a href="#" onclick="alert('Plaats hier je algemene voorwaarden pagina zodra je live gaat.'); return false;">Voorwaarden</a>
-        </div>
-
-        <div class="footer__cta">
-          <p class="muted">Klaar om te starten?</p>
-          <a class="btn btn--gold" href="#pakketten">Direct starten</a>
         </div>
       </div>
-
-      <div class="container footer__bottom">
-        <span class="muted">© <span id="year"></span> GeefGas. Alle rechten voorbehouden.</span>
-      </div>
-    </footer>
-
-    <!-- Demo Modal -->
-    <dialog class="modal" id="demoModal" aria-label="Gratis demo">
-      <form method="dialog" class="modal__card">
-        <div class="modal__head">
-          <h3>Gratis demo</h3>
-          <button class="iconbtn" value="cancel" aria-label="Sluiten">✕</button>
-        </div>
-
-        <div class="modal__body">
-          <div class="demo">
-            <div class="demo__meta">
-              <span class="chip">Demo • 3 vragen</span>
-              <span class="timer timer--small" id="demoTimer">02:00</span>
-            </div>
-
-            <div class="demo__q" id="demoQuestion"></div>
-
-            <div class="answers" id="demoAnswers"></div>
-
-            <div class="demo__footer">
-              <span class="muted" id="demoProgress">Vraag 1 van 3</span>
-              <button class="btn btn--gold" id="demoNextBtn" type="button">Volgende</button>
-            </div>
-          </div>
-
-          <div class="demo__result" id="demoResult" hidden>
-            <h3>Demo afgerond</h3>
-            <p class="muted" id="demoScoreText"></p>
-            <div class="demo__resultActions">
-              <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
-              <button class="btn btn--ghost" id="demoRestartBtn" type="button">Opnieuw</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </dialog>
+    </section>
   </main>
 
   <script src="app.js"></script>
