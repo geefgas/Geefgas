@@ -2,40 +2,144 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Examens</title>
+  <meta name="description" content="Start oefenexamens voor taxi theorie met uitleg per vraag, timer en resultatenoverzicht." />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="index.html">
-      <img src="assets/geefgas.png" class="brand__logo">
+    <a class="brand" href="index.html" aria-label="GeefGas Home">
+      <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
       <span class="brand__name">GeefGas</span>
     </a>
-    <nav class="nav">
-      <a class="nav__link" href="index.html">Home</a>
-      <a class="nav__cta" href="examen.html">Start examen</a>
+
+    <nav class="nav" aria-label="Hoofdmenu">
+      <a class="nav__link" href="index.html#pakketten">Pakketten</a>
+      <a class="nav__link" href="examens.html">Examens</a>
+      <a class="nav__cta" href="examen.html">Start nu</a>
     </nav>
+
+    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobilemenu" id="mobileMenu" hidden>
+    <div class="container mobilemenu__inner">
+      <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
+      <a class="mobilemenu__link" href="examens.html">Examens</a>
+      <a class="mobilemenu__cta" href="examen.html">Start nu</a>
+    </div>
   </div>
 </header>
 
-<main class="section">
-  <div class="container">
-    <h2>Taxi Oefenexamens</h2>
-    <p class="muted">Klik hieronder om een volledig oefenexamen te starten.</p>
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="examWrap">
 
-    <div class="pricing">
-      <div class="plan plan--recommended">
-        <h3>Mix Examen</h3>
-        <p class="plan__sub">Test je kennis met meerdere onderwerpen</p>
-        <div class="plan__price">5 vragen (test)</div>
-        <a href="examen.html" class="btn btn--gold btn--full">Start examen</a>
+        <div class="feature">
+          <h2 style="margin-bottom:6px;">Kies je oefenexamen</h2>
+          <p class="muted" style="margin:0; line-height:1.6;">
+            Rustig oefenen zoals het echt voelt. Na elke vraag zie je goed/fout + uitleg.
+            Na afloop krijg je je fouten met uitleg terug.
+          </p>
+        </div>
+
+        <div class="examList">
+
+          <!-- EXAMEN 1 -->
+          <article class="examBlock">
+            <div class="examBlock__top">
+              <div>
+                <div class="chip">Aanbevolen</div>
+                <h3 style="margin:10px 0 6px;">Taxi Mix Examen</h3>
+                <p class="muted" style="margin:0; line-height:1.6;">
+                  Een volledige mix van onderwerpen (voorrang, borden, veiligheid, taxi-situaties).
+                </p>
+              </div>
+              <a class="btn btn--gold examBlock__cta" href="examen.html">Start examen</a>
+            </div>
+
+            <div class="examBlock__what">
+              <div class="examBlock__item">⏱️ Timer (5 min)</div>
+              <div class="examBlock__item">✅ Direct feedback + uitleg</div>
+              <div class="examBlock__item">📌 Vorige/Volgende</div>
+              <div class="examBlock__item">📊 Resultaat + foutenoverzicht</div>
+            </div>
+
+            <div class="examBlock__note muted">
+              Testversie: nu 5 vragen. Later wordt dit 40 vragen per examen + meerdere varianten.
+            </div>
+          </article>
+
+          <!-- EXAMEN 2 -->
+          <article class="examBlock">
+            <div class="examBlock__top">
+              <div>
+                <div class="chip">Thema</div>
+                <h3 style="margin:10px 0 6px;">Voorrang & Kruispunten</h3>
+                <p class="muted" style="margin:0; line-height:1.6;">
+                  Focus op voorrang, rotondes en kruispunten. Ideaal als dit je zwakke punt is.
+                </p>
+              </div>
+              <a class="btn btn--ghost examBlock__cta" href="examen.html">Start</a>
+            </div>
+
+            <div class="examBlock__what">
+              <div class="examBlock__item">🎯 Gericht oefenen</div>
+              <div class="examBlock__item">✅ Uitleg per vraag</div>
+              <div class="examBlock__item">🧠 Sneller begrijpen</div>
+              <div class="examBlock__item">📊 Fouten herhalen</div>
+            </div>
+
+            <div class="examBlock__note muted">
+              (Volgende stap) We koppelen dit aan echte themasets zodra we meer vragen toevoegen.
+            </div>
+          </article>
+
+          <!-- EXAMEN 3 -->
+          <article class="examBlock">
+            <div class="examBlock__top">
+              <div>
+                <div class="chip">Thema</div>
+                <h3 style="margin:10px 0 6px;">Verkeersborden & Markeringen</h3>
+                <p class="muted" style="margin:0; line-height:1.6;">
+                  Bordherkenning, betekenis en wegmarkeringen. Met duidelijke visuals.
+                </p>
+              </div>
+              <a class="btn btn--ghost examBlock__cta" href="examen.html">Start</a>
+            </div>
+
+            <div class="examBlock__what">
+              <div class="examBlock__item">🪧 Borden uitleg</div>
+              <div class="examBlock__item">🛣️ Markeringen</div>
+              <div class="examBlock__item">✅ Feedback + uitleg</div>
+              <div class="examBlock__item">📊 Overzicht achteraf</div>
+            </div>
+
+            <div class="examBlock__note muted">
+              (Volgende stap) Hier zetten we “borden trainer” en “markeringen trainer” onder.
+            </div>
+          </article>
+
+        </div>
+
+        <div class="feature">
+          <p class="muted" style="margin:0; line-height:1.6;">
+            <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
+            Vragen/visuals zijn eigen ontwikkeld.
+          </p>
+        </div>
+
       </div>
     </div>
-  </div>
+  </section>
 </main>
 
+<script src="app.js"></script>
 </body>
 </html>
-
