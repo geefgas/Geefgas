@@ -31,7 +31,6 @@
           </div>
 
           <h3 id="questionText" style="margin:0 0 10px;">Laden…</h3>
-
           <div id="answers" class="answers"></div>
 
           <div id="explainBox" class="explain" hidden>
@@ -56,32 +55,27 @@
 
 <script>
 (function(){
-  if (typeof EXAM_SETS === "undefined" || typeof EXAM_QUESTIONS === "undefined") {
-    alert("Exam data ontbreekt. Controleer exam-data.js");
-    return;
-  }
-
   const PASS_PERCENT = 0.80;
 
   const examSetId = localStorage.getItem("gg_examSet") || "taxi_examen_v1";
-  const set = EXAM_SETS[examSetId] || EXAM_SETS.taxi_examen_v1;
+  const set = (typeof EXAM_SETS !== "undefined" && EXAM_SETS[examSetId]) ? EXAM_SETS[examSetId] : null;
+  if (!set) { alert("Examenset niet gevonden."); return; }
 
-  const revealMode = localStorage.getItem("gg_revealMode") || "instant"; // instant | after
+  const revealMode = localStorage.getItem("gg_revealMode") || "instant";
   const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-  const voiceName = localStorage.getItem("gg_voiceName") || "";
+  const voiceName  = localStorage.getItem("gg_voiceName") || "";
 
   const questions = set.questionIds.map(getQuestionById).filter(Boolean);
   const total = questions.length;
 
-  const requiredCorrect = total > 0 ? Math.ceil(total * PASS_PERCENT) : 0;
-  const maxMistakes = total > 0 ? (total - requiredCorrect) : 0;
+  const requiredCorrect = Math.ceil(total * PASS_PERCENT);
+  const maxMistakes = total - requiredCorrect;
 
   const attempt = questions.map(q => ({ id: q.id, chosen: null, correct: q.correct }));
 
   let index = 0;
   let time = set.durationSec || 1500;
 
-  // UI
   const examTitle = document.getElementById("examTitle");
   const timerEl = document.getElementById("timer");
   const qImage = document.getElementById("qImage");
@@ -105,7 +99,6 @@
       ? `Mode: direct feedback. Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`
       : `Mode: antwoorden pas na examen. Norm: ${requiredCorrect}/${total} goed (max ${maxMistakes} fouten).`;
 
-  // Timer
   function formatTime(sec){
     const m = String(Math.floor(sec / 60)).padStart(2, "0");
     const s = String(sec % 60).padStart(2, "0");
@@ -119,24 +112,32 @@
     if (time <= 0) finishExam();
   }, 1000);
 
-  // TTS
+  function bestVoice(voices){
+    const nl = voices.filter(v => (v.lang || "").toLowerCase().includes("nl"));
+    const list = nl.length ? nl : voices;
+    const prefs = ["siri", "enhanced", "premium", "natural", "neural"];
+    for (const p of prefs) {
+      const found = list.find(v => (v.name || "").toLowerCase().includes(p));
+      if (found) return found;
+    }
+    return list[0] || null;
+  }
+
   function speak(text){
     if (!ttsEnabled) return;
     if (!("speechSynthesis" in window)) return;
+
+    const voices = window.speechSynthesis.getVoices() || [];
     window.speechSynthesis.cancel();
 
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
-    u.rate = 1.0;
-    u.pitch = 1.0;
+    u.rate = 0.95;  // rustiger = minder robot
+    u.pitch = 1.05;
 
-    const voices = window.speechSynthesis.getVoices() || [];
-    const preferred =
-      voices.find(v => v.name === voiceName) ||
-      voices.find(v => (v.lang || "").toLowerCase().includes("nl")) ||
-      null;
-
+    const preferred = voices.find(v => v.name === voiceName) || bestVoice(voices);
     if (preferred) u.voice = preferred;
+
     window.speechSynthesis.speak(u);
   }
 
@@ -145,7 +146,6 @@
     const lettered = q.answers.map((a,i)=> `${String.fromCharCode(65+i)}. ${a}`).join(". ");
     speak(`${q.question}. Antwoorden: ${lettered}.`);
   }
-
   readBtn.addEventListener("click", speakCurrent);
 
   function render(){
@@ -155,7 +155,7 @@
     progress.textContent = `Vraag ${index + 1} van ${total}`;
 
     qImage.src = q.image || "";
-    qImage.alt = q.category ? `Visual bij vraag (${q.category})` : "Visual bij vraag";
+    qImage.alt = "Visual bij vraag";
     qImage.style.display = "block";
 
     questionText.textContent = q.question;
