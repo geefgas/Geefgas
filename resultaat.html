@@ -31,7 +31,7 @@
 
     <section class="card" id="reviewPanel">
       <h3 style="margin:0 0 10px;">Fouten + uitleg</h3>
-      <div id="reviewList" class="reviewList"></div>
+      <div id="reviewList"></div>
     </section>
 
     <section class="card">
@@ -46,69 +46,134 @@
 
 <script>
 (function(){
-  const PASS_PERCENT = 0.80;
+  function esc(s){
+    return String(s || "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
 
-  const score = Number(localStorage.getItem("gg_score_v2") || "0");
-  const total = Number(localStorage.getItem("gg_total_v2") || "0");
-  const title = localStorage.getItem("gg_examSetTitle_v2") || "Examen";
-  const mode  = localStorage.getItem("gg_revealMode_v2") || "instant";
+  // ---- Nieuw formaat (uit onze nieuwe examen.html) ----
+  let result = null;
+  try {
+    const raw = localStorage.getItem("gg_result");
+    if (raw) result = JSON.parse(raw);
+  } catch(e){ result = null; }
 
-  const requiredCorrect = total > 0 ? Math.ceil(total * PASS_PERCENT) : 0;
-  const maxMistakes = total > 0 ? (total - requiredCorrect) : 0;
-  const passed = total > 0 && score >= requiredCorrect;
+  // Fallback: als er nog oude keys bestaan (voor het geval dat)
+  // (We tonen dan "Geen score gevonden" i.p.v. crash)
+  const mode = localStorage.getItem("gg_revealMode") || "instant";
 
-  document.getElementById("resultText").textContent =
-    `${title} • Score: ${score} van ${total}` +
+  const resultText = document.getElementById("resultText");
+  const passBox = document.getElementById("passBox");
+  const reviewPanel = document.getElementById("reviewPanel");
+  const reviewList = document.getElementById("reviewList");
+
+  if (!result || !result.total) {
+    resultText.textContent = "Geen resultaat gevonden. Start opnieuw een examen.";
+    passBox.innerHTML = "<strong>Geen score gevonden.</strong><br>Ga terug naar examens en start opnieuw.";
+    reviewPanel.style.display = "none";
+    return;
+  }
+
+  const examId = result.examId || "";
+  const title = result.title || "Examen";
+  const total = Number(result.total || 0);
+  const passMinCorrect = Number(result.passMinCorrect || Math.ceil(total * 0.8));
+  const correctCount = Number(result.correctCount || 0);
+  const maxMistakes = total - passMinCorrect;
+  const passed = correctCount >= passMinCorrect;
+
+  resultText.textContent =
+    `${title} • Score: ${correctCount} van ${total}` +
     (mode === "after" ? " • Antwoorden pas na examen" : " • Directe feedback");
 
-  const passBox = document.getElementById("passBox");
-  if (total === 0) {
-    passBox.innerHTML = `<strong>Geen score gevonden.</strong> Start opnieuw een examen.`;
-  } else if (passed) {
+  if (passed) {
     passBox.innerHTML =
       `<strong>✅ Geslaagd!</strong><br>` +
-      `Minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Minimaal <strong>${passMinCorrect}</strong> goed nodig. ` +
       `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   } else {
     passBox.innerHTML =
       `<strong>❌ Gezakt</strong><br>` +
-      `Minimaal <strong>${requiredCorrect}</strong> goed nodig (${Math.round(PASS_PERCENT*100)}%). ` +
+      `Minimaal <strong>${passMinCorrect}</strong> goed nodig. ` +
       `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   }
 
-  const raw = localStorage.getItem("gg_attempt_v2");
-  const list = document.getElementById("reviewList");
-  const panel = document.getElementById("reviewPanel");
+  // ---- Vragen opzoeken in EXAM_DATA ----
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const exam = exams.find(e => e.id === examId) || null;
 
-  if (!raw) { panel.style.display = "none"; return; }
-
-  const attempt = JSON.parse(raw);
-  const wrong = attempt.filter(a => a.chosen !== null && a.chosen !== a.correct);
-
-  if (!wrong.length) {
-    list.innerHTML = `<div class="reviewItem"><div class="reviewQ">Top! 🎉 Alles goed.</div><div class="reviewA">Blijf dit herhalen om het vast te houden.</div></div>`;
+  // Als exam niet gevonden, toon alleen score
+  if (!exam || !Array.isArray(exam.questions)) {
+    reviewPanel.style.display = "none";
     return;
   }
 
-  wrong.forEach(w => {
-    const q = (typeof getQuestionById === "function") ? getQuestionById(w.id) : null;
-    if (!q) return;
+  // Maak snelle lookup
+  const qMap = new Map();
+  exam.questions.forEach(q => qMap.set(String(q.id), q));
 
-    const chosenText = (w.chosen === null) ? "(geen)" : (q.answers[w.chosen] || "(onbekend)");
-    const correctText = q.answers[q.correct] || "(onbekend)";
+  const attempt = Array.isArray(result.attempt) ? result.attempt : [];
+  const wrong = attempt
+    .map(a => {
+      const q = qMap.get(String(a.id));
+      if (!q) return null;
+      const chosen = (typeof a.chosen === "number") ? a.chosen : null;
+      const correctIndex = (typeof q.correctIndex === "number") ? q.correctIndex : (typeof a.correctIndex === "number" ? a.correctIndex : null);
+      const isWrong = (chosen === null) ? true : (correctIndex !== null && chosen !== correctIndex);
+      return { a, q, chosen, correctIndex, isWrong };
+    })
+    .filter(x => x && x.isWrong);
 
-    const el = document.createElement("div");
-    el.className = "reviewItem";
-    el.innerHTML = `
-      <div class="reviewQ">${q.question}</div>
-      <div class="reviewA">
-        <div><strong>Jouw antwoord:</strong> <span class="badText">${chosenText}</span></div>
-        <div><strong>Goed antwoord:</strong> <span class="goodText">${correctText}</span></div>
-        <div style="margin-top:10px;"><strong>Uitleg:</strong> ${q.explanation || ""}</div>
+  if (!wrong.length) {
+    reviewList.innerHTML = `
+      <div style="border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:14px; background:#fff;">
+        <div style="font-weight:950; margin-bottom:6px;">Top! 🎉 Alles goed.</div>
+        <div class="muted" style="line-height:1.6;">Blijf herhalen om het vast te houden.</div>
       </div>
     `;
-    list.appendChild(el);
+    return;
+  }
+
+  // Render foutenlijst
+  reviewList.innerHTML = "";
+  wrong.forEach((item, idx) => {
+    const q = item.q;
+    const chosen = item.chosen;
+    const correctIndex = item.correctIndex;
+
+    const chosenText =
+      (chosen === null) ? "(geen antwoord)" :
+      (Array.isArray(q.options) && q.options[chosen]) ? q.options[chosen] : "(onbekend)";
+
+    const correctText =
+      (correctIndex === null) ? "(onbekend)" :
+      (Array.isArray(q.options) && q.options[correctIndex]) ? q.options[correctIndex] : "(onbekend)";
+
+    const block = document.createElement("div");
+    block.style.border = "1px solid rgba(16,19,26,.12)";
+    block.style.borderRadius = "16px";
+    block.style.padding = "14px";
+    block.style.background = "#fff";
+    block.style.marginBottom = "12px";
+
+    block.innerHTML = `
+      <div style="font-weight:950; margin-bottom:6px;">Vraag ${idx + 1}</div>
+      <div style="font-weight:900; line-height:1.55; margin-bottom:10px;">${esc(q.prompt)}</div>
+
+      <div style="line-height:1.6;">
+        <div><strong>Jouw antwoord:</strong> <span style="color:#b42318; font-weight:900;">${esc(chosenText)}</span></div>
+        <div><strong>Goed antwoord:</strong> <span style="color:#067647; font-weight:900;">${esc(correctText)}</span></div>
+        ${q.explanation ? `<div style="margin-top:10px;"><strong>Uitleg:</strong> <span class="muted" style="font-weight:750;">${esc(q.explanation)}</span></div>` : ""}
+      </div>
+    `;
+
+    reviewList.appendChild(block);
   });
+
 })();
 </script>
 
