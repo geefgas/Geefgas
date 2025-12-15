@@ -22,14 +22,11 @@
 
     <section class="examCard">
 
-      <!-- VISUAL -->
       <div class="examMedia">
-        <img id="qImage" src="assets/placeholder.jpg" alt="Visual bij vraag">
+        <img id="qImage" src="assets/placeholder.jpg" alt="Afbeelding bij vraag">
       </div>
 
-      <!-- CONTENT -->
       <div class="examBody">
-
         <div class="examMeta">
           <span class="chip" id="categoryChip">Categorie</span>
           <span class="muted" id="progress">Vraag 1 van 40</span>
@@ -53,8 +50,8 @@
         </div>
 
         <p class="muted" id="modeHint" style="margin-top:12px;"></p>
-
       </div>
+
     </section>
 
   </div>
@@ -62,38 +59,39 @@
 
 <script>
 (function(){
+  const revealMode = localStorage.getItem("gg_revealMode") || "instant";
+  const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
+
   const examId = localStorage.getItem("gg_examId") || "examen-1";
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => e.id === examId);
 
   if (!exam) {
     alert("Examen niet gevonden. Controleer exam-data.js");
+    window.location.href = "examens.html";
     return;
   }
 
-  const revealMode = localStorage.getItem("gg_revealMode") || "instant";
-  const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-
-  const PASS_MIN = typeof exam.passMinCorrect === "number" ? exam.passMinCorrect : Math.ceil((exam.questions.length || 0) * 0.8);
-
-  const questions = (exam.questions || []).filter(q => q && q.type === "mcq");
+  const questions = Array.isArray(exam.questions) ? exam.questions : [];
   if (!questions.length) {
-    alert("Geen (mcq) vragen gevonden in dit examen.");
+    alert("Geen vragen in dit examen.");
+    window.location.href = "examens.html";
     return;
   }
 
   const total = questions.length;
-  const maxMistakes = total - PASS_MIN;
+  const passMinCorrect = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
+  const maxMistakes = total - passMinCorrect;
 
   let index = 0;
-  let time = (exam.durationMinutes ? exam.durationMinutes * 60 : 1800);
+  let time = Number(exam.durationMinutes || 30) * 60;
 
   const attempt = questions.map(q => ({
     id: q.id,
-    chosen: null,
-    correctIndex: q.correctIndex
+    chosen: null
   }));
 
+  // Elements
   const examTitle   = document.getElementById("examTitle");
   const timerEl     = document.getElementById("timer");
   const qImage      = document.getElementById("qImage");
@@ -101,11 +99,9 @@
   const answersDiv  = document.getElementById("answers");
   const progressEl  = document.getElementById("progress");
   const categoryEl  = document.getElementById("categoryChip");
-
   const explainBox  = document.getElementById("explainBox");
   const explainTit  = document.getElementById("explainTitle");
   const explainTxt  = document.getElementById("explainText");
-
   const prevBtn     = document.getElementById("prevBtn");
   const nextBtn     = document.getElementById("nextBtn");
   const readBtn     = document.getElementById("readBtn");
@@ -114,16 +110,16 @@
   examTitle.textContent = `GeefGas – ${exam.title}`;
   modeHint.textContent =
     revealMode === "instant"
-      ? `Mode: directe feedback • Norm: ${PASS_MIN}/${total} goed (max ${maxMistakes} fouten)`
-      : `Mode: antwoorden pas na examen • Norm: ${PASS_MIN}/${total} goed (max ${maxMistakes} fouten)`;
+      ? `Mode: directe feedback • Norm: ${passMinCorrect}/${total} goed (max ${maxMistakes} fouten)`
+      : `Mode: antwoorden pas na examen • Norm: ${passMinCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
   function formatTime(sec){
     const m = String(Math.floor(sec / 60)).padStart(2,"0");
     const s = String(sec % 60).padStart(2,"0");
     return `${m}:${s}`;
   }
-  timerEl.textContent = formatTime(time);
 
+  timerEl.textContent = formatTime(time);
   const timer = setInterval(() => {
     time--;
     if (time < 0) time = 0;
@@ -131,46 +127,10 @@
     if (time <= 0) finishExam();
   }, 1000);
 
-  function buildImageCandidates(rawPath){
-    const candidates = [];
-    const cacheBust = `?v=${Date.now()}`;
-
-    function add(p){
-      if (!p) return;
-      const clean = p.replace(/\?.*$/, "");
-      if (!candidates.includes(clean)) candidates.push(clean);
-    }
-
-    add(rawPath);
-
-    // Extra fallbacks voor hoofdletter/ext varianten
-    const base = (rawPath || "").split("/").pop() || "";
-    const dot = base.lastIndexOf(".");
-    const name = dot > -1 ? base.slice(0, dot) : base;
-
-    const exts = ["jpg","JPG","jpeg","JPEG","png","PNG","webp","WEBP"];
-
-    for (const ext of exts) add(`assets/examen1/${name}.${ext}`);
-    for (const ext of exts) add(`assets/examen2/${name}.${ext}`);
-    for (const ext of exts) add(`assets/${name}.${ext}`);
-
-    return candidates.map(p => p + cacheBust);
-  }
-
-  function setImageWithFallback(rawPath){
-    const candidates = buildImageCandidates(rawPath || "");
-    let i = 0;
-
-    function tryNext(){
-      if (i >= candidates.length) {
-        qImage.src = "assets/placeholder.jpg";
-        return;
-      }
-      qImage.src = candidates[i++];
-    }
-
-    qImage.onerror = tryNext;
-    tryNext();
+  function setImage(raw){
+    // simpele fallback: als ontbreekt -> placeholder
+    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
+    qImage.src = raw || "assets/placeholder.jpg";
   }
 
   function render(){
@@ -179,8 +139,7 @@
     categoryEl.textContent = q.category || exam.category || "Examen";
     progressEl.textContent = `Vraag ${index + 1} van ${total}`;
     questionTxt.textContent = q.prompt || "";
-
-    setImageWithFallback(q.image);
+    setImage(q.image);
 
     prevBtn.disabled = index === 0;
     nextBtn.textContent = index === total - 1 ? "Afronden" : "Volgende";
@@ -229,9 +188,11 @@
     if (!ttsEnabled || !("speechSynthesis" in window)) return;
     const q = questions[index];
     const text = (q.prompt || "") + ". " + (q.options || []).join(". ");
+
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
     u.rate = 0.95;
+
     speechSynthesis.cancel();
     speechSynthesis.speak(u);
   };
@@ -251,20 +212,23 @@
   function finishExam(){
     clearInterval(timer);
 
-    const correctCount = attempt.reduce((acc, a, i) => {
-      const q = questions[i];
-      return acc + (a.chosen === q.correctIndex ? 1 : 0);
-    }, 0);
+    let correctCount = 0;
+    attempt.forEach(a => {
+      const q = questions.find(x => x.id === a.id);
+      if (!q) return;
+      if (a.chosen !== null && a.chosen === q.correctIndex) correctCount++;
+    });
 
-    localStorage.setItem("gg_result", JSON.stringify({
+    const payload = {
       examId: exam.id,
       title: exam.title,
       total,
-      passMinCorrect: PASS_MIN,
+      passMinCorrect,
       correctCount,
       attempt
-    }));
+    };
 
+    localStorage.setItem("gg_result", JSON.stringify(payload));
     window.location.href = "resultaat.html";
   }
 
