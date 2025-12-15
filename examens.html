@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Examens</title>
-  <link rel="stylesheet" href="styles.css?v=9999">
+  <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
 
@@ -20,7 +20,7 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start Examen 1</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start</a>
     </nav>
   </div>
 </header>
@@ -31,7 +31,7 @@
     <section class="card">
       <h2 style="margin:0 0 6px;">Examens</h2>
       <p class="muted" style="margin:0; line-height:1.6;">
-        Kies je examen en start direct. Instellingen gelden voor alle examens.
+        Kies je examen. Je kunt instellen of je antwoorden meteen ziet of pas na afloop.
       </p>
     </section>
 
@@ -53,7 +53,7 @@
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
           <div>
             <div style="font-weight:950;">Voorlezen</div>
-            <div class="muted" style="margin-top:2px;">Gebruik NL-stem van je toestel.</div>
+            <div class="muted" style="margin-top:2px;">Gebruikt de beste NL-stem van je toestel.</div>
           </div>
           <label style="display:flex; align-items:center; gap:10px; font-weight:900;">
             <input type="checkbox" id="ttsEnabled" style="width:20px; height:20px;">
@@ -64,14 +64,14 @@
 
     <section class="card">
       <h3 style="margin:0 0 6px;">Examen 1</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • verkeer • basisregels</p>
-      <button class="btn btn--primary" id="startExam1" type="button" style="margin-top:14px;">Start Examen 1</button>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • 30 min • Auto (verkeer & situaties)</p>
+      <button class="btn btn--primary" id="startE1" type="button" style="margin-top:14px;">Start Examen 1</button>
     </section>
 
     <section class="card">
       <h3 style="margin:0 0 6px;">Taxi Examen 2</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • taxipas • vergunningen • KIWA • BCT • rusttijden</p>
-      <button class="btn btn--primary" id="startExam2" type="button" style="margin-top:14px;">Start Taxi Examen 2</button>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • 30 min • Taxi (taxipas, BCT, KIWA, rusttijden)</p>
+      <button class="btn btn--primary" id="startE2" type="button" style="margin-top:14px;">Start Examen 2</button>
     </section>
 
   </div>
@@ -93,13 +93,9 @@
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startExam1").addEventListener("click", ()=> start("examen-1"));
-  document.getElementById("startExam2").addEventListener("click", ()=> start("examen-2"));
-
-  document.getElementById("startTopBtn").addEventListener("click", (e)=>{
-    e.preventDefault();
-    start("examen-1");
-  });
+  document.getElementById("startE1").addEventListener("click", ()=> start("examen-1"));
+  document.getElementById("startE2").addEventListener("click", ()=> start("examen-2"));
+  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); start("examen-1"); });
 })();
 </script>
 
