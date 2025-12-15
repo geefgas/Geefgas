@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeefGas – Taxi examens</title>
+  <title>GeefGas – Examens</title>
   <link rel="stylesheet" href="styles.css?v=9999">
   <script src="exam-data.js"></script>
-  <script src="image-prompts.js"></script>
 </head>
 
 <body class="theme">
@@ -21,7 +20,7 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start examen</a>
+      <a class="nav__cta" href="#" id="startTopBtn">Start Examen 1</a>
     </nav>
   </div>
 </header>
@@ -30,14 +29,10 @@
   <div class="container page__inner">
 
     <section class="card">
-      <h2 style="margin:0 0 6px;">Taxi examens</h2>
+      <h2 style="margin:0 0 6px;">Examens</h2>
       <p class="muted" style="margin:0; line-height:1.6;">
-        Kies je examen. Je kan ook meteen alle AI-foto prompts exporteren (NL + GeefGas taxi).
+        Kies je examen en start direct. Instellingen gelden voor alle examens.
       </p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
-        <a class="btn btn--ghost" href="prompts.html">📸 Foto-prompts exporteren</a>
-        <a class="btn btn--gold" href="examens.html" id="reloadBtn">↻ Herladen</a>
-      </div>
     </section>
 
     <section class="card">
@@ -58,7 +53,7 @@
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
           <div>
             <div style="font-weight:950;">Voorlezen</div>
-            <div class="muted" style="margin-top:2px;">Gebruik NL-stem van je toestel (beste stem wordt automatisch gekozen).</div>
+            <div class="muted" style="margin-top:2px;">Gebruik NL-stem van je toestel.</div>
           </div>
           <label style="display:flex; align-items:center; gap:10px; font-weight:900;">
             <input type="checkbox" id="ttsEnabled" style="width:20px; height:20px;">
@@ -67,18 +62,16 @@
       </div>
     </section>
 
-    <!-- ✅ Nog maar 1 examen (A: oude 2 examens verwijderd) -->
     <section class="card">
       <h3 style="margin:0 0 6px;">Examen 1</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">
-        40 vragen • timer • examengericht • uitleg per vraag
-      </p>
-      <button class="btn btn--primary" id="startExam1" type="button" style="margin-top:14px;">
-        Start Examen 1
-      </button>
-      <p class="muted" style="margin:10px 0 0; line-height:1.6;">
-        Norm: minimaal <strong>32/40</strong> goed (max 8 fouten).
-      </p>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • verkeer • basisregels</p>
+      <button class="btn btn--primary" id="startExam1" type="button" style="margin-top:14px;">Start Examen 1</button>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0 0 6px;">Taxi Examen 2</h3>
+      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • taxipas • vergunningen • KIWA • BCT • rusttijden</p>
+      <button class="btn btn--primary" id="startExam2" type="button" style="margin-top:14px;">Start Taxi Examen 2</button>
     </section>
 
   </div>
@@ -95,16 +88,18 @@
   revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
   ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
 
-  // ✅ A: altijd alleen Examen 1 starten
-  function startExam1(){
-    // We gebruiken jouw bestaande key zodat examen.html niets breekt
-    localStorage.setItem("gg_examSet", "taxi_v1");
+  function start(examId){
+    localStorage.setItem("gg_examId", examId);
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startExam1").addEventListener("click", startExam1);
-  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); startExam1(); });
-  document.getElementById("reloadBtn").addEventListener("click", (e)=>{ e.preventDefault(); location.reload(); });
+  document.getElementById("startExam1").addEventListener("click", ()=> start("examen-1"));
+  document.getElementById("startExam2").addEventListener("click", ()=> start("examen-2"));
+
+  document.getElementById("startTopBtn").addEventListener("click", (e)=>{
+    e.preventDefault();
+    start("examen-1");
+  });
 })();
 </script>
 
