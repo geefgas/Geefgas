@@ -21,6 +21,17 @@
       <a class="nav__link" href="examens.html">Examens</a>
       <a class="nav__cta" href="examens.html">Nieuw examen</a>
     </nav>
+
+    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobilemenu" id="mobileMenu" hidden>
+    <div class="container mobilemenu__inner">
+      <a class="mobilemenu__link" href="examens.html">Examens</a>
+      <a class="mobilemenu__cta" href="examens.html">Nieuw examen</a>
+    </div>
   </div>
 </header>
 
@@ -89,6 +100,7 @@
   </div>
 </main>
 
+<script src="app.js"></script>
 <script>
 (function(){
   function esc(s){
@@ -124,6 +136,7 @@
     passBox.innerHTML = "<strong>Geen score gevonden.</strong><br>Ga terug naar examens en start opnieuw.";
     reviewPanel.style.display = "none";
     retryBtn.disabled = true;
+    wrongCountPill.textContent = "—";
     return;
   }
 
@@ -173,6 +186,7 @@
 
   if (!exam || !Array.isArray(exam.questions)) {
     reviewPanel.style.display = "none";
+    wrongCountPill.textContent = "—";
     return;
   }
 
