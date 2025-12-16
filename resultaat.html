@@ -55,15 +55,13 @@
       .replaceAll("'","&#039;");
   }
 
-  // ---- Nieuw formaat (uit onze nieuwe examen.html) ----
+  // ---- Resultaat ophalen ----
   let result = null;
   try {
     const raw = localStorage.getItem("gg_result");
     if (raw) result = JSON.parse(raw);
   } catch(e){ result = null; }
 
-  // Fallback: als er nog oude keys bestaan (voor het geval dat)
-  // (We tonen dan "Geen score gevonden" i.p.v. crash)
   const mode = localStorage.getItem("gg_revealMode") || "instant";
 
   const resultText = document.getElementById("resultText");
@@ -86,9 +84,16 @@
   const maxMistakes = total - passMinCorrect;
   const passed = correctCount >= passMinCorrect;
 
+  // ---- Examen opzoeken in EXAM_DATA (voor categorie + vragen) ----
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const exam = exams.find(e => e.id === examId) || null;
+  const examCategory = (exam && exam.category) ? exam.category : (result.category || "");
+
+  const modeLabel = (mode === "after") ? "Antwoorden pas na examen" : "Directe feedback";
+  const catLabel = examCategory ? ` • ${examCategory}` : "";
+
   resultText.textContent =
-    `${title} • Score: ${correctCount} van ${total}` +
-    (mode === "after" ? " • Antwoorden pas na examen" : " • Directe feedback");
+    `${title}${catLabel} • Score: ${correctCount} van ${total} • ${modeLabel}`;
 
   if (passed) {
     passBox.innerHTML =
@@ -102,17 +107,13 @@
       `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   }
 
-  // ---- Vragen opzoeken in EXAM_DATA ----
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-  const exam = exams.find(e => e.id === examId) || null;
-
   // Als exam niet gevonden, toon alleen score
   if (!exam || !Array.isArray(exam.questions)) {
     reviewPanel.style.display = "none";
     return;
   }
 
-  // Maak snelle lookup
+  // Lookup vragen op id
   const qMap = new Map();
   exam.questions.forEach(q => qMap.set(String(q.id), q));
 
@@ -121,9 +122,14 @@
     .map(a => {
       const q = qMap.get(String(a.id));
       if (!q) return null;
+
       const chosen = (typeof a.chosen === "number") ? a.chosen : null;
-      const correctIndex = (typeof q.correctIndex === "number") ? q.correctIndex : (typeof a.correctIndex === "number" ? a.correctIndex : null);
+      const correctIndex = (typeof q.correctIndex === "number")
+        ? q.correctIndex
+        : ((typeof a.correctIndex === "number") ? a.correctIndex : null);
+
       const isWrong = (chosen === null) ? true : (correctIndex !== null && chosen !== correctIndex);
+
       return { a, q, chosen, correctIndex, isWrong };
     })
     .filter(x => x && x.isWrong);
@@ -138,9 +144,9 @@
     return;
   }
 
-  // Render foutenlijst
+  // Render foutenlijst (met ECHT vraagnr uit het examen)
   reviewList.innerHTML = "";
-  wrong.forEach((item, idx) => {
+  wrong.forEach((item) => {
     const q = item.q;
     const chosen = item.chosen;
     const correctIndex = item.correctIndex;
@@ -161,7 +167,7 @@
     block.style.marginBottom = "12px";
 
     block.innerHTML = `
-      <div style="font-weight:950; margin-bottom:6px;">Vraag ${idx + 1}</div>
+      <div style="font-weight:950; margin-bottom:6px;">Vraag ${esc(q.id)} (examen)</div>
       <div style="font-weight:900; line-height:1.55; margin-bottom:10px;">${esc(q.prompt)}</div>
 
       <div style="line-height:1.6;">
