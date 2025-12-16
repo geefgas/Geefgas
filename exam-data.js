@@ -793,7 +793,7 @@ const TAXI_EXAMEN_12 = {
 
 const TAXI_EXAMEN_13 = {
   id: "taxi-examen-13",
-  title: "Taxi Examen 13 – Veiligheid, PAMAN & noodsituaties",
+  title: "Taxi Examen 13 – PAMAN",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
