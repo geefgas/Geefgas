@@ -916,7 +916,7 @@ const TAXI_EXAMEN_14 = {
 
    /* =========================
    TAXI EXAMEN 15
-   Onderwerp: Klantservice, klachten, communicatie, betaling, bon/factuur & nazorg
+   Onderwerp: Klantenservice, klachten, communicatie, betaling, bon/factuur & nazorg
    ========================= */
 
 const TAXI_EXAMEN_15 = {
@@ -927,11 +927,11 @@ const TAXI_EXAMEN_15 = {
   passMinCorrect: 32,
   questions: [
 
-    q(1,"Klantservice","Wat is het belangrijkste doel van goede klantservice in taxiwerk?",["Meer fooi","Veilig, prettig en betrouwbaar vervoer","Zo snel mogelijk klaar zijn"],1),
-    q(2,"Klantservice","Wat is een professioneel begin van elke rit?",["Direct wegrijden","Bestemming bevestigen en rustig starten","Eerst bellen"],1),
-    q(3,"Klantservice","Waarom is een rustige houding belangrijk?",["Voor imago","Om escalatie en stress te voorkomen","Omdat klanten dat eisen"],1),
-    q(4,"Klantservice","Wat is onprofessioneel klantgedrag van de chauffeur?",["Luisteren","Sarcastisch reageren","Duidelijk uitleggen"],1),
-    q(5,"Klantservice","Hoe ga je om met een ongeduldige klant?",["Negeren","Rustig blijven en professioneel communiceren","Terug snauwen"],1),
+    q(1,"Klantenservice","Wat is het belangrijkste doel van goede klantservice in taxiwerk?",["Meer fooi","Veilig, prettig en betrouwbaar vervoer","Zo snel mogelijk klaar zijn"],1),
+    q(2,"Klantenservice","Wat is een professioneel begin van elke rit?",["Direct wegrijden","Bestemming bevestigen en rustig starten","Eerst bellen"],1),
+    q(3,"Klantenservice","Waarom is een rustige houding belangrijk?",["Voor imago","Om escalatie en stress te voorkomen","Omdat klanten dat eisen"],1),
+    q(4,"Klantenservice","Wat is onprofessioneel klantgedrag van de chauffeur?",["Luisteren","Sarcastisch reageren","Duidelijk uitleggen"],1),
+    q(5,"Klantenservice","Hoe ga je om met een ongeduldige klant?",["Negeren","Rustig blijven en professioneel communiceren","Terug snauwen"],1),
 
     q(6,"Communicatie","Wat is de beste manier om misverstanden te voorkomen?",["Zo weinig mogelijk zeggen","Duidelijk en tijdig communiceren","Pas na afloop uitleggen"],1),
     q(7,"Communicatie","Klant spreekt slecht Nederlands. Wat doe je?",["Zeggen dat hij pech heeft","Rustig communiceren en laten tonen/schrijven","Gewoon gaan rijden"],1),
