@@ -11,6 +11,7 @@
 
 <body class="theme">
 
+<!-- HEADER -->
 <header class="topbar">
   <div class="container topbar__inner">
     <a class="brand" href="index.html">
@@ -25,67 +26,60 @@
   </div>
 </header>
 
+<!-- PAGINA -->
 <main class="page">
   <div class="container page__inner">
 
-    <!-- HERO -->
-    <section class="ggHero">
-      <img src="assets/taxi-examens.PNG" alt="Taxi examens – GeefGas">
+    <!-- HERO FOTO -->
+    <section class="exam-hero-image">
+      <img
+        src="assets/taxi-examens.PNG"
+        alt="Taxi examens – GeefGas"
+      >
     </section>
 
-    <!-- EXAMENS -->
-    <section class="card">
-      <div class="ggSectionHead">
-        <div>
-          <h2 class="ggTitle" style="margin:0 0 6px;"></h2>
-          <p class="muted" style="margin:0;"></p>
-        </div>
-        <div class="ggPill" id="countPill">—</div>
-      </div>
+    <!-- AANTAL EXAMENS -->
+    <div class="examCountWrapper">
+      <span class="examCount">15 examens</span>
+    </div>
 
-      <div id="examList" class="ggExamList"></div>
+    <!-- EXAMEN LIJST -->
+    <section class="examListWrapper">
+      <div id="examList"></div>
     </section>
 
   </div>
 </main>
 
+<!-- SCRIPT -->
 <script>
 (function () {
   const listEl = document.getElementById("examList");
-  const countPill = document.getElementById("countPill");
 
   const exams =
-    window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)
-      ? window.EXAM_DATA.exams.filter(e => String(e.category || "").trim().toLowerCase() === "taxi")
+    window.EXAM_DATA &&
+    Array.isArray(window.EXAM_DATA.exams)
+      ? window.EXAM_DATA.exams.filter(e => e.category === "Taxi")
       : [];
 
   if (!exams.length) {
     listEl.innerHTML = "<p class='muted'>Geen examens gevonden.</p>";
-    countPill.textContent = "0 examens";
     return;
   }
 
-  countPill.textContent = `${exams.length} examens`;
-
-  function getNr(id){
-    const m = String(id || "").match(/(\d+)/);
-    return m ? Number(m[1]) : 0;
-  }
-  exams.sort((a,b) => getNr(a.id) - getNr(b.id));
-
   exams.forEach(exam => {
-    const total = Array.isArray(exam.questions) ? exam.questions.length : 40;
-    const mins = Number(exam.durationMinutes || 30);
-
     const item = document.createElement("div");
-    item.className = "ggExamItem";
+    item.className = "examItem";
 
     item.innerHTML = `
-      <div class="ggExamInfo">
-        <div class="ggExamTitle">${exam.title}</div>
-        <div class="ggExamMeta">${total} vragen • ${mins} min</div>
+      <div class="examItem__info">
+        <div class="examItem__title">${exam.title}</div>
+        <div class="examItem__meta">
+          ${exam.questions.length} vragen • ${exam.durationMinutes} min
+        </div>
       </div>
-      <button class="ggStartBtn" type="button">Start</button>
+
+      <button class="examItem__start">Start</button>
     `;
 
     item.querySelector("button").addEventListener("click", () => {
