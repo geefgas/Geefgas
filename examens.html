@@ -20,83 +20,62 @@
     <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html#pakketten">Pakketten</a>
       <a class="nav__link" href="examens.html">Examens</a>
+      <a class="nav__link" href="instellingen.html">Instellingen</a>
       <a class="nav__cta" href="#" id="startTopBtn">Start</a>
     </nav>
+
+    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobilemenu" id="mobileMenu" hidden>
+    <div class="container mobilemenu__inner">
+      <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
+      <a class="mobilemenu__link" href="examens.html">Examens</a>
+      <a class="mobilemenu__link" href="instellingen.html">Instellingen</a>
+      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start</a>
+    </div>
   </div>
 </header>
 
 <main class="page">
   <div class="container page__inner">
 
-    <!-- HERO / HEADER CARD -->
-    <section class="card hero hero--compact">
+    <section class="card hero">
       <div class="hero__badge">Oefenexamens • Taxi</div>
-      <h1 class="hero__title hero__title--clean" style="margin-top:10px;">
-        Kies een examen en start direct.
-      </h1>
-      <p class="hero__text hero__text--clean" style="max-width:65ch;">
-        Stel in of je antwoorden <strong>direct</strong> ziet of <strong>pas na afloop</strong>. Inclusief uitleg + foutenlijst.
+      <h1 class="hero__title" style="margin-bottom:6px;">Kies een examen en start direct.</h1>
+      <p class="hero__text" style="margin-top:0;">
+        Instellingen zoals “antwoorden tonen” en “voorlezen” regel je bij <strong>Instellingen</strong>.
       </p>
-    </section>
 
-    <!-- INSTELLINGEN -->
-    <section class="card card--soft">
-      <div class="sectionHead" style="margin-bottom:12px;">
-        <div>
-          <h2 class="sectionHead__title">Instellingen</h2>
-          <p class="sectionHead__sub">Deze instellingen gelden voor alle examens.</p>
-        </div>
-      </div>
-
-      <div class="settingsGrid">
-        <div class="settingRow">
-          <div>
-            <div class="settingTitle">Antwoorden tonen</div>
-            <div class="muted">Direct feedback of pas na het examen.</div>
-          </div>
-          <select id="revealMode" class="selectLux">
-            <option value="instant">Meteen (na elke vraag)</option>
-            <option value="after">Pas na examen</option>
-          </select>
-        </div>
-
-        <div class="settingRow">
-          <div>
-            <div class="settingTitle">Voorlezen</div>
-            <div class="muted">Gebruikt de beste NL-stem van je toestel.</div>
-          </div>
-          <label class="toggleLux">
-            <input type="checkbox" id="ttsEnabled">
-            <span class="toggleLux__ui" aria-hidden="true"></span>
-          </label>
-        </div>
+      <div class="hero__actions">
+        <a class="btn btn--ghost" href="instellingen.html">Instellingen openen</a>
+        <a class="btn btn--gold" href="#" id="startHeroBtn">Start eerste examen</a>
       </div>
     </section>
 
-    <!-- AUTO -->
-    <section class="card card--soft" id="autoWrap" hidden>
+    <section class="card" id="autoWrap" hidden>
       <div class="sectionHead" style="margin-bottom:12px;">
         <div>
           <h2 class="sectionHead__title">Auto examens</h2>
-          <p class="sectionHead__sub">Binnenkort of als je ze toevoegt.</p>
+          <p class="sectionHead__sub">Kies een examen en start.</p>
         </div>
       </div>
-      <div id="autoList" class="examList"></div>
+      <div id="autoList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <!-- TAXI -->
-    <section class="card card--soft" id="taxiWrap" hidden>
+    <section class="card" id="taxiWrap" hidden>
       <div class="sectionHead" style="margin-bottom:12px;">
         <div>
           <h2 class="sectionHead__title">Taxi examens</h2>
           <p class="sectionHead__sub">15 examens • examengericht • luxe interface</p>
         </div>
       </div>
-      <div id="taxiList" class="examList"></div>
+      <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <!-- GEEN EXAMS -->
-    <section class="card card--soft" id="noExams" hidden>
+    <section class="card" id="noExams" hidden>
       <h3 style="margin:0 0 6px;">Geen examens gevonden</h3>
       <p class="muted" style="margin:0; line-height:1.6;">
         Controleer of <strong>exam-data.js</strong> goed is geladen en <strong>window.EXAM_DATA.exams</strong> bevat.
@@ -106,18 +85,9 @@
   </div>
 </main>
 
+<script src="app.js"></script>
 <script>
 (function(){
-  // Settings
-  const revealMode = document.getElementById("revealMode");
-  const ttsEnabled = document.getElementById("ttsEnabled");
-
-  revealMode.value = localStorage.getItem("gg_revealMode") || "instant";
-  ttsEnabled.checked = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-
-  revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
-  ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
-
   // Data
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const autoWrap = document.getElementById("autoWrap");
@@ -146,38 +116,44 @@
     const cat = exam.category || "Examen";
 
     const box = document.createElement("div");
-    box.className = "examItem";
+    box.style.border = "1px solid rgba(16,19,26,.12)";
+    box.style.borderRadius = "16px";
+    box.style.padding = "12px";
 
-    const top = document.createElement("div");
-    top.className = "examItem__top";
-
-    const left = document.createElement("div");
+    const headRow = document.createElement("div");
+    headRow.style.display = "flex";
+    headRow.style.alignItems = "flex-start";
+    headRow.style.justifyContent = "space-between";
+    headRow.style.gap = "10px";
 
     const h = document.createElement("div");
-    h.className = "examItem__title";
+    h.style.fontWeight = "950";
+    h.style.marginBottom = "4px";
     h.textContent = exam.title || exam.id;
 
+    const tag = document.createElement("div");
+    tag.className = "pill";
+    tag.textContent = "Oefenexamen";
+    tag.style.whiteSpace = "nowrap";
+    tag.style.alignSelf = "flex-start";
+
+    headRow.appendChild(h);
+    headRow.appendChild(tag);
+
     const p = document.createElement("div");
-    p.className = "examItem__meta";
+    p.className = "muted";
+    p.style.lineHeight = "1.6";
     p.textContent = `${total} vragen • ${mins} min • ${cat}`;
 
-    left.appendChild(h);
-    left.appendChild(p);
-
-    const badge = document.createElement("div");
-    badge.className = "examItem__badge";
-    badge.textContent = "Oefenexamen";
-
-    top.appendChild(left);
-    top.appendChild(badge);
-
     const btn = document.createElement("button");
-    btn.className = "btn btn--primary examBtn";
+    btn.className = "btn btn--primary";
     btn.type = "button";
+    btn.style.marginTop = "12px";
     btn.textContent = "Start";
     btn.addEventListener("click", () => start(exam.id));
 
-    box.appendChild(top);
+    box.appendChild(headRow);
+    box.appendChild(p);
     box.appendChild(btn);
 
     return box;
@@ -207,13 +183,16 @@
     noExams.hidden = false;
   }
 
-  // Top start
-  document.getElementById("startTopBtn").addEventListener("click", (e)=>{
-    e.preventDefault();
+  // Start buttons -> eerste taxi exam, anders eerste exam
+  function startFirst(){
     const firstTaxi = taxis[0];
     const first = firstTaxi || exams[0];
     if (first) start(first.id);
-  });
+  }
+
+  document.getElementById("startTopBtn")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
+  document.getElementById("startTopBtnMobile")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
+  document.getElementById("startHeroBtn")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
 })();
 </script>
 
