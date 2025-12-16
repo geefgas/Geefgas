@@ -89,7 +89,7 @@ const TAXI_EXAMEN_1 = {
 
 const TAXI_EXAMEN_2 = {
   id: "taxi-examen-2",
-  title: "Taxi Examen 2 – BCT & ritregistratie“,
+  title: "Taxi Examen 2 – BCT & ritregistratie",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -153,7 +153,7 @@ const TAXI_EXAMEN_2 = {
 
 const TAXI_EXAMEN_3 = {
   id: "taxi-examen-3",
-  title: "Taxi Examen 3 – Voertuigtechniek & keuring“,
+  title: "Taxi Examen 3 – Voertuigtechniek & keuring",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -217,7 +217,7 @@ const TAXI_EXAMEN_3 = {
 
 const TAXI_EXAMEN_4 = {
   id: "taxi-examen-4",
-  title: "Taxi Examen 4 – Rij- en rusttijden“,
+  title: "Taxi Examen 4 – Rij- en rusttijden",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -281,7 +281,7 @@ const TAXI_EXAMEN_4 = {
 
 const TAXI_EXAMEN_5 = {
   id: "taxi-examen-5",
-  title: "Taxi Examen 5 – Klachten & professionaliteit“,
+  title: "Taxi Examen 5 – Klachten & professionaliteit",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -345,7 +345,7 @@ const TAXI_EXAMEN_5 = {
 
 const TAXI_EXAMEN_6 = {
   id: "taxi-examen-6",
-  title: "Taxi Examen 6 – Halen/brengen & bijzondere situaties“,
+  title: "Taxi Examen 6 – Halen/brengen & bijzondere situaties",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -409,7 +409,7 @@ const TAXI_EXAMEN_6 = {
 
 const TAXI_EXAMEN_7 = {
   id: "taxi-examen-7",
-  title: "Taxi Examen 7 – Onderneming & kwaliteit“,
+  title: "Taxi Examen 7 – Onderneming & kwaliteit",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -473,7 +473,7 @@ const TAXI_EXAMEN_7 = {
 
 const TAXI_EXAMEN_8 = {
   id: "taxi-examen-8",
-  title: "Taxi Examen 8 – Regels en gedrag“,
+  title: "Taxi Examen 8 – Regels en gedrag",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -537,7 +537,7 @@ const TAXI_EXAMEN_8 = {
 
 const TAXI_EXAMEN_9 = {
   id: "taxi-examen-9",
-  title: "Taxi Examen 9 – Bijzondere doelgroepen“,
+  title: "Taxi Examen 9 – Bijzondere doelgroepen",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -601,7 +601,7 @@ const TAXI_EXAMEN_9 = {
 
 const TAXI_EXAMEN_10 = {
   id: "taxi-examen-10",
-  title: "Taxi Examen 10 – Veiligheid & noodsituaties“,
+  title: "Taxi Examen 10 – Veiligheid & noodsituaties",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -665,7 +665,7 @@ const TAXI_EXAMEN_10 = {
 
 const TAXI_EXAMEN_11 = {
   id: "taxi-examen-11",
-  title: "Taxi Examen 11 – Wetgeving, handhaving & aansprakelijkheid“,
+  title: "Taxi Examen 11 – Wetgeving, handhaving & aansprakelijkheid",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -729,7 +729,7 @@ const TAXI_EXAMEN_11 = {
 
 const TAXI_EXAMEN_12 = {
   id: "taxi-examen-12",
-  title: "Taxi Examen 12 – Tarieven, meter, wachttijd & factuur“,
+  title: "Taxi Examen 12 – Tarieven, meter, wachttijd & factuur",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -793,7 +793,7 @@ const TAXI_EXAMEN_12 = {
 
 const TAXI_EXAMEN_13 = {
   id: "taxi-examen-13",
-  title: "Taxi Examen 13 – Veiligheid, PAMAN & noodsituaties“,
+  title: "Taxi Examen 13 – Veiligheid, PAMAN & noodsituaties",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -857,7 +857,7 @@ const TAXI_EXAMEN_13 = {
 
 const TAXI_EXAMEN_14 = {
   id: "taxi-examen-14",
-  title: "Taxi Examen 14 – Wetgeving, ILT & documenten“,
+  title: "Taxi Examen 14 – Wetgeving, ILT & documenten",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -921,7 +921,7 @@ const TAXI_EXAMEN_14 = {
 
 const TAXI_EXAMEN_15 = {
   id: "taxi-examen-15",
-  title: "Taxi Examen 15 – Klantservice & afhandeling“,
+  title: "Taxi Examen 15 – Klantservice & afhandeling",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
