@@ -971,3 +971,53 @@ details[open]{
   display: block;
 }
 
+/* =========================================================
+   CATEGORY CARDS – FOTO'S I.P.V. ICONEN
+   ========================================================= */
+
+/* icon container geschikt maken voor foto */
+.catCard__icon--photo{
+  width: 100%;
+  height: 120px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* foto netjes vullen */
+.catCard__icon--photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* actieve taxi extra luxe rand */
+.catCard--active{
+  outline: 2px solid rgba(216,181,91,.35);
+  box-shadow: 0 18px 30px rgba(216,181,91,.18);
+}
+
+/* titel iets strakker */
+.catCard__title{
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+/* subtitel rustiger */
+.catCard__sub{
+  font-size: .95rem;
+  font-weight: 750;
+}
+
+/* mobile iets hoger */
+@media (max-width: 520px){
+  .catCard__icon--photo{
+    height: 140px;
+  }
+}
+
