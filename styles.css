@@ -1297,3 +1297,11 @@ details[open]{
   .ggStartBtn{ min-width: 88px; }
 }
 
+.ggHero img{
+  width: 100%;
+  height: clamp(240px, 42vh, 460px);
+  object-fit: contain;         /* ✅ NIET meer snijden */
+  object-position: center;
+  display: block;
+  background: #0B0D12;         /* luxe zwart achter de foto */
+}
