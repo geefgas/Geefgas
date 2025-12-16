@@ -28,7 +28,7 @@
 <main class="page">
   <div class="container page__inner">
 
-    <!-- HERO (foto) -->
+    <!-- HERO -->
     <section class="ggHero">
       <img src="assets/taxi-examens.PNG" alt="Taxi examens – GeefGas">
     </section>
@@ -67,7 +67,6 @@
 
   countPill.textContent = `${exams.length} examens`;
 
-  // sorteer op nummer in id: taxi-examen-1..15
   function getNr(id){
     const m = String(id || "").match(/(\d+)/);
     return m ? Number(m[1]) : 0;
@@ -86,7 +85,6 @@
         <div class="ggExamTitle">${exam.title}</div>
         <div class="ggExamMeta">${total} vragen • ${mins} min</div>
       </div>
-
       <button class="ggStartBtn" type="button">Start</button>
     `;
 
