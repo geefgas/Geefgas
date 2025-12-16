@@ -11,10 +11,10 @@
 
 <body class="theme">
 
-<!-- TOPBAR -->
+<!-- HEADER -->
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="index.html" aria-label="GeefGas Home">
+    <a class="brand" href="index.html">
       <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo">
       <span class="brand__name">GeefGas</span>
     </a>
@@ -26,101 +26,75 @@
   </div>
 </header>
 
-<!-- PAGE -->
+<!-- PAGINA -->
 <main class="page">
   <div class="container page__inner">
 
-    <!-- INTRO -->
-    <section class="card">
-      <div class="hero__badge">Oefenexamens • Taxi</div>
-      <h1 style="margin:10px 0 6px;">Taxi oefenexamens</h1>
-      <p class="muted" style="line-height:1.6; margin:0;">
-        Kies een examen en start direct.  
-        Alle examens zijn examengericht en bevatten uitleg + foutenlijst.
-      </p>
+    <!-- HERO AFBEELDING -->
+    <section class="exam-hero-image">
+      <img
+        src="assets/taxi-examens.PNG"
+        alt="Taxi examens – GeefGas"
+      >
     </section>
 
-    <!-- TAXI EXAMENS -->
-    <section class="card" id="taxiWrap" hidden>
-      <h2 style="margin:0 0 6px;">Taxi examens</h2>
-      <p class="muted" style="margin:0 0 12px;">
+    <!-- EXAMENS -->
+    <section class="card">
+      <h2 style="margin-bottom:6px;">Taxi examens</h2>
+      <p class="muted" style="margin-top:0;">
         15 examens • examengericht • luxe interface
       </p>
 
-      <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
-    </section>
-
-    <!-- GEEN EXAMENS -->
-    <section class="card" id="noExams" hidden>
-      <h3>Geen examens gevonden</h3>
-      <p class="muted">
-        Controleer of <strong>exam-data.js</strong> correct is geladen.
-      </p>
+      <div id="examList"></div>
     </section>
 
   </div>
 </main>
 
+<!-- SCRIPT -->
 <script>
-(function(){
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams))
-    ? window.EXAM_DATA.exams
-    : [];
+(function () {
+  const listEl = document.getElementById("examList");
 
-  const taxiWrap = document.getElementById("taxiWrap");
-  const taxiList = document.getElementById("taxiList");
-  const noExams  = document.getElementById("noExams");
+  const exams =
+    window.EXAM_DATA &&
+    Array.isArray(window.EXAM_DATA.exams)
+      ? window.EXAM_DATA.exams.filter(e => e.category === "Taxi")
+      : [];
 
-  function startExam(id){
-    localStorage.setItem("gg_examId", id);
-    window.location.href = "examen.html";
-  }
-
-  function getNr(id){
-    const m = String(id).match(/(\d+)/);
-    return m ? Number(m[1]) : 0;
-  }
-
-  function makeExamCard(exam){
-    const box = document.createElement("div");
-    box.style.border = "1px solid rgba(16,19,26,.12)";
-    box.style.borderRadius = "16px";
-    box.style.padding = "14px";
-    box.style.background = "#fff";
-
-    const title = document.createElement("div");
-    title.style.fontWeight = "950";
-    title.style.marginBottom = "4px";
-    title.textContent = exam.title;
-
-    const meta = document.createElement("div");
-    meta.className = "muted";
-    meta.textContent = `${exam.questions.length} vragen • ${exam.durationMinutes} min • Taxi`;
-
-    const btn = document.createElement("button");
-    btn.className = "btn btn--primary";
-    btn.textContent = "Start";
-    btn.style.marginTop = "12px";
-    btn.onclick = () => startExam(exam.id);
-
-    box.appendChild(title);
-    box.appendChild(meta);
-    box.appendChild(btn);
-
-    return box;
-  }
-
-  const taxiExams = exams
-    .filter(e => String(e.category).toLowerCase() === "taxi")
-    .sort((a,b) => getNr(a.id) - getNr(b.id));
-
-  if (!taxiExams.length){
-    noExams.hidden = false;
+  if (!exams.length) {
+    listEl.innerHTML = "<p class='muted'>Geen examens gevonden.</p>";
     return;
   }
 
-  taxiWrap.hidden = false;
-  taxiExams.forEach(exam => taxiList.appendChild(makeExamCard(exam)));
+  exams.forEach(exam => {
+    const card = document.createElement("div");
+    card.className = "examItem";
+
+    card.innerHTML = `
+      <div class="examItem__head">
+        <div>
+          <div class="examItem__title">${exam.title}</div>
+          <div class="examItem__meta">
+            ${exam.questions.length} vragen •
+            ${exam.durationMinutes} min •
+            ${exam.category}
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn--dark examItem__start">
+        Start
+      </button>
+    `;
+
+    card.querySelector("button").addEventListener("click", () => {
+      localStorage.setItem("gg_examId", exam.id);
+      window.location.href = "examen.html";
+    });
+
+    listEl.appendChild(card);
+  });
 })();
 </script>
 
