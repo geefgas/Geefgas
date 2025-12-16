@@ -1305,3 +1305,15 @@ details[open]{
   display: block;
   background: #0B0D12;         /* luxe zwart achter de foto */
 }
+
+/* ================================
+   HERO INFO TEKST (15 examens)
+   ================================ */
+
+.exam-hero-info {
+  text-align: center;
+  margin-top: 12px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
