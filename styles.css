@@ -953,3 +953,21 @@ details[open]{
   font-weight: 900;
   color: var(--muted);
 }
+
+/* ===== CATEGORIE FOTO-ICONS ===== */
+.catCard__icon--photo{
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  background: rgba(11,13,18,.03);
+}
+
+.catCard__icon--photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
