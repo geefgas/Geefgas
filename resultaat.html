@@ -13,32 +13,77 @@
 <header class="topbar">
   <div class="container topbar__inner">
     <a class="brand" href="index.html" aria-label="GeefGas Home">
-      <img class="brand__logo" src="assets/geefgas.png" alt="GeefGas logo" />
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
       <span class="brand__name">GeefGas</span>
     </a>
-    <a class="nav__cta" href="examens.html">Nieuw examen</a>
+
+    <nav class="nav" aria-label="Hoofdmenu">
+      <a class="nav__link" href="examens.html">Examens</a>
+      <a class="nav__cta" href="examens.html">Nieuw examen</a>
+    </nav>
   </div>
 </header>
 
 <main class="page">
   <div class="container page__inner">
 
+    <!-- SCORE CARD -->
     <section class="card">
-      <h2 style="margin:0 0 6px;">Resultaat</h2>
-      <p class="muted" id="resultText" style="margin:0; line-height:1.6;"></p>
-      <div id="passBox" class="note" style="margin-top:12px;"></div>
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0 0 6px;">Resultaat</h2>
+          <p class="muted" id="resultText" style="margin:0; line-height:1.6;"></p>
+        </div>
+
+        <div id="badge" style="
+          padding:10px 12px;
+          border-radius:999px;
+          font-weight:950;
+          border:1px solid rgba(16,19,26,.12);
+          background:#fff;
+          white-space:nowrap;
+        ">—</div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:8px;">
+          <div class="muted" style="font-weight:850;">Score</div>
+          <div style="font-weight:950;" id="scoreLine">—</div>
+        </div>
+
+        <div style="height:12px; border-radius:999px; background:rgba(16,19,26,.10); overflow:hidden;">
+          <div id="bar" style="height:100%; width:0%; background:linear-gradient(90deg,#f6c453,#f2b400);"></div>
+        </div>
+
+        <div id="passBox" class="note" style="margin-top:12px;"></div>
+      </div>
     </section>
 
-    <section class="card" id="reviewPanel">
-      <h3 style="margin:0 0 10px;">Fouten + uitleg</h3>
-      <div id="reviewList"></div>
-    </section>
-
+    <!-- ACTIONS -->
     <section class="card">
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btn btn--gold" href="examens.html">Nieuw examen</a>
+        <button class="btn btn--gold" id="retryBtn" type="button">Opnieuw dit examen</button>
+        <a class="btn btn--primary" href="examens.html">Nieuw examen</a>
         <a class="btn btn--ghost" href="index.html">Home</a>
       </div>
+      <p class="muted" style="margin:10px 0 0; line-height:1.6;">
+        Tip: herhaal vooral je foutenlijst. Dat levert het snelst punten op.
+      </p>
+    </section>
+
+    <!-- REVIEW -->
+    <section class="card" id="reviewPanel">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div>
+          <h3 style="margin:0 0 6px;">Fouten + uitleg</h3>
+          <p class="muted" style="margin:0; line-height:1.6;">
+            Klik een vraag open om je antwoord, het goede antwoord en uitleg te zien.
+          </p>
+        </div>
+        <div class="pill" id="wrongCountPill" style="align-self:flex-start;">—</div>
+      </div>
+
+      <div id="reviewList" style="margin-top:14px;"></div>
     </section>
 
   </div>
@@ -68,11 +113,17 @@
   const passBox = document.getElementById("passBox");
   const reviewPanel = document.getElementById("reviewPanel");
   const reviewList = document.getElementById("reviewList");
+  const badge = document.getElementById("badge");
+  const bar = document.getElementById("bar");
+  const scoreLine = document.getElementById("scoreLine");
+  const wrongCountPill = document.getElementById("wrongCountPill");
+  const retryBtn = document.getElementById("retryBtn");
 
   if (!result || !result.total) {
     resultText.textContent = "Geen resultaat gevonden. Start opnieuw een examen.";
     passBox.innerHTML = "<strong>Geen score gevonden.</strong><br>Ga terug naar examens en start opnieuw.";
     reviewPanel.style.display = "none";
+    retryBtn.disabled = true;
     return;
   }
 
@@ -84,40 +135,58 @@
   const maxMistakes = total - passMinCorrect;
   const passed = correctCount >= passMinCorrect;
 
-  // ---- Examen opzoeken in EXAM_DATA (voor categorie + vragen) ----
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-  const exam = exams.find(e => e.id === examId) || null;
-  const examCategory = (exam && exam.category) ? exam.category : (result.category || "");
+  const pct = total ? Math.max(0, Math.min(100, Math.round((correctCount / total) * 100))) : 0;
+  bar.style.width = pct + "%";
+  scoreLine.textContent = `${correctCount}/${total} (${pct}%)`;
 
+  // Badge + passBox
   const modeLabel = (mode === "after") ? "Antwoorden pas na examen" : "Directe feedback";
-  const catLabel = examCategory ? ` • ${examCategory}` : "";
 
-  resultText.textContent =
-    `${title}${catLabel} • Score: ${correctCount} van ${total} • ${modeLabel}`;
+  badge.textContent = passed ? "✅ Geslaagd" : "❌ Gezakt";
+  badge.style.borderColor = passed ? "rgba(6,118,71,.25)" : "rgba(180,35,24,.25)";
+  badge.style.background = passed ? "rgba(6,118,71,.06)" : "rgba(180,35,24,.06)";
+  badge.style.color = passed ? "#067647" : "#b42318";
+
+  resultText.textContent = `${title} • Score: ${correctCount} van ${total} • ${modeLabel}`;
 
   if (passed) {
     passBox.innerHTML =
-      `<strong>✅ Geslaagd!</strong><br>` +
+      `<strong>Top!</strong> Je bent geslaagd.<br>` +
       `Minimaal <strong>${passMinCorrect}</strong> goed nodig. ` +
       `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   } else {
     passBox.innerHTML =
-      `<strong>❌ Gezakt</strong><br>` +
+      `<strong>Nog één keer scherp.</strong> Je bent gezakt.<br>` +
       `Minimaal <strong>${passMinCorrect}</strong> goed nodig. ` +
       `Maximaal <strong>${maxMistakes}</strong> fouten toegestaan.`;
   }
 
-  // Als exam niet gevonden, toon alleen score
+  // Opnieuw dit examen
+  retryBtn.addEventListener("click", () => {
+    localStorage.setItem("gg_examId", examId);
+    window.location.href = "examen.html";
+  });
+
+  // ---- Examen opzoeken in EXAM_DATA ----
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const exam = exams.find(e => e.id === examId) || null;
+
   if (!exam || !Array.isArray(exam.questions)) {
     reviewPanel.style.display = "none";
     return;
   }
 
+  const attempt = Array.isArray(result.attempt) ? result.attempt : [];
+  const questions = exam.questions;
+
+  // Map questionId -> index (1..n) voor echte vraagnummers in dit examen
+  const idToNr = new Map();
+  questions.forEach((q, idx) => idToNr.set(String(q.id), idx + 1));
+
   // Lookup vragen op id
   const qMap = new Map();
-  exam.questions.forEach(q => qMap.set(String(q.id), q));
+  questions.forEach(q => qMap.set(String(q.id), q));
 
-  const attempt = Array.isArray(result.attempt) ? result.attempt : [];
   const wrong = attempt
     .map(a => {
       const q = qMap.get(String(a.id));
@@ -129,10 +198,11 @@
         : ((typeof a.correctIndex === "number") ? a.correctIndex : null);
 
       const isWrong = (chosen === null) ? true : (correctIndex !== null && chosen !== correctIndex);
-
       return { a, q, chosen, correctIndex, isWrong };
     })
     .filter(x => x && x.isWrong);
+
+  wrongCountPill.textContent = wrong.length ? `${wrong.length} fout` : "0 fout";
 
   if (!wrong.length) {
     reviewList.innerHTML = `
@@ -144,7 +214,7 @@
     return;
   }
 
-  // Render foutenlijst (met ECHT vraagnr uit het examen)
+  // Render foutenlijst (inklapbaar)
   reviewList.innerHTML = "";
   wrong.forEach((item) => {
     const q = item.q;
@@ -159,25 +229,32 @@
       (correctIndex === null) ? "(onbekend)" :
       (Array.isArray(q.options) && q.options[correctIndex]) ? q.options[correctIndex] : "(onbekend)";
 
-    const block = document.createElement("div");
-    block.style.border = "1px solid rgba(16,19,26,.12)";
-    block.style.borderRadius = "16px";
-    block.style.padding = "14px";
-    block.style.background = "#fff";
-    block.style.marginBottom = "12px";
+    const nr = idToNr.get(String(q.id)) || "?";
 
-    block.innerHTML = `
-      <div style="font-weight:950; margin-bottom:6px;">Vraag ${esc(q.id)} (examen)</div>
-      <div style="font-weight:900; line-height:1.55; margin-bottom:10px;">${esc(q.prompt)}</div>
+    const details = document.createElement("details");
+    details.style.border = "1px solid rgba(16,19,26,.12)";
+    details.style.borderRadius = "16px";
+    details.style.padding = "12px 14px";
+    details.style.background = "#fff";
+    details.style.marginBottom = "12px";
 
-      <div style="line-height:1.6;">
+    details.innerHTML = `
+      <summary style="cursor:pointer; list-style:none; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div>
+          <div style="font-weight:950;">Vraag ${esc(nr)}</div>
+          <div class="muted" style="margin-top:2px; line-height:1.5;">${esc(q.prompt)}</div>
+        </div>
+        <div style="font-weight:950; color:#b42318; white-space:nowrap;">Fout</div>
+      </summary>
+
+      <div style="margin-top:12px; line-height:1.6;">
         <div><strong>Jouw antwoord:</strong> <span style="color:#b42318; font-weight:900;">${esc(chosenText)}</span></div>
         <div><strong>Goed antwoord:</strong> <span style="color:#067647; font-weight:900;">${esc(correctText)}</span></div>
         ${q.explanation ? `<div style="margin-top:10px;"><strong>Uitleg:</strong> <span class="muted" style="font-weight:750;">${esc(q.explanation)}</span></div>` : ""}
       </div>
     `;
 
-    reviewList.appendChild(block);
+    reviewList.appendChild(details);
   });
 
 })();
