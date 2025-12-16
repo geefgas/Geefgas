@@ -25,7 +25,7 @@
 
 const TAXI_EXAMEN_1 = {
   id: "taxi-examen-1",
-  title: "Taxi Examen 1 – Wet- en regelgeving taxi“,
+  title: "Taxi Examen 1 – Wet- en regelgeving taxi",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
