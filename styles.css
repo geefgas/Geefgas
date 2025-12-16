@@ -1351,3 +1351,78 @@ details[open]{
   filter: brightness(1.05);
   transform: translateY(-1px);
 }
+
+/* ===============================
+   GEEF GAS – PREMIUM EXAMENS LOOK
+   =============================== */
+
+/* HERO AFBEELDING */
+.exam-hero-image {
+  margin-bottom: 16px;
+}
+
+.exam-hero-image img {
+  width: 100%;
+  display: block;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+}
+
+/* 15 EXAMENS BADGE */
+.exam-count {
+  display: inline-block;
+  margin: 14px auto 10px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fbf4dd, #f1e4bb);
+  color: #8a6b1f;
+  font-weight: 800;
+  font-size: 14px;
+  border: 1px solid rgba(138,107,31,.25);
+  box-shadow: 0 6px 16px rgba(138,107,31,.18);
+}
+
+/* EXAMEN KAARTEN */
+.examItem {
+  background: linear-gradient(180deg, #ffffff, #fbf7ec);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(138,107,31,.18);
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
+}
+
+/* TITEL */
+.examItem__title {
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+/* META TEKST */
+.examItem__meta {
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+/* START KNOP */
+.examItem__start {
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 999px;
+  border: none;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #e0c05a, #caa43a);
+  color: #1b1b1b;
+  box-shadow: 0 10px 22px rgba(202,164,58,.45);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.examItem__start:active {
+  transform: scale(.97);
+  box-shadow: 0 6px 14px rgba(202,164,58,.35);
+}
