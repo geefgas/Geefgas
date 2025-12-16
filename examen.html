@@ -11,20 +11,9 @@
 <body class="theme">
 
 <header class="topbar">
-  <div class="container topbar__inner" style="gap:14px;">
-    <a class="brand" href="examens.html" aria-label="Terug naar examens">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
-      <span class="brand__name">GeefGas</span>
-    </a>
-
-    <div style="flex:1;"></div>
-
-    <div class="examTop" style="width:auto;">
-      <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
-      <div class="pillTimer" id="timer">30:00</div>
-    </div>
-
-    <a class="btn btn--ghost" href="examens.html" style="white-space:nowrap;">← Examens</a>
+  <div class="examTop">
+    <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
+    <div class="pillTimer" id="timer">30:00</div>
   </div>
 </header>
 
@@ -53,10 +42,10 @@
         </div>
 
         <div class="examFooter">
-          <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
+          <button class="btn btn--ghost" id="readBtn">🔊 Voorlezen</button>
           <div style="display:flex; gap:10px;">
-            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+            <button class="btn btn--ghost" id="prevBtn">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn">Volgende</button>
           </div>
         </div>
 
@@ -73,7 +62,7 @@
   const revealMode = localStorage.getItem("gg_revealMode") || "instant";
   const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
 
-  const examId = localStorage.getItem("gg_examId") || "examen-1";
+  const examId = localStorage.getItem("gg_examId") || "taxi-examen-1";
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => e.id === examId);
 
@@ -96,7 +85,6 @@
 
   let index = 0;
   let time = Number(exam.durationMinutes || 30) * 60;
-  let finished = false;
 
   const attempt = questions.map(q => ({
     id: q.id,
@@ -125,11 +113,6 @@
       ? `Mode: directe feedback • Norm: ${passMinCorrect}/${total} goed (max ${maxMistakes} fouten)`
       : `Mode: antwoorden pas na examen • Norm: ${passMinCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
-  // Hide read button if TTS disabled or unsupported
-  if (!ttsEnabled || !("speechSynthesis" in window)) {
-    readBtn.style.display = "none";
-  }
-
   function formatTime(sec){
     const m = String(Math.floor(sec / 60)).padStart(2,"0");
     const s = String(sec % 60).padStart(2,"0");
@@ -137,9 +120,7 @@
   }
 
   timerEl.textContent = formatTime(time);
-
   const timer = setInterval(() => {
-    if (finished) return;
     time--;
     if (time < 0) time = 0;
     timerEl.textContent = formatTime(time);
@@ -147,13 +128,8 @@
   }, 1000);
 
   function setImage(raw){
-    const fallback = "assets/placeholder.jpg";
-    qImage.onerror = null;
-    qImage.onerror = () => {
-      if (qImage.src.includes("placeholder.jpg")) return;
-      qImage.src = fallback;
-    };
-    qImage.src = raw || fallback;
+    qImage.onerror = () => { qImage.src = "assets/placeholder.jpg"; };
+    qImage.src = raw || "assets/placeholder.jpg";
   }
 
   function render(){
@@ -174,7 +150,6 @@
     (q.options || []).forEach((txt, i) => {
       const btn = document.createElement("button");
       btn.className = "answer";
-      btn.type = "button";
       btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
 
       if (attempt[index].chosen === i) btn.classList.add("selected");
@@ -222,24 +197,19 @@
   };
 
   nextBtn.onclick = () => {
-    if (finished) return;
     if (index === total - 1) return finishExam();
     index++;
     render();
   };
 
   prevBtn.onclick = () => {
-    if (finished) return;
     if (index === 0) return;
     index--;
     render();
   };
 
   function finishExam(){
-    if (finished) return;
-    finished = true;
     clearInterval(timer);
-    try { speechSynthesis.cancel(); } catch(e){}
 
     let correctCount = 0;
     attempt.forEach(a => {
