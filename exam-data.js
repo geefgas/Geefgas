@@ -999,3 +999,5 @@ window.EXAM_DATA = { exams };
 window.EXAMS = exams;
 window.exams = exams;
 window.ggExams = exams;
+
+})();
