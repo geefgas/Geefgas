@@ -62,19 +62,16 @@
       </div>
     </section>
 
-    <!-- AUTO EXAMENS -->
     <section class="card" id="autoWrap" hidden>
       <h3 style="margin:0 0 12px;">Auto examens</h3>
       <div id="autoList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <!-- TAXI EXAMENS -->
     <section class="card" id="taxiWrap" hidden>
       <h3 style="margin:0 0 12px;">Taxi examens</h3>
       <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <!-- FALLBACK -->
     <section class="card" id="noExams" hidden>
       <h3 style="margin:0 0 6px;">Geen examens gevonden</h3>
       <p class="muted" style="margin:0; line-height:1.6;">
@@ -87,7 +84,7 @@
 
 <script>
 (function(){
-  // ----- Settings -----
+  // Settings
   const revealMode = document.getElementById("revealMode");
   const ttsEnabled = document.getElementById("ttsEnabled");
 
@@ -97,27 +94,32 @@
   revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
   ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
 
-  // ----- Data -----
+  // Data
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-
   const autoWrap = document.getElementById("autoWrap");
   const taxiWrap = document.getElementById("taxiWrap");
   const autoList = document.getElementById("autoList");
   const taxiList = document.getElementById("taxiList");
-  const noExams  = document.getElementById("noExams");
+  const noExams = document.getElementById("noExams");
 
   function start(examId){
     localStorage.setItem("gg_examId", examId);
     window.location.href = "examen.html";
   }
 
-  function normalizeCategory(cat){
+  function normCat(cat){
     return String(cat || "").trim().toLowerCase();
   }
 
-  function renderExamCard(exam){
-    const total = Array.isArray(exam.questions) ? exam.questions.length : 0;
-    const dur = Number(exam.durationMinutes || 30);
+  function getNumberFromId(id){
+    // pakt het eerste nummer uit bv "taxi-examen-15"
+    const m = String(id || "").match(/(\d+)/);
+    return m ? Number(m[1]) : 0;
+  }
+
+  function makeCard(exam){
+    const total = Array.isArray(exam.questions) ? exam.questions.length : 40;
+    const mins = Number(exam.durationMinutes || 30);
     const cat = exam.category || "Examen";
 
     const box = document.createElement("div");
@@ -128,12 +130,12 @@
     const h = document.createElement("div");
     h.style.fontWeight = "950";
     h.style.marginBottom = "4px";
-    h.textContent = exam.title || "Examen";
+    h.textContent = exam.title || exam.id;
 
     const p = document.createElement("div");
     p.className = "muted";
     p.style.lineHeight = "1.6";
-    p.textContent = `${total || 40} vragen • ${dur} min • ${cat}`;
+    p.textContent = `${total} vragen • ${mins} min • ${cat}`;
 
     const btn = document.createElement("button");
     btn.className = "btn btn--primary";
@@ -154,42 +156,32 @@
     return;
   }
 
-  // Group exams
-  const autoExams = [];
-  const taxiExams = [];
-  const otherExams = [];
+  const autos = exams.filter(e => normCat(e.category) === "auto");
+  const taxis = exams
+    .filter(e => normCat(e.category) === "taxi")
+    .sort((a,b) => getNumberFromId(a.id) - getNumberFromId(b.id)); // Taxi 1..15 netjes
 
-  exams.forEach(exam => {
-    const c = normalizeCategory(exam.category);
-    if (c === "auto") autoExams.push(exam);
-    else if (c === "taxi") taxiExams.push(exam);
-    else otherExams.push(exam); // (voor later, als je ooit extra categorieën toevoegt)
-  });
-
-  // Render
-  if (autoExams.length){
+  if (autos.length){
     autoWrap.hidden = false;
-    autoExams.forEach(exam => autoList.appendChild(renderExamCard(exam)));
+    autos.forEach(exam => autoList.appendChild(makeCard(exam)));
   }
 
-  if (taxiExams.length){
+  if (taxis.length){
     taxiWrap.hidden = false;
-    taxiExams.forEach(exam => taxiList.appendChild(renderExamCard(exam)));
+    taxis.forEach(exam => taxiList.appendChild(makeCard(exam)));
   }
 
-  // Als alles leeg is (alleen "other")
-  if (!autoExams.length && !taxiExams.length){
+  if (!autos.length && !taxis.length){
     noExams.hidden = false;
   }
 
-  // Top "Start" knop: start eerste AUTO als die bestaat, anders eerste taxi, anders eerste exam
-  const startTopBtn = document.getElementById("startTopBtn");
-  startTopBtn.addEventListener("click", (e) => {
+  // Top start: start Taxi Examen 1 als die bestaat, anders eerste exam
+  document.getElementById("startTopBtn").addEventListener("click", (e)=>{
     e.preventDefault();
-    const first = autoExams[0] || taxiExams[0] || exams[0];
+    const firstTaxi = taxis[0];
+    const first = firstTaxi || exams[0];
     if (first) start(first.id);
   });
-
 })();
 </script>
 
