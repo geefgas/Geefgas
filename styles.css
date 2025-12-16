@@ -1065,3 +1065,39 @@ details[open]{
   opacity: 0.75;
   pointer-events: none;
 }
+
+.exam-hero-image {
+  margin: 16px 0 24px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.exam-hero-image img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.examItem {
+  border: 1px solid rgba(16,19,26,.12);
+  border-radius: 16px;
+  padding: 14px;
+  background: #fff;
+  margin-bottom: 14px;
+}
+
+.examItem__title {
+  font-weight: 950;
+  font-size: 16px;
+}
+
+.examItem__meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.examItem__start {
+  margin-top: 12px;
+  width: 100%;
+}
