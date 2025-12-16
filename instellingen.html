@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeefGas – Instellingen</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="theme">
+
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="index.html" aria-label="GeefGas Home">
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
+      <span class="brand__name">GeefGas</span>
+    </a>
+
+    <nav class="nav" aria-label="Hoofdmenu">
+      <a class="nav__link" href="index.html#pakketten">Pakketten</a>
+      <a class="nav__link" href="examens.html">Examens</a>
+      <a class="nav__link" href="instellingen.html">Instellingen</a>
+      <a class="nav__cta" href="examens.html">Start oefenen</a>
+    </nav>
+
+    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobilemenu" id="mobileMenu" hidden>
+    <div class="container mobilemenu__inner">
+      <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
+      <a class="mobilemenu__link" href="examens.html">Examens</a>
+      <a class="mobilemenu__link" href="instellingen.html">Instellingen</a>
+      <a class="mobilemenu__cta" href="examens.html">Start oefenen</a>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container page__inner">
+
+    <section class="card hero">
+      <div class="hero__badge">Instellingen</div>
+      <h1 class="hero__title" style="margin-bottom:6px;">
+        Stel jouw examen <span class="gold">precies</span> in.
+      </h1>
+      <p class="hero__text" style="margin-top:0;">
+        Deze instellingen gelden voor alle examens.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 12px;">Exameninstellingen</h2>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+
+        <!-- Antwoorden tonen -->
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:14px;">
+          <div>
+            <div style="font-weight:950;">Antwoorden tonen</div>
+            <div class="muted" style="margin-top:2px;">Direct feedback of pas na afloop.</div>
+          </div>
+          <select id="revealMode" style="padding:10px 12px; border-radius:14px; border:1px solid rgba(16,19,26,.12); font-weight:850;">
+            <option value="instant">Meteen (na elke vraag)</option>
+            <option value="after">Pas na examen</option>
+          </select>
+        </div>
+
+        <!-- Voorlezen -->
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:14px;">
+          <div>
+            <div style="font-weight:950;">Voorlezen</div>
+            <div class="muted" style="margin-top:2px;">Gebruikt de beste NL-stem van je toestel.</div>
+          </div>
+
+          <label style="display:flex; align-items:center; gap:10px; font-weight:900;">
+            <input type="checkbox" id="ttsEnabled" style="width:22px; height:22px;">
+          </label>
+        </div>
+
+        <div class="note">
+          <strong>Tip:</strong> Zet “Pas na examen” aan als je een echte examenomgeving wil nabootsen.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn--primary" href="examens.html">Terug naar examens</a>
+        <a class="btn btn--ghost" href="index.html">Home</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+(function(){
+  const revealMode = document.getElementById("revealMode");
+  const ttsEnabled = document.getElementById("ttsEnabled");
+
+  // Load
+  revealMode.value = localStorage.getItem("gg_revealMode") || "instant";
+  ttsEnabled.checked = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
+
+  // Save
+  revealMode.addEventListener("change", () => {
+    localStorage.setItem("gg_revealMode", revealMode.value);
+  });
+
+  ttsEnabled.addEventListener("change", () => {
+    localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked));
+  });
+})();
+</script>
+
+</body>
+</html>
