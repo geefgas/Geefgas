@@ -4,197 +4,251 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GeefGas – Taxi theorie oefenen</title>
-
-  <meta name="description" content="GeefGas – Oefen taxi theorie met duidelijke uitleg en examengerichte oefenexamens." />
+  <meta name="description" content="GeefGas: Taxi theorie oefenen met examengerichte vragen en duidelijke uitleg. Kies je pakket en start direct." />
   <meta name="theme-color" content="#0B0D12" />
-
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body class="theme">
 
-<!-- ================= TOPBAR ================= -->
-<header class="topbar">
-  <div class="container topbar__inner">
-    <a class="brand" href="index.html">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo">
-      <span class="brand__name">GeefGas</span>
-    </a>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html" aria-label="GeefGas Home">
+        <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
+        <span class="brand__name">GeefGas</span>
+      </a>
 
-    <nav class="nav">
-      <a class="nav__link" href="#pakketten">Pakketten</a>
-      <a class="nav__link" href="examens.html">Examens</a>
-      <a class="nav__cta" href="examens.html">Start oefenen</a>
-    </nav>
+      <nav class="nav" aria-label="Hoofdmenu">
+        <a class="nav__link" href="#pakketten">Pakketten</a>
+        <a class="nav__link" href="examens.html">Examens</a>
+        <a class="nav__cta" href="examens.html">Start oefenen</a>
+      </nav>
 
-    <button class="nav__mobile" id="mobileMenuBtn">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+      <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
-<!-- ================= PAGE ================= -->
-<main class="page">
-  <div class="container page__inner">
-
-    <!-- ================= HERO ================= -->
-    <section class="card hero">
-      <div class="hero__badge">Premium theorieplatform • Taxi</div>
-
-      <h1 class="hero__title">
-        Taxi theorie oefenen.<br>
-        <span class="gold">Duidelijk.</span>
-        <span class="gold">Examengericht.</span>
-        <span class="gold">Zonder stress.</span>
-      </h1>
-
-      <p class="hero__text">
-        Rustig oefenen op je telefoon met realistische examens en duidelijke uitleg.
-      </p>
-
-      <div class="hero__actions">
-        <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
-        <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
+    <div class="mobilemenu" id="mobileMenu" hidden>
+      <div class="container mobilemenu__inner">
+        <a class="mobilemenu__link" href="#pakketten">Pakketten</a>
+        <a class="mobilemenu__link" href="examens.html">Examens</a>
+        <a class="mobilemenu__cta" href="examens.html">Start oefenen</a>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <!-- ================= CATEGORIEËN ================= -->
-    <section class="card">
-      <div class="sectionHead">
-        <div>
-          <h2 class="sectionHead__title">Categorieën</h2>
-          <p class="sectionHead__sub">Taxi is nu beschikbaar. De rest volgt binnenkort.</p>
+  <main class="page">
+    <div class="container page__inner">
+
+      <!-- HERO -->
+      <section class="card hero">
+        <div class="hero__badge">Premium theorieplatform • Taxi</div>
+
+        <h1 class="hero__title">
+          Taxi theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
+        </h1>
+
+        <p class="hero__text">
+          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na afloop.
+          Taxi-specifiek: taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
+          <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
         </div>
-      </div>
 
-      <div class="catGrid">
+        <!-- jouw bullets onder elkaar -->
+        <div class="hero__checks" aria-label="Voordelen" style="flex-direction:column; align-items:flex-start;">
+          <div class="check">✔ Duidelijk</div>
+          <div class="check">✔ Examengericht</div>
+          <div class="check">✔ Compleet</div>
+        </div>
+      </section>
 
-        <!-- TAXI -->
-        <a class="catCard catCard--active" href="examens.html">
-          <div class="catCard__tag catCard__tag--active">ACTIEF</div>
-
-          <div class="catCard__icon catCard__icon--photo">
-            <img src="assets/taxi.PNG" alt="Taxi">
+      <!-- CATEGORIEËN -->
+      <section class="card">
+        <div class="sectionHead" style="margin-bottom:14px;">
+          <div>
+            <h2 class="sectionHead__title">Categorieën</h2>
+            <p class="sectionHead__sub">Taxi is nu beschikbaar. De rest komt binnenkort.</p>
           </div>
-
-          <div class="catCard__title">Taxi</div>
-          <div class="catCard__sub">Start direct met oefenen</div>
-        </a>
-
-        <!-- AUTO -->
-        <div class="catCard catCard--soon">
-          <div class="catCard__tag">BINNENKORT</div>
-
-          <div class="catCard__icon catCard__icon--photo">
-            <img src="assets/auto.PNG" alt="Auto">
-          </div>
-
-          <div class="catCard__title">Auto</div>
-          <div class="catCard__sub">Volgende release</div>
         </div>
 
-        <!-- MOTOR -->
-        <div class="catCard catCard--soon">
-          <div class="catCard__tag">BINNENKORT</div>
+        <div class="catGrid">
 
-          <div class="catCard__icon catCard__icon--photo">
-            <img src="assets/motor.PNG" alt="Motor">
-          </div>
+          <!-- TAXI (actief) -->
+          <a class="catCard catCard--active" href="examens.html" aria-label="Taxi actief">
+            <div class="catCard__image">
+              <!-- pas de bestandsnaam aan als jouw bestand anders heet -->
+              <img src="assets/Taxi.PNG" alt="Taxi" />
+            </div>
+          </a>
 
-          <div class="catCard__title">Motor</div>
-          <div class="catCard__sub">Volgende release</div>
-        </div>
-
-        <!-- BROMFIETS -->
-        <div class="catCard catCard--soon">
-          <div class="catCard__tag">BINNENKORT</div>
-
-          <div class="catCard__icon catCard__icon--photo">
-            <img src="assets/bromfiets.PNG" alt="Bromfiets">
-          </div>
-
-          <div class="catCard__title">Bromfiets</div>
-          <div class="catCard__sub">Volgende release</div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ================= PAKKETTEN ================= -->
-    <section class="card" id="pakketten">
-      <div class="sectionHead">
-        <div>
-          <h2 class="sectionHead__title">Kies je pakket</h2>
-          <p class="sectionHead__sub">Testfase – je kunt direct oefenen.</p>
-        </div>
-      </div>
-
-      <div class="pkgList">
-
-        <label class="pkg pkg--best">
-          <input class="pkg__radio" type="radio" name="pkg" checked>
-          <span class="pkg__dot"></span>
-
-          <div class="pkg__main">
-            <div class="pkg__top">
-              <div>
-                <div class="pkg__name">Taxi Deluxe</div>
-                <div class="pkg__desc">31 dagen toegang</div>
-              </div>
-              <div class="pkg__price">€50</div>
+          <!-- AUTO (binnenkort of actief - jij bepaalt) -->
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__image">
+              <img src="assets/Auto.PNG" alt="Auto" />
             </div>
           </div>
-        </label>
 
-        <label class="pkg">
-          <input class="pkg__radio" type="radio" name="pkg">
-          <span class="pkg__dot"></span>
-
-          <div class="pkg__main">
-            <div class="pkg__top">
-              <div>
-                <div class="pkg__name">Taxi Premium</div>
-                <div class="pkg__desc">21 dagen toegang</div>
-              </div>
-              <div class="pkg__price">€40</div>
+          <!-- MOTOR -->
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__image">
+              <img src="assets/Motor.PNG" alt="Motor" />
             </div>
           </div>
-        </label>
 
-        <label class="pkg">
-          <input class="pkg__radio" type="radio" name="pkg">
-          <span class="pkg__dot"></span>
-
-          <div class="pkg__main">
-            <div class="pkg__top">
-              <div>
-                <div class="pkg__name">Taxi Lite</div>
-                <div class="pkg__desc">7 dagen toegang</div>
-              </div>
-              <div class="pkg__price">€25</div>
+          <!-- BROMFIETS -->
+          <div class="catCard catCard--soon" aria-disabled="true">
+            <div class="catCard__image">
+              <img src="assets/Bromfiets.PNG" alt="Bromfiets" />
             </div>
           </div>
-        </label>
 
-      </div>
+          <!-- Vracht verwijderd ✅ -->
 
-      <a class="btn btn--primary" href="examens.html">Direct starten</a>
-    </section>
-
-    <!-- ================= FOOTER ================= -->
-    <footer class="footer">
-      <div class="footer__left">
-        <img src="assets/geefgas.PNG" alt="GeefGas" class="footer__logo">
-        <div>
-          <div class="footer__brand">GeefGas</div>
-          <div class="footer__muted">Taxi nu • later meer categorieën</div>
         </div>
-      </div>
-      <div class="footer__right">© 2025</div>
-    </footer>
+      </section>
 
-  </div>
-</main>
+      <!-- PAKKETTEN -->
+      <section class="card" id="pakketten">
+        <div class="sectionHead">
+          <div>
+            <h2 class="sectionHead__title">Kies je pakket</h2>
+            <p class="sectionHead__sub">Testfase: de knop stuurt je direct door naar oefenen (zonder betaling).</p>
+          </div>
+          <div class="rating">
+            <span class="rating__score">4.9</span>
+            <span class="rating__stars" aria-label="5 sterren">★★★★★</span>
+            <span class="rating__muted">Google reviews</span>
+          </div>
+        </div>
 
+        <div class="pkgList" role="radiogroup" aria-label="Pakketkeuze">
+          <label class="pkg pkg--best">
+            <input class="pkg__radio" type="radio" name="pkg" value="deluxe" checked />
+            <span class="pkg__dot" aria-hidden="true"></span>
+
+            <div class="pkg__main">
+              <div class="pkg__top">
+                <div>
+                  <div class="pkg__name">Taxi Deluxe</div>
+                  <div class="pkg__desc">31 dagen toegang</div>
+                </div>
+                <div class="pkg__price">€50</div>
+              </div>
+
+              <div class="pkg__meta">
+                <span class="pill pill--gold">Aanbevolen</span>
+                <span class="pill">Examengericht</span>
+                <span class="pill">Uitleg + foutenlijst</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="pkg">
+            <input class="pkg__radio" type="radio" name="pkg" value="premium" />
+            <span class="pkg__dot" aria-hidden="true"></span>
+
+            <div class="pkg__main">
+              <div class="pkg__top">
+                <div>
+                  <div class="pkg__name">Taxi Premium</div>
+                  <div class="pkg__desc">21 dagen toegang</div>
+                </div>
+                <div class="pkg__price">€40</div>
+              </div>
+
+              <div class="pkg__meta">
+                <span class="pill">Examens oefenen</span>
+                <span class="pill">Uitleg per vraag</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="pkg">
+            <input class="pkg__radio" type="radio" name="pkg" value="lite" />
+            <span class="pkg__dot" aria-hidden="true"></span>
+
+            <div class="pkg__main">
+              <div class="pkg__top">
+                <div>
+                  <div class="pkg__name">Taxi Lite</div>
+                  <div class="pkg__desc">7 dagen toegang</div>
+                </div>
+                <div class="pkg__price">€25</div>
+              </div>
+
+              <div class="pkg__meta">
+                <span class="pill">Snel oefenen</span>
+                <span class="pill">Perfect last-minute</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <button class="btn btn--primary" id="startNowBtn" type="button">Direct starten</button>
+
+        <div class="featuresGrid" aria-label="Wat je krijgt">
+          <div class="feature">✔ Rustige interface</div>
+          <div class="feature">✔ Examens met timer</div>
+          <div class="feature">✔ Uitleg per vraag</div>
+          <div class="feature">✔ Fouten terugzien</div>
+        </div>
+
+        <div class="note">
+          <strong>Let op:</strong> GeefGas is een onafhankelijk oefenplatform (niet verbonden aan het CBR).
+          Vragen/visuals zijn eigen ontwikkeld.
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer__left">
+          <img src="assets/geefgas.PNG" alt="GeefGas" class="footer__logo" />
+          <div>
+            <div class="footer__brand">GeefGas</div>
+            <div class="footer__muted">Taxi nu • later meer categorieën</div>
+          </div>
+        </div>
+        <div class="footer__right">© <span id="year"></span></div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    (function(){
+      // jaar
+      const y = document.getElementById("year");
+      if (y) y.textContent = String(new Date().getFullYear());
+
+      // start knop -> examens
+      const btn = document.getElementById("startNowBtn");
+      const radios = Array.from(document.querySelectorAll('input[name="pkg"]'));
+
+      const packages = {
+        deluxe: { label:"Taxi Deluxe", days:31, price:50 },
+        premium:{ label:"Taxi Premium", days:21, price:40 },
+        lite:   { label:"Taxi Lite", days:7,  price:25 }
+      };
+
+      function getSelected(){
+        const sel = radios.find(r => r.checked)?.value || "deluxe";
+        return packages[sel] || packages.deluxe;
+      }
+
+      if (btn){
+        btn.addEventListener("click", () => {
+          const p = getSelected();
+          localStorage.setItem("gg_selectedPackage", JSON.stringify(p));
+          window.location.href = "examens.html";
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
