@@ -25,7 +25,7 @@
 
 const TAXI_EXAMEN_1 = {
   id: "taxi-examen-1",
-  title: "Taxi Examen 1 – Wet- en regelgeving (40 vragen)",
+  title: "Taxi Examen 1 – Wet- en regelgeving taxi (40 vragen)" (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -89,7 +89,7 @@ const TAXI_EXAMEN_1 = {
 
 const TAXI_EXAMEN_2 = {
   id: "taxi-examen-2",
-  title: "Taxi Examen 2 – BCT & administratie (40 vragen)",
+  title: "Taxi Examen 2 – BCT & ritregistratie (40 vragen)" (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -153,7 +153,7 @@ const TAXI_EXAMEN_2 = {
 
 const TAXI_EXAMEN_3 = {
   id: "taxi-examen-3",
-  title: "Taxi Examen 3 – KIWA & voertuig (40 vragen)",
+  title: "Taxi Examen 3 – Voertuigtechniek & keuring (40 vragen)" (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -217,7 +217,7 @@ const TAXI_EXAMEN_3 = {
 
 const TAXI_EXAMEN_4 = {
   id: "taxi-examen-4",
-  title: "Taxi Examen 4 – Rij & rust / fitheid (40 vragen)",
+  title: "Taxi Examen 4 – Rij- en rusttijden (40 vragen)" (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -345,7 +345,7 @@ const TAXI_EXAMEN_5 = {
 
 const TAXI_EXAMEN_6 = {
   id: "taxi-examen-6",
-  title: "Taxi Examen 6 – Halen/brengen & situaties (40 vragen)",
+  title: "Taxi Examen 6 – Halen/brengen & bijzondere situaties (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -601,7 +601,7 @@ const TAXI_EXAMEN_9 = {
 
 const TAXI_EXAMEN_10 = {
   id: "taxi-examen-10",
-  title: "Taxi Examen 10 – Calamiteiten & noodsituaties (40 vragen)",
+  title: "Taxi Examen 10 – Veiligheid & noodsituaties (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
@@ -665,7 +665,7 @@ const TAXI_EXAMEN_10 = {
 
 const TAXI_EXAMEN_11 = {
   id: "taxi-examen-11",
-  title: "Taxi Examen 11 – Wetgeving, boetes & aansprakelijkheid (40 vragen)",
+  title: "Taxi Examen 11 – Wetgeving, handhaving & aansprakelijkheid (40 vragen)",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
