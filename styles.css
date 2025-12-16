@@ -941,3 +941,15 @@ details[open]{
   padding: .85rem 1.05rem;
   border-radius: 16px;
 }
+
+.hero__bullets{
+  margin-top: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+
+.bullet{
+  font-weight: 900;
+  color: var(--muted);
+}
