@@ -62,16 +62,24 @@
       </div>
     </section>
 
-    <section class="card">
-      <h3 style="margin:0 0 6px;">Examen 1</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • 30 min • Auto (verkeer & situaties)</p>
-      <button class="btn btn--primary" id="startE1" type="button" style="margin-top:14px;">Start Examen 1</button>
+    <!-- AUTO EXAMENS -->
+    <section class="card" id="autoWrap" hidden>
+      <h3 style="margin:0 0 12px;">Auto examens</h3>
+      <div id="autoList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <section class="card">
-      <h3 style="margin:0 0 6px;">Taxi Examen 2</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">40 vragen • 30 min • Taxi (taxipas, BCT, KIWA, rusttijden)</p>
-      <button class="btn btn--primary" id="startE2" type="button" style="margin-top:14px;">Start Examen 2</button>
+    <!-- TAXI EXAMENS -->
+    <section class="card" id="taxiWrap" hidden>
+      <h3 style="margin:0 0 12px;">Taxi examens</h3>
+      <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
+    </section>
+
+    <!-- FALLBACK -->
+    <section class="card" id="noExams" hidden>
+      <h3 style="margin:0 0 6px;">Geen examens gevonden</h3>
+      <p class="muted" style="margin:0; line-height:1.6;">
+        Controleer of <strong>exam-data.js</strong> goed is geladen en <strong>window.EXAM_DATA.exams</strong> bevat.
+      </p>
     </section>
 
   </div>
@@ -79,6 +87,7 @@
 
 <script>
 (function(){
+  // ----- Settings -----
   const revealMode = document.getElementById("revealMode");
   const ttsEnabled = document.getElementById("ttsEnabled");
 
@@ -88,14 +97,99 @@
   revealMode.addEventListener("change", () => localStorage.setItem("gg_revealMode", revealMode.value));
   ttsEnabled.addEventListener("change", () => localStorage.setItem("gg_ttsEnabled", String(ttsEnabled.checked)));
 
+  // ----- Data -----
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+
+  const autoWrap = document.getElementById("autoWrap");
+  const taxiWrap = document.getElementById("taxiWrap");
+  const autoList = document.getElementById("autoList");
+  const taxiList = document.getElementById("taxiList");
+  const noExams  = document.getElementById("noExams");
+
   function start(examId){
     localStorage.setItem("gg_examId", examId);
     window.location.href = "examen.html";
   }
 
-  document.getElementById("startE1").addEventListener("click", ()=> start("examen-1"));
-  document.getElementById("startE2").addEventListener("click", ()=> start("examen-2"));
-  document.getElementById("startTopBtn").addEventListener("click", (e)=>{ e.preventDefault(); start("examen-1"); });
+  function normalizeCategory(cat){
+    return String(cat || "").trim().toLowerCase();
+  }
+
+  function renderExamCard(exam){
+    const total = Array.isArray(exam.questions) ? exam.questions.length : 0;
+    const dur = Number(exam.durationMinutes || 30);
+    const cat = exam.category || "Examen";
+
+    const box = document.createElement("div");
+    box.style.border = "1px solid rgba(16,19,26,.12)";
+    box.style.borderRadius = "16px";
+    box.style.padding = "12px";
+
+    const h = document.createElement("div");
+    h.style.fontWeight = "950";
+    h.style.marginBottom = "4px";
+    h.textContent = exam.title || "Examen";
+
+    const p = document.createElement("div");
+    p.className = "muted";
+    p.style.lineHeight = "1.6";
+    p.textContent = `${total || 40} vragen • ${dur} min • ${cat}`;
+
+    const btn = document.createElement("button");
+    btn.className = "btn btn--primary";
+    btn.type = "button";
+    btn.style.marginTop = "12px";
+    btn.textContent = "Start";
+    btn.addEventListener("click", () => start(exam.id));
+
+    box.appendChild(h);
+    box.appendChild(p);
+    box.appendChild(btn);
+
+    return box;
+  }
+
+  if (!exams.length){
+    noExams.hidden = false;
+    return;
+  }
+
+  // Group exams
+  const autoExams = [];
+  const taxiExams = [];
+  const otherExams = [];
+
+  exams.forEach(exam => {
+    const c = normalizeCategory(exam.category);
+    if (c === "auto") autoExams.push(exam);
+    else if (c === "taxi") taxiExams.push(exam);
+    else otherExams.push(exam); // (voor later, als je ooit extra categorieën toevoegt)
+  });
+
+  // Render
+  if (autoExams.length){
+    autoWrap.hidden = false;
+    autoExams.forEach(exam => autoList.appendChild(renderExamCard(exam)));
+  }
+
+  if (taxiExams.length){
+    taxiWrap.hidden = false;
+    taxiExams.forEach(exam => taxiList.appendChild(renderExamCard(exam)));
+  }
+
+  // Als alles leeg is (alleen "other")
+  if (!autoExams.length && !taxiExams.length){
+    noExams.hidden = false;
+  }
+
+  // Top "Start" knop: start eerste AUTO als die bestaat, anders eerste taxi, anders eerste exam
+  const startTopBtn = document.getElementById("startTopBtn");
+  startTopBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const first = autoExams[0] || taxiExams[0] || exams[0];
+    if (first) start(first.id);
+  });
+
 })();
 </script>
 
