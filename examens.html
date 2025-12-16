@@ -3,196 +3,124 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GeefGas – Examens</title>
+  <title>GeefGas – Taxi examens</title>
+
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
 
 <body class="theme">
 
+<!-- TOPBAR -->
 <header class="topbar">
   <div class="container topbar__inner">
     <a class="brand" href="index.html" aria-label="GeefGas Home">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo">
       <span class="brand__name">GeefGas</span>
     </a>
 
-    <nav class="nav" aria-label="Hoofdmenu">
-      <a class="nav__link" href="index.html#pakketten">Pakketten</a>
-      <a class="nav__link" href="examens.html">Examens</a>
+    <nav class="nav">
+      <a class="nav__link" href="index.html">Home</a>
       <a class="nav__link" href="instellingen.html">Instellingen</a>
-      <a class="nav__cta" href="#" id="startTopBtn">Start</a>
     </nav>
-
-    <button class="nav__mobile" id="mobileMenuBtn" aria-label="Menu openen" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <div class="mobilemenu" id="mobileMenu" hidden>
-    <div class="container mobilemenu__inner">
-      <a class="mobilemenu__link" href="index.html#pakketten">Pakketten</a>
-      <a class="mobilemenu__link" href="examens.html">Examens</a>
-      <a class="mobilemenu__link" href="instellingen.html">Instellingen</a>
-      <a class="mobilemenu__cta" href="#" id="startTopBtnMobile">Start</a>
-    </div>
   </div>
 </header>
 
+<!-- PAGE -->
 <main class="page">
   <div class="container page__inner">
 
-    <section class="card hero">
+    <!-- INTRO -->
+    <section class="card">
       <div class="hero__badge">Oefenexamens • Taxi</div>
-      <h1 class="hero__title" style="margin-bottom:6px;">Kies een examen en start direct.</h1>
-      <p class="hero__text" style="margin-top:0;">
-        Instellingen zoals “antwoorden tonen” en “voorlezen” regel je bij <strong>Instellingen</strong>.
+      <h1 style="margin:10px 0 6px;">Taxi oefenexamens</h1>
+      <p class="muted" style="line-height:1.6; margin:0;">
+        Kies een examen en start direct.  
+        Alle examens zijn examengericht en bevatten uitleg + foutenlijst.
+      </p>
+    </section>
+
+    <!-- TAXI EXAMENS -->
+    <section class="card" id="taxiWrap" hidden>
+      <h2 style="margin:0 0 6px;">Taxi examens</h2>
+      <p class="muted" style="margin:0 0 12px;">
+        15 examens • examengericht • luxe interface
       </p>
 
-      <div class="hero__actions">
-        <a class="btn btn--ghost" href="instellingen.html">Instellingen openen</a>
-        <a class="btn btn--gold" href="#" id="startHeroBtn">Start eerste examen</a>
-      </div>
-    </section>
-
-    <section class="card" id="autoWrap" hidden>
-      <div class="sectionHead" style="margin-bottom:12px;">
-        <div>
-          <h2 class="sectionHead__title">Auto examens</h2>
-          <p class="sectionHead__sub">Kies een examen en start.</p>
-        </div>
-      </div>
-      <div id="autoList" style="display:flex; flex-direction:column; gap:12px;"></div>
-    </section>
-
-    <section class="card" id="taxiWrap" hidden>
-      <div class="sectionHead" style="margin-bottom:12px;">
-        <div>
-          <h2 class="sectionHead__title">Taxi examens</h2>
-          <p class="sectionHead__sub">15 examens • examengericht • luxe interface</p>
-        </div>
-      </div>
       <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
+    <!-- GEEN EXAMENS -->
     <section class="card" id="noExams" hidden>
-      <h3 style="margin:0 0 6px;">Geen examens gevonden</h3>
-      <p class="muted" style="margin:0; line-height:1.6;">
-        Controleer of <strong>exam-data.js</strong> goed is geladen en <strong>window.EXAM_DATA.exams</strong> bevat.
+      <h3>Geen examens gevonden</h3>
+      <p class="muted">
+        Controleer of <strong>exam-data.js</strong> correct is geladen.
       </p>
     </section>
 
   </div>
 </main>
 
-<script src="app.js"></script>
 <script>
 (function(){
-  // Data
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-  const autoWrap = document.getElementById("autoWrap");
-  const taxiWrap = document.getElementById("taxiWrap");
-  const autoList = document.getElementById("autoList");
-  const taxiList = document.getElementById("taxiList");
-  const noExams = document.getElementById("noExams");
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams))
+    ? window.EXAM_DATA.exams
+    : [];
 
-  function start(examId){
-    localStorage.setItem("gg_examId", examId);
+  const taxiWrap = document.getElementById("taxiWrap");
+  const taxiList = document.getElementById("taxiList");
+  const noExams  = document.getElementById("noExams");
+
+  function startExam(id){
+    localStorage.setItem("gg_examId", id);
     window.location.href = "examen.html";
   }
 
-  function normCat(cat){
-    return String(cat || "").trim().toLowerCase();
-  }
-
-  function getNumberFromId(id){
-    const m = String(id || "").match(/(\d+)/);
+  function getNr(id){
+    const m = String(id).match(/(\d+)/);
     return m ? Number(m[1]) : 0;
   }
 
-  function makeCard(exam){
-    const total = Array.isArray(exam.questions) ? exam.questions.length : 40;
-    const mins = Number(exam.durationMinutes || 30);
-    const cat = exam.category || "Examen";
-
+  function makeExamCard(exam){
     const box = document.createElement("div");
     box.style.border = "1px solid rgba(16,19,26,.12)";
     box.style.borderRadius = "16px";
-    box.style.padding = "12px";
+    box.style.padding = "14px";
+    box.style.background = "#fff";
 
-    const headRow = document.createElement("div");
-    headRow.style.display = "flex";
-    headRow.style.alignItems = "flex-start";
-    headRow.style.justifyContent = "space-between";
-    headRow.style.gap = "10px";
+    const title = document.createElement("div");
+    title.style.fontWeight = "950";
+    title.style.marginBottom = "4px";
+    title.textContent = exam.title;
 
-    const h = document.createElement("div");
-    h.style.fontWeight = "950";
-    h.style.marginBottom = "4px";
-    h.textContent = exam.title || exam.id;
-
-    const tag = document.createElement("div");
-    tag.className = "pill";
-    tag.textContent = "Oefenexamen";
-    tag.style.whiteSpace = "nowrap";
-    tag.style.alignSelf = "flex-start";
-
-    headRow.appendChild(h);
-    headRow.appendChild(tag);
-
-    const p = document.createElement("div");
-    p.className = "muted";
-    p.style.lineHeight = "1.6";
-    p.textContent = `${total} vragen • ${mins} min • ${cat}`;
+    const meta = document.createElement("div");
+    meta.className = "muted";
+    meta.textContent = `${exam.questions.length} vragen • ${exam.durationMinutes} min • Taxi`;
 
     const btn = document.createElement("button");
     btn.className = "btn btn--primary";
-    btn.type = "button";
-    btn.style.marginTop = "12px";
     btn.textContent = "Start";
-    btn.addEventListener("click", () => start(exam.id));
+    btn.style.marginTop = "12px";
+    btn.onclick = () => startExam(exam.id);
 
-    box.appendChild(headRow);
-    box.appendChild(p);
+    box.appendChild(title);
+    box.appendChild(meta);
     box.appendChild(btn);
 
     return box;
   }
 
-  if (!exams.length){
+  const taxiExams = exams
+    .filter(e => String(e.category).toLowerCase() === "taxi")
+    .sort((a,b) => getNr(a.id) - getNr(b.id));
+
+  if (!taxiExams.length){
     noExams.hidden = false;
     return;
   }
 
-  const autos = exams.filter(e => normCat(e.category) === "auto");
-  const taxis = exams
-    .filter(e => normCat(e.category) === "taxi")
-    .sort((a,b) => getNumberFromId(a.id) - getNumberFromId(b.id));
-
-  if (autos.length){
-    autoWrap.hidden = false;
-    autos.forEach(exam => autoList.appendChild(makeCard(exam)));
-  }
-
-  if (taxis.length){
-    taxiWrap.hidden = false;
-    taxis.forEach(exam => taxiList.appendChild(makeCard(exam)));
-  }
-
-  if (!autos.length && !taxis.length){
-    noExams.hidden = false;
-  }
-
-  // Start buttons -> eerste taxi exam, anders eerste exam
-  function startFirst(){
-    const firstTaxi = taxis[0];
-    const first = firstTaxi || exams[0];
-    if (first) start(first.id);
-  }
-
-  document.getElementById("startTopBtn")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
-  document.getElementById("startTopBtnMobile")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
-  document.getElementById("startHeroBtn")?.addEventListener("click", (e)=>{ e.preventDefault(); startFirst(); });
+  taxiWrap.hidden = false;
+  taxiExams.forEach(exam => taxiList.appendChild(makeExamCard(exam)));
 })();
 </script>
 
