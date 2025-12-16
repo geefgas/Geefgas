@@ -1588,3 +1588,107 @@ details[open]{
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(196,154,44,0.45);
 }
+
+/* === EXAMEN PAGINA – LUXE AFWERKING === */
+
+/* Vraagkaart iets losser */
+.exam-question {
+  padding: 20px;
+}
+
+/* Antwoordopties */
+.answer-option {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+
+.answer-option:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+}
+
+/* Letter (A/B/C) */
+.answer-option .letter {
+  background: #f4f4f4;
+  color: #111;
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Geselecteerd antwoord */
+.answer-option.selected {
+  border-color: #d4af37;
+  background: linear-gradient(180deg, #fff9e8, #ffffff);
+}
+
+/* JUIST / FOUT (voor feedback) */
+.answer-option.correct {
+  border-color: #2ecc71;
+  background: #eafaf1;
+}
+
+.answer-option.wrong {
+  border-color: #e74c3c;
+  background: #fdecea;
+}
+
+/* Actieknoppen onderin */
+.exam-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.exam-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+/* Volgende knop extra luxe */
+.btn-next {
+  background: linear-gradient(180deg, #d4af37, #b8962e);
+  color: #111;
+  box-shadow: 0 10px 30px rgba(212,175,55,0.35);
+}
+
+/* Voorlezen / Vorige subtiel */
+.btn-secondary {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* Info onderaan rustiger */
+.exam-footer {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+/* Afbeelding bij vraag – bewust leeg */
+.question-image {
+  background: linear-gradient(180deg, #f7f7f7, #ededed);
+  border-radius: 16px;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  margin-bottom: 20px;
+}
