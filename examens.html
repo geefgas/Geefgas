@@ -28,51 +28,75 @@
 <main class="page">
   <div class="container page__inner">
 
-    <section class="card">
-      <h2 style="margin:0 0 6px;">Examens</h2>
-      <p class="muted" style="margin:0; line-height:1.6;">
-        Kies je examen. Je kunt instellen of je antwoorden meteen ziet of pas na afloop.
+    <!-- HERO / HEADER CARD -->
+    <section class="card hero hero--compact">
+      <div class="hero__badge">Oefenexamens • Taxi</div>
+      <h1 class="hero__title hero__title--clean" style="margin-top:10px;">
+        Kies een examen en start direct.
+      </h1>
+      <p class="hero__text hero__text--clean" style="max-width:65ch;">
+        Stel in of je antwoorden <strong>direct</strong> ziet of <strong>pas na afloop</strong>. Inclusief uitleg + foutenlijst.
       </p>
     </section>
 
-    <section class="card">
-      <h3 style="margin:0 0 12px;">Instellingen</h3>
+    <!-- INSTELLINGEN -->
+    <section class="card card--soft">
+      <div class="sectionHead" style="margin-bottom:12px;">
+        <div>
+          <h2 class="sectionHead__title">Instellingen</h2>
+          <p class="sectionHead__sub">Deze instellingen gelden voor alle examens.</p>
+        </div>
+      </div>
 
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
+      <div class="settingsGrid">
+        <div class="settingRow">
           <div>
-            <div style="font-weight:950;">Antwoorden tonen</div>
-            <div class="muted" style="margin-top:2px;">Direct feedback of pas na het examen.</div>
+            <div class="settingTitle">Antwoorden tonen</div>
+            <div class="muted">Direct feedback of pas na het examen.</div>
           </div>
-          <select id="revealMode" style="padding:10px 12px; border-radius:14px; border:1px solid rgba(16,19,26,.12); font-weight:850;">
+          <select id="revealMode" class="selectLux">
             <option value="instant">Meteen (na elke vraag)</option>
             <option value="after">Pas na examen</option>
           </select>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid rgba(16,19,26,.12); border-radius:16px; padding:12px;">
+        <div class="settingRow">
           <div>
-            <div style="font-weight:950;">Voorlezen</div>
-            <div class="muted" style="margin-top:2px;">Gebruikt de beste NL-stem van je toestel.</div>
+            <div class="settingTitle">Voorlezen</div>
+            <div class="muted">Gebruikt de beste NL-stem van je toestel.</div>
           </div>
-          <label style="display:flex; align-items:center; gap:10px; font-weight:900;">
-            <input type="checkbox" id="ttsEnabled" style="width:20px; height:20px;">
+          <label class="toggleLux">
+            <input type="checkbox" id="ttsEnabled">
+            <span class="toggleLux__ui" aria-hidden="true"></span>
           </label>
         </div>
       </div>
     </section>
 
-    <section class="card" id="autoWrap" hidden>
-      <h3 style="margin:0 0 12px;">Auto examens</h3>
-      <div id="autoList" style="display:flex; flex-direction:column; gap:12px;"></div>
+    <!-- AUTO -->
+    <section class="card card--soft" id="autoWrap" hidden>
+      <div class="sectionHead" style="margin-bottom:12px;">
+        <div>
+          <h2 class="sectionHead__title">Auto examens</h2>
+          <p class="sectionHead__sub">Binnenkort of als je ze toevoegt.</p>
+        </div>
+      </div>
+      <div id="autoList" class="examList"></div>
     </section>
 
-    <section class="card" id="taxiWrap" hidden>
-      <h3 style="margin:0 0 12px;">Taxi examens</h3>
-      <div id="taxiList" style="display:flex; flex-direction:column; gap:12px;"></div>
+    <!-- TAXI -->
+    <section class="card card--soft" id="taxiWrap" hidden>
+      <div class="sectionHead" style="margin-bottom:12px;">
+        <div>
+          <h2 class="sectionHead__title">Taxi examens</h2>
+          <p class="sectionHead__sub">15 examens • examengericht • luxe interface</p>
+        </div>
+      </div>
+      <div id="taxiList" class="examList"></div>
     </section>
 
-    <section class="card" id="noExams" hidden>
+    <!-- GEEN EXAMS -->
+    <section class="card card--soft" id="noExams" hidden>
       <h3 style="margin:0 0 6px;">Geen examens gevonden</h3>
       <p class="muted" style="margin:0; line-height:1.6;">
         Controleer of <strong>exam-data.js</strong> goed is geladen en <strong>window.EXAM_DATA.exams</strong> bevat.
@@ -122,29 +146,38 @@
     const cat = exam.category || "Examen";
 
     const box = document.createElement("div");
-    box.style.border = "1px solid rgba(16,19,26,.12)";
-    box.style.borderRadius = "16px";
-    box.style.padding = "12px";
+    box.className = "examItem";
+
+    const top = document.createElement("div");
+    top.className = "examItem__top";
+
+    const left = document.createElement("div");
 
     const h = document.createElement("div");
-    h.style.fontWeight = "950";
-    h.style.marginBottom = "4px";
+    h.className = "examItem__title";
     h.textContent = exam.title || exam.id;
 
     const p = document.createElement("div");
-    p.className = "muted";
-    p.style.lineHeight = "1.6";
+    p.className = "examItem__meta";
     p.textContent = `${total} vragen • ${mins} min • ${cat}`;
 
+    left.appendChild(h);
+    left.appendChild(p);
+
+    const badge = document.createElement("div");
+    badge.className = "examItem__badge";
+    badge.textContent = "Oefenexamen";
+
+    top.appendChild(left);
+    top.appendChild(badge);
+
     const btn = document.createElement("button");
-    btn.className = "btn btn--primary";
+    btn.className = "btn btn--primary examBtn";
     btn.type = "button";
-    btn.style.marginTop = "12px";
     btn.textContent = "Start";
     btn.addEventListener("click", () => start(exam.id));
 
-    box.appendChild(h);
-    box.appendChild(p);
+    box.appendChild(top);
     box.appendChild(btn);
 
     return box;
@@ -174,6 +207,7 @@
     noExams.hidden = false;
   }
 
+  // Top start
   document.getElementById("startTopBtn").addEventListener("click", (e)=>{
     e.preventDefault();
     const firstTaxi = taxis[0];
