@@ -41,41 +41,30 @@
   <main class="page">
     <div class="container page__inner">
 
-      <!-- HERO (rustig + professioneel) -->
-      <section class="card hero hero--clean">
-        <div class="hero__badge"> Theorie rijbewijs • Oefenplatform</div>
+      <section class="card hero">
+        <div class="hero__badge">Premium theorieplatform • Taxi</div>
 
-        <h1 class="hero__title hero__title--clean">
-          Theorie oefenen.<br>
-          <span class="gold">.</span> <span class="gold">Duidelijk.</span>Examengericht <span class="gold">Zonder stress.</span>
+        <h1 class="hero__title">
+          Taxi theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
         </h1>
 
-        <p class="hero__text hero__text--clean">
-          Realistische oefenexamens met uitleg en foutenoverzicht.
+        <p class="hero__text">
+          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na afloop.
+          Taxi-specifiek: taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
         </p>
+
+        <div class="hero__bullets" aria-label="Voordelen">
+          <div class="bullet">• Duidelijk</div>
+          <div class="bullet">• Examengericht</div>
+          <div class="bullet">• Compleet</div>
+        </div>
 
         <div class="hero__actions">
           <a class="btn btn--gold" href="#pakketten">Kies je pakket</a>
           <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
         </div>
-
-        <!-- rustige mini-features (1 regel) -->
-        <div class="hero__mini">
-          <span class="miniPill">Examengericht</span>
-          <span class="miniPill">Uitleg</span>
-          <span class="miniPill">Foutenlijst</span>
-        </div>
-
-        <!-- optioneel: details (inklapbaar = niet druk) -->
-        <details class="heroDetails">
-          <summary>Wat zit er in?</summary>
-          <div class="heroDetails__body">
-            Taxipas • BCT • Keuring & voertuig • Tarieven • Handhaving • Veilig werken • Klantcontact
-          </div>
-        </details>
       </section>
 
-      <!-- CATEGORIEËN -->
       <section class="card">
         <div class="sectionHead" style="margin-bottom:14px;">
           <div>
@@ -122,7 +111,6 @@
         </div>
       </section>
 
-      <!-- PAKKETTEN -->
       <section class="card" id="pakketten">
         <div class="sectionHead">
           <div>
@@ -231,20 +219,7 @@
   <script src="app.js"></script>
   <script>
     (function(){
-      // Mobile menu
-      const btn = document.getElementById("mobileMenuBtn");
-      const panel = document.getElementById("mobileMenu");
-      if (btn && panel){
-        btn.addEventListener("click", () => {
-          const open = panel.hasAttribute("hidden") ? false : true;
-          if (open) panel.setAttribute("hidden","");
-          else panel.removeAttribute("hidden");
-          btn.setAttribute("aria-expanded", String(!open));
-        });
-      }
-
-      // Package start
-      const startBtn = document.getElementById("startNowBtn");
+      const btn = document.getElementById("startNowBtn");
       const radios = Array.from(document.querySelectorAll('input[name="pkg"]'));
 
       const packages = {
@@ -258,7 +233,7 @@
         return packages[sel] || packages.deluxe;
       }
 
-      startBtn.addEventListener("click", () => {
+      btn.addEventListener("click", () => {
         const p = getSelected();
         localStorage.setItem("gg_selectedPackage", JSON.stringify(p));
         window.location.href = "examens.html";
