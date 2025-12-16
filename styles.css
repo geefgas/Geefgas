@@ -1317,3 +1317,37 @@ details[open]{
   font-size: 1.05rem;
   color: var(--muted);
 }
+
+/* =========================================
+   EXAMENS – LUXE GOUD STIJL (HERSTEL)
+   ========================================= */
+
+/* Luxe exam kaarten */
+.examItem {
+  background: linear-gradient(180deg, #ffffff, #faf7f0);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.06);
+}
+
+/* Gouden start knop */
+.examItem__start,
+.examItem button {
+  background: linear-gradient(180deg, #d4af37, #b8962e);
+  color: #111;
+  font-weight: 900;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 22px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  transition: all .2s ease;
+}
+
+/* Hover effect (subtiel luxe) */
+.examItem__start:hover,
+.examItem button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
