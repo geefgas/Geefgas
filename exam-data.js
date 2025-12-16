@@ -1,9 +1,13 @@
 /* GeefGas — exam-data.js
    Bevat: Examen 1 (40) + Taxi Examen 2 (40)
-   Afbeeldingen staan in: /assets/
-   Naamgeving:
-   - Examen 1: assets/e1_q01.PNG t/m assets/e1_q40.PNG
-   - Examen 2: assets/e2_q01.PNG t/m assets/e2_q40.PNG
+
+   NIEUWE AFSPRAAK (scheiding Auto vs Taxi):
+   - Auto Examen 1 afbeeldingen:  assets/auto/e1_q01.PNG t/m assets/auto/e1_q40.PNG
+   - Taxi Examen 2 afbeeldingen:  assets/taxi/e2_q01.PNG t/m assets/taxi/e2_q40.PNG
+
+   (Let op: we houden voor nu de taxi-bestandsnamen e2_q..PNG aan,
+   maar zetten ze in een aparte map zodat er nooit overlap is.)
+
    Export: window.EXAM_DATA / window.EXAMS / window.exams / window.ggExams
 */
 
@@ -123,18 +127,20 @@
   };
 
   // =========================
-  // AUTO-IMAGE MAPPER (JOUW BESTANDSNAMEN)
+  // IMAGE MAPPER (MAP-SCHEIDING AUTO / TAXI)
   // =========================
   const IMG_EXT = "PNG"; // exact zoals je bestanden: .PNG
 
   function pad2(n){ return String(n).padStart(2, "0"); }
 
+  // Auto Examen 1 -> assets/auto/
   EXAMEN_1.questions.forEach(q => {
-    q.image = `assets/e1_q${pad2(q.id)}.${IMG_EXT}`;
+    q.image = `assets/auto/e1_q${pad2(q.id)}.${IMG_EXT}`;
   });
 
+  // Taxi Examen 2 -> assets/taxi/
   EXAMEN_2.questions.forEach(q => {
-    q.image = `assets/e2_q${pad2(q.id)}.${IMG_EXT}`;
+    q.image = `assets/taxi/e2_q${pad2(q.id)}.${IMG_EXT}`;
   });
 
   // Export
