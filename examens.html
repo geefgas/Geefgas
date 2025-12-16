@@ -112,7 +112,6 @@
   }
 
   function getNumberFromId(id){
-    // pakt het eerste nummer uit bv "taxi-examen-15"
     const m = String(id || "").match(/(\d+)/);
     return m ? Number(m[1]) : 0;
   }
@@ -159,7 +158,7 @@
   const autos = exams.filter(e => normCat(e.category) === "auto");
   const taxis = exams
     .filter(e => normCat(e.category) === "taxi")
-    .sort((a,b) => getNumberFromId(a.id) - getNumberFromId(b.id)); // Taxi 1..15 netjes
+    .sort((a,b) => getNumberFromId(a.id) - getNumberFromId(b.id));
 
   if (autos.length){
     autoWrap.hidden = false;
@@ -175,7 +174,6 @@
     noExams.hidden = false;
   }
 
-  // Top start: start Taxi Examen 1 als die bestaat, anders eerste exam
   document.getElementById("startTopBtn").addEventListener("click", (e)=>{
     e.preventDefault();
     const firstTaxi = taxis[0];
