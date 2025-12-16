@@ -31,21 +31,36 @@
   <div class="container page__inner">
 
     <!-- HERO AFBEELDING -->
-    <section class="exam-hero-image">
+    <section
+      style="
+        border-radius:18px;
+        overflow:hidden;
+        box-shadow: var(--shadow);
+      "
+    >
       <img
         src="assets/taxi-examens.PNG"
         alt="Taxi examens – GeefGas"
+        style="
+          width:100%;
+          height: clamp(220px, 40vh, 420px);
+          object-fit: cover;
+          display:block;
+        "
       >
     </section>
 
-    <!-- EXAMENS -->
+    <!-- TITEL -->
     <section class="card">
-      <h2 style="margin-bottom:6px;">Taxi examens</h2>
-      <p class="muted" style="margin-top:0;">
-        15 examens • examengericht • luxe interface
+      <h1 style="margin:0 0 6px;">Taxi examens</h1>
+      <p class="muted" style="margin:0;">
+        Kies een examen en start direct.
       </p>
+    </section>
 
-      <div id="examList"></div>
+    <!-- EXAMENS LIJST -->
+    <section class="card">
+      <div id="examList" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
   </div>
@@ -59,7 +74,7 @@
   const exams =
     window.EXAM_DATA &&
     Array.isArray(window.EXAM_DATA.exams)
-      ? window.EXAM_DATA.exams.filter(e => e.category === "Taxi")
+      ? window.EXAM_DATA.exams.filter(e => String(e.category).toLowerCase() === "taxi")
       : [];
 
   if (!exams.length) {
@@ -68,32 +83,38 @@
   }
 
   exams.forEach(exam => {
-    const card = document.createElement("div");
-    card.className = "examItem";
+    const item = document.createElement("div");
 
-    card.innerHTML = `
-      <div class="examItem__head">
-        <div>
-          <div class="examItem__title">${exam.title}</div>
-          <div class="examItem__meta">
-            ${exam.questions.length} vragen •
-            ${exam.durationMinutes} min •
-            ${exam.category}
-          </div>
+    item.style.border = "1px solid rgba(16,19,26,.12)";
+    item.style.borderRadius = "16px";
+    item.style.padding = "14px";
+    item.style.display = "flex";
+    item.style.alignItems = "center";
+    item.style.justifyContent = "space-between";
+    item.style.gap = "12px";
+    item.style.background = "#fff";
+
+    item.innerHTML = `
+      <div>
+        <div style="font-weight:950; margin-bottom:4px;">
+          ${exam.title}
+        </div>
+        <div class="muted">
+          ${exam.questions.length} vragen • ${exam.durationMinutes} min
         </div>
       </div>
 
-      <button class="btn btn--dark examItem__start">
+      <button class="btn btn--gold">
         Start
       </button>
     `;
 
-    card.querySelector("button").addEventListener("click", () => {
+    item.querySelector("button").addEventListener("click", () => {
       localStorage.setItem("gg_examId", exam.id);
       window.location.href = "examen.html";
     });
 
-    listEl.appendChild(card);
+    listEl.appendChild(item);
   });
 })();
 </script>
