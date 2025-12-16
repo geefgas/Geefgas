@@ -22,7 +22,7 @@
   }
 
   // =========================
-  // TAXI EXAMEN 1 — Basis regels, ILT, documenten, vergunningen
+  // TAXI EXAMEN 1
   // =========================
   const TAXI_EXAMEN_1 = {
     id: "taxi-examen-1",
@@ -78,7 +78,7 @@
   };
 
   // =========================
-  // TAXI EXAMEN 2 — BCT, administratie, rij-/rust, tarieven/bon (dieper)
+  // TAXI EXAMEN 2
   // =========================
   const TAXI_EXAMEN_2 = {
     id: "taxi-examen-2",
@@ -114,7 +114,7 @@
       q(23, "Route", "Wat is juist bij omrijden vanwege wegafsluiting?", ["Door de afzetting rijden", "Veilige en toegestane omleiding kiezen", "Stoppen op de snelweg om te kijken"], 1),
       q(24, "Klant & gedrag", "Klant wil dat jij ‘even snel’ door oranje/rood rijdt. Wat is juist?", ["Doen als het veilig lijkt", "Niet doen; je houdt je aan de regels", "Alleen doen als je haast hebt"], 1),
       q(25, "Klant & gedrag", "Wat is het beste bij een meningsverschil over prijs?", ["Escaleren en dreigen", "Rustig uitleggen en verwijzen naar duidelijke afspraken/bon", "Klant opsluiten"], 1),
-      q(26, "ILT & documenten", "Bij controle wordt om documenten gevraagd. Wat is het beste?", ["Zeggen dat je ze thuis hebt", "Tonen wat gevraagd wordt (voor zover verplicht) en meewerken", "Wegrijden"], 1),
+      q(26, "ILT & documenten", "Bij controle wordt om documenten gevraagd. Wat is het beste?", ["Zeggen dat je ze thuis hebt", "Tonen wat gevraagd wordt en meewerken", "Wegrijden"], 1),
       q(27, "Voertuig", "Welke basiscontrole helpt problemen voorkomen?", ["Bandenspanning/verlichting/schade", "Alleen luchtverfrisser", "Alleen stoelverwarming"], 0),
       q(28, "Voertuig", "Je dashboard waarschuwt voor een veiligheidskritische storing. Wat is het beste?", ["Negeren en doorrijden", "Veilig stoppen en volgens procedure handelen", "Alleen harder rijden"], 1),
       q(29, "Standplaats", "Wat is professioneel bij drukte op standplaats?", ["Toeteren en voordringen", "Rustig blijven en wachtrij volgen", "Op de stoep parkeren"], 1),
@@ -134,7 +134,7 @@
   };
 
   // =========================
-  // TAXI EXAMEN 3 — Klant, veiligheid, praktijksituaties, conflicten, service
+  // TAXI EXAMEN 3 (nieuwe toevoegen)
   // =========================
   const TAXI_EXAMEN_3 = {
     id: "taxi-examen-3",
@@ -166,24 +166,24 @@
       q(20, "Betaling", "Klant wil achteraf pas betalen. Wat is professioneel?", ["Altijd oké", "Volg de gebruikelijke werkwijze: afrekenen aan het eind van de rit", "Laat het maar zitten"], 1),
 
       q(21, "Conflicten", "Klant dreigt. Wat is de beste prioriteit?", ["De klant gelijk geven", "Persoonlijke veiligheid en andersmans veiligheid (PAMAN)", "Sneller rijden om weg te komen"], 1),
-      q(22, "PAMAN", "Wat is de juiste volgorde van PAMAN-doel in het kort?", ["Eerst filmen, dan bellen", "Veiligheid, markeren, alarmeren, noodzakelijke hulp", "Eerst discussiëren, dan stoppen"], 1),
+      q(22, "PAMAN", "Wat is het juiste uitgangspunt bij PAMAN?", ["Eerst filmen, dan bellen", "Veiligheid voorop; daarna markeren/alarmeren/hulp", "Eerst discussiëren, dan stoppen"], 1),
       q(23, "PAMAN", "Wat betekent ‘noodzakelijke hulp verlenen’ praktisch?", ["Niets doen", "Hulp inschakelen en eerste hulp waar mogelijk/veilig", "Alleen toeteren"], 1),
-      q(24, "Nood", "Klant wordt agressief en je voelt je onveilig. Wat is het beste?", ["Doorrijden tot bestemming en hopen dat het stopt", "Veilig stoppen op geschikte plek en hulp/centrale inschakelen indien nodig", "Klant opsluiten"], 1),
-      q(25, "Nood", "Er is een ongeluk vlak voor je. Wat is het beste handelen?", ["Doorrijden en filmen", "Veilig handelen volgens PAMAN (veiligheid, alarmeren indien nodig)", "Toeteren en door"], 1),
+      q(24, "Nood", "Klant wordt agressief en je voelt je onveilig. Wat is het beste?", ["Doorrijden tot bestemming en hopen dat het stopt", "Veilig stoppen en hulp/centrale inschakelen indien nodig", "Klant opsluiten"], 1),
+      q(25, "Nood", "Er is een ongeval vlak voor je. Wat is het beste handelen?", ["Doorrijden en filmen", "Veilig handelen: veiligheid, alarmeren indien nodig, geen extra gevaar maken", "Toeteren en door"], 1),
       q(26, "Vermoeidheid", "Je merkt dat je concentratie afneemt. Wat doe je?", ["Nog één ritje en dan pauze", "Pauze nemen vóór je verder rijdt", "Harder rijden om sneller klaar te zijn"], 1),
       q(27, "Afleiding", "Klant wil dat je tijdens het rijden iets op je telefoon opzoekt. Wat is professioneel?", ["Doen tijdens rijden", "Pas doen als je veilig stilstaat", "De telefoon aan klant geven en zelf blijven rijden"], 1),
-      q(28, "Privacy", "Een klant vraagt om gegevens van vorige klant (bv. telefoonnummer). Wat doe je?", ["Geven", "Niet geven; privacy respecteren", "Alleen geven tegen betaling"], 1),
-      q(29, "Privacy", "Je hebt camerabeelden in de auto. Wat is het meest professioneel?", ["Altijd openbaar delen", "Alleen gebruiken volgens regels/doel en beveiligd bewaren", "Verkopen aan vrienden"], 1),
+      q(28, "Privacy", "Een klant vraagt om gegevens van vorige klant. Wat doe je?", ["Geven", "Niet geven; privacy respecteren", "Alleen geven tegen betaling"], 1),
+      q(29, "Privacy", "Je hebt camerabeelden in de auto. Wat is het meest professioneel?", ["Altijd openbaar delen", "Alleen gebruiken volgens doel/regels en beveiligd bewaren", "Verkopen aan vrienden"], 1),
       q(30, "Professionaliteit", "Wat is een professioneel antwoord op ‘rij maar wat sneller’?", ["Oké, ik ga regels overtreden", "Ik rijd veilig en volgens verkeersregels", "Dan stap je maar uit"], 1),
 
       q(31, "Documenten", "Klant vraagt: ‘ben je wel een echte taxi?’. Wat is netjes?", ["Boos worden", "Rustig uitleggen dat je bevoegd bent en professioneel blijven", "Klant uitzetten"], 1),
-      q(32, "ILT", "Je ziet ILT-voertuig en je wordt zenuwachtig. Wat is het beste?", ["Snel omrijden", "Rustig blijven; als alles op orde is hoef je niet te stressen", "BCT uitzetten"], 1),
-      q(33, "Voertuig", "Klant klaagt over geur/smerigheid. Wat is professioneel?", ["Negeren", "Netjes reageren en zorgen voor een schone, representatieve auto", "Zeggen dat klanten zeuren"], 1),
+      q(32, "ILT", "Je ziet ILT en je wordt zenuwachtig. Wat is het beste?", ["Snel omrijden", "Rustig blijven; als alles op orde is hoef je niet te stressen", "BCT uitzetten"], 1),
+      q(33, "Voertuig", "Klant klaagt over smerigheid. Wat is professioneel?", ["Negeren", "Netjes reageren en zorgen voor een schone, representatieve auto", "Zeggen dat klanten zeuren"], 1),
       q(34, "Service", "Klant wil raam open, jij wordt afgeleid door wind/geluid. Wat is best?", ["Nee zeggen zonder uitleg", "Overleggen: comfort én veiligheid", "Hard remmen om punt te maken"], 1),
       q(35, "Service", "Klant is slecht ter been. Wat is professioneel?", ["Haast maken en doorrijden", "Rustig helpen waar redelijk en veilig mogelijk", "Klant laten vallen"], 1),
       q(36, "Stoppen", "Je moet parkeren om de situatie te bespreken. Wat is juist?", ["Stoppen waar het verboden/onveilig is", "Stoppen op een veilige plek waar het is toegestaan", "Stoppen op een rotonde"], 1),
       q(37, "Klant & gedrag", "Klant wil roken/vapen in de auto en jij wilt dat niet. Wat is best?", ["Toestaan altijd", "Rustig jouw regels uitleggen en alternatief bieden (stopplek)", "Boos worden"], 1),
-      q(38, "Route", "Navigatie stuurt je een straat in met duidelijk ‘verboden in te rijden’. Wat doe je?", ["Toch erin", "Je volgt de verkeersborden; navigatie is hulpmiddel", "Je stopt midden op de weg"], 1),
+      q(38, "Route", "Navigatie stuurt je een straat in met ‘verboden in te rijden’. Wat doe je?", ["Toch erin", "Je volgt de verkeersborden; navigatie is hulpmiddel", "Je stopt midden op de weg"], 1),
       q(39, "Samenvatting", "Wat is de beste kernregel bij taxiwerk in moeilijke situaties?", ["Altijd klant gelijk geven", "Veiligheid en regels gaan voor; blijf professioneel", "Snel klaar zijn is het belangrijkst"], 1),
       q(40, "Samenvatting", "Wat is het beste einddoel van professioneel taxiwerk?", ["Zo veel mogelijk ritten", "Veilige, eerlijke en klantgerichte dienstverlening", "Zo hard mogelijk rijden"], 1),
     ]
@@ -198,3 +198,65 @@
   window.ggExams = exams;
 
 })();
+
+// =========================
+// TAXI EXAMEN 4 (40) — Taxi
+// =========================
+const EXAMEN_4 = {
+  id: "examen-4",
+  title: "Taxi Examen 4 (40 vragen)",
+  category: "Taxi",
+  durationMinutes: 30,
+  passMinCorrect: 32,
+  questions: [
+
+    { id: 1, type: "mcq", category: "Wetgeving", prompt: "Wie is verantwoordelijk voor naleving van taxiregels tijdens een rit?", options: ["Alleen het taxibedrijf", "De taxichauffeur", "De passagier"], correctIndex: 1 },
+    { id: 2, type: "mcq", category: "Taxipas", prompt: "Wanneer moet je je taxipas bij je hebben?", options: ["Alleen bij controle", "Altijd tijdens taxiwerk", "Alleen overdag"], correctIndex: 1 },
+    { id: 3, type: "mcq", category: "ILT", prompt: "Wat mag de ILT doen bij een controle?", options: ["Alleen waarschuwen", "Documenten en registratie controleren", "Alleen kenteken noteren"], correctIndex: 1 },
+    { id: 4, type: "mcq", category: "BCT", prompt: "Wat registreert de BCT?", options: ["Alleen kilometers", "Rit- en werktijden", "Alleen betalingen"], correctIndex: 1 },
+    { id: 5, type: "mcq", category: "BCT", prompt: "Wanneer moet de BCT correct zijn ingelogd?", options: ["Na de eerste rit", "Voor aanvang van de dienst", "Alleen bij lange ritten"], correctIndex: 1 },
+
+    { id: 6, type: "mcq", category: "Veiligheid", prompt: "Wat doe je bij agressief gedrag van een klant?", options: ["Terugschreeuwen", "Rustig blijven en veiligheid vooropstellen", "Direct doorrijden"], correctIndex: 1 },
+    { id: 7, type: "mcq", category: "Gedrag", prompt: "Wat hoort bij professioneel chauffeurgedrag?", options: ["Discussies winnen", "Rustig en respectvol blijven", "Altijd gelijk willen hebben"], correctIndex: 1 },
+    { id: 8, type: "mcq", category: "Route", prompt: "De klant vraagt een omweg zonder reden. Wat doe je?", options: ["Altijd weigeren", "Bespreken en akkoord bij duidelijke afspraken", "Gewoon rijden"], correctIndex: 1 },
+    { id: 9, type: "mcq", category: "Tarieven", prompt: "Wat moet je doen als een klant naar de prijs vraagt?", options: ["Ontwijken", "Duidelijk uitleg geven", "Pas na afloop zeggen"], correctIndex: 1 },
+    { id: 10, type: "mcq", category: "Betaling", prompt: "Wanneer moet een betaling correct geregistreerd zijn?", options: ["Na de dienst", "Tijdens of direct na de rit", "Alleen bij pin"], correctIndex: 1 },
+
+    { id: 11, type: "mcq", category: "Bon", prompt: "Is een klant gerechtigd op een bon?", options: ["Nee", "Ja, op verzoek", "Alleen zakelijk"], correctIndex: 1 },
+    { id: 12, type: "mcq", category: "Bagage", prompt: "Hoe ga je om met zware bagage?", options: ["Niet helpen", "Helpen waar redelijk en veilig", "Altijd weigeren"], correctIndex: 1 },
+    { id: 13, type: "mcq", category: "Veiligheid", prompt: "Wanneer mag je stoppen om iemand af te zetten?", options: ["Altijd overal", "Alleen op een veilige en toegestane plek", "Midden op de weg"], correctIndex: 1 },
+    { id: 14, type: "mcq", category: "Gordel", prompt: "Wat doe je als een passagier geen gordel draagt?", options: ["Negeren", "Uitleggen en pas rijden als het veilig is", "Doorrijden"], correctIndex: 1 },
+    { id: 15, type: "mcq", category: "Alcohol", prompt: "Wat geldt voor alcohol tijdens taxiwerk?", options: ["Beetje mag", "Nul tolerantie", "Alleen ’s avonds"], correctIndex: 1 },
+
+    { id: 16, type: "mcq", category: "Voertuig", prompt: "Wat controleer je voor je dienst?", options: ["Alleen brandstof", "Basisveiligheid van het voertuig", "Niets"], correctIndex: 1 },
+    { id: 17, type: "mcq", category: "Ritweigering", prompt: "Wanneer mag je een rit weigeren?", options: ["Zonder reden", "Bij gevaar of onacceptabel gedrag", "Bij korte afstand"], correctIndex: 1 },
+    { id: 18, type: "mcq", category: "Communicatie", prompt: "Hoe ga je om met een boze klant?", options: ["Boos terug", "Luisteren en rustig blijven", "Rit stoppen"], correctIndex: 1 },
+    { id: 19, type: "mcq", category: "Navigatie", prompt: "Mag je navigatie gebruiken tijdens het rijden?", options: ["Nee", "Ja, als het niet afleidt", "Alleen bij file"], correctIndex: 1 },
+    { id: 20, type: "mcq", category: "Privacy", prompt: "Wat doe je met klantinformatie?", options: ["Delen", "Discreet behandelen", "Opslaan privé"], correctIndex: 1 },
+
+    { id: 21, type: "mcq", category: "Nood", prompt: "Een klant wordt onwel. Wat doe je?", options: ["Doorrijden", "Veilig stoppen en hulp inschakelen", "Negeren"], correctIndex: 1 },
+    { id: 22, type: "mcq", category: "Rijgedrag", prompt: "Wat is passend rijgedrag met passagiers?", options: ["Sportief", "Rustig en voorspelbaar", "Haastig"], correctIndex: 1 },
+    { id: 23, type: "mcq", category: "Werkdruk", prompt: "Hoe ga je om met tijdsdruk?", options: ["Harder rijden", "Veilig blijven rijden", "Regels loslaten"], correctIndex: 1 },
+    { id: 24, type: "mcq", category: "Planning", prompt: "Wat doe je bij vertraging?", options: ["Niets zeggen", "Klant informeren", "Rit annuleren"], correctIndex: 1 },
+    { id: 25, type: "mcq", category: "Gedrag", prompt: "Wat is ongewenst chauffeurgedrag?", options: ["Rustig uitleggen", "Schreeuwen", "Luisteren"], correctIndex: 1 },
+
+    { id: 26, type: "mcq", category: "Wet", prompt: "Waarom zijn taxiregels belangrijk?", options: ["Voor winst", "Voor veiligheid en eerlijkheid", "Voor snelheid"], correctIndex: 1 },
+    { id: 27, type: "mcq", category: "Voertuig", prompt: "Wat doe je bij een technisch mankement?", options: ["Doorrijden", "Niet rijden tot opgelost", "Langzamer rijden"], correctIndex: 1 },
+    { id: 28, type: "mcq", category: "Betaling", prompt: "Mag je betaling weigeren?", options: ["Ja", "Nee, behalve bij misbruik", "Altijd"], correctIndex: 1 },
+    { id: 29, type: "mcq", category: "Dienst", prompt: "Wanneer eindigt je dienst volgens de regels?", options: ["Wanneer jij wilt", "Volgens rij- en rusttijden", "Na laatste klant"], correctIndex: 1 },
+    { id: 30, type: "mcq", category: "Professionaliteit", prompt: "Wat straalt professionaliteit uit?", options: ["Haast", "Beheerst gedrag", "Discussie"], correctIndex: 1 },
+
+    { id: 31, type: "mcq", category: "Conflicten", prompt: "Wat is de beste aanpak bij conflict?", options: ["Escaleren", "De-escaleren", "Negeren"], correctIndex: 1 },
+    { id: 32, type: "mcq", category: "Controle", prompt: "Wat gebeurt bij ernstige overtredingen?", options: ["Niets", "Boete of sanctie", "Alleen waarschuwing"], correctIndex: 1 },
+    { id: 33, type: "mcq", category: "Klant", prompt: "Wat doe je als een klant onrealistische eisen stelt?", options: ["Altijd toegeven", "Uitleg geven en grenzen aangeven", "Rit stoppen"], correctIndex: 1 },
+    { id: 34, type: "mcq", category: "Werkethiek", prompt: "Wat is eerlijk taxiwerk?", options: ["Maximaal verdienen", "Volgens regels en afspraken", "Sneller dan toegestaan"], correctIndex: 1 },
+    { id: 35, type: "mcq", category: "Veiligheid", prompt: "Waarom altijd afstand houden?", options: ["Comfort", "Veiligheid", "Brandstof"], correctIndex: 1 },
+
+    { id: 36, type: "mcq", category: "Stress", prompt: "Wat doe je bij stress?", options: ["Negeren", "Rust nemen", "Doorpushen"], correctIndex: 1 },
+    { id: 37, type: "mcq", category: "Communicatie", prompt: "Wat is goede communicatie?", options: ["Kortaf", "Duidelijk en respectvol", "Onpersoonlijk"], correctIndex: 1 },
+    { id: 38, type: "mcq", category: "Werk", prompt: "Wanneer ben je geschikt om te rijden?", options: ["Altijd", "Fit en alert", "Bij weinig klanten"], correctIndex: 1 },
+    { id: 39, type: "mcq", category: "Verantwoordelijkheid", prompt: "Wie draagt eindverantwoordelijkheid tijdens de rit?", options: ["Klant", "Chauffeur", "Planner"], correctIndex: 1 },
+    { id: 40, type: "mcq", category: "Samenvatting", prompt: "Wat is de kern van taxiwerk?", options: ["Snelheid", "Veilig en klantgericht vervoer", "Omzet"], correctIndex: 1 }
+
+  ]
+};
