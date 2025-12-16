@@ -1201,3 +1201,99 @@ details[open]{
   .ggExamItem{ padding: 14px 12px; }
   .ggStartBtn{ min-width: 88px; }
 }
+
+/* ===== GeefGas Luxury Polish (Examens) ===== */
+
+.ggHero{
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+}
+.ggHero img{
+  width: 100%;
+  height: clamp(240px, 42vh, 460px);
+  object-fit: cover;
+  display: block;
+}
+
+.ggSectionHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ggPill{
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 950;
+  border: 1px solid rgba(185,146,46,.25);
+  background: rgba(216,181,91,.12);
+  color: #2A2416;
+  white-space: nowrap;
+}
+
+.ggExamList{
+  margin-top: 14px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+.ggExamItem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+
+  padding: 14px 14px;
+  border-radius: 18px;
+  background: #fff;
+
+  border: 1px solid rgba(16,19,26,.10);
+  box-shadow: 0 12px 26px rgba(16,19,26,.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.ggExamItem::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(500px 120px at 10% 0%, rgba(216,181,91,.18), transparent 60%);
+  pointer-events:none;
+}
+
+.ggExamInfo{ position: relative; z-index: 1; }
+.ggExamTitle{
+  font-weight: 950;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.ggExamMeta{
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.ggStartBtn{
+  position: relative;
+  z-index: 1;
+
+  border: 1px solid rgba(0,0,0,.12);
+  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  color: #111;
+  font-weight: 950;
+
+  padding: 12px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  min-width: 92px;
+}
+.ggStartBtn:active{ transform: translateY(1px); }
+
+@media (max-width: 520px){
+  .ggExamItem{ padding: 14px 12px; }
+  .ggStartBtn{ min-width: 88px; }
+}
+
