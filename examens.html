@@ -30,7 +30,7 @@
 <main class="page">
   <div class="container page__inner">
 
-    <!-- HERO FOTO -->
+    <!-- HERO AFBEELDING -->
     <section class="exam-hero-image">
       <img
         src="assets/taxi-examens.PNG"
@@ -38,13 +38,13 @@
       >
     </section>
 
-    <!-- AANTAL EXAMENS -->
-    <div class="examCountWrapper">
-      <span class="examCount">15 examens</span>
+    <!-- BADGE -->
+    <div class="exam-count-wrapper">
+      <div class="exam-count">15 examens</div>
     </div>
 
-    <!-- EXAMEN LIJST -->
-    <section class="examListWrapper">
+    <!-- EXAMENS -->
+    <section>
       <div id="examList"></div>
     </section>
 
@@ -68,26 +68,31 @@
   }
 
   exams.forEach(exam => {
-    const item = document.createElement("div");
-    item.className = "examItem";
+    const card = document.createElement("div");
+    card.className = "examItem";
 
-    item.innerHTML = `
-      <div class="examItem__info">
-        <div class="examItem__title">${exam.title}</div>
-        <div class="examItem__meta">
-          ${exam.questions.length} vragen • ${exam.durationMinutes} min
+    card.innerHTML = `
+      <div class="examItem__head">
+        <div>
+          <div class="examItem__title">${exam.title}</div>
+          <div class="examItem__meta">
+            ${exam.questions.length} vragen •
+            ${exam.durationMinutes} min
+          </div>
         </div>
       </div>
 
-      <button class="examItem__start">Start</button>
+      <button class="examItem__start">
+        Start
+      </button>
     `;
 
-    item.querySelector("button").addEventListener("click", () => {
+    card.querySelector("button").addEventListener("click", () => {
       localStorage.setItem("gg_examId", exam.id);
       window.location.href = "examen.html";
     });
 
-    listEl.appendChild(item);
+    listEl.appendChild(card);
   });
 })();
 </script>
