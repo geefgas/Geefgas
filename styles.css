@@ -1,6 +1,6 @@
 /* =========================================================
-   GeefGas – COMPLETE Styles
-   Works with: index.html + examens.html + examen.html
+   GeefGas – Styles (clean + luxe)
+   Works with: index.html + examens.html + examen.html + resultaat.html + instellingen.html
    Theme: wit / zwart / goud (luxe)
    ========================================================= */
 
@@ -238,6 +238,18 @@ a{ color:inherit; text-decoration:none; }
   .hero__title{ font-size: 1.55rem; }
 }
 
+/* bullets onder elkaar (als je ze gebruikt) */
+.hero__bullets{
+  margin-top: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+}
+.bullet{
+  font-weight: 900;
+  color: var(--muted);
+}
+
 /* =========================================================
    BUTTONS
    ========================================================= */
@@ -315,34 +327,29 @@ a{ color:inherit; text-decoration:none; }
 .rating__muted{ color: var(--muted); font-weight: 800; }
 
 /* =========================================================
-   CATEGORIES GRID (HOME)
+   CATEGORIES GRID (HOME) – FOTO BLOKKEN
    ========================================================= */
 .catGrid{
   margin-top: 10px;
   display:grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
-
-@media (max-width: 980px){
-  .catGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 600px){
+@media (min-width: 720px){
   .catGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .catCard{
   position: relative;
   border: 1px solid var(--stroke);
-  border-radius: var(--radius2);
+  border-radius: 18px;
   background: #fff;
-  padding: 14px;
   box-shadow: 0 10px 22px rgba(16,19,26,.06);
-  display:flex;
-  flex-direction:column;
-  gap: 8px;
-  min-height: 120px;
+  overflow:hidden;
+  padding: 0;
+  min-height: 220px;
 }
+
 .catCard__tag{
   position:absolute;
   top: 10px;
@@ -351,34 +358,43 @@ a{ color:inherit; text-decoration:none; }
   font-weight: 950;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid var(--stroke);
-  background: rgba(16,19,26,.03);
-  color: var(--muted);
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(11,13,18,.55);
+  color: rgba(255,255,255,.92);
+  backdrop-filter: blur(6px);
 }
+
 .catCard__tag--active{
-  border-color: rgba(185,146,46,.25);
-  background: rgba(216,181,91,.14);
-  color: #2A2416;
+  border-color: rgba(185,146,46,.35);
+  background: rgba(11,13,18,.42);
+  color: #fff;
 }
-.catCard__icon{
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: rgba(11,13,18,.03);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size: 22px;
+
+.catCard__image{
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
 }
-.catCard__title{ font-weight: 950; }
-.catCard__sub{ color: var(--muted); font-weight: 750; }
+.catCard__image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display:block;
+}
 
 .catCard--active{
-  outline: 2px solid rgba(185,146,46,.20);
+  outline: 2px solid rgba(216,181,91,.35);
+  box-shadow: 0 18px 30px rgba(216,181,91,.18);
 }
+
 .catCard--soon{
-  opacity: .78;
+  opacity: .75;
+  pointer-events:none;
+}
+
+@media (max-width: 520px){
+  .catCard__image{ aspect-ratio: 3 / 2; }
 }
 
 /* =========================================================
@@ -514,7 +530,87 @@ a{ color:inherit; text-decoration:none; }
 .footer__right{ font-weight: 900; }
 
 /* =========================================================
-   EXAM UI (used by examen.html)
+   EXAMENS PAGE (examens.html)
+   ========================================================= */
+.exam-hero-image{
+  margin: 16px 0 10px;
+  border-radius: 22px;
+  overflow:hidden;
+  box-shadow: 0 24px 50px rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.10);
+}
+.exam-hero-image img{
+  width: 100%;
+  height: clamp(240px, 42vh, 460px);
+  object-fit: contain;          /* teksten in je banner blijven zichtbaar */
+  object-position: center;
+  display:block;
+  background: var(--black);     /* luxe zwart erachter */
+}
+
+/* “15 examens” pill */
+.exam-count-wrapper{ text-align:center; }
+.exam-count{
+  display:inline-block;
+  margin: 14px auto 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  color: #2A2416;
+  background: rgba(216,181,91,.18);
+  border: 1px solid rgba(185,146,46,.35);
+}
+
+/* exam cards */
+.examItem{
+  border-radius: 20px;
+  border: 1px solid rgba(185,146,46,.22);
+  background: linear-gradient(180deg,#ffffff,#faf7ef);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06), inset 0 0 0 1px rgba(255,255,255,.6);
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+@media (hover:hover){
+  .examItem:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 36px rgba(185,146,46,.18), inset 0 0 0 1px rgba(255,255,255,.7);
+  }
+}
+
+.examItem__title{
+  font-weight: 950;
+  font-size: 16px;
+  letter-spacing: -.2px;
+}
+.examItem__meta{
+  margin-top: 6px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.examItem__start{
+  margin-top: 12px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 999px;
+  border: none;
+  font-weight: 950;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(180deg,#e0bf66,#c9a63a);
+  color:#111;
+  box-shadow: 0 8px 18px rgba(185,146,46,.35), inset 0 -2px 0 rgba(0,0,0,.15);
+  transition: transform .1s ease, filter .15s ease;
+}
+.examItem__start:active{
+  transform: translateY(1px);
+  filter: brightness(.96);
+}
+
+/* =========================================================
+   EXAM UI (examen.html)
    ========================================================= */
 .examTop{
   width: min(1100px, 92vw);
@@ -545,25 +641,32 @@ a{ color:inherit; text-decoration:none; }
 
 .examCard{
   border-radius: 18px;
-  border: 1px solid var(--stroke);
+  border: 1px solid rgba(216,181,91,.18);
   background: var(--white);
-  box-shadow: var(--shadow);
+  box-shadow: 0 22px 50px rgba(16,19,26,.14);
   overflow:hidden;
+  display:flex;
+  flex-direction:column; /* altijd onder elkaar */
 }
 
 .examMedia{
-  background: rgba(16,19,26,.02);
+  position: relative;
+  width: 100%;
+  background: radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+              rgba(16,19,26,.02);
   border-bottom: 1px solid var(--stroke);
-  max-height: 42vh;
+  height: clamp(220px, 34vh, 440px);
   overflow: hidden;
 }
 .examMedia img{
-  width:100%;
-  height:auto;
+  width: 100%;
+  height: 100%;
   display:block;
+  object-fit: contain; /* belangrijk: teksten in de vraagfoto blijven zichtbaar */
+  object-position: center;
 }
 
-.examBody{ padding: 16px; }
+.examBody{ padding: 16px; position:relative; z-index:1; background:var(--white); }
 
 .examMeta{
   display:flex;
@@ -590,7 +693,6 @@ a{ color:inherit; text-decoration:none; }
   letter-spacing: -.1px;
 }
 
-/* Answers bigger */
 .answers{
   display:flex;
   flex-direction:column;
@@ -605,20 +707,21 @@ a{ color:inherit; text-decoration:none; }
   gap: 12px;
   padding: 14px 14px;
   border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: #FBFBFC;
+  border: 1px solid rgba(16,19,26,.12);
+  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
   cursor:pointer;
   font-weight: 900;
   font-size: 1.08rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
 }
 .answerKey{
   flex: 0 0 auto;
   width: 36px;
   height: 36px;
   border-radius: 12px;
-  border: 1px solid var(--stroke);
+  border: 1px solid rgba(216,181,91,.22);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -628,9 +731,9 @@ a{ color:inherit; text-decoration:none; }
   margin-top: 1px;
 }
 
-.answer.selected{ border-color: rgba(185,146,46,.55); background: rgba(216,181,91,.10); }
-.answer.correct{ border-color: rgba(46,204,113,.65); background: rgba(46,204,113,.10); }
-.answer.wrong{ border-color: rgba(255,90,90,.65); background: rgba(255,90,90,.10); }
+.answer.selected{ border-color: rgba(216,181,91,.55); background: rgba(216,181,91,.12); }
+.answer.correct{ border-color: rgba(6,118,71,.45); background: rgba(6,118,71,.08); }
+.answer.wrong{ border-color: rgba(180,35,24,.45); background: rgba(180,35,24,.08); }
 
 .explain{
   margin-top: 12px;
@@ -639,8 +742,8 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid var(--stroke);
   background: rgba(16,19,26,.02);
 }
-.explain.good{ border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.08); }
-.explain.bad{ border-color: rgba(255,90,90,.35); background: rgba(255,90,90,.08); }
+.explain.good{ border-color: rgba(6,118,71,.25); background: rgba(6,118,71,.06); }
+.explain.bad{ border-color: rgba(180,35,24,.25); background: rgba(180,35,24,.06); }
 .explainTitle{ font-weight: 950; margin-bottom: 6px; font-size: 1.05rem; }
 .explainText{ color: var(--muted); font-weight: 750; line-height: 1.6; font-size: 1.02rem; }
 
@@ -658,109 +761,22 @@ a{ color:inherit; text-decoration:none; }
   #questionText{ font-size: 1.18rem; }
   .answer{ font-size: 1.06rem; padding: 14px 12px; }
   .answerKey{ width: 34px; height: 34px; }
-}
-
-/* ==== HOTFIX HOME TOPBAR (override) ==== */
-.topbar__inner{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:space-between !important;
-}
-
-.nav__mobile{
-  display:none !important;
-  background: transparent !important;
-  border: 0 !important;
-  padding: 0 !important;
-}
-
-/* op mobiel tonen we burger, op desktop niet */
-@media (max-width: 720px){
-  .nav{ display:none !important; }
-  .nav__mobile{
-    display:block !important;
-    width: 44px !important;
-    height: 44px !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(255,255,255,.14) !important;
-    background: rgba(255,255,255,.06) !important;
-    padding: 10px !important;
-  }
-  .nav__mobile span{
-    display:block !important;
-    width: 20px !important;
-    height: 2px !important;
-    background: rgba(255,255,255,.85) !important;
-    margin: 4px 0 !important;
-    border-radius: 2px !important;
-  }
+  .examMedia{ height: 220px; }
 }
 
 /* =========================================================
-   DEFINITIEVE FIX: Examenvraag altijd zichtbaar onder foto
+   RESULTAAT (resultaat.html)
    ========================================================= */
-
-/* Zorg voor vaste verticale flow */
-.examCard{
-  display: flex;
-  flex-direction: column;
-}
-
-/* FOTO-CONTAINER */
-.examMedia{
-  position: relative;
-  width: 100%;
-  background: rgba(16,19,26,.02);
-  border-bottom: 1px solid var(--stroke);
-
-  height: 260px;
-  overflow: hidden;
-}
-
-/* FOTO ZELF */
-.examMedia img{
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* OP MOBIEL: nog iets lager */
-@media (max-width: 520px){
-  .examMedia{
-    height: 220px;
-  }
-}
-
-/* VRAAG + ANTWOORDEN ALTIJD ERONDER */
-.examBody{
-  position: relative;
-  background: var(--white);
-  z-index: 1;
-}
-
-/* =========================================================
-   RESULTAAT (resultaat.html) – extra luxe styling
-   ========================================================= */
-
 details{
   box-shadow: 0 10px 22px rgba(16,19,26,.06);
 }
-
-details summary{
-  outline: none;
-}
-
-details summary::-webkit-details-marker{
-  display:none;
-}
+details summary{ outline: none; }
+details summary::-webkit-details-marker{ display:none; }
 
 details summary{
   position: relative;
   padding-right: 34px;
 }
-
 details summary::after{
   content: "▾";
   position: absolute;
@@ -778,43 +794,18 @@ details summary::after{
   font-weight: 950;
   line-height: 1;
 }
+details[open] summary::after{ content: "▴"; }
+details[open]{ border-color: rgba(185,146,46,.25) !important; }
 
-details[open] summary::after{
-  content: "▴";
-}
-
-details[open]{
-  border-color: rgba(185,146,46,.25) !important;
-}
+#bar{ border-radius: 999px; }
 
 @media (min-width: 720px){
-  #retryBtn{
-    min-width: 240px;
-  }
-}
-
-#bar{
-  border-radius: 999px;
+  #retryBtn{ min-width: 240px; }
 }
 
 /* =========================================================
-   EXAMENS PAGE — luxe look zoals home
+   INSTELLINGEN (instellingen.html) – compact + luxe
    ========================================================= */
-
-/* iets meer “premium” achtergrond bovenaan */
-.hero--compact{
-  padding: 18px 16px;
-  background:
-    radial-gradient(700px 240px at 85% 10%, rgba(216,181,91,.18), transparent 60%),
-    linear-gradient(180deg, rgba(11,13,18,.06), rgba(11,13,18,0));
-}
-
-/* zachtere card variant (minder hard wit) */
-.card--soft{
-  background: linear-gradient(180deg, #ffffff, #fbfbfc);
-}
-
-/* Settings */
 .settingsGrid{
   display:flex;
   flex-direction:column;
@@ -884,886 +875,4 @@ details[open]{
   transform: translateX(22px);
   background: linear-gradient(180deg, var(--gold), var(--gold2));
   border-color: rgba(0,0,0,.08);
-}
-
-/* Exam list */
-.examList{
-  display:flex;
-  flex-direction:column;
-  gap: 12px;
-}
-
-/* Exam item card — dezelfde luxe stijl als home buttons */
-.examItem{
-  border: 1px solid rgba(16,19,26,.12);
-  border-radius: 18px;
-  padding: 14px;
-  background:
-    radial-gradient(500px 140px at 80% 0%, rgba(216,181,91,.14), transparent 60%),
-    linear-gradient(180deg, rgba(11,13,18,.04), rgba(11,13,18,0));
-  box-shadow: 0 14px 26px rgba(16,19,26,.08);
-}
-
-.examItem__top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.examItem__title{
-  font-weight: 950;
-  font-size: 1.08rem;
-  letter-spacing: -.15px;
-}
-
-.examItem__meta{
-  margin-top: 6px;
-  color: var(--muted);
-  font-weight: 750;
-}
-
-.examItem__badge{
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(185,146,46,.25);
-  background: rgba(216,181,91,.12);
-  color:#2A2416;
-  font-weight: 900;
-  font-size: .85rem;
-  white-space: nowrap;
-}
-
-/* Start button op examens iets compacter */
-.examBtn{
-  margin-top: 0 !important;
-  padding: .85rem 1.05rem;
-  border-radius: 16px;
-}
-
-.hero__bullets{
-  margin-top: 12px;
-  display:flex;
-  flex-direction:column;
-  gap: 6px;
-}
-
-.bullet{
-  font-weight: 900;
-  color: var(--muted);
-}
-
-/* ===== CATEGORIE FOTO-ICONS ===== */
-.catCard__icon--photo{
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid var(--stroke);
-  background: rgba(11,13,18,.03);
-}
-
-.catCard__icon--photo img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* =========================================================
-   CATEGORY CARDS – FOTO'S I.P.V. ICONEN
-   ========================================================= */
-
-/* icon container geschikt maken voor foto */
-.catCard__icon--photo{
-  width: 100%;
-  height: 120px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--stroke);
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* foto netjes vullen */
-.catCard__icon--photo img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* actieve taxi extra luxe rand */
-.catCard--active{
-  outline: 2px solid rgba(216,181,91,.35);
-  box-shadow: 0 18px 30px rgba(216,181,91,.18);
-}
-
-/* titel iets strakker */
-.catCard__title{
-  font-size: 1.05rem;
-  font-weight: 950;
-}
-
-/* subtitel rustiger */
-.catCard__sub{
-  font-size: .95rem;
-  font-weight: 750;
-}
-
-/* mobile iets hoger */
-@media (max-width: 520px){
-  .catCard__icon--photo{
-    height: 140px;
-  }
-}
-
-/* ================================
-   CATEGORIE BLOKKEN – FULL WIDTH
-   ================================ */
-
-/* Grid: mobiel 1 kolom, desktop 2 */
-.catGrid{
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 720px){
-  .catGrid{
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Kaart volledig beeld */
-.catCard{
-  padding: 0;
-  overflow: hidden;
-  border-radius: 18px;
-  min-height: 220px;
-}
-
-/* Afbeelding container */
-.catCard__image{
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4 / 3; /* strak, premium */
-}
-
-/* Afbeelding zelf */
-.catCard__image img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;      /* BELANGRIJK */
-  object-position: center;
-  display: block;
-}
-
-/* Binnenkort iets subtieler */
-.catCard--soon{
-  opacity: 0.75;
-  pointer-events: none;
-}
-
-.exam-hero-image {
-  margin: 16px 0 24px;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.exam-hero-image img {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.examItem {
-  border: 1px solid rgba(16,19,26,.12);
-  border-radius: 16px;
-  padding: 14px;
-  background: #fff;
-  margin-bottom: 14px;
-}
-
-.examItem__title {
-  font-weight: 950;
-  font-size: 16px;
-}
-
-.examItem__meta {
-  font-size: 14px;
-  color: #6b7280;
-  margin-top: 4px;
-}
-
-.examItem__start {
-  margin-top: 12px;
-  width: 100%;
-}
-
-/* ===== GeefGas Luxury Polish (Examens) ===== */
-
-.ggHero{
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: var(--shadow);
-}
-.ggHero img{
-  width: 100%;
-  height: clamp(240px, 42vh, 460px);
-  object-fit: cover;
-  display: block;
-}
-
-/* Head row */
-.ggSectionHead{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.ggPill{
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 950;
-  border: 1px solid rgba(185,146,46,.25);
-  background: rgba(216,181,91,.12);
-  color: #2A2416;
-  white-space: nowrap;
-}
-
-/* Exam list */
-.ggExamList{
-  margin-top: 14px;
-  display:flex;
-  flex-direction:column;
-  gap: 12px;
-}
-
-.ggExamItem{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-
-  padding: 14px 14px;
-  border-radius: 18px;
-  background: #fff;
-
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 12px 26px rgba(16,19,26,.06);
-  position: relative;
-  overflow: hidden;
-}
-
-/* super subtiele gouden “sheen” */
-.ggExamItem::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background: radial-gradient(500px 120px at 10% 0%, rgba(216,181,91,.18), transparent 60%);
-  pointer-events:none;
-}
-
-.ggExamInfo{ position: relative; z-index: 1; }
-.ggExamTitle{
-  font-weight: 950;
-  line-height: 1.2;
-  margin-bottom: 6px;
-}
-.ggExamMeta{
-  color: var(--muted);
-  font-weight: 800;
-}
-
-/* Premium start button */
-.ggStartBtn{
-  position: relative;
-  z-index: 1;
-
-  border: 1px solid rgba(0,0,0,.12);
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
-  color: #111;
-  font-weight: 950;
-
-  padding: 12px 18px;
-  border-radius: 999px;
-  cursor: pointer;
-  min-width: 92px;
-}
-
-.ggStartBtn:active{ transform: translateY(1px); }
-
-@media (max-width: 520px){
-  .ggExamItem{ padding: 14px 12px; }
-  .ggStartBtn{ min-width: 88px; }
-}
-
-/* ===== GeefGas Luxury Polish (Examens) ===== */
-
-.ggHero{
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: var(--shadow);
-}
-.ggHero img{
-  width: 100%;
-  height: clamp(240px, 42vh, 460px);
-  object-fit: cover;
-  display: block;
-}
-
-.ggSectionHead{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.ggPill{
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-weight: 950;
-  border: 1px solid rgba(185,146,46,.25);
-  background: rgba(216,181,91,.12);
-  color: #2A2416;
-  white-space: nowrap;
-}
-
-.ggExamList{
-  margin-top: 14px;
-  display:flex;
-  flex-direction:column;
-  gap: 12px;
-}
-
-.ggExamItem{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-
-  padding: 14px 14px;
-  border-radius: 18px;
-  background: #fff;
-
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 12px 26px rgba(16,19,26,.06);
-  position: relative;
-  overflow: hidden;
-}
-
-.ggExamItem::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background: radial-gradient(500px 120px at 10% 0%, rgba(216,181,91,.18), transparent 60%);
-  pointer-events:none;
-}
-
-.ggExamInfo{ position: relative; z-index: 1; }
-.ggExamTitle{
-  font-weight: 950;
-  line-height: 1.2;
-  margin-bottom: 6px;
-}
-.ggExamMeta{
-  color: var(--muted);
-  font-weight: 800;
-}
-
-.ggStartBtn{
-  position: relative;
-  z-index: 1;
-
-  border: 1px solid rgba(0,0,0,.12);
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
-  color: #111;
-  font-weight: 950;
-
-  padding: 12px 18px;
-  border-radius: 999px;
-  cursor: pointer;
-  min-width: 92px;
-}
-.ggStartBtn:active{ transform: translateY(1px); }
-
-@media (max-width: 520px){
-  .ggExamItem{ padding: 14px 12px; }
-  .ggStartBtn{ min-width: 88px; }
-}
-
-.ggHero img{
-  width: 100%;
-  height: clamp(240px, 42vh, 460px);
-  object-fit: contain;         /* ✅ NIET meer snijden */
-  object-position: center;
-  display: block;
-  background: #0B0D12;         /* luxe zwart achter de foto */
-}
-
-/* ================================
-   HERO INFO TEKST (15 examens)
-   ================================ */
-
-.exam-hero-info {
-  text-align: center;
-  margin-top: 12px;
-  font-weight: 900;
-  font-size: 1.05rem;
-  color: var(--muted);
-}
-
-/* =========================================
-   EXAMENS – LUXE GOUD STIJL (HERSTEL)
-   ========================================= */
-
-/* Luxe exam kaarten */
-.examItem {
-  background: linear-gradient(180deg, #ffffff, #faf7f0);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.06);
-}
-
-/* Gouden start knop */
-.examItem__start,
-.examItem button {
-  background: linear-gradient(180deg, #d4af37, #b8962e);
-  color: #111;
-  font-weight: 900;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 22px;
-  box-shadow: 0 8px 18px rgba(0,0,0,.18);
-  transition: all .2s ease;
-}
-
-/* Hover effect (subtiel luxe) */
-.examItem__start:hover,
-.examItem button:hover {
-  filter: brightness(1.05);
-  transform: translateY(-1px);
-}
-
-/* ===============================
-   GEEF GAS – PREMIUM EXAMENS LOOK
-   =============================== */
-
-/* HERO AFBEELDING */
-.exam-hero-image {
-  margin-bottom: 16px;
-}
-
-.exam-hero-image img {
-  width: 100%;
-  display: block;
-  border-radius: 22px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.25);
-}
-
-/* 15 EXAMENS BADGE */
-.exam-count {
-  display: inline-block;
-  margin: 14px auto 10px;
-  padding: 6px 16px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fbf4dd, #f1e4bb);
-  color: #8a6b1f;
-  font-weight: 800;
-  font-size: 14px;
-  border: 1px solid rgba(138,107,31,.25);
-  box-shadow: 0 6px 16px rgba(138,107,31,.18);
-}
-
-/* EXAMEN KAARTEN */
-.examItem {
-  background: linear-gradient(180deg, #ffffff, #fbf7ec);
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 14px;
-  border: 1px solid rgba(138,107,31,.18);
-  box-shadow: 0 10px 26px rgba(0,0,0,.08);
-}
-
-/* TITEL */
-.examItem__title {
-  font-weight: 900;
-  font-size: 16px;
-  line-height: 1.35;
-  margin-bottom: 4px;
-}
-
-/* META TEKST */
-.examItem__meta {
-  font-size: 14px;
-  color: #6b6b6b;
-}
-
-/* START KNOP */
-.examItem__start {
-  margin-top: 14px;
-  width: 100%;
-  padding: 14px 0;
-  border-radius: 999px;
-  border: none;
-  font-weight: 900;
-  font-size: 15px;
-  cursor: pointer;
-  background: linear-gradient(180deg, #e0c05a, #caa43a);
-  color: #1b1b1b;
-  box-shadow: 0 10px 22px rgba(202,164,58,.45);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.examItem__start:active {
-  transform: scale(.97);
-  box-shadow: 0 6px 14px rgba(202,164,58,.35);
-}
-
-/* =========================================================
-   LUXE POLISH – TAXI EXAMENS PAGINA
-   (onderaan plakken)
-   ========================================================= */
-
-/* HERO AFBEELDING */
-.exam-hero-image img{
-  border-radius: 22px;
-  box-shadow: 0 24px 50px rgba(0,0,0,.35);
-}
-
-/* "15 examens" centreren & luxe maken */
-.exam-count,
-.page__inner > p:first-of-type{
-  display: inline-block;
-  margin: 14px auto 6px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 900;
-  color: #2A2416;
-  background: rgba(216,181,91,.18);
-  border: 1px solid rgba(185,146,46,.35);
-  text-align: center;
-}
-
-/* zorg dat hij echt in het midden staat */
-.page__inner{
-  text-align: center;
-}
-.page__inner .card,
-.page__inner #examList{
-  text-align: left;
-}
-
-/* EXAMEN KAART */
-.examItem{
-  border-radius: 20px;
-  border: 1px solid rgba(185,146,46,.22);
-  background:
-    linear-gradient(180deg,#ffffff,#faf7ef);
-  box-shadow:
-    0 10px 22px rgba(16,19,26,.06),
-    inset 0 0 0 1px rgba(255,255,255,.6);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-/* subtiele lift */
-@media (hover:hover){
-  .examItem:hover{
-    transform: translateY(-2px);
-    box-shadow:
-      0 18px 36px rgba(185,146,46,.18),
-      inset 0 0 0 1px rgba(255,255,255,.7);
-  }
-}
-
-/* TITEL iets krachtiger */
-.examItem__title{
-  font-weight: 950;
-  letter-spacing: -.2px;
-}
-
-/* META rustiger */
-.examItem__meta{
-  color: var(--muted);
-  font-weight: 800;
-}
-
-/* START KNOP – PREMIUM GOUD */
-.examItem__start,
-.examItem button{
-  background: linear-gradient(180deg,#e0bf66,#c9a63a);
-  color:#111;
-  font-weight: 950;
-  border-radius: 999px;
-  border: none;
-  padding: 14px 0;
-  box-shadow:
-    0 8px 18px rgba(185,146,46,.35),
-    inset 0 -2px 0 rgba(0,0,0,.15);
-  transition: transform .1s ease, filter .15s ease;
-}
-
-/* knop feedback */
-.examItem__start:active,
-.examItem button:active{
-  transform: translateY(1px);
-  filter: brightness(.96);
-}
-
-/* === LUXE FINISH – EXAMENS PAGINA === */
-
-/* 15 examens badge */
-.exam-count {
-  display: inline-block;
-  margin: 14px auto 22px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #f3e7c1, #e0c46c);
-  color: #2b2b2b;
-  font-weight: 600;
-  font-size: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* Center badge */
-.exam-count-wrapper {
-  text-align: center;
-}
-
-/* Exam card extra luxe */
-.examItem {
-  background: linear-gradient(180deg, #ffffff, #faf7f0);
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 16px;
-  box-shadow:
-    0 10px 28px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.examItem:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 14px 36px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-}
-
-/* Titel iets krachtiger */
-.examItem__title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-/* Meta rustiger */
-.examItem__meta {
-  font-size: 13px;
-  color: #6f6f6f;
-}
-
-/* Start knop luxe animatie */
-.examItem__start,
-.btn--dark {
-  background: linear-gradient(135deg, #d6b24a, #c49a2c);
-  border: none;
-  color: #1c1c1c;
-  font-weight: 700;
-  border-radius: 999px;
-  padding: 14px 0;
-  width: 100%;
-  box-shadow: 0 8px 20px rgba(196,154,44,0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.examItem__start:hover,
-.btn--dark:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 26px rgba(196,154,44,0.45);
-}
-
-/* === EXAMEN PAGINA – LUXE AFWERKING === */
-
-/* Vraagkaart iets losser */
-.exam-question {
-  padding: 20px;
-}
-
-/* Antwoordopties */
-.answer-option {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #eee;
-  padding: 16px 18px;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-}
-
-.answer-option:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
-}
-
-/* Letter (A/B/C) */
-.answer-option .letter {
-  background: #f4f4f4;
-  color: #111;
-  border-radius: 10px;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-/* Geselecteerd antwoord */
-.answer-option.selected {
-  border-color: #d4af37;
-  background: linear-gradient(180deg, #fff9e8, #ffffff);
-}
-
-/* JUIST / FOUT (voor feedback) */
-.answer-option.correct {
-  border-color: #2ecc71;
-  background: #eafaf1;
-}
-
-.answer-option.wrong {
-  border-color: #e74c3c;
-  background: #fdecea;
-}
-
-/* Actieknoppen onderin */
-.exam-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.exam-actions button {
-  flex: 1;
-  padding: 14px;
-  border-radius: 14px;
-  font-weight: 600;
-}
-
-/* Volgende knop extra luxe */
-.btn-next {
-  background: linear-gradient(180deg, #d4af37, #b8962e);
-  color: #111;
-  box-shadow: 0 10px 30px rgba(212,175,55,0.35);
-}
-
-/* Voorlezen / Vorige subtiel */
-.btn-secondary {
-  background: #f5f5f5;
-  color: #111;
-}
-
-/* Info onderaan rustiger */
-.exam-footer {
-  margin-top: 18px;
-  font-size: 13px;
-  color: #888;
-  text-align: center;
-}
-
-/* Afbeelding bij vraag – bewust leeg */
-.question-image {
-  background: linear-gradient(180deg, #f7f7f7, #ededed);
-  border-radius: 16px;
-  min-height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #aaa;
-  margin-bottom: 20px;
-}
-
-/* =========================================================
-   GeefGas — EXAM PAGE LUXE OVERRIDE (plak onderaan)
-   ========================================================= */
-
-body.examPage .topbar{
-  background: rgba(11,13,18,.96);
-  border-bottom: 1px solid rgba(216,181,91,.22);
-}
-
-body.examPage .examTop__title{
-  color: rgba(255,255,255,.92);
-  font-weight: 950;
-}
-
-body.examPage .pillTimer{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(216,181,91,.10);
-  color: #fff;
-}
-
-/* card iets luxer */
-body.examPage .examCard{
-  border: 1px solid rgba(216,181,91,.18);
-  box-shadow: 0 22px 50px rgba(16,19,26,.14);
-}
-
-/* FOTO: niet croppen (teksten blijven zichtbaar) */
-body.examPage .examMedia{
-  height: clamp(220px, 34vh, 440px) !important;
-  background: radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-              rgba(16,19,26,.02);
-  overflow: hidden !important;
-}
-body.examPage .examMedia img{
-  object-fit: contain !important;   /* belangrijk */
-  background: transparent;
-}
-
-/* Buttons strakker */
-body.examPage .btn--gold{
-  box-shadow: 0 10px 22px rgba(185,146,46,.18);
-}
-body.examPage .btn--ghost{
-  background: rgba(16,19,26,.02);
-}
-
-/* Antwoorden luxer */
-body.examPage .answer{
-  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-}
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.12);
-}
-body.examPage .answer.correct{
-  border-color: rgba(6,118,71,.45);
-  background: rgba(6,118,71,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.45);
-  background: rgba(180,35,24,.08);
-}
-
-body.examPage .answerKey{
-  border-color: rgba(216,181,91,.22);
-}
-
-/* Footer knoppen layout */
-body.examPage .examNavBtns{
-  display:flex;
-  gap:10px;
 }
