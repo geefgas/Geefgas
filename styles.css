@@ -1870,3 +1870,225 @@ body.examPage .examFooter{
   padding-top: 18px;
   border-top: 1px solid rgba(16,19,26,.08);
 }
+
+/* =========================================================
+   GEEF G A S — LUXE & RUST OVERRIDE (ALLES ONDERAAN PLAKKEN)
+   Doel: minder drukte, premium uitstraling, goud/zwart/wit
+   ========================================================= */
+
+/* ---------- ALGEMEEN RUST ---------- */
+.hero__badge{
+  background: rgba(216,181,91,.12);
+  border: 1px solid rgba(216,181,91,.25);
+  color:#2A2416;
+  font-weight:900;
+}
+
+.hero__text{
+  max-width: 48ch;
+  font-weight: 750;
+}
+
+/* minder schreeuwerige titels */
+.hero__title{
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+/* ---------- CHECKS (minder druk) ---------- */
+.check{
+  background: rgba(16,19,26,.02);
+  border: 1px solid rgba(16,19,26,.10);
+  font-weight: 850;
+}
+
+/* ---------- CATEGORIE BLOKKEN (LUXE FOTO KAARTEN) ---------- */
+.catCard{
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 36px rgba(0,0,0,.12);
+  padding: 0;
+}
+
+.catCard__image{
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.catCard__image img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* actieve categorie extra premium */
+.catCard--active{
+  outline: 2px solid rgba(216,181,91,.45);
+  box-shadow: 0 22px 44px rgba(216,181,91,.22);
+}
+
+/* binnenkort rustiger */
+.catCard--soon{
+  opacity:.6;
+  filter: grayscale(.15);
+}
+
+/* ---------- PAKKETTEN RUSTIGER ---------- */
+.pkg{
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgba(0,0,0,.08);
+}
+
+.pkg__name{
+  font-weight: 950;
+}
+
+.pkg__price{
+  font-weight: 950;
+}
+
+/* ---------- BUTTONS (LUXE GOUD) ---------- */
+.btn--gold,
+.btn--primary{
+  background: linear-gradient(180deg, #e0bf66, #c9a63a);
+  color:#111;
+  box-shadow: 0 10px 24px rgba(201,166,58,.45);
+}
+
+.btn--ghost{
+  border: 1px solid rgba(16,19,26,.12);
+  background: transparent;
+  font-weight: 850;
+}
+
+/* ---------- FOOTER RUST ---------- */
+.footer{
+  border-top: 1px solid rgba(16,19,26,.10);
+  padding-top: 18px;
+}
+
+/* =========================================================
+   EXAMENS PAGINA — ZELFDE LUXE LOOK ALS HOME
+   ========================================================= */
+
+/* hero afbeelding */
+.exam-hero-image img{
+  border-radius: 24px;
+  box-shadow: 0 26px 60px rgba(0,0,0,.35);
+}
+
+/* 15 examens badge (rustig & goud) */
+.exam-count{
+  display:inline-block;
+  margin: 16px auto 22px;
+  padding: 8px 18px;
+  border-radius:999px;
+  background: rgba(216,181,91,.18);
+  border:1px solid rgba(216,181,91,.35);
+  font-weight:900;
+  color:#2A2416;
+}
+
+/* exam kaarten */
+.examItem{
+  border-radius: 20px;
+  background: linear-gradient(180deg,#ffffff,#faf7ef);
+  border: 1px solid rgba(216,181,91,.22);
+  box-shadow: 0 14px 30px rgba(0,0,0,.08);
+}
+
+.examItem__title{
+  font-weight:950;
+}
+
+.examItem__meta{
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* start knop */
+.examItem__start{
+  background: linear-gradient(180deg,#e0bf66,#c9a63a);
+  color:#111;
+  font-weight:950;
+  border-radius:999px;
+  box-shadow:0 10px 24px rgba(201,166,58,.45);
+}
+
+/* =========================================================
+   EXAMEN PAGINA — ZELFDE LUXE RUST ALS EXAMENS
+   ========================================================= */
+
+/* bovenbalk mooier (geen blauwe tekst) */
+body.examPage .topbar{
+  background: rgba(11,13,18,.97);
+  border-bottom:1px solid rgba(216,181,91,.25);
+}
+
+/* titel vervangen gevoel: logo-achtig */
+body.examPage .examTop__title{
+  font-weight: 950;
+  letter-spacing:.2px;
+}
+
+/* timer luxe pill */
+body.examPage .pillTimer{
+  background: rgba(216,181,91,.15);
+  border:1px solid rgba(216,181,91,.35);
+  color:#fff;
+  font-weight:950;
+}
+
+/* exam card */
+body.examPage .examCard{
+  border-radius: 24px;
+  box-shadow: 0 26px 60px rgba(0,0,0,.18);
+  border:1px solid rgba(216,181,91,.22);
+}
+
+/* afbeelding NOOIT snijden */
+body.examPage .examMedia img{
+  object-fit: contain !important;
+  background:#0B0D12;
+}
+
+/* vraagtekst rustiger */
+#questionText{
+  font-size:1.35rem;
+  font-weight:900;
+}
+
+/* antwoorden luxe */
+body.examPage .answer{
+  border-radius: 18px;
+  background: linear-gradient(180deg,#ffffff,#fbfbfc);
+  border:1px solid rgba(16,19,26,.12);
+  box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+
+body.examPage .answer.selected{
+  background: rgba(216,181,91,.12);
+  border-color: rgba(216,181,91,.55);
+}
+
+body.examPage .answer.correct{
+  background: rgba(46,204,113,.10);
+}
+
+body.examPage .answer.wrong{
+  background: rgba(231,76,60,.10);
+}
+
+/* uitlegblok luxe */
+.explain{
+  border-radius: 18px;
+  font-weight: 850;
+}
+
+/* onderkant rustiger */
+.examFooter{
+  border-top:1px solid rgba(16,19,26,.12);
+  padding-top:14px;
+}
