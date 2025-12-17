@@ -876,3 +876,143 @@ details[open]{ border-color: rgba(185,146,46,.25) !important; }
   background: linear-gradient(180deg, var(--gold), var(--gold2));
   border-color: rgba(0,0,0,.08);
 }
+
+/* =========================================================
+   GEEF GAS — EXAMENPAGINA LUXE (zelfde vibe als examens.html)
+   Plak onderaan styles.css
+   ========================================================= */
+
+body.examPage{
+  background:
+    radial-gradient(900px 260px at 50% 0%, rgba(216,181,91,.10), transparent 60%),
+    var(--bg);
+}
+
+/* Topbar iets luxer (goud accent) */
+body.examPage .topbar{
+  background: rgba(11,13,18,.96);
+  border-bottom: 1px solid rgba(216,181,91,.22);
+}
+
+/* Titel + timer premium */
+body.examPage .examTop__title{
+  color: rgba(255,255,255,.92);
+  font-weight: 950;
+}
+body.examPage .pillTimer{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(216,181,91,.10);
+  color: #fff;
+}
+
+/* Exam card: premium rand + diepe schaduw */
+body.examPage .examCard{
+  border: 1px solid rgba(185,146,46,.18);
+  border-radius: 22px;
+  box-shadow: 0 26px 60px rgba(16,19,26,.16);
+  overflow: hidden;
+}
+
+/* Foto / media: luxe donkere achtergrond, NIET croppen (teksten zichtbaar) */
+body.examPage .examMedia{
+  height: clamp(220px, 34vh, 440px) !important;
+  background:
+    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+    #0B0D12;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  overflow: hidden !important;
+}
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important; /* ✅ geen zoom/crop */
+  object-position: center;
+  display: block;
+}
+
+/* Body padding iets ruimer */
+body.examPage .examBody{
+  padding: 18px;
+}
+
+/* Chip (categorie) dezelfde luxe pill */
+body.examPage .chip{
+  border-color: rgba(185,146,46,.25);
+  background: rgba(216,181,91,.12);
+  color:#2A2416;
+  font-weight: 950;
+}
+
+/* Vraagtekst iets meer “premium” */
+body.examPage #questionText{
+  font-weight: 950;
+  letter-spacing: -.2px;
+}
+
+/* Antwoorden: luxe cards */
+body.examPage .answer{
+  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
+  border: 1px solid rgba(16,19,26,.12);
+  border-radius: 18px;
+  box-shadow: 0 12px 26px rgba(16,19,26,.06);
+  transition: transform .12s ease, box-shadow .15s ease, filter .15s ease;
+}
+@media (hover:hover){
+  body.examPage .answer:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 18px 34px rgba(16,19,26,.10);
+  }
+}
+
+body.examPage .answerKey{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(255,255,255,.95);
+}
+
+/* States */
+body.examPage .answer.selected{
+  border-color: rgba(216,181,91,.55);
+  background: rgba(216,181,91,.12);
+}
+body.examPage .answer.correct{
+  border-color: rgba(6,118,71,.45);
+  background: rgba(6,118,71,.08);
+}
+body.examPage .answer.wrong{
+  border-color: rgba(180,35,24,.45);
+  background: rgba(180,35,24,.08);
+}
+
+/* Uitleg box premium */
+body.examPage .explain{
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, #fbfbfc);
+  box-shadow: 0 12px 26px rgba(16,19,26,.06);
+}
+
+/* Footer / knoppen onderin: strak en consistent */
+body.examPage .examFooter{
+  gap: 12px;
+}
+
+/* Maak jouw knoppen dezelfde luxe stijl als examens */
+body.examPage .btn--gold{
+  background: linear-gradient(180deg,#e0bf66,#c9a63a);
+  border: none;
+  color:#111;
+  box-shadow: 0 10px 22px rgba(185,146,46,.28);
+}
+body.examPage .btn--ghost{
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(16,19,26,.12);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+}
+
+/* Als je “Vorige / Volgende / Voorlezen” naast elkaar wil */
+body.examPage .examNavBtns{
+  display:flex;
+  gap:10px;
+}
+body.examPage .examNavBtns > *{
+  flex: 1 1 auto;
+}
