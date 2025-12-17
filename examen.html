@@ -7,63 +7,157 @@
 
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
+
+  <!-- Kleine inline polish (geen styles.css nodig) -->
+  <style>
+    /* App-feel: geen body scroll + stabiele layout */
+    html, body { height: 100%; }
+    body { overscroll-behavior: none; }
+
+    /* Topbar auto-hide animatie */
+    .ggTopbarHide {
+      transform: translateY(-110%);
+      transition: transform .25s ease;
+    }
+    .ggTopbarShow {
+      transform: translateY(0);
+      transition: transform .25s ease;
+    }
+
+    /* Fullscreen overlay */
+    #ggFsHint{
+      position: fixed;
+      inset: 0;
+      background: rgba(11,13,18,.92);
+      color: #fff;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* Zwevende HUD */
+    .ggHud{
+      position: fixed;
+      right: 14px;
+      top: calc(env(safe-area-inset-top) + 14px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(216,181,91,.22);
+      background: rgba(11,13,18,.86);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ggHud:active{ transform: translateY(1px); }
+
+    .ggHud__time{
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .3px;
+      min-width: 54px;
+      text-align: right;
+    }
+
+    .ggRings{
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border-radius: 999px;
+    }
+    .ggRings svg{ display:block; }
+
+    /* Content scroll alleen binnen examBody als nodig */
+    .ggBodyScroll{
+      max-height: calc(100dvh - 140px);
+      overflow: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* kleine “fade” onderaan voor luxe */
+    .ggFadeBottom{
+      position: relative;
+    }
+    .ggFadeBottom::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 28px;
+      pointer-events:none;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,1));
+    }
+  </style>
 </head>
 
 <body class="theme examPage">
 
-<!-- ================= TOPBAR ================= -->
-<header class="topbar">
-  <div class="container topbar__inner" style="justify-content:space-between;">
-    <!-- LOGO -->
-    <a class="brand" id="exitExam" href="examens.html">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
-    </a>
-
-    <!-- TIMER -->
-    <div class="pillTimer" id="timerPill">--:--</div>
-  </div>
-</header>
-
-<!-- ========== FULLSCREEN HINT ========== -->
-<div id="fullscreenHint" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(11,13,18,.92);
-  color: #fff;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
-">
+<!-- Fullscreen hint (1x) -->
+<div id="ggFsHint">
   <div>
     <div style="font-size:22px; font-weight:950; margin-bottom:10px;">
       Start examen
     </div>
-    <div style="opacity:.85; font-weight:800;">
+    <div style="opacity:.88; font-weight:800; line-height:1.55;">
       Tik ergens op het scherm<br>om fullscreen te starten
+    </div>
+    <div style="margin-top:14px; opacity:.7; font-weight:800; font-size:13px;">
+      Tip: Houd je telefoon horizontaal als je foto’s wil zien.
     </div>
   </div>
 </div>
 
-<!-- ================= PAGE ================= -->
-<main class="page">
+<!-- Minimal topbar (auto-hide) -->
+<header class="topbar ggTopbarShow" id="ggTopbar">
+  <div class="container topbar__inner" style="justify-content:flex-start; gap:12px;">
+    <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
+      <span class="brand__name" style="display:none;">GeefGas</span>
+    </a>
+  </div>
+</header>
+
+<!-- Floating HUD (timer + rings) -->
+<button class="ggHud" id="ggHudBtn" type="button" aria-label="Timer en voortgang">
+  <span class="ggRings" aria-hidden="true">
+    <!-- Ring 1: tijd (buiten) | Ring 2: vragen (binnen) -->
+    <svg width="44" height="44" viewBox="0 0 44 44">
+      <!-- tracks -->
+      <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
+      <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
+
+      <!-- progress -->
+      <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
+        stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
+        transform="rotate(-90 22 22)"/>
+      <circle id="ggQRing" cx="22" cy="22" r="13" fill="none"
+        stroke="rgba(216,181,91,.92)" stroke-width="4" stroke-linecap="round"
+        transform="rotate(-90 22 22)"/>
+    </svg>
+  </span>
+  <span class="ggHud__time" id="timerPill">--:--</span>
+</button>
+
+<main class="page" style="padding-top: 12px;">
   <div class="container page__inner">
 
     <section class="examCard">
-
       <!-- AFBEELDING -->
       <div class="examMedia" id="mediaWrap" style="display:none;">
         <img id="questionImage" alt="Vraag afbeelding">
       </div>
 
       <!-- CONTENT -->
-      <div class="examBody" id="examBody">
-
+      <div class="examBody ggBodyScroll ggFadeBottom" id="examBody">
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
-          <div class="muted" id="progressText">Vraag 1</div>
+          <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
         </div>
 
         <h2 id="questionText">—</h2>
@@ -76,14 +170,15 @@
           <div class="explainText" id="explainText"></div>
         </div>
 
-        <!-- DOEL -->
-        <div class="note" id="goalBox"></div>
+        <!-- DOEL (luxe note) -->
+        <div class="note" id="goalBox" style="margin-top:14px;"></div>
 
         <div class="examFooter">
-          <button class="btn btn--ghost" id="prevBtn">Vorige</button>
-          <button class="btn btn--gold" id="nextBtn">Volgende</button>
+          <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+          <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
         </div>
 
+        <div style="height:18px;"></div>
       </div>
     </section>
 
@@ -95,39 +190,66 @@
   const IMAGE_BASE = "assets/";
   const $ = id => document.getElementById(id);
 
-  /* ================= APP MODE ================= */
+  /* =================== Fullscreen + App-feel =================== */
   let appStarted = false;
 
   function requestFullscreen(){
     const el = document.documentElement;
     const fn = el.requestFullscreen || el.webkitRequestFullscreen;
-    if(fn) fn.call(el);
+    if (fn) { try { fn.call(el); } catch(e){} }
   }
 
-  function lockScroll(){
+  function lockBodyScroll(){
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     window.scrollTo(0,0);
   }
 
   function startAppMode(){
     if(appStarted) return;
     appStarted = true;
-
-    localStorage.setItem("gg_appMode","1");
-    $("fullscreenHint").style.display = "none";
+    $("ggFsHint").style.display = "none";
     requestFullscreen();
-    lockScroll();
+    lockBodyScroll();
+    hideTopbarSoon();
   }
 
-  // Start bij eerste tik
+  // 1e tik start fullscreen (browserregel)
   document.addEventListener("pointerdown", startAppMode, { once:true });
 
-  /* ================= EXIT CONFIRM ================= */
-  $("exitExam").onclick = e => {
+  // Anti overscroll bounce (iOS/Android)
+  document.addEventListener("touchmove", (e)=>{
+    // body locked, dus voorkomen dat pagina scrollt
+    if (document.body.style.overflow === "hidden") {
+      // laat alleen scroll in examBody toe
+      const scroller = $("examBody");
+      if (scroller && scroller.contains(e.target)) return;
+      e.preventDefault();
+    }
+  }, { passive:false });
+
+  /* =================== Topbar auto-hide =================== */
+  let topbarTimer = null;
+  function hideTopbarSoon(){
+    clearTimeout(topbarTimer);
+    topbarTimer = setTimeout(()=>{
+      $("ggTopbar").classList.remove("ggTopbarShow");
+      $("ggTopbar").classList.add("ggTopbarHide");
+    }, 1200);
+  }
+  function showTopbarTemp(){
+    $("ggTopbar").classList.remove("ggTopbarHide");
+    $("ggTopbar").classList.add("ggTopbarShow");
+    hideTopbarSoon();
+  }
+  $("ggHudBtn").addEventListener("click", showTopbarTemp);
+
+  /* =================== Exit confirm + back protect =================== */
+  $("ggExit").addEventListener("click", (e)=>{
     if(!confirm("Weet je zeker dat je het examen wilt verlaten?")){
       e.preventDefault();
     }
-  };
+  });
 
   history.pushState(null,null,location.href);
   window.onpopstate = () => {
@@ -138,103 +260,204 @@
     }
   };
 
-  /* ================= EXAM LOGIC ================= */
+  /* =================== Helpers =================== */
   function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
     const s = String(sec%60).padStart(2,"0");
     return `${m}:${s}`;
   }
 
+  function setRing(circleEl, pct){
+    // pct: 0..1
+    pct = Math.max(0, Math.min(1, pct));
+    const r = circleEl.r.baseVal.value;
+    const c = 2 * Math.PI * r;
+    circleEl.style.strokeDasharray = `${c}`;
+    circleEl.style.strokeDashoffset = `${c * (1 - pct)}`;
+  }
+
+  function haptic(ms){
+    try{
+      if (navigator.vibrate) navigator.vibrate(ms);
+    }catch(e){}
+  }
+
+  /* =================== Load exam =================== */
   const examId = localStorage.getItem("gg_examId");
-  const exam = window.EXAM_DATA.exams.find(e => e.id === examId);
-  if(!exam){ location.href="examens.html"; return; }
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const exam = exams.find(e => String(e.id) === String(examId));
+
+  if(!exam || !Array.isArray(exam.questions) || !exam.questions.length){
+    alert("Geen examen gevonden.");
+    location.href="examens.html";
+    return;
+  }
 
   const questions = exam.questions;
   const total = questions.length;
-  const pass = exam.passMinCorrect;
+  const pass = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
   const maxFout = total - pass;
 
-  $("chipCategory").textContent = exam.category;
+  $("chipCategory").textContent = exam.category || "Examen";
   $("goalBox").innerHTML =
-    `<strong>Doel:</strong> ${pass} van ${total} vragen goed (max ${maxFout} fouten)`;
+    `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.` +
+    ` <span style="opacity:.9;">(Max ${maxFout} fouten)</span>`;
 
-  let idx=0, chosen=new Array(total).fill(null), locked=false;
-  let time = exam.durationMinutes * 60;
-  $("timerPill").textContent = fmt(time);
+  /* =================== State =================== */
+  let idx = 0;
+  let chosen = new Array(total).fill(null);
+  let locked = false;
 
-  setInterval(()=>{
-    time--;
+  /* =================== Timer + Rings =================== */
+  const totalTime = Number(exam.durationMinutes || 30) * 60;
+  let time = totalTime;
+
+  const timeRing = $("ggTimeRing");
+  const qRing = $("ggQRing");
+
+  function updateHud(){
     $("timerPill").textContent = fmt(time);
-    if(time<=0) finish();
-  },1000);
 
-  function imagePath(){
-    const e = exam.id.match(/\d+/)[0];
-    const q = String(idx+1).padStart(2,"0");
-    return `${IMAGE_BASE}taxi_e${e}_q${q}.PNG`;
+    // buitenring = tijd
+    const timePct = totalTime ? (time / totalTime) : 0;
+    setRing(timeRing, timePct);
+
+    // binnenring = vragen voortgang (idx is 0-based)
+    const qPct = total ? ((idx) / total) : 0;
+    setRing(qRing, qPct);
   }
 
+  updateHud();
+
+  const timerInt = setInterval(()=>{
+    time--;
+    if(time < 0) time = 0;
+    updateHud();
+    if(time <= 0) finish(true);
+  }, 1000);
+
+  /* =================== Image naming =================== */
+  function imagePath(){
+    // taxi_e<examNr>_q<qNr>.PNG
+    const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
+    const qNr = String(idx + 1).padStart(2,"0");
+    return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
+  }
+
+  /* =================== Render =================== */
   function render(){
     const q = questions[idx];
-    locked=false;
+    locked = false;
 
     $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
-    $("questionText").textContent = q.prompt;
+    $("questionText").textContent = q.prompt || "";
 
+    // image
     const img = $("questionImage");
-    img.src = imagePath();
-    img.onerror = ()=>$("mediaWrap").style.display="none";
-    $("mediaWrap").style.display="block";
+    const wrap = $("mediaWrap");
 
+    img.onerror = () => { wrap.style.display = "none"; };
+    img.src = imagePath();
+    wrap.style.display = "block";
+
+    // answers
     const a = $("answers");
-    a.innerHTML="";
-    q.options.forEach((opt,i)=>{
-      const b=document.createElement("button");
-      b.className="answer";
-      b.innerHTML=`<span class="answerKey">${"ABCD"[i]}</span><span>${opt}</span>`;
-      if(chosen[idx]===i) b.classList.add("selected");
-      b.onclick=()=>choose(i);
+    a.innerHTML = "";
+
+    const letters = "ABCDE";
+    (q.options || []).forEach((opt,i)=>{
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "answer";
+      b.innerHTML = `<span class="answerKey">${letters[i] || (i+1)}</span><span>${opt}</span>`;
+      if(chosen[idx] === i) b.classList.add("selected");
+      b.addEventListener("click", ()=>choose(i));
       a.appendChild(b);
     });
 
-    $("prevBtn").disabled = idx===0;
-    $("nextBtn").textContent = idx===total-1?"Afronden":"Volgende";
-    $("explainBox").style.display="none";
+    $("prevBtn").disabled = (idx === 0);
+    $("nextBtn").textContent = (idx === total-1) ? "Afronden" : "Volgende";
+
+    $("explainBox").style.display = "none";
+
+    // rings update (vraagprogress)
+    updateHud();
+
+    // topbar weg
+    hideTopbarSoon();
   }
 
   function choose(i){
     if(locked) return;
-    chosen[idx]=i;
-    locked=true;
+    chosen[idx] = i;
 
-    const c=questions[idx].correctIndex;
+    const c = (typeof questions[idx].correctIndex === "number") ? questions[idx].correctIndex : null;
+
+    // UI reset
     document.querySelectorAll(".answer").forEach((b,n)=>{
-      b.classList.toggle("selected",n===i);
-      if(n===c) b.classList.add("correct");
-      if(n===i && i!==c) b.classList.add("wrong");
+      b.classList.toggle("selected", n === i);
+      b.classList.remove("correct","wrong");
     });
 
-    if(questions[idx].explanation){
-      $("explainBox").style.display="block";
-      $("explainTitle").textContent=i===c?"Goed":"Niet goed";
-      $("explainText").textContent=questions[idx].explanation;
+    locked = true;
+
+    if(c !== null){
+      const nodes = document.querySelectorAll(".answer");
+      if(nodes[c]) nodes[c].classList.add("correct");
+      if(i !== c && nodes[i]) {
+        nodes[i].classList.add("wrong");
+        haptic(60); // subtiele trilling bij fout
+      } else {
+        haptic(18); // mini tick bij goed
+      }
     }
+
+    // uitleg
+    if(questions[idx].explanation){
+      $("explainBox").style.display = "block";
+      $("explainTitle").textContent = (c !== null && i === c) ? "Goed" : "Niet goed";
+      $("explainText").textContent = questions[idx].explanation;
+    }
+
+    hideTopbarSoon();
   }
 
-  $("prevBtn").onclick=()=>{ if(idx>0){idx--;render();}};
-  $("nextBtn").onclick=()=>{ idx===total-1?finish():(idx++,render());};
+  $("prevBtn").addEventListener("click", ()=>{
+    if(idx > 0){ idx--; render(); }
+  });
 
-  function finish(){
-    let goed=0;
-    chosen.forEach((a,i)=>{ if(a===questions[i].correctIndex) goed++; });
-    localStorage.setItem("gg_result",JSON.stringify({
-      examId:exam.id,
-      title:exam.title,
+  $("nextBtn").addEventListener("click", ()=>{
+    if(idx === total - 1) return finish(false);
+    idx++;
+    render();
+  });
+
+  /* =================== Finish =================== */
+  function finish(timeUp){
+    clearInterval(timerInt);
+
+    let goed = 0;
+    chosen.forEach((a,i)=>{
+      if(a !== null && a === questions[i].correctIndex) goed++;
+    });
+
+    localStorage.setItem("gg_result", JSON.stringify({
+      examId: exam.id,
+      title: exam.title,
+      category: exam.category,
       total,
-      correctCount:goed,
-      passMinCorrect:pass
+      correctCount: goed,
+      passMinCorrect: pass,
+      timeUp: !!timeUp,
+      attempt: chosen.map((a,i)=>({
+        id: questions[i].id,
+        chosen: a,
+        correctIndex: questions[i].correctIndex
+      }))
     }));
-    location.href="resultaat.html";
+
+    location.href = "resultaat.html";
   }
 
   render();
