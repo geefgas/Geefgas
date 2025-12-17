@@ -2,7 +2,11 @@
 <html lang="nl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
   <title>GeefGas – Examen</title>
 
   <link rel="stylesheet" href="styles.css">
@@ -18,7 +22,8 @@
       <span class="brand__name">GeefGas</span>
     </a>
 
-    <div class="pillTimer" id="timerPill">--:--</div>
+    <!-- Tip: tik op de timer om fullscreen te openen -->
+    <div class="pillTimer" id="timerPill" title="Tik om fullscreen te openen">--:--</div>
   </div>
 </header>
 
@@ -54,8 +59,8 @@
         <div class="note" id="goalBox"></div>
 
         <div class="examFooter">
-          <button class="btn btn--ghost" id="prevBtn">Vorige</button>
-          <button class="btn btn--gold" id="nextBtn">Volgende</button>
+          <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+          <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
         </div>
 
       </div>
@@ -66,18 +71,39 @@
 
 <script>
 (function(){
-
   const IMAGE_BASE = "assets/";
   const $ = id => document.getElementById(id);
 
+  // --- Fullscreen (na user-actie) ---
+  function requestFull(){
+    const el = document.documentElement;
+    const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (fn) fn.call(el);
+  }
+  const timerEl = $("timerPill");
+  if (timerEl){
+    timerEl.style.cursor = "pointer";
+    timerEl.addEventListener("click", requestFull);
+  }
+
+  // --- helper ---
   function fmt(sec){
+    sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
     const s = String(sec%60).padStart(2,"0");
     return `${m}:${s}`;
   }
 
+  // iOS/Android: probeer adresbalk te minimaliseren als user begint
+  function nudgeAppFeel(){
+    // werkt niet altijd, maar schaadt niet
+    setTimeout(() => window.scrollTo(0, 1), 0);
+  }
+
+  // --- data ---
   const examId = localStorage.getItem("gg_examId");
-  const exam = window.EXAM_DATA.exams.find(e => e.id === examId);
+  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const exam = exams.find(e => String(e.id) === String(examId));
 
   if(!exam){
     alert("Geen examen gevonden");
@@ -85,30 +111,41 @@
     return;
   }
 
-  const questions = exam.questions;
+  const questions = Array.isArray(exam.questions) ? exam.questions : [];
   const total = questions.length;
-  const pass = exam.passMinCorrect;
+
+  if (!total){
+    alert("Dit examen heeft geen vragen.");
+    location.href="examens.html";
+    return;
+  }
+
+  const pass = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
   const maxFout = total - pass;
 
-  $("chipCategory").textContent = exam.category;
+  $("chipCategory").textContent = exam.category || "Examen";
   $("goalBox").innerHTML =
     `<strong>Doel:</strong> ${pass} van de ${total} vragen goed (max ${maxFout} fouten)`;
 
+  // --- state ---
   let idx = 0;
-  let answers = new Array(total).fill(null);
+  let chosen = new Array(total).fill(null);
   let locked = false;
 
-  let time = exam.durationMinutes * 60;
+  // --- timer ---
+  let time = Number(exam.durationMinutes || 30) * 60;
   $("timerPill").textContent = fmt(time);
 
-  setInterval(()=>{
+  const timer = setInterval(()=>{
     time--;
     $("timerPill").textContent = fmt(time);
-    if(time<=0) finish();
+    if(time<=0) finish(true);
   },1000);
 
+  // --- image path (jouw naming) ---
   function imagePath(){
-    const examNr = exam.id.match(/\d+/)[0];
+    const m = String(exam.id || "").match(/(\d+)/);
+    const examNr = m ? m[1] : "1";
     const qNr = String(idx+1).padStart(2,"0");
     return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
   }
@@ -118,35 +155,44 @@
     locked = false;
 
     $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
-    $("questionText").textContent = q.prompt;
+    $("questionText").textContent = q.prompt || "";
 
     // IMAGE
     const img = $("questionImage");
-    img.src = imagePath();
-    img.onerror = () => $("mediaWrap").style.display="none";
-    $("mediaWrap").style.display="block";
+    const wrap = $("mediaWrap");
+    const src = imagePath();
+
+    wrap.style.display = "block";
+    img.onerror = () => { wrap.style.display = "none"; };
+    img.src = src;
 
     // ANSWERS
     const a = $("answers");
-    a.innerHTML="";
-    q.options.forEach((opt,i)=>{
-      const b=document.createElement("button");
-      b.className="answer";
-      b.innerHTML=`<span class="answerKey">${"ABCD"[i]}</span><span>${opt}</span>`;
-      if(answers[idx]===i) b.classList.add("selected");
-      b.onclick=()=>choose(i);
+    a.innerHTML = "";
+
+    const letters = "ABCDEF";
+    (q.options || []).forEach((opt,i)=>{
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "answer";
+      b.innerHTML = `<span class="answerKey">${letters[i] || (i+1)}</span><span>${opt}</span>`;
+      if(chosen[idx]===i) b.classList.add("selected");
+      b.onclick = ()=> chooseAnswer(i);
       a.appendChild(b);
     });
 
     $("prevBtn").disabled = idx===0;
-    $("nextBtn").textContent = idx===total-1?"Afronden":"Volgende";
+    $("nextBtn").textContent = idx===total-1 ? "Afronden" : "Volgende";
 
     $("explainBox").style.display="none";
+
+    // kleine app-gevoel boost
+    nudgeAppFeel();
   }
 
-  function choose(i){
+  function chooseAnswer(i){
     if(locked) return;
-    answers[idx]=i;
+    chosen[idx]=i;
 
     document.querySelectorAll(".answer").forEach((b,n)=>{
       b.classList.toggle("selected",n===i);
@@ -154,42 +200,61 @@
     });
 
     locked=true;
+
     const c = questions[idx].correctIndex;
-    if(c!=null){
-      document.querySelectorAll(".answer")[c].classList.add("correct");
-      if(i!==c) document.querySelectorAll(".answer")[i].classList.add("wrong");
+    if(typeof c === "number"){
+      const nodes = document.querySelectorAll(".answer");
+      if(nodes[c]) nodes[c].classList.add("correct");
+      if(i!==c && nodes[i]) nodes[i].classList.add("wrong");
     }
 
     if(questions[idx].explanation){
       $("explainBox").style.display="block";
-      $("explainTitle").textContent = i===c?"Goed":"Niet goed";
+      $("explainTitle").textContent = (i===c) ? "Goed" : "Niet goed";
       $("explainText").textContent = questions[idx].explanation;
     }
   }
 
-  $("prevBtn").onclick=()=>{ if(idx>0){idx--;render();}};
-  $("nextBtn").onclick=()=>{ idx===total-1?finish():(idx++,render());};
+  $("prevBtn").onclick = ()=>{ if(idx>0){ idx--; render(); } };
+  $("nextBtn").onclick = ()=>{ idx===total-1 ? finish(false) : (idx++, render()); };
 
-  function finish(){
+  function finish(timeUp){
+    clearInterval(timer);
+
     let goed=0;
-    answers.forEach((a,i)=>{
+    chosen.forEach((a,i)=>{
       if(a===questions[i].correctIndex) goed++;
     });
 
-    localStorage.setItem("gg_result",JSON.stringify({
+    localStorage.setItem("gg_result", JSON.stringify({
       examId: exam.id,
       title: exam.title,
       category: exam.category,
       total,
       correctCount: goed,
       passMinCorrect: pass,
-      attempt: answers.map((a,i)=>({id:questions[i].id,chosen:a,correctIndex:questions[i].correctIndex}))
+      timeUp: !!timeUp,
+      attempt: chosen.map((a,i)=>({
+        id: questions[i].id,
+        chosen: a,
+        correctIndex: questions[i].correctIndex
+      }))
     }));
 
     location.href="resultaat.html";
   }
 
+  // Start
   render();
+
+  // Extra: voorkom “double tap zoom” op iOS iets meer
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function (event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) event.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+
 })();
 </script>
 
