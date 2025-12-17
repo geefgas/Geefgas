@@ -2192,3 +2192,76 @@ body.examPage .answer.wrong{
   align-items: center;
   color: #777;
 }
+
+/* =========================================================
+   GEEF GAS — HOME LUXE CLEAN OVERRIDE (onderaan plakken)
+   Doel: minder drukte, meer premium spacing + focus
+   ========================================================= */
+
+.hero--clean .hero__text--short{
+  max-width: 52ch;
+}
+
+.hero__checks--mini{
+  margin-top: 14px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  align-items:flex-start;
+}
+
+.hero__checks--mini .check{
+  padding: 10px 12px;
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(16,19,26,.05);
+}
+
+/* categorie cards iets strakker */
+.catCard{
+  box-shadow: 0 16px 30px rgba(16,19,26,.08);
+}
+.catCard__image{
+  aspect-ratio: 16 / 10;
+}
+
+/* pakketten: iets meer luxe rust */
+.pkg{
+  border-radius: 20px;
+  background:
+    radial-gradient(600px 160px at 80% 0%, rgba(216,181,91,.12), transparent 60%),
+    linear-gradient(180deg,#ffffff,#fbfbfc);
+  box-shadow: 0 14px 28px rgba(16,19,26,.08);
+}
+.pkg__name{ letter-spacing: -.2px; }
+.pkg__desc{ opacity: .9; }
+
+/* pillen wat rustiger (minder “druk”) */
+.pill{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 850;
+}
+
+/* Direct starten knop extra premium */
+.btn--primary{
+  border-radius: 999px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 18px 38px rgba(16,19,26,.18);
+}
+
+/* disclaimer compacter & rustiger */
+.note--compact{
+  margin-top: 14px;
+  padding: 12px 12px;
+  font-weight: 800;
+  border-radius: 18px;
+  color: #2A2416;
+}
+
+/* footer clean */
+.footer--clean{
+  padding-top: 18px;
+}
+.footer--clean .footer__muted{
+  font-weight: 800;
+}
