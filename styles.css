@@ -1715,3 +1715,158 @@ body.examPage .examFooter{
   text-align: center;
   box-shadow: 0 14px 30px rgba(185,146,46,.12);
 }
+
+/* =========================================================
+   GEEF GAS — HOME LUXE UPGRADE (index.html)
+   Plak HELEMAAL ONDERAAN styles.css
+   ========================================================= */
+
+/* Page spacing iets premium */
+.page{ padding: 22px 0 42px; }
+.page__inner{ gap: 16px; }
+
+/* HERO: chicer “glass + gold glow” */
+.hero{
+  border-radius: 24px;
+  border: 1px solid rgba(16,19,26,.10);
+  background:
+    radial-gradient(1100px 420px at 85% 5%, rgba(216,181,91,.22), transparent 60%),
+    radial-gradient(900px 380px at 10% 0%, rgba(11,13,18,.06), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+  box-shadow: 0 24px 58px rgba(16,19,26,.12);
+  overflow: hidden;
+}
+
+/* Badge iets eleganter */
+.hero__badge{
+  border: 1px solid rgba(185,146,46,.28);
+  background: rgba(216,181,91,.12);
+  color:#2A2416;
+  box-shadow: 0 10px 26px rgba(185,146,46,.10);
+}
+
+/* Titel: strakker + mooier contrast */
+.hero__title{
+  letter-spacing: -.55px;
+  font-size: clamp(1.55rem, 4.4vw, 2.05rem);
+}
+.hero__text{
+  font-weight: 780;
+  font-size: 1.02rem;
+  color: rgba(90,98,114,.95);
+}
+
+/* Buttons: premium gold + beter hover */
+.btn--gold, .nav__cta{
+  background: linear-gradient(180deg, #E3C86E, #C9A63A);
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 10px 24px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
+}
+@media (hover:hover){
+  .btn--gold:hover, .nav__cta:hover{
+    filter: brightness(1.03);
+    transform: translateY(-1px);
+  }
+}
+.btn--ghost{
+  background: rgba(255,255,255,.72);
+  border-color: rgba(16,19,26,.12);
+}
+
+/* Checks: als “luxe pills” */
+.check{
+  border-radius: 16px;
+  background:
+    radial-gradient(420px 120px at 20% 0%, rgba(216,181,91,.16), transparent 60%),
+    rgba(16,19,26,.02);
+  border: 1px solid rgba(16,19,26,.10);
+  box-shadow: 0 12px 24px rgba(16,19,26,.06);
+}
+
+/* Categorieën cards: sterker premium effect */
+.catCard{
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(16,19,26,.10);
+  border: 1px solid rgba(16,19,26,.10);
+}
+.catCard__image{
+  border-radius: 22px;
+  overflow: hidden;
+}
+.catCard__image img{
+  transform: scale(1.01);
+}
+.catCard--active{
+  outline: 2px solid rgba(216,181,91,.30);
+  box-shadow: 0 26px 54px rgba(185,146,46,.18);
+}
+.catCard--soon{
+  filter: saturate(.88) contrast(.98);
+}
+
+/* Pakketten: radio-kaarten nog luxer */
+.pkg{
+  border-radius: 20px;
+  border: 2px solid rgba(16,19,26,.10);
+  box-shadow: 0 16px 34px rgba(16,19,26,.08);
+  background:
+    radial-gradient(700px 180px at 12% 0%, rgba(216,181,91,.10), transparent 60%),
+    #fff;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+@media (hover:hover){
+  .pkg:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 22px 46px rgba(16,19,26,.12);
+  }
+}
+.pkg--best{
+  border-color: rgba(185,146,46,.30);
+  box-shadow: 0 22px 46px rgba(185,146,46,.14);
+}
+
+/* Pills rustiger */
+.pill{
+  border-color: rgba(16,19,26,.10);
+  background: rgba(16,19,26,.025);
+}
+.pill--gold{
+  background: rgba(216,181,91,.14);
+  border-color: rgba(185,146,46,.25);
+}
+
+/* Direct starten knop: echt premium */
+.btn--primary{
+  border-radius: 18px;
+  box-shadow: 0 20px 46px rgba(11,13,18,.22);
+}
+@media (hover:hover){
+  .btn--primary:hover{
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+  }
+}
+
+/* Features: iets meer “kaart” */
+.feature{
+  border-radius: 16px;
+  background: rgba(255,255,255,.75);
+  border-color: rgba(16,19,26,.10);
+  box-shadow: 0 12px 24px rgba(16,19,26,.06);
+}
+
+/* Note: luxe waarschuwing */
+.note{
+  border-color: rgba(185,146,46,.20);
+  background:
+    radial-gradient(700px 220px at 85% 0%, rgba(216,181,91,.18), transparent 60%),
+    rgba(216,181,91,.10);
+  box-shadow: 0 16px 34px rgba(185,146,46,.10);
+}
+
+/* Footer iets strakker */
+.footer{
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(16,19,26,.08);
+}
