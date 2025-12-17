@@ -1265,3 +1265,144 @@ body.examPage .btn--gold{
 .examTop__title{
   display: none !important;
 }
+
+/* =========================================================
+   GEEF GAS — LUXE EXAMEN PAGINA (plak onderaan)
+   Past bij examens pagina: cream/goud, geen blauw
+   ========================================================= */
+
+body.examPage{
+  background:
+    radial-gradient(900px 320px at 85% 5%, rgba(216,181,91,.16), transparent 60%),
+    var(--bg);
+}
+
+/* TOPBAR: strak, rustig, luxe */
+body.examPage .topbar{
+  background: rgba(11,13,18,.96);
+  border-bottom: 1px solid rgba(216,181,91,.18);
+}
+body.examPage .examTop{
+  padding: 14px 0;
+}
+body.examPage .pillTimer{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(216,181,91,.10);
+  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+}
+
+/* CARD: premium */
+body.examPage .examCard{
+  border: 1px solid rgba(185,146,46,.18);
+  box-shadow:
+    0 22px 55px rgba(16,19,26,.14),
+    inset 0 0 0 1px rgba(255,255,255,.55);
+}
+
+/* FOTO: niet croppen (teksten blijven zichtbaar) */
+body.examPage .examMedia{
+  height: clamp(220px, 34vh, 460px) !important;
+  background:
+    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+    #0B0D12;
+  overflow: hidden !important;
+  border-bottom: 1px solid rgba(185,146,46,.16);
+}
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important; /* ✅ geen ingezoom / geen crop */
+  object-position: center;
+}
+
+/* Vraagtekst: iets luxer */
+body.examPage #questionText{
+  font-size: 1.28rem;
+  letter-spacing: -.15px;
+}
+
+/* Chip + progress iets netter */
+body.examPage .chip{
+  border-color: rgba(185,146,46,.22);
+  background: rgba(216,181,91,.10);
+  font-weight: 950;
+}
+body.examPage #chipProgress{
+  color: rgba(90,98,114,.95);
+}
+
+/* ANTWOORDEN: cream/goud, geen blauw */
+body.examPage .answer{
+  background: linear-gradient(180deg, #ffffff, #fbf7ef);
+  border: 1px solid rgba(185,146,46,.16);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+  border-radius: 18px;
+}
+body.examPage .answer span{
+  color: var(--text) !important;   /* ✅ forceer geen blauw */
+  text-decoration: none !important;
+}
+body.examPage .answer .answerKey{
+  border-color: rgba(185,146,46,.22);
+  background: rgba(216,181,91,.10);
+  font-weight: 950;
+}
+
+/* Subtiele hover lift */
+@media (hover:hover){
+  body.examPage .answer:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(185,146,46,.14);
+  }
+}
+
+/* Selected / correct / wrong: premium kleuren */
+body.examPage .answer.selected{
+  border-color: rgba(216,181,91,.55);
+  background: rgba(216,181,91,.12);
+}
+body.examPage .answer.correct{
+  border-color: rgba(6,118,71,.40);
+  background: rgba(6,118,71,.08);
+}
+body.examPage .answer.wrong{
+  border-color: rgba(180,35,24,.40);
+  background: rgba(180,35,24,.08);
+}
+
+/* EXPLAIN box: luxer */
+body.examPage .explain{
+  border: 1px solid rgba(185,146,46,.16);
+  background: linear-gradient(180deg, #ffffff, #fbf7ef);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+}
+
+/* Buttons: ghost + gold premium */
+body.examPage .btn--ghost{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(16,19,26,.10);
+  box-shadow: 0 10px 22px rgba(16,19,26,.05);
+}
+body.examPage .btn--gold{
+  background: linear-gradient(180deg,#e0bf66,#c9a63a);
+  border: none;
+  box-shadow:
+    0 10px 22px rgba(185,146,46,.28),
+    inset 0 -2px 0 rgba(0,0,0,.14);
+}
+body.examPage .btn--gold:active,
+body.examPage .btn--ghost:active{
+  transform: translateY(1px);
+}
+
+/* Nav buttons netjes als groep */
+body.examPage .examNavBtns{
+  display:flex;
+  gap: 10px;
+}
+
+/* Kleine polish voor mobiel */
+@media (max-width: 520px){
+  body.examPage #questionText{ font-size: 1.18rem; }
+  body.examPage .answer{ padding: 14px 12px; }
+}
