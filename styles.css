@@ -1692,3 +1692,78 @@ details[open]{
   color: #aaa;
   margin-bottom: 20px;
 }
+
+/* =========================================================
+   GeefGas — EXAM PAGE LUXE OVERRIDE (plak onderaan)
+   ========================================================= */
+
+body.examPage .topbar{
+  background: rgba(11,13,18,.96);
+  border-bottom: 1px solid rgba(216,181,91,.22);
+}
+
+body.examPage .examTop__title{
+  color: rgba(255,255,255,.92);
+  font-weight: 950;
+}
+
+body.examPage .pillTimer{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(216,181,91,.10);
+  color: #fff;
+}
+
+/* card iets luxer */
+body.examPage .examCard{
+  border: 1px solid rgba(216,181,91,.18);
+  box-shadow: 0 22px 50px rgba(16,19,26,.14);
+}
+
+/* FOTO: niet croppen (teksten blijven zichtbaar) */
+body.examPage .examMedia{
+  height: clamp(220px, 34vh, 440px) !important;
+  background: radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+              rgba(16,19,26,.02);
+  overflow: hidden !important;
+}
+body.examPage .examMedia img{
+  object-fit: contain !important;   /* belangrijk */
+  background: transparent;
+}
+
+/* Buttons strakker */
+body.examPage .btn--gold{
+  box-shadow: 0 10px 22px rgba(185,146,46,.18);
+}
+body.examPage .btn--ghost{
+  background: rgba(16,19,26,.02);
+}
+
+/* Antwoorden luxer */
+body.examPage .answer{
+  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
+  border: 1px solid rgba(16,19,26,.12);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+}
+body.examPage .answer.selected{
+  border-color: rgba(216,181,91,.55);
+  background: rgba(216,181,91,.12);
+}
+body.examPage .answer.correct{
+  border-color: rgba(6,118,71,.45);
+  background: rgba(6,118,71,.08);
+}
+body.examPage .answer.wrong{
+  border-color: rgba(180,35,24,.45);
+  background: rgba(180,35,24,.08);
+}
+
+body.examPage .answerKey{
+  border-color: rgba(216,181,91,.22);
+}
+
+/* Footer knoppen layout */
+body.examPage .examNavBtns{
+  display:flex;
+  gap:10px;
+}
