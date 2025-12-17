@@ -26,10 +26,13 @@
       <!-- EXAM CARD -->
       <section class="examCard" id="examCard">
 
-        <!-- MEDIA -->
+        <!-- MEDIA (alleen tonen als er echt een afbeelding is) -->
         <div class="examMedia" id="mediaWrap" style="display:none;">
-          <img id="questionImage" alt="Afbeelding bij vraag"
-               onerror="this.closest('.examMedia').style.display='none';" />
+          <img
+            id="questionImage"
+            alt="Afbeelding bij vraag"
+            loading="lazy"
+          />
         </div>
 
         <!-- BODY -->
@@ -86,8 +89,6 @@
   const revealMode = localStorage.getItem("gg_revealMode") || "instant"; // "instant" | "after"
   $("modeLabel").textContent = (revealMode === "after") ? "antwoorden pas na examen" : "directe feedback";
 
-  const ttsEnabled = (localStorage.getItem("gg_tts") || "0") === "1"; // optioneel
-  // speak knop blijft zichtbaar, maar je kan 'm in instellingen aan/uit zetten (hier alleen label)
   // ---------- load exam ----------
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
@@ -120,7 +121,6 @@
     options: Array.isArray(q.options) ? q.options.map(safeStr) : [],
     correctIndex: (typeof q.correctIndex === "number") ? q.correctIndex : null,
     explanation: safeStr(q.explanation || ""),
-    // image support: q.image | q.imageUrl | q.img
     image: safeStr(q.image || q.imageUrl || q.img || "")
   }));
 
@@ -141,10 +141,22 @@
     }
   }, 1000);
 
+  // ---------- image handling ----------
+  const mediaWrap = $("mediaWrap");
+  const imgEl = $("questionImage");
+
+  function hideImage(){
+    mediaWrap.style.display = "none";
+    imgEl.removeAttribute("src");
+  }
+
+  imgEl.addEventListener("error", hideImage);
+
   // ---------- render ----------
   function render(){
     const q = questions[idx];
     locked = false;
+
     $("explainBox").style.display = "none";
     $("explainBox").classList.remove("good","bad");
 
@@ -153,11 +165,10 @@
 
     // image
     if (q.image){
-      $("mediaWrap").style.display = "";
-      $("questionImage").src = q.image;
+      mediaWrap.style.display = "";
+      imgEl.src = q.image;
     } else {
-      $("mediaWrap").style.display = "none";
-      $("questionImage").removeAttribute("src");
+      hideImage();
     }
 
     // buttons
@@ -185,7 +196,7 @@
       answersEl.appendChild(btn);
     });
 
-    // If mode is instant and already answered, we can show feedback again:
+    // If mode is instant and already answered, show feedback again:
     if (revealMode !== "after" && attempt[idx] !== null){
       showInstantFeedback();
     }
@@ -202,7 +213,6 @@
     });
 
     if (revealMode === "after"){
-      // geen feedback, gewoon door
       return;
     }
     showInstantFeedback();
@@ -244,7 +254,6 @@
   });
 
   $("nextBtn").addEventListener("click", () => {
-    // in after-mode mag je door zonder antwoord, maar we laten wel netjes (null) staan
     if (idx === total - 1){
       finishExam(false);
       return;
@@ -260,6 +269,7 @@
     const lines = [];
     lines.push(q.prompt);
     q.options.forEach((opt, i) => lines.push(`${i+1}. ${opt}`));
+
     if (revealMode !== "after" && chosen !== null && typeof q.correctIndex === "number"){
       lines.push(chosen === q.correctIndex ? "Dit is correct." : "Dit is fout.");
       if (q.explanation) lines.push(q.explanation);
@@ -277,8 +287,6 @@
   }
 
   $("speakBtn").addEventListener("click", () => {
-    // als jij voorlezen in instellingen wil afdwingen:
-    // if (!ttsEnabled) { alert("Zet 'Voorlezen' aan in Instellingen."); return; }
     speakCurrent();
   });
 
@@ -286,7 +294,6 @@
   function finishExam(timeUp){
     clearInterval(timer);
 
-    // score berekenen
     let correctCount = 0;
     const packedAttempt = questions.map((q, i) => {
       const chosen = (typeof attempt[i] === "number") ? attempt[i] : null;
