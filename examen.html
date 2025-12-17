@@ -3,10 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-
   <title>GeefGas – Examen</title>
 
   <link rel="stylesheet" href="styles.css">
@@ -17,13 +13,12 @@
 
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="examens.html">
+    <a class="brand" href="examens.html" aria-label="Terug naar examens">
       <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
       <span class="brand__name">GeefGas</span>
     </a>
 
-    <!-- Tip: tik op de timer om fullscreen te openen -->
-    <div class="pillTimer" id="timerPill" title="Tik om fullscreen te openen">--:--</div>
+    <button class="pillTimer" id="timerPill" type="button" aria-label="Fullscreen / timer">--:--</button>
   </div>
 </header>
 
@@ -38,14 +33,14 @@
       </div>
 
       <!-- CONTENT -->
-      <div class="examBody">
+      <div class="examBody" id="examBody">
 
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
-          <div class="muted" id="progressText">Vraag 1</div>
+          <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
         </div>
 
-        <h2 id="questionText">—</h2>
+        <h2 id="questionText" style="margin:0 0 10px;">—</h2>
 
         <div class="answers" id="answers"></div>
 
@@ -72,21 +67,59 @@
 <script>
 (function(){
   const IMAGE_BASE = "assets/";
-  const $ = id => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
-  // --- Fullscreen (na user-actie) ---
+  // -----------------------
+  // APP MODE: fullscreen + scroll-lock (zonder CSS)
+  // -----------------------
+  let appModeStarted = false;
+
   function requestFull(){
+    // fullscreen werkt alleen op user gesture
     const el = document.documentElement;
-    const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-    if (fn) fn.call(el);
-  }
-  const timerEl = $("timerPill");
-  if (timerEl){
-    timerEl.style.cursor = "pointer";
-    timerEl.addEventListener("click", requestFull);
+    const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (req) {
+      try { req.call(el); } catch(e) {}
+    }
   }
 
-  // --- helper ---
+  function lockScroll(){
+    // voorkomt iOS "bounce" en page scroll
+    document.addEventListener("touchmove", preventTouchMove, { passive:false });
+    document.addEventListener("wheel", preventWheel, { passive:false });
+
+    // houd scroll bovenaan
+    window.scrollTo(0, 0);
+  }
+
+  function preventTouchMove(e){
+    // laat alleen scroll toe binnen examBody (als het ooit nodig is)
+    const body = $("examBody");
+    if (!body) return e.preventDefault();
+    if (!body.contains(e.target)) e.preventDefault();
+  }
+
+  function preventWheel(e){
+    const body = $("examBody");
+    if (!body) return e.preventDefault();
+    if (!body.contains(e.target)) e.preventDefault();
+  }
+
+  function startAppMode(){
+    if (appModeStarted) return;
+    appModeStarted = true;
+    requestFull();
+    lockScroll();
+  }
+
+  // timer klik = fullscreen toggle (extra)
+  $("timerPill").addEventListener("click", () => {
+    startAppMode();
+  });
+
+  // -----------------------
+  // helpers
+  // -----------------------
   function fmt(sec){
     sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
@@ -94,13 +127,14 @@
     return `${m}:${s}`;
   }
 
-  // iOS/Android: probeer adresbalk te minimaliseren als user begint
-  function nudgeAppFeel(){
-    // werkt niet altijd, maar schaadt niet
-    setTimeout(() => window.scrollTo(0, 1), 0);
+  function getFirstNumberFromId(id){
+    const m = String(id || "").match(/(\d+)/);
+    return m ? Number(m[1]) : 1;
   }
 
-  // --- data ---
+  // -----------------------
+  // load exam
+  // -----------------------
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => String(e.id) === String(examId));
@@ -112,44 +146,53 @@
   }
 
   const questions = Array.isArray(exam.questions) ? exam.questions : [];
-  const total = questions.length;
-
-  if (!total){
-    alert("Dit examen heeft geen vragen.");
+  if(!questions.length){
+    alert("Geen vragen in dit examen");
     location.href="examens.html";
     return;
   }
 
+  const total = questions.length;
   const pass = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
   const maxFout = total - pass;
 
   $("chipCategory").textContent = exam.category || "Examen";
   $("goalBox").innerHTML =
-    `<strong>Doel:</strong> ${pass} van de ${total} vragen goed (max ${maxFout} fouten)`;
+    `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.`;
 
-  // --- state ---
+  // -----------------------
+  // state
+  // -----------------------
   let idx = 0;
   let chosen = new Array(total).fill(null);
   let locked = false;
 
-  // --- timer ---
+  // timer
   let time = Number(exam.durationMinutes || 30) * 60;
   $("timerPill").textContent = fmt(time);
 
   const timer = setInterval(()=>{
     time--;
     $("timerPill").textContent = fmt(time);
-    if(time<=0) finish(true);
+    if(time <= 0){
+      time = 0;
+      clearInterval(timer);
+      finish(true);
+    }
   },1000);
 
-  // --- image path (jouw naming) ---
+  // -----------------------
+  // image path: taxi_e{examNr}_q{qNr}.PNG
+  // -----------------------
   function imagePath(){
-    const m = String(exam.id || "").match(/(\d+)/);
-    const examNr = m ? m[1] : "1";
-    const qNr = String(idx+1).padStart(2,"0");
+    const examNr = getFirstNumberFromId(exam.id);
+    const qNr = String(idx + 1).padStart(2, "0");
     return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
   }
 
+  // -----------------------
+  // render
+  // -----------------------
   function render(){
     const q = questions[idx];
     locked = false;
@@ -157,73 +200,85 @@
     $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
     $("questionText").textContent = q.prompt || "";
 
-    // IMAGE
-    const img = $("questionImage");
+    // IMAGE: probeer standaard pad, als niet bestaat -> verberg
     const wrap = $("mediaWrap");
-    const src = imagePath();
+    const img = $("questionImage");
 
     wrap.style.display = "block";
     img.onerror = () => { wrap.style.display = "none"; };
-    img.src = src;
+    img.src = imagePath();
 
-    // ANSWERS
+    // Answers
     const a = $("answers");
     a.innerHTML = "";
 
-    const letters = "ABCDEF";
+    const letters = ["A","B","C","D","E","F"];
     (q.options || []).forEach((opt,i)=>{
       const b = document.createElement("button");
       b.type = "button";
       b.className = "answer";
       b.innerHTML = `<span class="answerKey">${letters[i] || (i+1)}</span><span>${opt}</span>`;
-      if(chosen[idx]===i) b.classList.add("selected");
-      b.onclick = ()=> chooseAnswer(i);
+
+      if(chosen[idx] === i) b.classList.add("selected");
+
+      b.addEventListener("click", ()=> chooseAnswer(i));
       a.appendChild(b);
     });
 
-    $("prevBtn").disabled = idx===0;
-    $("nextBtn").textContent = idx===total-1 ? "Afronden" : "Volgende";
+    $("prevBtn").disabled = idx === 0;
+    $("nextBtn").textContent = (idx === total-1) ? "Afronden" : "Volgende";
 
-    $("explainBox").style.display="none";
-
-    // kleine app-gevoel boost
-    nudgeAppFeel();
+    $("explainBox").style.display = "none";
+    $("explainTitle").textContent = "";
+    $("explainText").textContent = "";
   }
 
   function chooseAnswer(i){
+    // ✅ start app-mode bij eerste echte interactie
+    startAppMode();
+
     if(locked) return;
-    chosen[idx]=i;
+
+    chosen[idx] = i;
 
     document.querySelectorAll(".answer").forEach((b,n)=>{
-      b.classList.toggle("selected",n===i);
+      b.classList.toggle("selected", n === i);
       b.classList.remove("correct","wrong");
     });
 
-    locked=true;
+    locked = true;
 
     const c = questions[idx].correctIndex;
     if(typeof c === "number"){
       const nodes = document.querySelectorAll(".answer");
       if(nodes[c]) nodes[c].classList.add("correct");
-      if(i!==c && nodes[i]) nodes[i].classList.add("wrong");
+      if(i !== c && nodes[i]) nodes[i].classList.add("wrong");
     }
 
     if(questions[idx].explanation){
-      $("explainBox").style.display="block";
-      $("explainTitle").textContent = (i===c) ? "Goed" : "Niet goed";
+      $("explainBox").style.display = "block";
+      $("explainTitle").textContent = (i === c) ? "Goed" : "Niet goed";
       $("explainText").textContent = questions[idx].explanation;
     }
   }
 
-  $("prevBtn").onclick = ()=>{ if(idx>0){ idx--; render(); } };
-  $("nextBtn").onclick = ()=>{ idx===total-1 ? finish(false) : (idx++, render()); };
+  $("prevBtn").addEventListener("click", ()=>{
+    startAppMode();
+    if(idx > 0){ idx--; render(); }
+  });
+
+  $("nextBtn").addEventListener("click", ()=>{
+    startAppMode();
+    if(idx === total - 1) finish(false);
+    else { idx++; render(); }
+  });
 
   function finish(timeUp){
     clearInterval(timer);
 
-    let goed=0;
-    chosen.forEach((a,i)=>{
-      if(a===questions[i].correctIndex) goed++;
+    let goed = 0;
+    chosen.forEach((ans,i)=>{
+      if(ans !== null && ans === questions[i].correctIndex) goed++;
     });
 
     localStorage.setItem("gg_result", JSON.stringify({
@@ -234,9 +289,9 @@
       correctCount: goed,
       passMinCorrect: pass,
       timeUp: !!timeUp,
-      attempt: chosen.map((a,i)=>({
+      attempt: chosen.map((ans,i)=>({
         id: questions[i].id,
-        chosen: a,
+        chosen: ans,
         correctIndex: questions[i].correctIndex
       }))
     }));
@@ -244,16 +299,7 @@
     location.href="resultaat.html";
   }
 
-  // Start
   render();
-
-  // Extra: voorkom “double tap zoom” op iOS iets meer
-  let lastTouchEnd = 0;
-  document.addEventListener('touchend', function (event) {
-    const now = (new Date()).getTime();
-    if (now - lastTouchEnd <= 300) event.preventDefault();
-    lastTouchEnd = now;
-  }, { passive: false });
 
 })();
 </script>
