@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GeefGas – Taxi theorie oefenen</title>
-  <meta name="description" content="GeefGas: Taxi theorie oefenen met examengerichte vragen en duidelijke uitleg. Kies je pakket en start direct." />
+  <title>GeefGas – Theorie oefenen</title>
+  <meta name="description" content="GeefGas: theorie oefenen met examengerichte vragen en duidelijke uitleg. Kies je pakket en start direct." />
   <meta name="theme-color" content="#0B0D12" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -43,15 +43,15 @@
 
       <!-- HERO -->
       <section class="card hero">
-        <div class="hero__badge">Premium theorieplatform • Taxi</div>
+        <div class="hero__badge">Premium theorieplatform</div>
 
         <h1 class="hero__title">
-          Taxi theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
+          Theorie halen met <span class="gold">duidelijke uitleg</span> en <span class="gold">examengerichte</span> oefenexamens.
         </h1>
 
+        <!-- KORTER & RUSTIGER (geen “directe feedback/na afloop”, geen taxi-tekst) -->
         <p class="hero__text">
-          Rustig oefenen op je telefoon. Kies of je antwoorden direct ziet, of pas na afloop.
-          Taxi-specifiek: taxipas, BCT, KIWA/vergunningen, tarieven & handhaving.
+          Rustig oefenen op je telefoon met duidelijke uitleg en examengerichte vragen.
         </p>
 
         <div class="hero__actions">
@@ -59,11 +59,10 @@
           <a class="btn btn--ghost" href="examens.html">Probeer demo</a>
         </div>
 
-        <!-- jouw bullets onder elkaar -->
+        <!-- minder druk: 2 bullets -->
         <div class="hero__checks" aria-label="Voordelen" style="flex-direction:column; align-items:flex-start;">
           <div class="check">✔ Duidelijk</div>
           <div class="check">✔ Examengericht</div>
-          <div class="check">✔ Compleet</div>
         </div>
       </section>
 
@@ -72,7 +71,7 @@
         <div class="sectionHead" style="margin-bottom:14px;">
           <div>
             <h2 class="sectionHead__title">Categorieën</h2>
-            <p class="sectionHead__sub">Taxi is nu beschikbaar. De rest komt binnenkort.</p>
+            <p class="sectionHead__sub">Meer categorieën komen binnenkort.</p>
           </div>
         </div>
 
@@ -81,33 +80,30 @@
           <!-- TAXI (actief) -->
           <a class="catCard catCard--active" href="examens.html" aria-label="Taxi actief">
             <div class="catCard__image">
-              <!-- pas de bestandsnaam aan als jouw bestand anders heet -->
               <img src="assets/taxi.PNG" alt="Taxi" />
             </div>
           </a>
 
-          <!-- AUTO (binnenkort of actief - jij bepaalt) -->
+          <!-- AUTO (binnenkort) -->
           <div class="catCard catCard--soon" aria-disabled="true">
             <div class="catCard__image">
               <img src="assets/auto.PNG" alt="Auto" />
             </div>
           </div>
 
-          <!-- MOTOR -->
+          <!-- MOTOR (binnenkort) -->
           <div class="catCard catCard--soon" aria-disabled="true">
             <div class="catCard__image">
               <img src="assets/motor.PNG" alt="Motor" />
             </div>
           </div>
 
-          <!-- BROMFIETS -->
+          <!-- BROMFIETS (binnenkort) -->
           <div class="catCard catCard--soon" aria-disabled="true">
             <div class="catCard__image">
               <img src="assets/bromfiets.PNG" alt="Bromfiets" />
             </div>
           </div>
-
-          <!-- Vracht verwijderd ✅ -->
 
         </div>
       </section>
@@ -134,7 +130,7 @@
             <div class="pkg__main">
               <div class="pkg__top">
                 <div>
-                  <div class="pkg__name">Taxi Deluxe</div>
+                  <div class="pkg__name">Deluxe</div>
                   <div class="pkg__desc">31 dagen toegang</div>
                 </div>
                 <div class="pkg__price">€50</div>
@@ -155,7 +151,7 @@
             <div class="pkg__main">
               <div class="pkg__top">
                 <div>
-                  <div class="pkg__name">Taxi Premium</div>
+                  <div class="pkg__name">Premium</div>
                   <div class="pkg__desc">21 dagen toegang</div>
                 </div>
                 <div class="pkg__price">€40</div>
@@ -175,7 +171,7 @@
             <div class="pkg__main">
               <div class="pkg__top">
                 <div>
-                  <div class="pkg__name">Taxi Lite</div>
+                  <div class="pkg__name">Lite</div>
                   <div class="pkg__desc">7 dagen toegang</div>
                 </div>
                 <div class="pkg__price">€25</div>
@@ -183,7 +179,7 @@
 
               <div class="pkg__meta">
                 <span class="pill">Snel oefenen</span>
-                <span class="pill">Perfect last-minute</span>
+                <span class="pill">Last-minute</span>
               </div>
             </div>
           </label>
@@ -210,7 +206,7 @@
           <img src="assets/geefgas.PNG" alt="GeefGas" class="footer__logo" />
           <div>
             <div class="footer__brand">GeefGas</div>
-            <div class="footer__muted">Taxi nu • later meer categorieën</div>
+            <div class="footer__muted">Altijd up-to-date oefenen</div>
           </div>
         </div>
         <div class="footer__right">© <span id="year"></span></div>
@@ -231,9 +227,9 @@
       const radios = Array.from(document.querySelectorAll('input[name="pkg"]'));
 
       const packages = {
-        deluxe: { label:"Taxi Deluxe", days:31, price:50 },
-        premium:{ label:"Taxi Premium", days:21, price:40 },
-        lite:   { label:"Taxi Lite", days:7,  price:25 }
+        deluxe: { label:"Deluxe", days:31, price:50 },
+        premium:{ label:"Premium", days:21, price:40 },
+        lite:   { label:"Lite", days:7,  price:25 }
       };
 
       function getSelected(){
