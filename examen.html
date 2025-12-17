@@ -1,358 +1,195 @@
 <!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Examen</title>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
 
 <body class="theme examPage">
 
-  <!-- TOPBAR (luxe) -->
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="examens.html" aria-label="Terug naar examens">
-        <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo" />
-        <span class="brand__name">GeefGas</span>
-      </a>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="examens.html">
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
+      <span class="brand__name">GeefGas</span>
+    </a>
 
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div class="examTop__title" id="examTitle" style="color:rgba(255,255,255,.92); font-weight:950;">
-          Examen
-        </div>
-        <div class="pillTimer" id="timerPill">--:--</div>
+    <div class="pillTimer" id="timerPill">--:--</div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container page__inner">
+
+    <section class="examCard">
+
+      <!-- AFBEELDING -->
+      <div class="examMedia" id="mediaWrap" style="display:none;">
+        <img id="questionImage" alt="Vraag afbeelding">
       </div>
-    </div>
-  </header>
 
-  <!-- PAGE -->
-  <main class="page">
-    <div class="container page__inner">
+      <!-- CONTENT -->
+      <div class="examBody">
 
-      <section class="examCard" id="examCard">
-
-        <!-- MEDIA -->
-        <div class="examMedia" id="mediaWrap" style="display:none;">
-          <img id="questionImage" alt="Afbeelding bij vraag" />
+        <div class="examMeta">
+          <div class="chip" id="chipCategory">Examen</div>
+          <div class="muted" id="progressText">Vraag 1</div>
         </div>
 
-        <!-- BODY -->
-        <div class="examBody">
-          <div class="examMeta">
-            <div class="chip" id="chipTopic">Examen</div>
-            <div class="muted" style="font-weight:900;" id="chipProgress">Vraag 1 van 1</div>
-          </div>
+        <h2 id="questionText">—</h2>
 
-          <h3 id="questionText" style="margin:0 0 10px;">—</h3>
+        <div class="answers" id="answers"></div>
 
-          <div class="answers" id="answers"></div>
-
-          <!-- UITLEG -->
-          <div class="explain" id="explainBox" hidden>
-            <div class="explainTitle" id="explainTitle">Uitleg</div>
-            <div class="explainText" id="explainText"></div>
-          </div>
-
-          <!-- luxe norm blok -->
-          <div class="note" id="normBox" style="margin-top:14px;">
-            —
-          </div>
-
-          <div class="examFooter">
-            <button class="btn btn--ghost" id="speakBtn" type="button">🔊 Voorlezen</button>
-
-            <div style="display:flex; gap:10px;">
-              <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-              <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
-            </div>
-          </div>
-
+        <!-- UITLEG -->
+        <div class="explain" id="explainBox" style="display:none;">
+          <div class="explainTitle" id="explainTitle"></div>
+          <div class="explainText" id="explainText"></div>
         </div>
-      </section>
 
-    </div>
-  </main>
+        <!-- DOEL BLOK -->
+        <div class="note" id="goalBox"></div>
+
+        <div class="examFooter">
+          <button class="btn btn--ghost" id="prevBtn">Vorige</button>
+          <button class="btn btn--gold" id="nextBtn">Volgende</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
 
 <script>
 (function(){
-  // =========================
-  // INSTELLING: WAAR STAAN JE FOTO'S?
-  // =========================
-  // Voorbeeld: "images/exams/" -> images/exams/taxi_e1_q01.PNG
-  // Als jij ze in assets/exams hebt gezet: verander naar "assets/exams/"
-  const IMAGE_BASE = "images/exams/";
 
-  // helpers
-  const $ = (id) => document.getElementById(id);
+  const IMAGE_BASE = "assets/";
+  const $ = id => document.getElementById(id);
 
-  function fmtTime(sec){
-    sec = Math.max(0, Math.floor(sec));
-    const m = String(Math.floor(sec / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
+  function fmt(sec){
+    const m = String(Math.floor(sec/60)).padStart(2,"0");
+    const s = String(sec%60).padStart(2,"0");
     return `${m}:${s}`;
   }
 
-  function safeStr(x){ return (x === null || x === undefined) ? "" : String(x); }
-
-  // settings
-  const revealMode = localStorage.getItem("gg_revealMode") || "instant"; // "instant" | "after"
-  const ttsEnabled = (localStorage.getItem("gg_ttsEnabled") || "false") === "true";
-
-  // load exam
   const examId = localStorage.getItem("gg_examId");
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-  const exam = exams.find(e => String(e.id) === String(examId)) || null;
+  const exam = window.EXAM_DATA.exams.find(e => e.id === examId);
 
-  if (!exam || !Array.isArray(exam.questions) || !exam.questions.length){
-    alert("Geen examen gevonden. Ga terug en kies opnieuw een examen.");
-    window.location.href = "examens.html";
+  if(!exam){
+    alert("Geen examen gevonden");
+    location.href="examens.html";
     return;
   }
 
-  const title = safeStr(exam.title || "Examen");
-  const category = safeStr(exam.category || "Taxi");
-  const durationMinutes = Number(exam.durationMinutes || 30);
-  const total = exam.questions.length;
+  const questions = exam.questions;
+  const total = questions.length;
+  const pass = exam.passMinCorrect;
+  const maxFout = total - pass;
 
-  document.title = `GeefGas – ${title}`;
-  $("examTitle").textContent = title;
-  $("chipTopic").textContent = category;
+  $("chipCategory").textContent = exam.category;
+  $("goalBox").innerHTML =
+    `<strong>Doel:</strong> ${pass} van de ${total} vragen goed (max ${maxFout} fouten)`;
 
-  // norm
-  const passMinCorrect = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
-  const maxMistakes = total - passMinCorrect;
-  $("normBox").innerHTML = `<strong>Doel:</strong> Je moet <strong>${passMinCorrect}</strong> van de <strong>${total}</strong> vragen goed hebben. <span class="muted" style="font-weight:800;">(max ${maxMistakes} fouten)</span>`;
-
-  // questions
-  const questions = exam.questions.map(q => ({
-    id: q.id,
-    prompt: safeStr(q.prompt),
-    options: Array.isArray(q.options) ? q.options.map(safeStr) : [],
-    correctIndex: (typeof q.correctIndex === "number") ? q.correctIndex : null,
-    explanation: safeStr(q.explanation || ""),
-    image: safeStr(q.image || q.imageUrl || q.img || "")
-  }));
-
-  // state
-  let index = 0;
-  const attempt = new Array(total).fill(null);
+  let idx = 0;
+  let answers = new Array(total).fill(null);
   let locked = false;
 
-  // timer
-  let remaining = durationMinutes * 60;
-  $("timerPill").textContent = fmtTime(remaining);
+  let time = exam.durationMinutes * 60;
+  $("timerPill").textContent = fmt(time);
 
-  const timer = setInterval(() => {
-    remaining -= 1;
-    $("timerPill").textContent = fmtTime(remaining);
-    if (remaining <= 0){
-      clearInterval(timer);
-      finishExam(true);
-    }
-  }, 1000);
+  setInterval(()=>{
+    time--;
+    $("timerPill").textContent = fmt(time);
+    if(time<=0) finish();
+  },1000);
 
-  // elements
-  const mediaWrap = $("mediaWrap");
-  const qImg = $("questionImage");
-
-  // AUTO IMAGE PATH builder
-  function buildAutoImagePath(){
-    // exam.id: taxi-examen-1 -> 1
-    const examNrMatch = String(exam.id || "").match(/(\d+)/);
-    const examNr = examNrMatch ? Number(examNrMatch[1]) : null;
-
-    // q index 0.. -> 01..
-    const qNr = String(index + 1).padStart(2, "0");
-
-    if (examNr === null) return "";
+  function imagePath(){
+    const examNr = exam.id.match(/\d+/)[0];
+    const qNr = String(idx+1).padStart(2,"0");
     return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
   }
 
-  function setQuestionImage(q){
-    const autoPath = buildAutoImagePath();
-
-    // Als je later per vraag handmatig image invult, krijgt dat voorrang
-    const finalSrc = (q.image && q.image.trim()) ? q.image.trim() : autoPath;
-
-    // Als er echt geen pad is: verbergen
-    if (!finalSrc){
-      mediaWrap.style.display = "none";
-      qImg.removeAttribute("src");
-      return;
-    }
-
-    // toon + fallback
-    mediaWrap.style.display = "";
-    qImg.onerror = () => {
-      // als autoPath niet bestaat, toon placeholder maar laat layout netjes
-      qImg.onerror = null;
-      qImg.src = "assets/placeholder.jpg";
-    };
-    qImg.src = finalSrc;
-  }
-
   function render(){
-    const q = questions[index];
+    const q = questions[idx];
     locked = false;
 
-    $("chipProgress").textContent = `Vraag ${index + 1} van ${total}`;
+    $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
     $("questionText").textContent = q.prompt;
 
-    // image
-    setQuestionImage(q);
+    // IMAGE
+    const img = $("questionImage");
+    img.src = imagePath();
+    img.onerror = () => $("mediaWrap").style.display="none";
+    $("mediaWrap").style.display="block";
 
-    // nav
-    $("prevBtn").disabled = (index === 0);
-    $("nextBtn").textContent = (index === total - 1) ? "Afronden" : "Volgende";
-
-    // answers
-    const answersEl = $("answers");
-    answersEl.innerHTML = "";
-
-    const letters = ["A","B","C","D","E","F"];
-
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "answer";
-      btn.innerHTML = `<span class="answerKey">${letters[i] || (i+1)}</span><span>${opt}</span>`;
-
-      if (attempt[index] === i) btn.classList.add("selected");
-
-      btn.addEventListener("click", () => onChoose(i));
-      answersEl.appendChild(btn);
+    // ANSWERS
+    const a = $("answers");
+    a.innerHTML="";
+    q.options.forEach((opt,i)=>{
+      const b=document.createElement("button");
+      b.className="answer";
+      b.innerHTML=`<span class="answerKey">${"ABCD"[i]}</span><span>${opt}</span>`;
+      if(answers[idx]===i) b.classList.add("selected");
+      b.onclick=()=>choose(i);
+      a.appendChild(b);
     });
 
-    // uitleg reset
-    $("explainBox").hidden = true;
-    $("explainBox").classList.remove("good","bad");
+    $("prevBtn").disabled = idx===0;
+    $("nextBtn").textContent = idx===total-1?"Afronden":"Volgende";
 
-    // instant mode: als al gekozen, feedback terugzetten
-    if (revealMode !== "after" && attempt[index] !== null){
-      showInstantFeedback();
-    }
+    $("explainBox").style.display="none";
   }
 
-  function onChoose(choiceIndex){
-    if (locked) return;
-    attempt[index] = choiceIndex;
+  function choose(i){
+    if(locked) return;
+    answers[idx]=i;
 
-    [...$("answers").children].forEach((el, i) => {
-      el.classList.toggle("selected", i === choiceIndex);
-      el.classList.remove("correct","wrong");
+    document.querySelectorAll(".answer").forEach((b,n)=>{
+      b.classList.toggle("selected",n===i);
+      b.classList.remove("correct","wrong");
     });
 
-    if (revealMode === "after") return;
-    showInstantFeedback();
-  }
+    locked=true;
+    const c = questions[idx].correctIndex;
+    if(c!=null){
+      document.querySelectorAll(".answer")[c].classList.add("correct");
+      if(i!==c) document.querySelectorAll(".answer")[i].classList.add("wrong");
+    }
 
-  function showInstantFeedback(){
-    const q = questions[index];
-    const chosen = attempt[index];
-    if (chosen === null) return;
-
-    locked = true;
-
-    const nodes = [...$("answers").children];
-    const correctIndex = q.correctIndex;
-
-    if (typeof correctIndex === "number"){
-      nodes.forEach((el, i) => {
-        if (i === correctIndex) el.classList.add("correct");
-        if (i === chosen && chosen !== correctIndex) el.classList.add("wrong");
-      });
-
-      const ok = chosen === correctIndex;
-
-      if (q.explanation){
-        $("explainBox").hidden = false;
-        $("explainBox").classList.toggle("good", ok);
-        $("explainBox").classList.toggle("bad", !ok);
-        $("explainTitle").textContent = ok ? "✅ Goed" : "❌ Niet goed";
-        $("explainText").textContent = q.explanation;
-      } else {
-        $("explainBox").hidden = true;
-      }
+    if(questions[idx].explanation){
+      $("explainBox").style.display="block";
+      $("explainTitle").textContent = i===c?"Goed":"Niet goed";
+      $("explainText").textContent = questions[idx].explanation;
     }
   }
 
-  // navigation
-  $("prevBtn").addEventListener("click", () => {
-    if (index > 0){
-      index -= 1;
-      render();
-    }
-  });
+  $("prevBtn").onclick=()=>{ if(idx>0){idx--;render();}};
+  $("nextBtn").onclick=()=>{ idx===total-1?finish():(idx++,render());};
 
-  $("nextBtn").addEventListener("click", () => {
-    if (index === total - 1){
-      finishExam(false);
-      return;
-    }
-    index += 1;
-    render();
-  });
-
-  // TTS
-  function speakCurrent(){
-    if (!("speechSynthesis" in window)){
-      alert("Voorlezen wordt niet ondersteund op dit toestel/browser.");
-      return;
-    }
-    const q = questions[index];
-    const lines = [q.prompt];
-    q.options.forEach((opt, i) => lines.push(`${i+1}. ${opt}`));
-    const text = lines.join(". ");
-
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "nl-NL";
-    u.rate = 0.95;
-    window.speechSynthesis.speak(u);
-  }
-
-  $("speakBtn").addEventListener("click", () => {
-    // als je het echt wil blokkeren wanneer uit:
-    // if (!ttsEnabled) { alert("Zet 'Voorlezen' aan in Instellingen."); return; }
-    speakCurrent();
-  });
-
-  // finish
-  function finishExam(timeUp){
-    clearInterval(timer);
-
-    let correctCount = 0;
-    const packedAttempt = questions.map((q, i) => {
-      const chosen = (typeof attempt[i] === "number") ? attempt[i] : null;
-      const correctIndex = (typeof q.correctIndex === "number") ? q.correctIndex : null;
-      if (chosen !== null && correctIndex !== null && chosen === correctIndex) correctCount += 1;
-      return { id: q.id, chosen, correctIndex };
+  function finish(){
+    let goed=0;
+    answers.forEach((a,i)=>{
+      if(a===questions[i].correctIndex) goed++;
     });
 
-    const result = {
+    localStorage.setItem("gg_result",JSON.stringify({
       examId: exam.id,
-      title: title,
-      category: category,
-      total: total,
-      correctCount: correctCount,
-      passMinCorrect: passMinCorrect,
-      durationMinutes: durationMinutes,
-      timeUp: !!timeUp,
-      revealMode: revealMode,
-      attempt: packedAttempt,
-      finishedAt: new Date().toISOString()
-    };
+      title: exam.title,
+      category: exam.category,
+      total,
+      correctCount: goed,
+      passMinCorrect: pass,
+      attempt: answers.map((a,i)=>({id:questions[i].id,chosen:a,correctIndex:questions[i].correctIndex}))
+    }));
 
-    localStorage.setItem("gg_result", JSON.stringify(result));
-    window.location.href = "resultaat.html";
+    location.href="resultaat.html";
   }
 
-  // start
   render();
-
 })();
 </script>
 
