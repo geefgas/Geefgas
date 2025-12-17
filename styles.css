@@ -2292,3 +2292,15 @@ body.examPage .answer.wrong{
   letter-spacing: .25px;
   display: block;
 }
+
+/* ===== LUXE NORM NOTE (examen.html) ===== */
+body.examPage .ggNormNote{
+  text-align:center;
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(185,146,46,.26);
+  background: linear-gradient(180deg, rgba(216,181,91,.14), rgba(216,181,91,.08));
+  box-shadow: 0 12px 26px rgba(16,19,26,.08);
+  font-weight: 900;
+  color: #1a1a1a;
+}
