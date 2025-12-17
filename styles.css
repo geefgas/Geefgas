@@ -1543,3 +1543,175 @@ body.examPage .examNavBtns{
   display:flex;
   gap: 10px;
 }
+
+/* =========================================================
+   GEEF GAS — LUXE POLISH PACK (HOME + EXAMEN)
+   Plak HELEMAAL ONDERAAN styles.css
+   ========================================================= */
+
+/* ---------- Algemeen luxe “papier” gevoel ---------- */
+body.theme{
+  background:
+    radial-gradient(900px 420px at 70% -10%, rgba(216,181,91,.14), transparent 60%),
+    radial-gradient(700px 380px at 10% 0%, rgba(11,13,18,.06), transparent 55%),
+    var(--bg);
+}
+
+/* Cards nét iets chiquer */
+.card{
+  border-color: rgba(16,19,26,.10);
+  box-shadow: 0 18px 44px rgba(16,19,26,.10);
+}
+
+/* ---------- HOME (index) ---------- */
+
+/* Hero wat luxer + rustiger */
+.hero{
+  border: 1px solid rgba(16,19,26,.10);
+  border-radius: 22px;
+  box-shadow: 0 22px 52px rgba(16,19,26,.12);
+  background:
+    radial-gradient(900px 320px at 85% 10%, rgba(216,181,91,.20), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
+}
+
+/* Badge iets chicer */
+.hero__badge{
+  border-color: rgba(185,146,46,.28);
+  background: rgba(216,181,91,.12);
+  box-shadow: 0 10px 24px rgba(185,146,46,.10);
+}
+
+/* Buttons: goud iets dieper + premium shadow */
+.btn--gold,
+.nav__cta{
+  background: linear-gradient(180deg, #E2C567, #C9A63A);
+  box-shadow: 0 10px 22px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
+}
+.btn--gold:active,
+.nav__cta:active{
+  filter: brightness(.98);
+}
+
+/* Ghost buttons iets rustiger */
+.btn--ghost{
+  background: rgba(255,255,255,.70);
+  border-color: rgba(16,19,26,.12);
+}
+
+/* Categorie cards (foto) extra premium rand + shadow */
+.catCard{
+  box-shadow: 0 16px 34px rgba(16,19,26,.10);
+}
+.catCard__image img{
+  transform: scale(1.01);
+}
+.catCard--active{
+  outline: 2px solid rgba(216,181,91,.30);
+  box-shadow: 0 22px 46px rgba(185,146,46,.18);
+}
+
+/* Packages net strakker */
+.pkg{
+  border-color: rgba(16,19,26,.12);
+  box-shadow: 0 14px 30px rgba(16,19,26,.08);
+}
+.pkg--best{
+  border-color: rgba(185,146,46,.30);
+  box-shadow: 0 18px 40px rgba(185,146,46,.14);
+}
+
+/* ---------- EXAMEN (examen.html) ---------- */
+
+/* Zwarte topbar nog luxer */
+body.examPage .topbar{
+  background:
+    radial-gradient(900px 260px at 75% 10%, rgba(216,181,91,.14), transparent 60%),
+    linear-gradient(180deg, rgba(11,13,18,.98), rgba(11,13,18,.92));
+  border-bottom: 1px solid rgba(216,181,91,.16);
+}
+
+/* VERVANG titel door logo (zonder HTML te veranderen) */
+body.examPage .examTop__title{
+  color: transparent;           /* tekst verbergen */
+  text-shadow: none;
+  user-select: none;
+  position: relative;
+  padding-left: 34px;
+}
+body.examPage .examTop__title::before{
+  content:"";
+  position:absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: url("assets/geefgas.PNG") center/contain no-repeat;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+}
+
+/* Timer pill: chiquer + beter contrast */
+body.examPage .pillTimer{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(11,13,18,.55);
+  box-shadow: 0 16px 34px rgba(0,0,0,.30), inset 0 0 0 1px rgba(216,181,91,.10);
+  color: rgba(255,255,255,.95);
+  font-weight: 950;
+  letter-spacing: .6px;
+  padding: 10px 14px;
+}
+
+/* Exam kaart: premium “papier” */
+body.examPage .examCard{
+  border: 1px solid rgba(216,181,91,.16);
+  box-shadow: 0 22px 52px rgba(16,19,26,.14);
+}
+
+/* Antwoorden: GEEN blauw, wel luxe */
+body.examPage .answer{
+  color: var(--text) !important;                 /* <-- voorkomt blauwe tekst */
+  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
+  border: 1px solid rgba(16,19,26,.12);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+}
+body.examPage .answer span{
+  color: var(--text) !important;                 /* extra zekerheid */
+}
+body.examPage .answerKey{
+  border-color: rgba(216,181,91,.22);
+  background: rgba(216,181,91,.10);
+  color: #2A2416 !important;
+}
+
+/* Selected / correct / wrong subtieler en luxer */
+body.examPage .answer.selected{
+  border-color: rgba(216,181,91,.55);
+  background: rgba(216,181,91,.12);
+}
+body.examPage .answer.correct{
+  border-color: rgba(46,204,113,.45);
+  background: rgba(46,204,113,.08);
+}
+body.examPage .answer.wrong{
+  border-color: rgba(255,90,90,.45);
+  background: rgba(255,90,90,.08);
+}
+
+/* Footer knoppen: beter in balans */
+body.examPage .examFooter{
+  border-top-color: rgba(16,19,26,.10);
+}
+
+/* Optioneel: als je “Je moet 32 van de 40…” in een blok zet met class="passNote" */
+.passNote{
+  margin-top: 14px;
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(185,146,46,.22);
+  background: linear-gradient(180deg, rgba(216,181,91,.14), rgba(216,181,91,.08));
+  color: #2A2416;
+  font-weight: 900;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(185,146,46,.12);
+}
