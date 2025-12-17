@@ -12,13 +12,36 @@
 <body class="theme examPage">
 
 <header class="topbar">
-  <div class="container topbar__inner">
-    <a class="brand" href="examens.html" aria-label="Terug naar examens">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
+  <div class="container topbar__inner" style="gap:12px;">
+    <!-- TERUG (met confirm) -->
+    <a class="brand" id="backToExams" href="examens.html" aria-label="Terug naar examens">
+      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas" style="height:32px;">
       <span class="brand__name">GeefGas</span>
     </a>
 
-    <button class="pillTimer" id="timerPill" type="button" aria-label="Fullscreen / timer">--:--</button>
+    <!-- TITEL MIDDEN (luxer, ellipsis) -->
+    <div id="topTitle" style="
+      flex:1;
+      text-align:center;
+      color: rgba(255,255,255,.92);
+      font-weight: 950;
+      letter-spacing: -.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 8px;
+      ">
+      Examen
+    </div>
+
+    <!-- TIMER (groter + fullscreen) -->
+    <button class="pillTimer" id="timerPill" type="button" aria-label="Timer / Fullscreen"
+      style="
+        padding: 10px 14px;
+        font-size: 15px;
+        min-width: 86px;
+      "
+    >--:--</button>
   </div>
 </header>
 
@@ -50,7 +73,7 @@
           <div class="explainText" id="explainText"></div>
         </div>
 
-        <!-- DOEL BLOK -->
+        <!-- DOEL BLOK (luxe, kort) -->
         <div class="note" id="goalBox"></div>
 
         <div class="examFooter">
@@ -70,51 +93,85 @@
   const $ = (id) => document.getElementById(id);
 
   // -----------------------
-  // APP MODE: fullscreen + scroll-lock (zonder CSS)
+  // APP MODE: fullscreen + scroll lock
   // -----------------------
   let appModeStarted = false;
 
   function requestFull(){
-    // fullscreen werkt alleen op user gesture
     const el = document.documentElement;
     const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-    if (req) {
-      try { req.call(el); } catch(e) {}
-    }
-  }
-
-  function lockScroll(){
-    // voorkomt iOS "bounce" en page scroll
-    document.addEventListener("touchmove", preventTouchMove, { passive:false });
-    document.addEventListener("wheel", preventWheel, { passive:false });
-
-    // houd scroll bovenaan
-    window.scrollTo(0, 0);
+    if (req) { try { req.call(el); } catch(e) {} }
   }
 
   function preventTouchMove(e){
-    // laat alleen scroll toe binnen examBody (als het ooit nodig is)
     const body = $("examBody");
     if (!body) return e.preventDefault();
     if (!body.contains(e.target)) e.preventDefault();
   }
-
   function preventWheel(e){
     const body = $("examBody");
     if (!body) return e.preventDefault();
     if (!body.contains(e.target)) e.preventDefault();
   }
 
+  function lockScroll(){
+    document.addEventListener("touchmove", preventTouchMove, { passive:false });
+    document.addEventListener("wheel", preventWheel, { passive:false });
+    window.scrollTo(0, 0);
+  }
+
   function startAppMode(){
     if (appModeStarted) return;
     appModeStarted = true;
+
+    // onthouden dat jij app-mode wil
+    localStorage.setItem("gg_appMode", "1");
+
     requestFull();
     lockScroll();
   }
 
-  // timer klik = fullscreen toggle (extra)
-  $("timerPill").addEventListener("click", () => {
-    startAppMode();
+  // fullscreen onthouden: bij volgende keer opnieuw proberen (op eerste tik)
+  const shouldAutoFull = (localStorage.getItem("gg_appMode") || "0") === "1";
+  if (shouldAutoFull){
+    const once = () => { startAppMode(); document.removeEventListener("pointerdown", once, true); };
+    document.addEventListener("pointerdown", once, true);
+  }
+
+  $("timerPill").addEventListener("click", () => startAppMode());
+
+  // -----------------------
+  // Confirm teruggaan (logo + back button)
+  // -----------------------
+  function confirmExit(){
+    return confirm("Weet je zeker dat je het examen wilt verlaten? Je voortgang gaat verloren.");
+  }
+
+  // klik op logo/terug
+  $("backToExams").addEventListener("click", (e) => {
+    if (!confirmExit()) e.preventDefault();
+  });
+
+  // telefoon “terug”: pushState + popstate confirm
+  try {
+    history.pushState({ ggExam: true }, "", location.href);
+    window.addEventListener("popstate", (e) => {
+      // user pressed back
+      if (confirmExit()){
+        location.href = "examens.html";
+      } else {
+        history.pushState({ ggExam: true }, "", location.href);
+      }
+    });
+  } catch(_) {}
+
+  // extra veiligheid: refresh/tab sluiten
+  window.addEventListener("beforeunload", (e) => {
+    // Alleen waarschuwen als er al iets is beantwoord (dus niet irritant bij direct weg)
+    if (answeredCount > 0){
+      e.preventDefault();
+      e.returnValue = "";
+    }
   });
 
   // -----------------------
@@ -157,8 +214,12 @@
   const maxFout = total - pass;
 
   $("chipCategory").textContent = exam.category || "Examen";
+  $("topTitle").textContent = exam.title ? String(exam.title) : "Examen";
+
+  // luxe, kort doel-blok
   $("goalBox").innerHTML =
-    `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.`;
+    `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.` +
+    ` <span style="opacity:.9;">(max ${maxFout} fouten)</span>`;
 
   // -----------------------
   // state
@@ -166,6 +227,7 @@
   let idx = 0;
   let chosen = new Array(total).fill(null);
   let locked = false;
+  let answeredCount = 0;
 
   // timer
   let time = Number(exam.durationMinutes || 30) * 60;
@@ -234,11 +296,12 @@
   }
 
   function chooseAnswer(i){
-    // ✅ start app-mode bij eerste echte interactie
+    // ✅ app-mode starten bij eerste echte interactie
     startAppMode();
 
     if(locked) return;
 
+    if (chosen[idx] === null) answeredCount++;
     chosen[idx] = i;
 
     document.querySelectorAll(".answer").forEach((b,n)=>{
