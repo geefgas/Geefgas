@@ -17,9 +17,11 @@
     html, body { height: 100%; }
     body { overscroll-behavior: none; }
 
+    /* Topbar show/hide (optioneel) */
     .ggTopbarHide { transform: translateY(-110%); transition: transform .25s ease; }
     .ggTopbarShow { transform: translateY(0); transition: transform .25s ease; }
 
+    /* Start overlay */
     #ggFsHint{
       position: fixed;
       inset: 0;
@@ -33,34 +35,28 @@
       padding: 24px;
     }
 
-    .ggHud{
-      position: fixed;
-      right: 14px;
-      top: calc(env(safe-area-inset-top) + 14px);
-      z-index: 9998;
+    /* Timer blok IN de topbar */
+    .ggTopTimer{
+      margin-left: auto;
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid rgba(216,181,91,.22);
-      background: rgba(11,13,18,.86);
+      background: rgba(11,13,18,.72);
       backdrop-filter: blur(10px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+      -webkit-backdrop-filter: blur(10px);
       user-select: none;
-      -webkit-tap-highlight-color: transparent;
+      font-variant-numeric: tabular-nums;
     }
-    .ggHud:active{ transform: translateY(1px); }
-
-    .ggHud__time{
+    .ggTopTimer__time{
       color: rgba(255,255,255,.92);
       font-weight: 950;
-      font-variant-numeric: tabular-nums;
       letter-spacing: .3px;
       min-width: 54px;
       text-align: right;
     }
-
     .ggRings{
       width: 44px; height: 44px;
       display: grid; place-items: center;
@@ -68,12 +64,14 @@
     }
     .ggRings svg{ display:block; }
 
+    /* Alleen de inhoud scrolt, niet de pagina */
     .ggBodyScroll{
-      max-height: calc(100dvh - 140px);
+      max-height: calc(100dvh - 130px);
       overflow: auto;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
+
     .ggFadeBottom{ position: relative; }
     .ggFadeBottom::after{
       content:"";
@@ -95,7 +93,7 @@
       Start examen
     </div>
     <div style="opacity:.90; font-weight:850; line-height:1.55;" id="ggHintText">
-      Tik ergens op het scherm om fullscreen te starten
+      Tik op Start om fullscreen te starten
     </div>
 
     <div style="margin-top:14px; opacity:.72; font-weight:800; font-size:13px;" id="ggHintSub">
@@ -111,39 +109,47 @@
 </div>
 
 <header class="topbar ggTopbarShow" id="ggTopbar">
-  <div class="container topbar__inner" style="justify-content:flex-start; gap:12px;">
+  <div class="container topbar__inner" style="display:flex; align-items:center; gap:12px;">
+
+    <!-- Alleen logo links -->
     <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
       <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
       <span class="brand__name" style="display:none;">GeefGas</span>
     </a>
+
+    <!-- Timer + rings rechts IN de topbar -->
+    <button class="ggTopTimer" id="ggTopTimerBtn" type="button" aria-label="Timer en voortgang">
+      <span class="ggRings" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
+          <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
+          <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
+            stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
+            transform="rotate(-90 22 22)"/>
+          <circle id="ggQRing" cx="22" cy="22" r="13" fill="none"
+            stroke="rgba(216,181,91,.92)" stroke-width="4" stroke-linecap="round"
+            transform="rotate(-90 22 22)"/>
+        </svg>
+      </span>
+      <span class="ggTopTimer__time" id="timerPill">--:--</span>
+    </button>
+
   </div>
 </header>
-
-<button class="ggHud" id="ggHudBtn" type="button" aria-label="Timer en voortgang">
-  <span class="ggRings" aria-hidden="true">
-    <svg width="44" height="44" viewBox="0 0 44 44">
-      <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
-      <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
-      <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
-        stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
-        transform="rotate(-90 22 22)"/>
-      <circle id="ggQRing" cx="22" cy="22" r="13" fill="none"
-        stroke="rgba(216,181,91,.92)" stroke-width="4" stroke-linecap="round"
-        transform="rotate(-90 22 22)"/>
-    </svg>
-  </span>
-  <span class="ggHud__time" id="timerPill">--:--</span>
-</button>
 
 <main class="page" style="padding-top: 12px;">
   <div class="container page__inner">
 
     <section class="examCard">
+
+      <!-- AFBEELDING -->
       <div class="examMedia" id="mediaWrap" style="display:none;">
         <img id="questionImage" alt="Vraag afbeelding">
       </div>
 
+      <!-- CONTENT -->
       <div class="examBody ggBodyScroll ggFadeBottom" id="examBody">
+
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
           <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
@@ -153,11 +159,13 @@
 
         <div class="answers" id="answers"></div>
 
+        <!-- UITLEG -->
         <div class="explain" id="explainBox" style="display:none;">
           <div class="explainTitle" id="explainTitle"></div>
           <div class="explainText" id="explainText"></div>
         </div>
 
+        <!-- DOEL BLOK -->
         <div class="note" id="goalBox" style="margin-top:14px;"></div>
 
         <div class="examFooter">
@@ -174,20 +182,19 @@
 
 <script>
 (function(){
-  const IMAGE_BASE = "assets/";
   const $ = id => document.getElementById(id);
 
-  /* ========== Detect ========== */
+  /* ================= Detect ================= */
   const ua = navigator.userAgent || "";
   const isIOS = /iPhone|iPad|iPod/i.test(ua);
   const isStandalone = window.matchMedia?.("(display-mode: standalone)")?.matches
     || window.navigator.standalone === true;
 
-  /* ========== Fullscreen behavior ========== */
+  /* ================= Fullscreen behavior ================= */
   let appStarted = false;
 
   function requestFullscreenIfPossible(){
-    // iOS Safari: echte fullscreen API werkt niet zoals je wil -> skip
+    // iOS Safari: fullscreen API werkt niet “zoals een app”
     if (isIOS) return;
 
     const el = document.documentElement;
@@ -200,7 +207,7 @@
     document.documentElement.style.overflow = "hidden";
     window.scrollTo(0,0);
 
-    // kleine trick om bovenbalk soms te minimaliseren (niet gegarandeerd)
+    // kleine trick om browserbalk soms te minimaliseren (niet gegarandeerd)
     setTimeout(() => window.scrollTo(0, 1), 50);
     setTimeout(() => window.scrollTo(0, 0), 120);
   }
@@ -214,7 +221,7 @@
     hideTopbarSoon();
   }
 
-  // Hint tekst aanpassen op iOS
+  // Hint tekst aanpassen op iOS (belangrijk: Safari kan browserbalk niet forceren verbergen)
   (function(){
     const hint = $("ggHintText");
     const sub = $("ggHintSub");
@@ -233,7 +240,7 @@
 
   $("ggHintBtn").addEventListener("click", startAppMode);
 
-  // Anti overscroll bounce
+  // Anti overscroll bounce (alleen als body locked is)
   document.addEventListener("touchmove", (e)=>{
     if (document.body.style.overflow === "hidden") {
       const scroller = $("examBody");
@@ -242,23 +249,23 @@
     }
   }, { passive:false });
 
-  /* ========== Topbar auto-hide ========== */
+  /* ================= Topbar auto-hide ================= */
   let topbarTimer = null;
   function hideTopbarSoon(){
     clearTimeout(topbarTimer);
     topbarTimer = setTimeout(()=>{
       $("ggTopbar").classList.remove("ggTopbarShow");
       $("ggTopbar").classList.add("ggTopbarHide");
-    }, 1200);
+    }, 1300);
   }
   function showTopbarTemp(){
     $("ggTopbar").classList.remove("ggTopbarHide");
     $("ggTopbar").classList.add("ggTopbarShow");
     hideTopbarSoon();
   }
-  $("ggHudBtn").addEventListener("click", showTopbarTemp);
+  $("ggTopTimerBtn").addEventListener("click", showTopbarTemp);
 
-  /* ========== Exit confirm + back protect ========== */
+  /* ================= Exit confirm + back protect ================= */
   $("ggExit").addEventListener("click", (e)=>{
     if(!confirm("Weet je zeker dat je het examen wilt verlaten?")){
       e.preventDefault();
@@ -274,7 +281,7 @@
     }
   };
 
-  /* ========== Helpers ========== */
+  /* ================= Helpers ================= */
   function fmt(sec){
     sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
@@ -294,7 +301,7 @@
     try{ if (navigator.vibrate) navigator.vibrate(ms); }catch(e){}
   }
 
-  /* ========== Load exam ========== */
+  /* ================= Load exam ================= */
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => String(e.id) === String(examId));
@@ -315,12 +322,12 @@
     `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.` +
     ` <span style="opacity:.9;">(Max ${maxFout} fouten)</span>`;
 
-  /* ========== State ========== */
+  /* ================= State ================= */
   let idx = 0;
   let chosen = new Array(total).fill(null);
   let locked = false;
 
-  /* ========== Timer + Rings ========== */
+  /* ================= Timer + Rings ================= */
   const totalTime = Number(exam.durationMinutes || 30) * 60;
   let time = totalTime;
 
@@ -331,10 +338,9 @@
     $("timerPill").textContent = fmt(time);
     const timePct = totalTime ? (time / totalTime) : 0;
     setRing(timeRing, timePct);
-    const qPct = total ? ((idx) / total) : 0;
+    const qPct = total ? (idx / total) : 0;
     setRing(qRing, qPct);
   }
-
   updateHud();
 
   const timerInt = setInterval(()=>{
@@ -344,14 +350,33 @@
     if(time <= 0) finish(true);
   }, 1000);
 
-  /* ========== Image naming ========== */
-  function imagePath(){
+  /* ================= Image naming (ROOT first, fallback assets/) ================= */
+  function buildImageCandidates(){
     const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
     const qNr = String(idx + 1).padStart(2,"0");
-    return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
+    const filename = `taxi_e${examNr}_q${qNr}.PNG`;
+
+    // Jij zei: je gooit assets los (root) erin -> dus eerst root proberen
+    return [
+      filename,
+      `assets/${filename}`
+    ];
   }
 
-  /* ========== Render ========== */
+  function loadFirstWorkingImage(imgEl, wrapEl, candidates){
+    let i = 0;
+    function tryNext(){
+      if(i >= candidates.length){
+        wrapEl.style.display = "none";
+        return;
+      }
+      imgEl.onerror = () => { i++; tryNext(); };
+      imgEl.src = candidates[i];
+    }
+    tryNext();
+  }
+
+  /* ================= Render ================= */
   function render(){
     const q = questions[idx];
     locked = false;
@@ -362,9 +387,8 @@
     // image
     const img = $("questionImage");
     const wrap = $("mediaWrap");
-    img.onerror = () => { wrap.style.display = "none"; };
-    img.src = imagePath();
     wrap.style.display = "block";
+    loadFirstWorkingImage(img, wrap, buildImageCandidates());
 
     // answers
     const a = $("answers");
