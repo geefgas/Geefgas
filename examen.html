@@ -5,26 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GeefGas – Examen</title>
 
+  <!-- iOS "web app" hints (werkt alleen als je via beginscherm opent) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0B0D12">
+
   <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 
-  <!-- Kleine inline polish (geen styles.css nodig) -->
   <style>
-    /* App-feel: geen body scroll + stabiele layout */
     html, body { height: 100%; }
     body { overscroll-behavior: none; }
 
-    /* Topbar auto-hide animatie */
-    .ggTopbarHide {
-      transform: translateY(-110%);
-      transition: transform .25s ease;
-    }
-    .ggTopbarShow {
-      transform: translateY(0);
-      transition: transform .25s ease;
-    }
+    .ggTopbarHide { transform: translateY(-110%); transition: transform .25s ease; }
+    .ggTopbarShow { transform: translateY(0); transition: transform .25s ease; }
 
-    /* Fullscreen overlay */
     #ggFsHint{
       position: fixed;
       inset: 0;
@@ -38,7 +33,6 @@
       padding: 24px;
     }
 
-    /* Zwevende HUD */
     .ggHud{
       position: fixed;
       right: 14px;
@@ -74,17 +68,13 @@
     }
     .ggRings svg{ display:block; }
 
-    /* Content scroll alleen binnen examBody als nodig */
     .ggBodyScroll{
       max-height: calc(100dvh - 140px);
       overflow: auto;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
-    /* kleine “fade” onderaan voor luxe */
-    .ggFadeBottom{
-      position: relative;
-    }
+    .ggFadeBottom{ position: relative; }
     .ggFadeBottom::after{
       content:"";
       position:absolute;
@@ -98,22 +88,28 @@
 
 <body class="theme examPage">
 
-<!-- Fullscreen hint (1x) -->
+<!-- Start overlay -->
 <div id="ggFsHint">
   <div>
     <div style="font-size:22px; font-weight:950; margin-bottom:10px;">
       Start examen
     </div>
-    <div style="opacity:.88; font-weight:800; line-height:1.55;">
-      Tik ergens op het scherm<br>om fullscreen te starten
+    <div style="opacity:.90; font-weight:850; line-height:1.55;" id="ggHintText">
+      Tik ergens op het scherm om fullscreen te starten
     </div>
-    <div style="margin-top:14px; opacity:.7; font-weight:800; font-size:13px;">
-      Tip: Houd je telefoon horizontaal als je foto’s wil zien.
+
+    <div style="margin-top:14px; opacity:.72; font-weight:800; font-size:13px;" id="ggHintSub">
+      Tip: Voeg toe aan beginscherm voor echte app-modus (zonder browserbalk).
     </div>
+
+    <button type="button" id="ggHintBtn"
+      style="margin-top:18px; padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08); color:#fff; font-weight:900;">
+      Start
+    </button>
   </div>
 </div>
 
-<!-- Minimal topbar (auto-hide) -->
 <header class="topbar ggTopbarShow" id="ggTopbar">
   <div class="container topbar__inner" style="justify-content:flex-start; gap:12px;">
     <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
@@ -123,16 +119,11 @@
   </div>
 </header>
 
-<!-- Floating HUD (timer + rings) -->
 <button class="ggHud" id="ggHudBtn" type="button" aria-label="Timer en voortgang">
   <span class="ggRings" aria-hidden="true">
-    <!-- Ring 1: tijd (buiten) | Ring 2: vragen (binnen) -->
     <svg width="44" height="44" viewBox="0 0 44 44">
-      <!-- tracks -->
       <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
       <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
-
-      <!-- progress -->
       <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
         stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
         transform="rotate(-90 22 22)"/>
@@ -148,12 +139,10 @@
   <div class="container page__inner">
 
     <section class="examCard">
-      <!-- AFBEELDING -->
       <div class="examMedia" id="mediaWrap" style="display:none;">
         <img id="questionImage" alt="Vraag afbeelding">
       </div>
 
-      <!-- CONTENT -->
       <div class="examBody ggBodyScroll ggFadeBottom" id="examBody">
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
@@ -164,13 +153,11 @@
 
         <div class="answers" id="answers"></div>
 
-        <!-- UITLEG -->
         <div class="explain" id="explainBox" style="display:none;">
           <div class="explainTitle" id="explainTitle"></div>
           <div class="explainText" id="explainText"></div>
         </div>
 
-        <!-- DOEL (luxe note) -->
         <div class="note" id="goalBox" style="margin-top:14px;"></div>
 
         <div class="examFooter">
@@ -190,10 +177,19 @@
   const IMAGE_BASE = "assets/";
   const $ = id => document.getElementById(id);
 
-  /* =================== Fullscreen + App-feel =================== */
+  /* ========== Detect ========== */
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isStandalone = window.matchMedia?.("(display-mode: standalone)")?.matches
+    || window.navigator.standalone === true;
+
+  /* ========== Fullscreen behavior ========== */
   let appStarted = false;
 
-  function requestFullscreen(){
+  function requestFullscreenIfPossible(){
+    // iOS Safari: echte fullscreen API werkt niet zoals je wil -> skip
+    if (isIOS) return;
+
     const el = document.documentElement;
     const fn = el.requestFullscreen || el.webkitRequestFullscreen;
     if (fn) { try { fn.call(el); } catch(e){} }
@@ -203,32 +199,50 @@
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
     window.scrollTo(0,0);
+
+    // kleine trick om bovenbalk soms te minimaliseren (niet gegarandeerd)
+    setTimeout(() => window.scrollTo(0, 1), 50);
+    setTimeout(() => window.scrollTo(0, 0), 120);
   }
 
   function startAppMode(){
     if(appStarted) return;
     appStarted = true;
     $("ggFsHint").style.display = "none";
-    requestFullscreen();
+    requestFullscreenIfPossible();
     lockBodyScroll();
     hideTopbarSoon();
   }
 
-  // 1e tik start fullscreen (browserregel)
-  document.addEventListener("pointerdown", startAppMode, { once:true });
+  // Hint tekst aanpassen op iOS
+  (function(){
+    const hint = $("ggHintText");
+    const sub = $("ggHintSub");
 
-  // Anti overscroll bounce (iOS/Android)
+    if (isIOS && !isStandalone){
+      hint.textContent = "Tik op Start om te beginnen (Safari toont altijd de browserbalk)";
+      sub.textContent = "Voor echte app-modus: Deel ▸ ‘Zet op beginscherm’ en open vanaf je icoon.";
+    } else if (isIOS && isStandalone){
+      hint.textContent = "Tik op Start om te beginnen (app-modus)";
+      sub.textContent = "Tip: Houd je telefoon horizontaal voor foto’s.";
+    } else {
+      hint.textContent = "Tik op Start om fullscreen te starten";
+      sub.textContent = "Tip: Houd je telefoon horizontaal als je foto’s wil zien.";
+    }
+  })();
+
+  $("ggHintBtn").addEventListener("click", startAppMode);
+
+  // Anti overscroll bounce
   document.addEventListener("touchmove", (e)=>{
-    // body locked, dus voorkomen dat pagina scrollt
     if (document.body.style.overflow === "hidden") {
-      // laat alleen scroll in examBody toe
       const scroller = $("examBody");
       if (scroller && scroller.contains(e.target)) return;
       e.preventDefault();
     }
   }, { passive:false });
 
-  /* =================== Topbar auto-hide =================== */
+  /* ========== Topbar auto-hide ========== */
   let topbarTimer = null;
   function hideTopbarSoon(){
     clearTimeout(topbarTimer);
@@ -244,7 +258,7 @@
   }
   $("ggHudBtn").addEventListener("click", showTopbarTemp);
 
-  /* =================== Exit confirm + back protect =================== */
+  /* ========== Exit confirm + back protect ========== */
   $("ggExit").addEventListener("click", (e)=>{
     if(!confirm("Weet je zeker dat je het examen wilt verlaten?")){
       e.preventDefault();
@@ -260,7 +274,7 @@
     }
   };
 
-  /* =================== Helpers =================== */
+  /* ========== Helpers ========== */
   function fmt(sec){
     sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
@@ -269,7 +283,6 @@
   }
 
   function setRing(circleEl, pct){
-    // pct: 0..1
     pct = Math.max(0, Math.min(1, pct));
     const r = circleEl.r.baseVal.value;
     const c = 2 * Math.PI * r;
@@ -278,12 +291,10 @@
   }
 
   function haptic(ms){
-    try{
-      if (navigator.vibrate) navigator.vibrate(ms);
-    }catch(e){}
+    try{ if (navigator.vibrate) navigator.vibrate(ms); }catch(e){}
   }
 
-  /* =================== Load exam =================== */
+  /* ========== Load exam ========== */
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => String(e.id) === String(examId));
@@ -304,12 +315,12 @@
     `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.` +
     ` <span style="opacity:.9;">(Max ${maxFout} fouten)</span>`;
 
-  /* =================== State =================== */
+  /* ========== State ========== */
   let idx = 0;
   let chosen = new Array(total).fill(null);
   let locked = false;
 
-  /* =================== Timer + Rings =================== */
+  /* ========== Timer + Rings ========== */
   const totalTime = Number(exam.durationMinutes || 30) * 60;
   let time = totalTime;
 
@@ -318,12 +329,8 @@
 
   function updateHud(){
     $("timerPill").textContent = fmt(time);
-
-    // buitenring = tijd
     const timePct = totalTime ? (time / totalTime) : 0;
     setRing(timeRing, timePct);
-
-    // binnenring = vragen voortgang (idx is 0-based)
     const qPct = total ? ((idx) / total) : 0;
     setRing(qRing, qPct);
   }
@@ -337,15 +344,14 @@
     if(time <= 0) finish(true);
   }, 1000);
 
-  /* =================== Image naming =================== */
+  /* ========== Image naming ========== */
   function imagePath(){
-    // taxi_e<examNr>_q<qNr>.PNG
     const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
     const qNr = String(idx + 1).padStart(2,"0");
     return `${IMAGE_BASE}taxi_e${examNr}_q${qNr}.PNG`;
   }
 
-  /* =================== Render =================== */
+  /* ========== Render ========== */
   function render(){
     const q = questions[idx];
     locked = false;
@@ -356,7 +362,6 @@
     // image
     const img = $("questionImage");
     const wrap = $("mediaWrap");
-
     img.onerror = () => { wrap.style.display = "none"; };
     img.src = imagePath();
     wrap.style.display = "block";
@@ -378,13 +383,9 @@
 
     $("prevBtn").disabled = (idx === 0);
     $("nextBtn").textContent = (idx === total-1) ? "Afronden" : "Volgende";
-
     $("explainBox").style.display = "none";
 
-    // rings update (vraagprogress)
     updateHud();
-
-    // topbar weg
     hideTopbarSoon();
   }
 
@@ -394,7 +395,6 @@
 
     const c = (typeof questions[idx].correctIndex === "number") ? questions[idx].correctIndex : null;
 
-    // UI reset
     document.querySelectorAll(".answer").forEach((b,n)=>{
       b.classList.toggle("selected", n === i);
       b.classList.remove("correct","wrong");
@@ -407,13 +407,12 @@
       if(nodes[c]) nodes[c].classList.add("correct");
       if(i !== c && nodes[i]) {
         nodes[i].classList.add("wrong");
-        haptic(60); // subtiele trilling bij fout
+        haptic(60);
       } else {
-        haptic(18); // mini tick bij goed
+        haptic(18);
       }
     }
 
-    // uitleg
     if(questions[idx].explanation){
       $("explainBox").style.display = "block";
       $("explainTitle").textContent = (c !== null && i === c) ? "Goed" : "Niet goed";
@@ -433,7 +432,6 @@
     render();
   });
 
-  /* =================== Finish =================== */
   function finish(timeUp){
     clearInterval(timerInt);
 
