@@ -1120,3 +1120,113 @@ body.examPage #normLabel{
 body.examPage .examBody .muted[style*="Mode:"]{
   display:none !important;
 }
+
+/* =========================================
+   EXAM PAGE — PREMIUM LUXE (FINAL)
+   Plak onderaan styles.css
+   ========================================= */
+
+body.examPage .page{
+  padding-top: 14px;
+}
+
+/* progress bar onder topbar */
+body.examPage .examProgress{
+  height: 6px;
+  background: rgba(255,255,255,.08);
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+body.examPage .examProgress__bar{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold2), var(--gold));
+  box-shadow: 0 6px 18px rgba(185,146,46,.35);
+  border-radius: 0 999px 999px 0;
+}
+
+/* exam card meer premium */
+body.examPage .examCard{
+  border: 1px solid rgba(185,146,46,.18);
+  box-shadow: 0 22px 50px rgba(16,19,26,.12);
+  overflow: hidden;
+}
+
+/* image: altijd luxe, geen rare randen */
+body.examPage .examMedia{
+  background:
+    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+    rgba(16,19,26,.02);
+}
+body.examPage .examMedia img{
+  object-fit: contain;
+  background: transparent;
+}
+
+/* meta rechts (Vraag x van y) */
+body.examPage .examMeta__right{
+  color: rgba(90,98,114,.9);
+  font-weight: 900;
+}
+
+/* vraag */
+body.examPage #questionText{
+  margin-top: 6px;
+  font-weight: 950;
+  letter-spacing: -.2px;
+  color: var(--text);
+}
+
+/* antwoorden: GEEN blauw, premium */
+body.examPage .answer,
+body.examPage .answer .answerText{
+  color: var(--text) !important;
+  font-weight: 950;
+}
+body.examPage .answer{
+  background: linear-gradient(180deg, #ffffff, #fbfbfc);
+  border: 1px solid rgba(16,19,26,.10);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+@media (hover:hover){
+  body.examPage .answer:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(16,19,26,.10);
+    border-color: rgba(185,146,46,.22);
+  }
+}
+
+/* letter badge luxe goud */
+body.examPage .answerKey{
+  border: 1px solid rgba(185,146,46,.22);
+  background: rgba(216,181,91,.10);
+  color: #2A2416;
+  font-weight: 950;
+}
+
+/* selectie/feedback subtiel */
+body.examPage .answer.selected{
+  border-color: rgba(216,181,91,.55);
+  background: rgba(216,181,91,.10);
+}
+body.examPage .answer.correct{
+  border-color: rgba(6,118,71,.35);
+  background: rgba(6,118,71,.08);
+}
+body.examPage .answer.wrong{
+  border-color: rgba(180,35,24,.35);
+  background: rgba(180,35,24,.08);
+}
+
+/* footer buttons: premium */
+body.examPage .btn--ghost{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(16,19,26,.12);
+  box-shadow: 0 10px 20px rgba(16,19,26,.06);
+}
+body.examPage .btn--gold{
+  background: linear-gradient(180deg, #e0bf66, #c9a63a);
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 10px 22px rgba(185,146,46,.30),
+              inset 0 -2px 0 rgba(0,0,0,.14);
+}
