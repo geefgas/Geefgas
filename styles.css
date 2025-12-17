@@ -2304,3 +2304,37 @@ body.examPage .ggNormNote{
   font-weight: 900;
   color: #1a1a1a;
 }
+
+/* ===== EXAM: geen scroll / vast scherm ===== */
+body.examPage{
+  height: 100vh;
+  overflow: hidden;        /* voorkomt scroll */
+}
+
+body.examPage .page{
+  height: calc(100vh - 64px); /* 64px = approx hoogte topbar */
+  overflow: hidden;
+}
+
+body.examPage .page__inner{
+  height: 100%;
+}
+
+/* Zorg dat de examCard binnen het scherm blijft */
+body.examPage .examCard{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Alleen de BODY (met antwoorden) mag scrollen als het echt niet past */
+body.examPage .examBody{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Foto blok blijft vast */
+body.examPage .examMedia{
+  flex: 0 0 auto;
+}
