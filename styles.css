@@ -2271,3 +2271,24 @@ body.examPage .answer.wrong{
 .note--compact{
   display: none !important;
 }
+
+/* Luxe trust-blok onder pakketten */
+.note{
+  background: linear-gradient(135deg, #fbf6e9, #f3ead2);
+  border: 1px solid #e6d7ab;
+  color: transparent; /* originele tekst verbergen */
+  position: relative;
+  padding: 28px 22px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+/* Premium boodschap */
+.note::after{
+  content: "Gemaakt voor kandidaten die in één keer willen slagen.";
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: .25px;
+  display: block;
+}
