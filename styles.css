@@ -2265,3 +2265,9 @@ body.examPage .answer.wrong{
 .footer--clean .footer__muted{
   font-weight: 800;
 }
+
+/* Verberg disclaimer onder pakketten (CBR-tekst) */
+.note,
+.note--compact{
+  display: none !important;
+}
