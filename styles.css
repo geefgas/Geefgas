@@ -2338,3 +2338,28 @@ body.examPage .examBody{
 body.examPage .examMedia{
   flex: 0 0 auto;
 }
+
+/* ================================
+   EXAMEN = APP-MODE (GEEN SCROLL)
+   ================================ */
+
+body.examPage,
+body.examPage html {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* voorkom bounce / pull-down op mobiel */
+body.examPage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+/* alleen de inhoud mag scrollen ALS het nodig is */
+body.examPage .examBody {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 120px);
+}
