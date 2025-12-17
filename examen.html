@@ -8,7 +8,7 @@
   <script src="exam-data.js"></script>
 </head>
 
-<body class="theme">
+<body class="theme examPage">
 
 <header class="topbar">
   <div class="examTop">
@@ -42,10 +42,10 @@
         </div>
 
         <div class="examFooter">
-          <button class="btn btn--ghost" id="readBtn">🔊 Voorlezen</button>
-          <div style="display:flex; gap:10px;">
-            <button class="btn btn--ghost" id="prevBtn">Vorige</button>
-            <button class="btn btn--gold" id="nextBtn">Volgende</button>
+          <button class="btn btn--ghost" id="readBtn" type="button">🔊 Voorlezen</button>
+          <div class="examNavBtns">
+            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
           </div>
         </div>
 
@@ -150,6 +150,7 @@
     (q.options || []).forEach((txt, i) => {
       const btn = document.createElement("button");
       btn.className = "answer";
+      btn.type = "button";
       btn.innerHTML = `<span class="answerKey">${String.fromCharCode(65+i)}</span>${txt}`;
 
       if (attempt[index].chosen === i) btn.classList.add("selected");
