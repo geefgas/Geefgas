@@ -1,307 +1,227 @@
-<<!doctype html>
+<!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GeefGas – Examen</title>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
   <script src="exam-data.js"></script>
 </head>
 
 <body class="theme examPage">
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="examTop">
-      <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
-      <div class="pillTimer" id="timerPill">--:--</div>
+<!-- ================= TOPBAR ================= -->
+<header class="topbar">
+  <div class="examTop">
+    <div class="examTop__brand">
+      <img src="assets/geefgas.PNG" alt="GeefGas" height="28">
     </div>
+    <div class="pillTimer" id="timerPill">--:--</div>
+  </div>
+</header>
 
-    <!-- luxe progress bar -->
-    <div class="examProgress" aria-hidden="true">
-      <div class="examProgress__bar" id="progressBar"></div>
-    </div>
-  </header>
+<!-- ================= PAGE ================= -->
+<main class="page">
+  <div class="container page__inner">
 
-  <!-- PAGE -->
-  <main class="page">
-    <div class="container page__inner">
+    <section class="examCard">
 
-      <!-- EXAM CARD -->
-      <section class="examCard" id="examCard">
+      <!-- FOTO (alleen zichtbaar als er echt een afbeelding is) -->
+      <div class="examMedia" id="mediaWrap" style="display:none;">
+        <img id="questionImage" alt="Afbeelding bij vraag"
+             onerror="this.closest('.examMedia').style.display='none';">
+      </div>
 
-        <!-- MEDIA (alleen als er een afbeelding is) -->
-        <div class="examMedia" id="mediaWrap" style="display:none;">
-          <img
-            id="questionImage"
-            alt="Afbeelding bij vraag"
-            onerror="this.closest('.examMedia').style.display='none';"
-          />
+      <div class="examBody">
+
+        <!-- META -->
+        <div class="examMeta">
+          <div class="chip" id="chipTopic">Taxi</div>
+          <div class="muted" id="chipProgress">Vraag 1 van 40</div>
         </div>
 
-        <!-- BODY -->
-        <div class="examBody">
-          <div class="examMeta">
-            <div class="chip" id="chipTopic">Examen</div>
-            <div class="examMeta__right" id="chipProgress">Vraag 1 van 1</div>
-          </div>
+        <!-- VRAAG -->
+        <h2 id="questionText">—</h2>
 
-          <h2 id="questionText">—</h2>
+        <!-- ANTWOORDEN -->
+        <div class="answers" id="answers"></div>
 
-          <div class="answers" id="answers"></div>
-
-          <!-- UITLEG (alleen bij directe feedback) -->
-          <div class="explain" id="explainBox" style="display:none;">
-            <div class="explainTitle" id="explainTitle">Uitleg</div>
-            <div class="explainText" id="explainText"></div>
-          </div>
-
-          <div class="examFooter">
-            <button class="btn btn--ghost" id="speakBtn" type="button">🔊 Voorlezen</button>
-
-            <div class="examNavBtns">
-              <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-              <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
-            </div>
-          </div>
-
-          <!-- Mode/Norm bewust verwijderd (te druk/chaotisch) -->
-
+        <!-- UITLEG -->
+        <div class="explain" id="explainBox" style="display:none;">
+          <div class="explainTitle" id="explainTitle"></div>
+          <div class="explainText" id="explainText"></div>
         </div>
-      </section>
 
-    </div>
-  </main>
+        <!-- NAVIGATIE -->
+        <div class="examFooter">
+          <button class="btn btn--ghost" id="speakBtn" type="button">
+            🔊 Voorlezen
+          </button>
 
+          <div class="examNavBtns">
+            <button class="btn btn--ghost" id="prevBtn" type="button">
+              Vorige
+            </button>
+            <button class="btn btn--gold" id="nextBtn" type="button">
+              Volgende
+            </button>
+          </div>
+        </div>
+
+        <!-- INFO (subtiel & luxe) -->
+        <div class="examInfo">
+          Mode: <span id="modeLabel">—</span> •
+          Norm: <span id="normLabel">—</span>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ================= SCRIPT ================= -->
 <script>
 (function(){
-  const $ = (id) => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
-  function fmtTime(sec){
-    sec = Math.max(0, Math.floor(sec));
-    const m = String(Math.floor(sec / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
-    return `${m}:${s}`;
-  }
-  function safeStr(x){ return (x === null || x === undefined) ? "" : String(x); }
+  /* ===== INSTELLINGEN ===== */
+  const revealMode = localStorage.getItem("gg_revealMode") || "instant";
+  $("modeLabel").textContent =
+    revealMode === "after" ? "feedback na examen" : "directe feedback";
 
-  // settings
-  const revealMode = localStorage.getItem("gg_revealMode") || "instant"; // "instant" | "after"
-
-  // load exam
   const examId = localStorage.getItem("gg_examId");
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
-  const exam = exams.find(e => String(e.id) === String(examId)) || null;
+  const exams = window.EXAM_DATA?.exams || [];
+  const exam = exams.find(e => String(e.id) === String(examId));
 
-  if (!exam || !Array.isArray(exam.questions) || !exam.questions.length){
-    alert("Geen examen gevonden. Ga terug en kies opnieuw een examen.");
-    window.location.href = "examens.html";
+  if (!exam){
+    alert("Geen examen gevonden.");
+    location.href = "examens.html";
     return;
   }
 
-  const title = safeStr(exam.title || "Examen");
-  const category = safeStr(exam.category || "Taxi");
-  const durationMinutes = Number(exam.durationMinutes || 30);
-  const total = exam.questions.length;
-
-  document.title = `GeefGas – ${title}`;
-  $("examTitle").textContent = `GeefGas – ${title}`;
-  $("chipTopic").textContent = category;
-
-  const passMinCorrect = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
-
-  // state
-  const questions = exam.questions.map(q => ({
-    id: q.id,
-    prompt: safeStr(q.prompt),
-    options: Array.isArray(q.options) ? q.options.map(safeStr) : [],
-    correctIndex: (typeof q.correctIndex === "number") ? q.correctIndex : null,
-    explanation: safeStr(q.explanation || ""),
-    image: safeStr(q.image || q.imageUrl || q.img || "")
-  }));
-
-  let idx = 0;
-  const attempt = new Array(total).fill(null);
+  const questions = exam.questions;
+  const total = questions.length;
+  let index = 0;
+  let answers = new Array(total).fill(null);
   let locked = false;
 
-  // timer
-  let remaining = durationMinutes * 60;
-  $("timerPill").textContent = fmtTime(remaining);
+  $("chipTopic").textContent = exam.category;
+  $("normLabel").textContent =
+    `${exam.passMinCorrect}/${total} goed (max ${total - exam.passMinCorrect} fouten)`;
+
+  /* ===== TIMER ===== */
+  let time = exam.durationMinutes * 60;
+  updateTimer();
 
   const timer = setInterval(() => {
-    remaining -= 1;
-    $("timerPill").textContent = fmtTime(remaining);
-    if (remaining <= 0){
+    time--;
+    updateTimer();
+    if (time <= 0){
       clearInterval(timer);
       finishExam(true);
     }
   }, 1000);
 
-  function setProgress(){
-    const pct = ((idx + 1) / total) * 100;
-    $("progressBar").style.width = pct + "%";
+  function updateTimer(){
+    const m = String(Math.floor(time / 60)).padStart(2,"0");
+    const s = String(time % 60).padStart(2,"0");
+    $("timerPill").textContent = `${m}:${s}`;
   }
 
+  /* ===== RENDER ===== */
   function render(){
-    const q = questions[idx];
+    const q = questions[index];
     locked = false;
 
-    $("explainBox").style.display = "none";
-    $("explainBox").classList.remove("good","bad");
-
-    $("chipProgress").textContent = `Vraag ${idx + 1} van ${total}`;
+    $("chipProgress").textContent = `Vraag ${index + 1} van ${total}`;
     $("questionText").textContent = q.prompt;
-    setProgress();
 
-    // image
     if (q.image){
       $("mediaWrap").style.display = "";
       $("questionImage").src = q.image;
     } else {
       $("mediaWrap").style.display = "none";
-      $("questionImage").removeAttribute("src");
     }
 
-    $("prevBtn").disabled = (idx === 0);
-    $("nextBtn").textContent = (idx === total - 1) ? "Afronden" : "Volgende";
+    const list = $("answers");
+    list.innerHTML = "";
 
-    const answersEl = $("answers");
-    answersEl.innerHTML = "";
-
-    const letters = ["A","B","C","D","E","F"];
-    q.options.forEach((opt, i) => {
+    q.options.forEach((opt,i)=>{
       const btn = document.createElement("button");
-      btn.type = "button";
       btn.className = "answer";
       btn.innerHTML = `
-        <span class="answerKey">${letters[i] || (i+1)}</span>
-        <span class="answerText">${opt}</span>
+        <span class="answerKey">${String.fromCharCode(65+i)}</span>
+        <span>${opt}</span>
       `;
-
-      if (attempt[idx] === i) btn.classList.add("selected");
-      btn.addEventListener("click", () => onChoose(i));
-      answersEl.appendChild(btn);
+      if (answers[index] === i) btn.classList.add("selected");
+      btn.onclick = () => choose(i);
+      list.appendChild(btn);
     });
 
-    if (revealMode !== "after" && attempt[idx] !== null){
-      showInstantFeedback();
-    }
+    $("prevBtn").disabled = index === 0;
+    $("nextBtn").textContent = index === total - 1 ? "Afronden" : "Volgende";
   }
 
-  function onChoose(choiceIndex){
+  function choose(i){
     if (locked) return;
-    attempt[idx] = choiceIndex;
+    answers[index] = i;
 
-    [...$("answers").children].forEach((el, i) => {
-      el.classList.toggle("selected", i === choiceIndex);
+    [...$("answers").children].forEach((el,idx)=>{
+      el.classList.toggle("selected", idx === i);
       el.classList.remove("correct","wrong");
     });
 
     if (revealMode === "after") return;
-    showInstantFeedback();
-  }
-
-  function showInstantFeedback(){
-    const q = questions[idx];
-    const chosen = attempt[idx];
-    if (chosen === null) return;
 
     locked = true;
+    const correct = questions[index].correctIndex;
+    if (typeof correct !== "number") return;
 
-    const correctIndex = q.correctIndex;
-    const nodes = [...$("answers").children];
+    const nodes = $("answers").children;
+    nodes[correct].classList.add("correct");
+    if (i !== correct) nodes[i].classList.add("wrong");
 
-    if (typeof correctIndex === "number"){
-      nodes.forEach((el, i) => {
-        if (i === correctIndex) el.classList.add("correct");
-        if (i === chosen && chosen !== correctIndex) el.classList.add("wrong");
-      });
-
-      const ok = chosen === correctIndex;
-      $("explainBox").style.display = q.explanation ? "" : "none";
-      if (q.explanation){
-        $("explainBox").classList.toggle("good", ok);
-        $("explainBox").classList.toggle("bad", !ok);
-        $("explainTitle").textContent = ok ? "Goed!" : "Fout";
-        $("explainText").textContent = q.explanation;
-      }
+    if (questions[index].explanation){
+      $("explainBox").style.display = "";
+      $("explainTitle").textContent = i === correct ? "Goed" : "Fout";
+      $("explainText").textContent = questions[index].explanation;
+      $("explainBox").className =
+        "explain " + (i === correct ? "good" : "bad");
     }
   }
 
-  $("prevBtn").addEventListener("click", () => {
-    if (idx > 0){
-      idx -= 1;
-      render();
-    }
-  });
+  $("prevBtn").onclick = () => {
+    if (index > 0){ index--; render(); }
+  };
 
-  $("nextBtn").addEventListener("click", () => {
-    if (idx === total - 1){
-      finishExam(false);
-      return;
-    }
-    idx += 1;
-    render();
-  });
+  $("nextBtn").onclick = () => {
+    if (index === total - 1) finishExam(false);
+    else { index++; render(); }
+  };
 
-  function speakCurrent(){
-    const q = questions[idx];
-    const chosen = attempt[idx];
-    const lines = [];
-    lines.push(q.prompt);
-    q.options.forEach((opt, i) => lines.push(`${i+1}. ${opt}`));
-    if (revealMode !== "after" && chosen !== null && typeof q.correctIndex === "number"){
-      lines.push(chosen === q.correctIndex ? "Dit is correct." : "Dit is fout.");
-      if (q.explanation) lines.push(q.explanation);
-    }
-
-    const text = lines.join(". ");
-    if (!("speechSynthesis" in window)){
-      alert("Voorlezen wordt niet ondersteund op dit toestel/browser.");
-      return;
-    }
-    window.speechSynthesis.cancel();
+  $("speakBtn").onclick = () => {
+    const q = questions[index];
+    const text = q.prompt + ". " + q.options.join(". ");
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "nl-NL";
-    window.speechSynthesis.speak(u);
-  }
-
-  $("speakBtn").addEventListener("click", () => speakCurrent());
+    speechSynthesis.speak(u);
+  };
 
   function finishExam(timeUp){
     clearInterval(timer);
-
-    let correctCount = 0;
-    const packedAttempt = questions.map((q, i) => {
-      const chosen = (typeof attempt[i] === "number") ? attempt[i] : null;
-      const correctIndex = (typeof q.correctIndex === "number") ? q.correctIndex : null;
-      if (chosen !== null && correctIndex !== null && chosen === correctIndex) correctCount += 1;
-      return { id: q.id, chosen, correctIndex };
-    });
-
-    const result = {
+    localStorage.setItem("gg_result", JSON.stringify({
       examId: examId,
-      title: title,
-      category: category,
+      title: exam.title,
       total: total,
-      correctCount: correctCount,
-      passMinCorrect: passMinCorrect,
-      durationMinutes: durationMinutes,
-      timeUp: !!timeUp,
-      revealMode: revealMode,
-      attempt: packedAttempt,
-      finishedAt: new Date().toISOString()
-    };
-
-    localStorage.setItem("gg_result", JSON.stringify(result));
-    window.location.href = "resultaat.html";
+      answers: answers,
+      timeUp: timeUp
+    }));
+    location.href = "resultaat.html";
   }
 
-  // start
-  setProgress();
   render();
-
 })();
 </script>
 
