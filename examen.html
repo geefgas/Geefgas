@@ -1,4 +1,4 @@
-<!doctype html>
+<<!doctype html>
 <html lang="nl">
 <head>
   <meta charset="utf-8" />
@@ -17,6 +17,11 @@
       <div class="examTop__title" id="examTitle">GeefGas – Examen</div>
       <div class="pillTimer" id="timerPill">--:--</div>
     </div>
+
+    <!-- luxe progress bar -->
+    <div class="examProgress" aria-hidden="true">
+      <div class="examProgress__bar" id="progressBar"></div>
+    </div>
   </header>
 
   <!-- PAGE -->
@@ -26,12 +31,12 @@
       <!-- EXAM CARD -->
       <section class="examCard" id="examCard">
 
-        <!-- MEDIA (alleen tonen als er echt een afbeelding is) -->
+        <!-- MEDIA (alleen als er een afbeelding is) -->
         <div class="examMedia" id="mediaWrap" style="display:none;">
           <img
             id="questionImage"
             alt="Afbeelding bij vraag"
-            loading="lazy"
+            onerror="this.closest('.examMedia').style.display='none';"
           />
         </div>
 
@@ -39,7 +44,7 @@
         <div class="examBody">
           <div class="examMeta">
             <div class="chip" id="chipTopic">Examen</div>
-            <div class="muted" style="font-weight:900;" id="chipProgress">Vraag 1 van 1</div>
+            <div class="examMeta__right" id="chipProgress">Vraag 1 van 1</div>
           </div>
 
           <h2 id="questionText">—</h2>
@@ -61,9 +66,7 @@
             </div>
           </div>
 
-          <div class="muted" style="margin-top:10px; line-height:1.6; font-weight:850; text-align:center;">
-            Mode: <span id="modeLabel">—</span> • Norm: <span id="normLabel">—</span>
-          </div>
+          <!-- Mode/Norm bewust verwijderd (te druk/chaotisch) -->
 
         </div>
       </section>
@@ -73,7 +76,6 @@
 
 <script>
 (function(){
-  // ---------- helpers ----------
   const $ = (id) => document.getElementById(id);
 
   function fmtTime(sec){
@@ -82,14 +84,12 @@
     const s = String(sec % 60).padStart(2, "0");
     return `${m}:${s}`;
   }
-
   function safeStr(x){ return (x === null || x === undefined) ? "" : String(x); }
 
-  // ---------- settings ----------
+  // settings
   const revealMode = localStorage.getItem("gg_revealMode") || "instant"; // "instant" | "after"
-  $("modeLabel").textContent = (revealMode === "after") ? "antwoorden pas na examen" : "directe feedback";
 
-  // ---------- load exam ----------
+  // load exam
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => String(e.id) === String(examId)) || null;
@@ -109,12 +109,9 @@
   $("examTitle").textContent = `GeefGas – ${title}`;
   $("chipTopic").textContent = category;
 
-  // norm / slagen
   const passMinCorrect = Number(exam.passMinCorrect || Math.ceil(total * 0.8));
-  const maxMistakes = total - passMinCorrect;
-  $("normLabel").textContent = `${passMinCorrect}/${total} goed (max ${maxMistakes} fouten)`;
 
-  // ---------- state ----------
+  // state
   const questions = exam.questions.map(q => ({
     id: q.id,
     prompt: safeStr(q.prompt),
@@ -125,7 +122,7 @@
   }));
 
   let idx = 0;
-  const attempt = new Array(total).fill(null); // chosen index per question
+  const attempt = new Array(total).fill(null);
   let locked = false;
 
   // timer
@@ -141,18 +138,11 @@
     }
   }, 1000);
 
-  // ---------- image handling ----------
-  const mediaWrap = $("mediaWrap");
-  const imgEl = $("questionImage");
-
-  function hideImage(){
-    mediaWrap.style.display = "none";
-    imgEl.removeAttribute("src");
+  function setProgress(){
+    const pct = ((idx + 1) / total) * 100;
+    $("progressBar").style.width = pct + "%";
   }
 
-  imgEl.addEventListener("error", hideImage);
-
-  // ---------- render ----------
   function render(){
     const q = questions[idx];
     locked = false;
@@ -162,20 +152,20 @@
 
     $("chipProgress").textContent = `Vraag ${idx + 1} van ${total}`;
     $("questionText").textContent = q.prompt;
+    setProgress();
 
     // image
     if (q.image){
-      mediaWrap.style.display = "";
-      imgEl.src = q.image;
+      $("mediaWrap").style.display = "";
+      $("questionImage").src = q.image;
     } else {
-      hideImage();
+      $("mediaWrap").style.display = "none";
+      $("questionImage").removeAttribute("src");
     }
 
-    // buttons
     $("prevBtn").disabled = (idx === 0);
     $("nextBtn").textContent = (idx === total - 1) ? "Afronden" : "Volgende";
 
-    // answers
     const answersEl = $("answers");
     answersEl.innerHTML = "";
 
@@ -186,17 +176,14 @@
       btn.className = "answer";
       btn.innerHTML = `
         <span class="answerKey">${letters[i] || (i+1)}</span>
-        <span>${opt}</span>
+        <span class="answerText">${opt}</span>
       `;
 
-      // restore selection
       if (attempt[idx] === i) btn.classList.add("selected");
-
       btn.addEventListener("click", () => onChoose(i));
       answersEl.appendChild(btn);
     });
 
-    // If mode is instant and already answered, show feedback again:
     if (revealMode !== "after" && attempt[idx] !== null){
       showInstantFeedback();
     }
@@ -206,15 +193,12 @@
     if (locked) return;
     attempt[idx] = choiceIndex;
 
-    // update selected UI
     [...$("answers").children].forEach((el, i) => {
       el.classList.toggle("selected", i === choiceIndex);
       el.classList.remove("correct","wrong");
     });
 
-    if (revealMode === "after"){
-      return;
-    }
+    if (revealMode === "after") return;
     showInstantFeedback();
   }
 
@@ -245,7 +229,6 @@
     }
   }
 
-  // ---------- navigation ----------
   $("prevBtn").addEventListener("click", () => {
     if (idx > 0){
       idx -= 1;
@@ -262,14 +245,12 @@
     render();
   });
 
-  // ---------- speech ----------
   function speakCurrent(){
     const q = questions[idx];
     const chosen = attempt[idx];
     const lines = [];
     lines.push(q.prompt);
     q.options.forEach((opt, i) => lines.push(`${i+1}. ${opt}`));
-
     if (revealMode !== "after" && chosen !== null && typeof q.correctIndex === "number"){
       lines.push(chosen === q.correctIndex ? "Dit is correct." : "Dit is fout.");
       if (q.explanation) lines.push(q.explanation);
@@ -286,11 +267,8 @@
     window.speechSynthesis.speak(u);
   }
 
-  $("speakBtn").addEventListener("click", () => {
-    speakCurrent();
-  });
+  $("speakBtn").addEventListener("click", () => speakCurrent());
 
-  // ---------- finish ----------
   function finishExam(timeUp){
     clearInterval(timer);
 
@@ -321,6 +299,7 @@
   }
 
   // start
+  setProgress();
   render();
 
 })();
