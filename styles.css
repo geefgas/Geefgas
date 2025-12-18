@@ -571,3 +571,60 @@ body.examPage .examMedia img{
   body.examPage #questionText{ font-size: 1.16rem; margin: 6px 0 8px; }
   body.examPage .answer{ padding: 12px 12px; font-size: 1.02rem; }
 }
+
+/* =========================================================
+   EXAMEN – HARD ZWARTE HEADER + KNOPPEN LINKS/RECHTS (override)
+   Plak HELEMAAL ONDERAAN styles.css
+   ========================================================= */
+
+/* 1) Header echt zwart (geen transparantie/blur/gradient) */
+body.theme.examPage header.topbar,
+body.theme.examPage header.topbar#ggTopbar,
+body.theme.examPage .topbar{
+  background: #000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+}
+
+/* Zorg dat inner niets “terugkleurt” */
+body.theme.examPage .topbar__inner{
+  background: transparent !important;
+}
+
+/* 2) Foto blijft NOOIT afgesneden, en vult de breedte van de balk */
+body.theme.examPage .examMedia{
+  width: 100% !important;
+  overflow: hidden;
+}
+body.theme.examPage .examMedia img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;   /* nooit crop */
+  object-position: center !important;
+  display: block;
+}
+
+/* 3) Footer: Vorige links, Volgende rechts (strak) */
+body.theme.examPage .examFooter > div{
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+/* Vorige links */
+body.theme.examPage #prevBtn{
+  margin-right: auto !important;
+}
+
+/* Volgende rechts */
+body.theme.examPage #nextBtn{
+  margin-left: auto !important;
+}
+
+/* Optioneel: beide knoppen dezelfde hoogte/strakker */
+body.theme.examPage .examFooter .btn{
+  min-height: 44px;
+}
