@@ -1256,3 +1256,143 @@ body.examPage #nextBtn{
     font-size: 1.02rem;
   }
 }
+
+/* =========================================================
+   EXAMEN – DEFINITIEVE STABIELE LAYOUT (iOS / iPad / Android)
+   ========================================================= */
+
+:root{
+  --ggTopbarH: 56px;
+}
+
+/* ===== Pagina lock (alleen examen) ===== */
+body.examPage{
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 320px at 85% 5%, rgba(216,181,91,.16), transparent 60%),
+    var(--bg);
+}
+
+/* ===== Header ===== */
+body.examPage .topbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+
+  background: #0B0D12;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: none;
+}
+
+body.examPage .topbar__inner{
+  padding: 8px 0;
+}
+
+/* ❗ voorkomt dat header container schermhoogte krijgt */
+body.examPage header.topbar .container{
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* ===== Pagina onder header ===== */
+body.examPage .page{
+  height: 100dvh;
+  overflow: hidden;
+  padding-top: calc(var(--ggTopbarH) + 12px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+}
+
+/* Alleen main content container */
+body.examPage main.page .container{
+  height: calc(100dvh - var(--ggTopbarH) - 24px - env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+/* ===== Exam card ===== */
+body.examPage .examCard{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+/* ===== FOTO BLOK ===== */
+body.examPage .examMedia{
+  flex: 0 0 auto;
+  height: clamp(190px, 28vh, 280px);
+  background: #0B0D12;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(185,146,46,.16);
+}
+
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* nooit afsnijden */
+  object-position: center;
+  display: block;
+}
+
+/* ===== Content ===== */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+/* Doel blok iets compacter */
+body.examPage #goalBox.note{
+  margin-top: 10px;
+  padding: 10px 12px;
+  line-height: 1.4;
+}
+
+/* ===== Footer ===== */
+body.examPage .examFooter{
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding-top: 14px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 14px);
+  border-top: 1px solid rgba(16,19,26,.10);
+  background: #fff;
+  box-shadow: 0 -10px 25px rgba(0,0,0,.06);
+}
+
+/* Knoppen */
+body.examPage #prevBtn{
+  min-width: 140px;
+  opacity: .8;
+}
+
+body.examPage #nextBtn{
+  min-width: 190px;
+  box-shadow: 0 12px 28px rgba(185,146,46,.35);
+}
+
+/* ===== Kleine schermhoogtes ===== */
+@media (max-height: 740px){
+  body.examPage .examMedia{
+    height: clamp(150px, 22vh, 220px);
+  }
+
+  body.examPage #questionText{
+    font-size: 1.16rem;
+    margin: 6px 0 8px;
+  }
+
+  body.examPage .answer{
+    padding: 12px 12px;
+    font-size: 1.02rem;
+  }
+}
+
