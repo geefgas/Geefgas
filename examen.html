@@ -14,13 +14,27 @@
 
   <style>
     :root{
-      /* wordt via JS gezet op visualViewport.height */
-      --vvh: 100vh;
-      --topbar-h: 58px;
+      --vvh: 100vh;          /* wordt via JS gezet (visualViewport.height) */
+      --topbar-h: 60px;      /* wordt via JS gemeten */
+      --footer-h: 84px;      /* wordt via JS gemeten */
     }
 
-    html, body { height: 100%; }
-    body { overscroll-behavior: none; }
+    html, body{
+      height: 100%;
+      margin: 0;
+    }
+
+    /* GEEN SCROLL, GEEN BOUNCE */
+    body.examPage{
+      height: var(--vvh);
+      overflow: hidden !important;
+      overscroll-behavior: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      -webkit-overflow-scrolling: auto;
+      touch-action: manipulation;
+    }
 
     /* Topbar show/hide (optioneel) */
     .ggTopbarHide { transform: translateY(-110%); transition: transform .25s ease; }
@@ -49,52 +63,82 @@
       min-width: 54px;
       text-align: right;
     }
-    .ggRings{
-      width: 44px; height: 44px;
-      display: grid; place-items: center;
-      border-radius: 999px;
-    }
+    .ggRings{ width:44px; height:44px; display:grid; place-items:center; border-radius:999px; }
     .ggRings svg{ display:block; }
 
-    /* === BELANGRIJK: fix iPhone Safari onderbalk ===
-       We gebruiken visualViewport hoogte (--vvh) i.p.v. 100vh */
-    body.examPage .page{
-      padding-top: 12px;
+    /* ===== LAYOUT: Alles past in 1 scherm ===== */
+    main.page{
       height: calc(var(--vvh) - var(--topbar-h));
       overflow: hidden;
+      padding-top: 12px;
+      padding-bottom: 0;
     }
-    body.examPage .page__inner{
+    .page__inner{
       height: 100%;
     }
 
-    body.examPage .examCard{
+    .examCard{
       height: 100%;
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    /* Alleen de body scrolt */
+    /* Media + body krijgen vaste ruimte, body mag NIET scrollen */
+    .examMedia{
+      flex: 0 0 auto;
+      /* hoogte wordt via JS aangepast zodat alles past */
+    }
+
     #examBody{
       flex: 1 1 auto;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
+      overflow: hidden !important;   /* <-- geen scroll */
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Footer blijft ALTIJD zichtbaar + safe-area */
+    /* Antwoordenblok mag “krimpen” zodat footer zichtbaar blijft */
+    #answers{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden; /* geen scroll, dus gewoon binnenruimte */
+    }
+
+    /* Footer: altijd klikbaar en boven iPhone safe-area */
     .examFooter{
-      position: sticky;
+      flex: 0 0 auto;
+      position: fixed;
+      left: 0;
+      right: 0;
       bottom: 0;
+      z-index: 9999;
       background: #fff;
-      z-index: 5;
-      padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+      border-top: 1px solid rgba(16,19,26,.10);
+      padding: 12px 14px calc(env(safe-area-inset-bottom) + 12px);
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Extra ruimte zodat content niet achter footer valt */
-    .ggBottomPad{
-      height: calc(env(safe-area-inset-bottom) + 18px);
-      flex: 0 0 auto;
+    /* Footer inhoud gecentreerd met dezelfde container-breedte */
+    .examFooter__inner{
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      display:flex;
+      gap: 10px;
+    }
+    .examFooter__inner > button{
+      flex: 1 1 0;
+    }
+
+    /* Zorg dat niets “achter” footer komt qua kliklaag */
+    .examBody{
+      padding-bottom: 10px;
+    }
+
+    /* iOS: voorkom select/zoom */
+    button, a{
+      -webkit-touch-callout: none;
     }
   </style>
 </head>
@@ -103,14 +147,11 @@
 
 <header class="topbar ggTopbarShow" id="ggTopbar">
   <div class="container topbar__inner" style="display:flex; align-items:center; gap:12px;">
-
-    <!-- Alleen logo links -->
     <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
       <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
       <span class="brand__name" style="display:none;">GeefGas</span>
     </a>
 
-    <!-- Timer + rings rechts IN de topbar -->
     <button class="ggTopTimer" id="ggTopTimerBtn" type="button" aria-label="Timer en voortgang">
       <span class="ggRings" aria-hidden="true">
         <svg width="44" height="44" viewBox="0 0 44 44">
@@ -126,23 +167,18 @@
       </span>
       <span class="ggTopTimer__time" id="timerPill">--:--</span>
     </button>
-
   </div>
 </header>
 
 <main class="page">
   <div class="container page__inner">
+    <section class="examCard" id="examCard">
 
-    <section class="examCard">
-
-      <!-- AFBEELDING -->
       <div class="examMedia" id="mediaWrap" style="display:none;">
         <img id="questionImage" alt="Vraag afbeelding">
       </div>
 
-      <!-- CONTENT -->
       <div class="examBody" id="examBody">
-
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
           <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
@@ -152,27 +188,25 @@
 
         <div class="answers" id="answers"></div>
 
-        <!-- UITLEG -->
         <div class="explain" id="explainBox" style="display:none;">
           <div class="explainTitle" id="explainTitle"></div>
           <div class="explainText" id="explainText"></div>
         </div>
 
-        <!-- DOEL BLOK -->
         <div class="note" id="goalBox" style="margin-top:14px;"></div>
-
-        <div class="examFooter">
-          <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-          <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
-        </div>
-
-        <div class="ggBottomPad"></div>
       </div>
 
     </section>
-
   </div>
 </main>
+
+<!-- FIXED FOOTER (buiten scroller) -->
+<div class="examFooter" id="examFooter">
+  <div class="examFooter__inner">
+    <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+    <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -185,24 +219,36 @@
       : window.innerHeight;
     document.documentElement.style.setProperty("--vvh", h + "px");
   }
-  setVVH();
-  if (window.visualViewport){
-    window.visualViewport.addEventListener("resize", setVVH);
-    window.visualViewport.addEventListener("scroll", setVVH);
-  }
-  window.addEventListener("resize", setVVH);
 
-  /* ====== Topbar hoogte meten zodat page exact klopt ====== */
   function setTopbarH(){
     const tb = $("ggTopbar");
     if(!tb) return;
-    const r = tb.getBoundingClientRect();
-    document.documentElement.style.setProperty("--topbar-h", Math.ceil(r.height) + "px");
+    document.documentElement.style.setProperty("--topbar-h", Math.ceil(tb.getBoundingClientRect().height) + "px");
   }
-  setTopbarH();
-  window.addEventListener("resize", setTopbarH);
 
-  /* ================= Topbar auto-hide ================= */
+  function setFooterH(){
+    const ft = $("examFooter");
+    if(!ft) return;
+    document.documentElement.style.setProperty("--footer-h", Math.ceil(ft.getBoundingClientRect().height) + "px");
+  }
+
+  function relayout(){
+    setVVH();
+    setTopbarH();
+    setFooterH();
+    fitToViewport();
+  }
+
+  if (window.visualViewport){
+    window.visualViewport.addEventListener("resize", relayout);
+    window.visualViewport.addEventListener("scroll", relayout);
+  }
+  window.addEventListener("resize", relayout);
+
+  /* ====== Voorkom dat Safari de pagina alsnog sleept ====== */
+  document.addEventListener("touchmove", (e)=>{ e.preventDefault(); }, { passive:false });
+
+  /* ================= Topbar auto-hide (optioneel) ================= */
   let topbarTimer = null;
   function hideTopbarSoon(){
     clearTimeout(topbarTimer);
@@ -294,7 +340,6 @@
     const qPct = total ? (idx / total) : 0;
     setRing(qRing, qPct);
   }
-  updateHud();
 
   const timerInt = setInterval(()=>{
     time--;
@@ -303,7 +348,7 @@
     if(time <= 0) finish(true);
   }, 1000);
 
-  /* ================= Image naming (ROOT first, fallback assets/) ================= */
+  /* ================= Images (root first, fallback assets/) ================= */
   function buildImageCandidates(){
     const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
     const qNr = String(idx + 1).padStart(2,"0");
@@ -316,12 +361,34 @@
     function tryNext(){
       if(i >= candidates.length){
         wrapEl.style.display = "none";
+        fitToViewport();
         return;
       }
       imgEl.onerror = () => { i++; tryNext(); };
       imgEl.src = candidates[i];
     }
     tryNext();
+  }
+
+  /* ====== Fit: alles in 1 viewport (geen scroll) ====== */
+  function fitToViewport(){
+    const vvh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--vvh")) || window.innerHeight;
+    const topH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 60;
+    const footerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--footer-h")) || 84;
+
+    const available = vvh - topH - footerH - 16; // kleine marge
+    const card = $("examCard");
+    if(!card) return;
+
+    // Binnen card: media + body = available
+    card.style.height = available + "px";
+
+    // Media hoogte dynamisch (kleiner op korte schermen)
+    const media = $("mediaWrap");
+    if(media && media.style.display !== "none"){
+      const mediaH = Math.max(140, Math.min(260, Math.floor(available * 0.34)));
+      media.style.height = mediaH + "px";
+    }
   }
 
   /* ================= Render ================= */
@@ -332,13 +399,11 @@
     $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
     $("questionText").textContent = q.prompt || "";
 
-    // image
     const img = $("questionImage");
     const wrap = $("mediaWrap");
     wrap.style.display = "block";
     loadFirstWorkingImage(img, wrap, buildImageCandidates());
 
-    // answers
     const a = $("answers");
     a.innerHTML = "";
 
@@ -359,10 +424,7 @@
 
     updateHud();
     hideTopbarSoon();
-
-    // iOS: zorg dat footer meteen netjes binnen viewport valt
-    setVVH();
-    setTopbarH();
+    relayout();
   }
 
   function choose(i){
@@ -396,6 +458,7 @@
     }
 
     hideTopbarSoon();
+    relayout();
   }
 
   $("prevBtn").addEventListener("click", ()=>{
@@ -434,6 +497,7 @@
     location.href = "resultaat.html";
   }
 
+  relayout();
   render();
 })();
 </script>
