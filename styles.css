@@ -1548,3 +1548,177 @@ body.examPage #nextBtn{
   body.examPage #nextBtn{ min-width: 220px; }
   body.examPage .examMedia{ height: 300px; }
 }
+
+/* =========================================================
+   EXAMEN – TIGHT / STRAKKE UI (override)
+   Plak HELEMAAL ONDERAAN styles.css
+   ========================================================= */
+
+:root{
+  --ggTopbarH: 50px;            /* strakker */
+  --ggGapUnderHeader: 8px;      /* minder ruimte */
+  --ggCardRadius: 18px;         /* strakker */
+}
+
+/* ---------- HEADER: lager + strakker ---------- */
+body.examPage .topbar{
+  background:#0B0D12 !important;     /* echt zwart */
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+body.examPage .topbar__inner{
+  padding: 6px 0 !important;         /* lager */
+  gap: 10px !important;
+}
+
+body.examPage .brand{
+  min-width: auto !important;
+}
+
+body.examPage .brand__logo{
+  height: 26px !important;           /* kleiner = strakker */
+  filter: none !important;
+}
+
+/* Timer pill compacter */
+body.examPage .ggTopTimer{
+  padding: 8px 10px !important;
+  gap: 8px !important;
+  border-radius: 999px !important;
+}
+body.examPage .ggRings{ width: 38px !important; height: 38px !important; }
+body.examPage .ggTopTimer__time{ min-width: 48px !important; font-size: 14px !important; }
+
+/* ---------- Layout onder header ---------- */
+body.examPage{
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.examPage .page{
+  height: 100dvh;
+  overflow: hidden;
+  padding-top: calc(var(--ggTopbarH) + var(--ggGapUnderHeader)) !important;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+}
+
+body.examPage main.page .container{
+  height: calc(100dvh - var(--ggTopbarH) - var(--ggGapUnderHeader) - 10px - env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+/* ---------- Card: strakker ---------- */
+body.examPage .examCard{
+  height: 100%;
+  border-radius: var(--ggCardRadius) !important;
+  overflow: hidden;
+  box-shadow: 0 18px 44px rgba(16,19,26,.12) !important; /* iets cleaner */
+}
+
+/* ---------- Foto: lager + netjes, niets afsnijden ---------- */
+body.examPage .examMedia{
+  height: clamp(165px, 24vh, 235px) !important;   /* strakker (minder hoog) */
+  background: #0B0D12 !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+}
+
+body.examPage .examMedia img{
+  object-fit: contain !important;     /* NOOIT crop */
+  object-position: center !important;
+}
+
+/* ---------- Content: minder padding ---------- */
+body.examPage .examBody{
+  padding: 14px !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Meta (Taxi / Vraag 1 van 40) compacter */
+body.examPage .examMeta{
+  margin-bottom: 8px !important;
+}
+
+body.examPage .chip{
+  padding: 6px 10px !important;
+  font-size: .88rem !important;
+}
+
+body.examPage #progressText{
+  font-weight: 900 !important;
+}
+
+/* Vraagtekst strakker */
+body.examPage #questionText{
+  margin: 4px 0 10px !important;
+  font-size: 1.18rem !important;
+  line-height: 1.28 !important;
+}
+
+/* Antwoorden: minder hoogte + strakker */
+body.examPage .answers{
+  gap: 10px !important;
+  margin-top: 10px !important;
+}
+
+body.examPage .answer{
+  padding: 12px 12px !important;
+  border-radius: 16px !important;
+  font-size: 1.02rem !important;
+  box-shadow: 0 8px 16px rgba(16,19,26,.05) !important;
+}
+
+body.examPage .answerKey{
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  margin-top: 0 !important;
+}
+
+/* Doelblok: strakker & minder hoog (maar zichtbaar) */
+body.examPage #goalBox.note{
+  margin-top: 10px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  font-size: .95rem !important;
+  line-height: 1.35 !important;
+}
+
+/* ---------- Footer: compact + knoppen netjes links/rechts ---------- */
+body.examPage .examFooter{
+  margin-top: auto !important;
+  padding-top: 12px !important;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+  gap: 14px !important;
+  border-top: 1px solid rgba(16,19,26,.08) !important;
+  box-shadow: none !important; /* cleaner/strakker */
+  background: #fff !important;
+}
+
+body.examPage #prevBtn,
+body.examPage #nextBtn{
+  padding: 12px 16px !important;
+  border-radius: 14px !important;
+  font-weight: 950 !important;
+}
+
+/* Vorige links (kleiner) */
+body.examPage #prevBtn{
+  min-width: 120px !important;
+  margin-right: auto !important;
+}
+
+/* Volgende rechts (dominant) */
+body.examPage #nextBtn{
+  min-width: 170px !important;
+  margin-left: auto !important;
+}
+
+/* ---------- Extra strak op lage schermhoogtes ---------- */
+@media (max-height: 740px){
+  body.examPage .examMedia{ height: clamp(140px, 20vh, 200px) !important; }
+  body.examPage #questionText{ font-size: 1.12rem !important; }
+  body.examPage .answer{ padding: 11px 12px !important; }
+  body.examPage #goalBox{ display: none !important; } /* alleen als het écht krap is */
+}
