@@ -132,14 +132,14 @@ const TAXI_EXAMEN_2 = {
     q(30,"Apparatuur","Wat is het beste moment om instellingen te controleren?",["Tijdens druk verkeer","Voor vertrek of wanneer je veilig stilstaat","Tijdens een rotonde"],1),
 
     q(31,"Administratie","Wat is het doel van een goede ritadministratie voor jou?",["Meer fooi","Inzicht, bewijs en minder gedoe bij controle","Sneller rijden"],1),
-    q(32,"Administratie","Welke situatie is het meest professioneel?",["Papieren overal in de auto","Alles netjes en terugvindbaar","Niets bewaren"],1),
+    q(32,"Administratie","Welke situatie is het meest professioneel?",["Papieren overal in de auto","Alles netjes in een map bewaren","Niets bewaren"],1),
     q(33,"Administratie","Wat doe je bij verschil tussen ritbon en registratie?",["Negeren","Uitzoeken en corrigeren volgens procedure","Alles weggooien"],1),
     q(34,"Administratie","Waarom is consistentie belangrijk?",["Ziet er mooi uit","Het voorkomt vragen en sancties bij controle","Omdat klanten dat eisen"],1),
     q(35,"Administratie","Wat is juist bij meerdere chauffeurs in één voertuig?",["Iedereen gebruikt dezelfde login","Iedere chauffeur registreert op eigen manier volgens regels","Alleen de eigenaar registreert"],1),
 
-    q(36,"Privacy in administratie","Wat is het beste bij klantgegevens in administratie?",["Alles onbeperkt bewaren","Alleen noodzakelijke gegevens en veilig omgaan","Open delen in groepsapp"],1),
+    q(36,"Privacy in administratie","Wat is het beste bij klantgegevens in administratie?",["Alles bewaren","Alleen noodzakelijke gegevens bewaren en veilig mee omgaan","Open delen in groepsapp"],1),
     q(37,"Privacy in administratie","Wat is fout bij digitale opslag?",["Beveiligen en beperken","Delen met vrienden/collega’s zonder reden","Alleen bewaren wat nodig is"],1),
-    q(38,"Incidenten","Bij een incident (ruzie/ongeval) waarom is correcte registratie extra belangrijk?",["Voor muziekkeuze","Voor bewijs en reconstructie","Voor korting"],1),
+    q(38,"Incidenten","Wanneer is woon-werkverkeer toegestaan zonder ritregistratie?",["Nooit","Als BCT op privé staat","Alleen ’s nachts"],1),
     q(39,"Incidenten","Wat is het beste na een incident met registratieproblemen?",["Stilhouden","Melden en vastleggen volgens procedure","Alles resetten"],1),
     q(40,"Samenvatting","Wat is de beste kernregel voor BCT/administratie?",["Achteraf fixen is prima","Registreer eerlijk, volledig en volgens procedure","Alleen registreren bij controle"],1),
 
