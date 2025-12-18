@@ -32,16 +32,16 @@ const TAXI_EXAMEN_1 = {
   questions: [
 
     q(1,"Wetgeving","Welke combinatie is verplicht om taxivervoer te mogen uitvoeren?",["Rijbewijs B en KvK","Geldige taxipas en geldige vergunning","Alleen een boordcomputer"],1),
-    q(2,"Taxipas","Wie verstrekt de taxipas?",["Gemeente","KIWA","De overheid via erkende instantie"],2),
+    q(2,"Taxipas","Wie verstrekt de taxipas?",["Gemeente","RDW","Kiwa"],2),
     q(3,"Taxipas","Wat gebeurt er als je taxipas is verlopen?",["Je mag doorrijden tot controle","Je mag geen taxiwerk verrichten","Alleen overdag rijden"],1),
     q(4,"Verantwoordelijkheid","Wie is juridisch verantwoordelijk tijdens de taxirit?",["De passagier","Het taxibedrijf","De chauffeur"],2),
-    q(5,"Vergunning","Wat is een chauffeurskaart?",["Een parkeerkaart","De taxipas","Een kentekenbewijs"],1),
+    q(5,"Vergunning","Wat is een chauffeurskaart?",["Een parkeerkaart","Een taxipas","Een kentekenbewijs"],1),
 
-    q(6,"Vergunning","Wanneer moet je taxipas zichtbaar zijn?",["Alleen bij controle","Tijdens taxiwerk beschikbaar voor controle","Nooit zichtbaar"],1),
+    q(6,"Vergunning","Wanneer moet je taxipas zichtbaar zijn?",["Alleen bij controle","Tijdens taxiwerkzaamheden zichtbaar in de auto","Nooit zichtbaar vanwege privacy"],1),
     q(7,"ILT","Wat is een taak van ILT?",["Ritten plannen","Controle op naleving taxiwetgeving","Tarief bepalen"],1),
     q(8,"ILT","Wat mag ILT bij controle eisen?",["Alleen rijbewijs","Documenten en administratie","Alleen mondelinge uitleg"],1),
     q(9,"ILT","Wat kan ILT doen bij ernstige overtreding?",["Alleen waarschuwen","Boete of sanctie opleggen","Niets"],1),
-    q(10,"Wet","Wanneer ben je in overtreding?",["Bij klantklacht","Als je zonder geldige taxipas rijdt","Bij file"],1),
+    q(10,"Wet","Wanneer ben je in overtreding?",["Bij een klacht van een klant","Als je zonder geldige taxipas rijdt","Bij file"],1),
 
     q(11,"Onderneming","Wie is verantwoordelijk voor de vergunning van het voertuig?",["De klant","De ondernemer","De garage"],1),
     q(12,"Onderneming","Mag je rijden als het voertuig niet als taxi is aangemeld?",["Ja","Nee","Alleen korte ritten"],1),
@@ -56,19 +56,19 @@ const TAXI_EXAMEN_1 = {
     q(20,"Wet","Wat valt onder taxivervoer?",["Privéritten","Vervoer tegen betaling","Alleen lange ritten"],1),
 
     q(21,"Bevoegdheid","Mag een chauffeur zelf regels aanpassen?",["Ja","Nee","Bij drukte"],1),
-    q(22,"Handhaving","Waarom is handhaving noodzakelijk?",["Om chauffeurs te pesten","Om regels te laten naleven","Voor administratie"],1),
+    q(22,"Handhaving","Waarom is handhaving noodzakelijk?",["Om chauffeurs te pesten","Om ervoor te zorgen dat iedereen zich aan de regels houdt.","Voor administratie"],1),
     q(23,"Wet","Wie bepaalt de wettelijke eisen voor taxiwerk?",["Chauffeur","Overheid","Klant"],1),
     q(24,"Verantwoordelijkheid","Ben je verantwoordelijk voor naleving ook als werkgever fout zit?",["Nee","Ja, als chauffeur heb je eigen verantwoordelijkheid","Alleen bij controle"],1),
     q(25,"Overtreding","Is ‘niet weten’ een geldige reden bij overtreding?",["Ja","Nee","Soms"],1),
 
     q(26,"Wet","Wanneer is een rit illegaal?",["Bij file","Zonder juiste bevoegdheid","Bij slechte navigatie"],1),
-    q(27,"Controle","Wat moet altijd kloppen tijdens taxiwerk?",["Radio","Documenten","Muziekvolume"],1),
+    q(27,"Controle","Wat moet altijd kloppen tijdens taxiwerk?",["Radiozender","Documenten","hoeveelheid fooi"],1),
     q(28,"Wet","Wat gebeurt bij herhaalde zware overtredingen?",["Niets","Zwaardere sancties","Meer controles alleen"],1),
     q(29,"Taxipas","Mag je taxipas uitlenen?",["Ja","Nee","Alleen aan collega"],1),
     q(30,"Wet","Wat betekent ‘persoonlijke bevoegdheid’?",["Auto is bevoegd","Chauffeur is bevoegd","Klant bepaalt"],1),
 
     q(31,"Controle","Wat is verplicht bij controle?",["Discussie","Medewerking","Ontkennen"],1),
-    q(32,"Wet","Waarom moet regelgeving uniform zijn?",["Voor snelheid","Voor duidelijkheid en gelijkheid","Voor reclame"],1),
+    q(32,"Wet","Waarom is regelgeving noodzakelijk?",["Alleen voor snelheidsduivels","Voor duidelijkheid en gelijkheid","Alleen voor reclame"],1),
     q(33,"Wet","Mag je rijden als je taxipas thuis ligt?",["Ja","Nee","Alleen korte ritten"],1),
     q(34,"Wet","Wat is de kernverantwoordelijkheid van de chauffeur?",["Omzet","Veilig en legaal vervoer","Snelheid"],1),
     q(35,"Sanctie","Wat kan een sanctie zijn?",["Bonus","Boete","Fooi"],1),
