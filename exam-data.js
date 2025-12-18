@@ -159,10 +159,10 @@ const TAXI_EXAMEN_3 = {
   passMinCorrect: 32,
   questions: [
 
-    q(1,"KIWA-keuring","Waarom is een KIWA-keuring belangrijk voor taxiwerk?",["Voor extra snelheid op de weg","Voor voldoen aan taxi-eisen/veiligheid en toelating","Voor korting op brandstof"],1),
-    q(2,"KIWA-keuring","Wat is het juiste uitgangspunt als de KIWA-status verlopen is?",["Je mag rijden als klanten akkoord zijn","Niet rijden tot het weer in orde is","Alleen korte ritten rijden"],1),
+    q(1,"KIWA-keuring","Waarom is een KIWA-keuring belangrijk voor taxiwerk?",["Voor extra snelheid op de weg","Om te voldoen aan taxi-eisen/veiligheid en toelating","Om te voorkomen dat de auto stuk gaat"],1),
+    q(2,"KIWA-keuring","Wat is het juiste uitgangspunt als de chauffeurskaart verlopen is?",["Je mag rijden als klanten akkoord zijn","Niet rijden tot het weer in orde is","Alleen korte ritten rijden"],1),
     q(3,"Voertuigeisen","Wat is het belangrijkste doel van voertuigeisen voor taxi’s?",["Meer comfort voor de chauffeur","Veilig en betrouwbaar vervoer voor passagiers","Meer bagageruimte voor de chauffeur"],1),
-    q(4,"Veiligheid","Wat controleer je het meest logisch vóór je dienst begint?",["Alleen ruitenwisservloeistof","Banden/verlichting/remmen (basisveiligheid)","Alleen radio en airco"],1),
+    q(4,"Veiligheid","Wat controleer je vóór de dienst begint?",["Alleen ruitenwisservloeistof","Banden/verlichting/remmen (basisveiligheid)","Alleen radio en airco"],1),
     q(5,"Verlichting","Wat is het risico van defecte verlichting?",["Alleen cosmetisch","Slechter zicht/zichtbaarheid en gevaar/boete","Geen risico als het droog is"],1),
 
     q(6,"Banden","Waarom is juiste bandenspanning belangrijk?",["Alleen voor snelheid","Veiligheid, grip en remweg","Alleen voor comfort"],1),
@@ -171,22 +171,22 @@ const TAXI_EXAMEN_3 = {
     q(9,"Ruiten & zicht","Wat is het meest professioneel bij slecht zicht door vieze ruit?",["Doorrijden, klant wacht","Eerst schoonmaken/ontwasemen vóór vertrek","Alleen langzamer rijden"],1),
     q(10,"Ruitenwissers","Wat is juist bij versleten wissers bij regen?",["Negeer, je ziet genoeg","Vervangen/regelen voor veilig zicht","Alleen de achterruit gebruiken"],1),
 
-    q(11,"Gordels","Wat is juist over gordels in je taxi?",["Alleen voorin is belangrijk","Gordels moeten werken; veiligheid voor alle inzittenden","Gordels achterin zijn optioneel"],1),
+    q(11,"Gordels","Wat is juist over gordels in je taxi?",["Alleen voorin is belangrijk","Gordel voor iedereen verplicht; veiligheid voor alle inzittenden","Gordels achterin zijn optioneel"],1),
     q(12,"Airbags & storingen","Wat doe je bij een airbag-waarschuwingslampje?",["Negeren","Laten controleren; veiligheid kan in geding zijn","Sticker plakken en rijden"],1),
     q(13,"Dashboardlampjes","Wat is het beste bij een rood waarschuwingslampje tijdens rijden?",["Doorrijden tot einde rit","Zo snel mogelijk veilig stoppen en handelen","Alleen harder rijden"],1),
     q(14,"Motor/olie","Wat is juist als het olielampje brandt?",["Doorrijden, olie komt later","Veilig stoppen en oorzaak checken/ hulp inschakelen","Alleen gas loslaten"],1),
     q(15,"Koelsysteem","Temperatuur loopt te hoog op. Wat is het beste?",["Doorrijden, het zakt wel","Veilig stoppen en probleem oplossen/ hulp","Raam open zetten en door"],1),
 
     q(16,"Brandstof/energie","Wat is verstandig qua brandstof/actieradius?",["Wachten tot het echt op is","Zorgen dat je dienst betrouwbaar kan doorlopen","Alleen tanken na elke rit"],1),
-    q(17,"Elektrisch/hybride","Wat is belangrijk bij laden/opladen tijdens werk?",["Altijd laden op verboden plekken","Veilig en toegestaan laden; planning maken","Alleen laden als klant in auto zit"],1),
+    q(17,"Elektrisch/hybride","Wat is belangrijk bij laden/opladen tijdens werk?",["Altijd laden op verboden plekken","Veilig laden waar het toegestaan is; planning maken","Alleen laden als klant in auto zit"],1),
     q(18,"Taxi-uitrusting","Wat is het meest logisch om standaard aan boord te hebben?",["Alleen snoepjes","Basisveiligheidsmiddelen (bijv. gevarendriehoek/hesje waar vereist)","Alleen parfum"],1),
     q(19,"EHBO","Waarom is EHBO-set nuttig in taxiwerk?",["Voor decoratie","Bij kleine incidenten kan het helpen tot hulp er is","Alleen voor de keuring"],1),
-    q(20,"Brandblusser","Wat is juist als je een brandblusser hebt?",["Nooit controleren","Zorg dat die bereikbaar en binnen datum is","Altijd onder bagage leggen"],1),
+    q(20,"Brandblusser","Wat is juist als je een brandblusser hebt?",["Nooit controleren","Zorg dat die bereikbaar en niet over datum is","Altijd onder bagage leggen"],1),
 
-    q(21,"Deuren","Wat is het risico van een deur die niet goed sluit?",["Alleen lawaai","Onveilig voor passagiers en verkeersgevaar","Geen risico bij lage snelheid"],1),
-    q(22,"Kinderzitje","Wanneer is het professioneel om over kinderbeveiliging na te denken?",["Pas als politie vraagt","Vooraf; veiligheid en regels gaan voor","Nooit, klant regelt het"],1),
-    q(23,"Bagageruimte","Wat is het beste met zware bagage in kofferbak?",["Los neergooien","Stabiel plaatsen zodat het niet kan schuiven","Op de hoedenplank leggen"],1),
-    q(24,"Interieur","Waarom is een schoon interieur belangrijk?",["Alleen voor Instagram","Hygiëne, representatie en klantbeleving","Alleen voor de keuring"],1),
+    q(21,"Deuren","Wat is het risico van een deur die niet goed sluit?",["Alleen lawaai","Onveilig voor passagiers en gevaarlijk voor verkeer","Geen risico bij lage snelheid"],1),
+    q(22,"Kinderzitje","Wanneer is het professioneel om over veiligheid van een kind na te denken?",["Pas als politie vraagt","Vooraf; veiligheid en regels gaan voor","Nooit, klant regelt het"],1),
+    q(23,"Bagageruimte","Wat is het beste met zware bagage in kofferbak?",["Los in de kofferbak gooien","Stabiel plaatsen zodat het niet kan schuiven","Op de hoedenplank leggen"],1),
+    q(24,"Interieur","Waarom is een schoon interieur belangrijk?",["Alleen voor Instagram","Hygiëne, kwaliteit, veiligheid, vertrouwen en naleving van de regels.","Alleen voor de keuring"],1),
     q(25,"Geurtjes","Klant klaagt over sterke geur. Wat is professioneel?",["Zeggen: wen er maar aan","Rustig oplossen (ventilatie/neutraler) en professioneel blijven","Boos worden"],1),
 
     q(26,"Ruiten ontwasemen","Wat is het beste bij beslagen ramen?",["Doorrijden met klein kiertje","Ontwasemen/ventilatie aan en pas veilig rijden","Met doekje tijdens rijden wrijven"],1),
