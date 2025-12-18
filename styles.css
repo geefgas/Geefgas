@@ -782,25 +782,6 @@ body.examPage .topbar{
   .examMedia{ height: 220px; }
 }
 
-/* =========================================================
-   EXAM = “APP MODE” SCROLL GEDRAG (alleen inhoud scrolt)
-   ========================================================= */
-body.examPage{
-  height: 100vh;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-body.examPage{
-  position: fixed;
-  inset: 0;
-  width: 100%;
-}
-
-/* Alleen de examBody scrollt als het niet past */
-body.examPage .examBody{
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
 
 /* =========================================================
    RESULTAAT (resultaat.html)
@@ -928,141 +909,39 @@ body.examPage .btn--gold{
   margin-bottom: env(safe-area-inset-bottom);
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden; /* GEEN SCROLL */
-}
+/* =========================================
+   EXAMEN – STABIEL OP iOS (zonder layout-break)
+   (Plak helemaal onderaan styles.css)
+   ========================================= */
 
-.examPage {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Header blijft boven */
-.topbar {
-  flex: 0 0 auto;
-}
-
-/* Examen neemt ALLE ruimte */
-.page {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Card vult scherm */
-.examCard {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Content vast */
-.examBody {
-  flex: 1;
-  overflow: hidden; /* CRUCIAAL */
-}
-
-/* Footer altijd zichtbaar */
-.examFooter {
-  flex: 0 0 auto;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* =========================================================
-   EXAMEN (iPhone/Safari) — 100% vast, GEEN scroll, knoppen altijd zichtbaar
-   Plak HELEMAAL ONDERAAN styles.css
-   ========================================================= */
-
-/* 1) Pagina volledig locken: geen scroll op body/html */
+/* GEEN globale lock! (dus NIET: html,body overflow:hidden) */
 html, body { height: 100%; }
 
+/* Laat examen.html de layout regelen */
 body.examPage{
-  height: 100dvh;
-  overflow: hidden !important;
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: auto;
+  position: static !important;
+  inset: auto !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: hidden !important; /* geen pagina scroll */
 }
 
-/* 2) Layout container mag niet gaan “duwen” */
-body.examPage .page{
-  height: 100dvh;
-  overflow: hidden !important;
-  padding: 0 !important;
-}
-
-/* 3) Topbar blijft boven, rest vult exact de ruimte eronder */
-body.examPage .topbar{
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2000;
-}
-
-/* hoogte van je topbar (12px padding + logo) ≈ 60-64px */
-:root{ --ggTopbarH: 64px; }
-
-/* 4) Inner container exact onder topbar, geen extra scroll */
-body.examPage .page__inner,
-body.examPage .container{
-  height: calc(100dvh - var(--ggTopbarH)) !important;
-  overflow: hidden !important;
-}
-
-/* 5) ExamCard vult het scherm onder topbar */
-body.examPage .examCard{
-  height: calc(100dvh - var(--ggTopbarH) - env(safe-area-inset-bottom)) !important;
-  max-height: calc(100dvh - var(--ggTopbarH) - env(safe-area-inset-bottom)) !important;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden !important;
-}
-
-/* 6) Foto blok wordt kleiner op mobiel zodat alles past */
-body.examPage .examMedia{
-  flex: 0 0 auto;
-  height: clamp(160px, 24dvh, 240px) !important; /* << belangrijk: kleiner */
-  overflow: hidden !important;
-}
-
-/* 7) Body mag NIET scrollen: alles moet passen */
-body.examPage .examBody{
-  flex: 1 1 auto;
-  overflow: hidden !important;     /* <— GEEN scroll */
-  padding-bottom: 0 !important;
-}
-
-/* 8) Footer (Vorige/Volgende) blijft altijd zichtbaar, boven Safari-balk */
+/* Zorg dat de footer nooit door Safari-balk overlapt */
 body.examPage .examFooter{
-  flex: 0 0 auto;
-  position: sticky;
-  bottom: 0;
-  z-index: 1000;
-  background: var(--white);
-
-  /* extra ruimte zodat Safari onderbalk NOOIT overlapt */
-  padding-bottom: calc(env(safe-area-inset-bottom) + 96px) !important;
-
-  /* mooi afscheiden */
-  box-shadow: 0 -10px 25px rgba(0,0,0,.06);
+  padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+  margin-bottom: 0 !important;
 }
 
-/* 9) Omdat we topbar fixed maken: geef ruimte bovenaan aan content */
-body.examPage .page{
-  padding-top: var(--ggTopbarH) !important;
+/* Maak de foto compacter op mobiel zodat antwoord C nooit onder de footer valt */
+@media (max-width: 420px){
+  body.examPage .examMedia{
+    height: clamp(140px, 22vh, 230px) !important;
+  }
+  body.examPage #questionText{
+    font-size: 1.12rem !important;
+  }
+  body.examPage .answer{
+    padding: 12px 12px !important;
+    font-size: 1.00rem !important;
+  }
 }
-
-/* 10) Zorg dat de knoppen altijd klikbaar zijn */
-body.examPage #prevBtn,
-body.examPage #nextBtn{
-  position: relative;
-  z-index: 1100;
-}
-
