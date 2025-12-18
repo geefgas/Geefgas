@@ -908,3 +908,22 @@ details[open]{ border-color: rgba(185,146,46,.25) !important; }
   background: linear-gradient(180deg, var(--gold), var(--gold2));
   border-color: rgba(0,0,0,.08);
 }
+
+/* ================================
+   FIX: iOS Safari browserbalk overlap
+   ================================ */
+
+.examFooter{
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+/* Zorg dat de hele exam body niet onder de balk komt */
+body.examPage .examBody{
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+}
+
+/* Extra zekerheid: knop altijd boven balk */
+body.examPage .btn--gold{
+  margin-bottom: env(safe-area-inset-bottom);
+}
