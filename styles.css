@@ -1396,3 +1396,155 @@ body.examPage #nextBtn{
   }
 }
 
+/* =========================================================
+   EXAMEN – DEFINITIEVE STABIELE LAYOUT
+   - header zwart
+   - foto volledig zichtbaar (GEEN crop)
+   - geen scroll
+   - vorige links / volgende rechts
+   ========================================================= */
+
+:root{
+  --ggTopbarH: 56px;
+}
+
+/* ================= HEADER ================= */
+body.examPage .topbar{
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  background: #0B0D12 !important;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.examPage .topbar__inner{
+  padding: 8px 0 !important;
+}
+
+/* Header container mag NOOIT schermhoogte krijgen */
+body.examPage header.topbar .container{
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* ================= PAGE LOCK ================= */
+body.examPage{
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Pagina start onder header */
+body.examPage .page{
+  height: 100dvh;
+  overflow: hidden;
+  padding-top: calc(var(--ggTopbarH) + 12px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+}
+
+/* Alleen main content container */
+body.examPage main.page .container{
+  height: calc(100dvh - var(--ggTopbarH) - 24px - env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+/* ================= EXAM CARD ================= */
+body.examPage .examCard{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ================= FOTO BLOK ================= */
+body.examPage .examMedia{
+  flex: 0 0 auto;
+  height: clamp(190px, 28vh, 280px);
+  background: #0B0D12;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(185,146,46,.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FOTO: NOOIT AFGESNEDEN */
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;   /* 🔴 GEEN CROP */
+  object-position: center !important;
+  display: block;
+}
+
+/* ================= CONTENT ================= */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* Doelblok iets compacter */
+body.examPage #goalBox.note{
+  margin-top: 10px;
+  padding: 10px 12px;
+  line-height: 1.4;
+}
+
+/* ================= FOOTER ================= */
+body.examPage .examFooter{
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 14px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 14px);
+  border-top: 1px solid rgba(16,19,26,.10);
+  background: #fff;
+  box-shadow: 0 -10px 25px rgba(0,0,0,.06);
+}
+
+/* Vorige links */
+body.examPage #prevBtn{
+  min-width: 140px;
+  margin-right: auto;
+  opacity: .85;
+}
+
+/* Volgende rechts (dominant) */
+body.examPage #nextBtn{
+  min-width: 190px;
+  margin-left: auto;
+  box-shadow: 0 12px 28px rgba(185,146,46,.35);
+}
+
+/* ================= KLEINE SCHERMEN ================= */
+@media (max-height: 740px){
+  body.examPage .examMedia{
+    height: clamp(150px, 22vh, 220px);
+  }
+  body.examPage #questionText{
+    font-size: 1.16rem;
+    margin: 6px 0 8px;
+  }
+  body.examPage .answer{
+    padding: 12px;
+    font-size: 1.02rem;
+  }
+}
+
+/* ================= iPAD ================= */
+@media (min-width: 768px){
+  body.examPage .examFooter{
+    gap: 32px;
+  }
+  body.examPage #prevBtn{ min-width: 160px; }
+  body.examPage #nextBtn{ min-width: 220px; }
+  body.examPage .examMedia{ height: 300px; }
+}
