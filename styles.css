@@ -1722,3 +1722,27 @@ body.examPage #nextBtn{
   body.examPage .answer{ padding: 11px 12px !important; }
   body.examPage #goalBox{ display: none !important; } /* alleen als het écht krap is */
 }
+
+/* =========================================================
+   EXAMEN – HEADER 100% ZWART (DEFINITIEF)
+   ========================================================= */
+
+/* Topbar altijd volledig zwart */
+body.examPage .topbar{
+  background: #000000 !important;          /* echt zwart */
+  background-image: none !important;       /* geen gradients */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+/* Ook de binnencontainer zwart houden */
+body.examPage .topbar__inner{
+  background: transparent !important;
+}
+
+/* Logo + timer niet beïnvloed */
+body.examPage .brand__logo,
+body.examPage .ggTopTimer{
+  filter: none !important;
+}
