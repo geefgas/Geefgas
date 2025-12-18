@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GeefGas – Examen</title>
 
-  <!-- iOS "web app" hints (alleen effect als via beginscherm geopend) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0B0D12">
@@ -14,36 +13,18 @@
   <script src="exam-data.js"></script>
 
   <style>
+    :root{
+      /* wordt via JS gezet op visualViewport.height */
+      --vvh: 100vh;
+      --topbar-h: 58px;
+    }
+
     html, body { height: 100%; }
-    body { margin:0; overscroll-behavior: none; }
+    body { overscroll-behavior: none; }
 
     /* Topbar show/hide (optioneel) */
     .ggTopbarHide { transform: translateY(-110%); transition: transform .25s ease; }
     .ggTopbarShow { transform: translateY(0); transition: transform .25s ease; }
-
-    /* iOS/Safari: gebruik visualViewport hoogte zodat knoppen niet achter browserbalk vallen */
-    :root{
-      --vvh: 100dvh; /* fallback */
-      --safeBottom: env(safe-area-inset-bottom);
-      --safeTop: env(safe-area-inset-top);
-      --footerPad: 12px;
-      --footerH: 82px; /* reserve, wordt automatisch netjes door sticky */
-    }
-
-    /* Hele pagina vast (geen body scroll) */
-    body.theme.examPage{
-      height: var(--vvh);
-      overflow: hidden;
-    }
-
-    main.page{
-      height: calc(var(--vvh) - 0px);
-      overflow: hidden;
-      padding-bottom: 0 !important;
-    }
-    .page__inner{
-      height: 100%;
-    }
 
     /* Timer blok IN de topbar */
     .ggTopTimer{
@@ -75,41 +56,46 @@
     }
     .ggRings svg{ display:block; }
 
-    /* Exam card vult scherm */
-    .examCard{
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+    /* === BELANGRIJK: fix iPhone Safari onderbalk ===
+       We gebruiken visualViewport hoogte (--vvh) i.p.v. 100vh */
+    body.examPage .page{
+      padding-top: 12px;
+      height: calc(var(--vvh) - var(--topbar-h));
       overflow: hidden;
     }
-
-    /* Alleen de inhoud scrolt */
-    .examBody{
-      flex: 1 1 auto;
-      overflow: auto;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-
-      /* ruimte zodat content nooit achter sticky footer valt */
-      padding-bottom: calc(var(--footerH) + var(--footerPad) + var(--safeBottom));
+    body.examPage .page__inner{
+      height: 100%;
     }
 
-    /* Footer altijd klikbaar en boven browser UI */
+    body.examPage .examCard{
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    /* Alleen de body scrolt */
+    #examBody{
+      flex: 1 1 auto;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    /* Footer blijft ALTIJD zichtbaar + safe-area */
     .examFooter{
       position: sticky;
       bottom: 0;
-      z-index: 5;
       background: #fff;
-
-      /* extra ruimte onderin voor iPhone safe-area */
-      padding-bottom: calc(var(--footerPad) + var(--safeBottom));
-
-      /* beetje “bar” gevoel */
-      box-shadow: 0 -10px 24px rgba(16,19,26,.06);
+      z-index: 5;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
     }
 
-    /* Fade onderaan weghalen (kan clicks soms irritant maken) */
-    .ggFadeBottom::after{ display:none !important; }
+    /* Extra ruimte zodat content niet achter footer valt */
+    .ggBottomPad{
+      height: calc(env(safe-area-inset-bottom) + 18px);
+      flex: 0 0 auto;
+    }
   </style>
 </head>
 
@@ -144,7 +130,7 @@
   </div>
 </header>
 
-<main class="page" style="padding-top: 12px;">
+<main class="page">
   <div class="container page__inner">
 
     <section class="examCard">
@@ -175,13 +161,14 @@
         <!-- DOEL BLOK -->
         <div class="note" id="goalBox" style="margin-top:14px;"></div>
 
-        <!-- FOOTER (sticky) -->
-        <div class="examFooter" id="examFooter">
+        <div class="examFooter">
           <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
           <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
         </div>
 
+        <div class="ggBottomPad"></div>
       </div>
+
     </section>
 
   </div>
@@ -191,30 +178,29 @@
 (function(){
   const $ = id => document.getElementById(id);
 
-  /* ================= iOS viewport fix (zodat knop niet achter browserbalk valt) ================= */
-  function applyVisualViewport(){
-    const vv = window.visualViewport;
-    const h = vv ? vv.height : window.innerHeight;
+  /* ====== iPhone Safari fix: visualViewport hoogte ====== */
+  function setVVH(){
+    const h = (window.visualViewport && window.visualViewport.height)
+      ? window.visualViewport.height
+      : window.innerHeight;
     document.documentElement.style.setProperty("--vvh", h + "px");
-
-    // meet footer hoogte zodat examBody padding altijd klopt
-    const footer = $("examFooter");
-    if (footer){
-      const fh = Math.ceil(footer.getBoundingClientRect().height);
-      document.documentElement.style.setProperty("--footerH", fh + "px");
-    }
   }
-  applyVisualViewport();
-  window.addEventListener("resize", applyVisualViewport);
+  setVVH();
   if (window.visualViewport){
-    window.visualViewport.addEventListener("resize", applyVisualViewport);
-    window.visualViewport.addEventListener("scroll", applyVisualViewport);
+    window.visualViewport.addEventListener("resize", setVVH);
+    window.visualViewport.addEventListener("scroll", setVVH);
   }
+  window.addEventListener("resize", setVVH);
 
-  // pagina niet laten “springen”
-  document.documentElement.style.overflow = "hidden";
-  document.body.style.overflow = "hidden";
-  window.scrollTo(0,0);
+  /* ====== Topbar hoogte meten zodat page exact klopt ====== */
+  function setTopbarH(){
+    const tb = $("ggTopbar");
+    if(!tb) return;
+    const r = tb.getBoundingClientRect();
+    document.documentElement.style.setProperty("--topbar-h", Math.ceil(r.height) + "px");
+  }
+  setTopbarH();
+  window.addEventListener("resize", setTopbarH);
 
   /* ================= Topbar auto-hide ================= */
   let topbarTimer = null;
@@ -373,7 +359,10 @@
 
     updateHud();
     hideTopbarSoon();
-    applyVisualViewport();
+
+    // iOS: zorg dat footer meteen netjes binnen viewport valt
+    setVVH();
+    setTopbarH();
   }
 
   function choose(i){
@@ -407,7 +396,6 @@
     }
 
     hideTopbarSoon();
-    applyVisualViewport();
   }
 
   $("prevBtn").addEventListener("click", ()=>{
