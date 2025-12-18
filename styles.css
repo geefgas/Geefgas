@@ -1,5 +1,5 @@
 /* =========================================================
-   GeefGas – Styles (clean + luxe)
+   GeefGas – Styles (clean + luxe) – OPGESCHOOND
    Works with: index.html + examens.html + examen.html + resultaat.html + instellingen.html
    Theme: wit / zwart / goud (luxe)
    ========================================================= */
@@ -25,16 +25,23 @@
   --radius2: 16px;
 }
 
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body.theme{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  background: var(--bg);
   color: var(--text);
   overflow-x:hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background:
+    radial-gradient(900px 420px at 70% -10%, rgba(216,181,91,.14), transparent 60%),
+    radial-gradient(700px 380px at 10% 0%, rgba(11,13,18,.06), transparent 55%),
+    var(--bg);
 }
 
 img{ max-width:100%; height:auto; display:block; }
@@ -53,6 +60,7 @@ a{ color:inherit; text-decoration:none; }
   z-index: 100;
   background: rgba(11,13,18,.94);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.10);
 }
 
@@ -70,7 +78,20 @@ a{ color:inherit; text-decoration:none; }
   gap: 10px;
   min-width: 150px;
 }
-.brand__logo{ height:30px; width:auto; }
+
+/* ✅ Logo groter + luxe shadow */
+.brand__logo{
+  height: 34px;
+  width:auto;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+@media (max-width: 420px){
+  .brand__logo{ height: 36px; }
+}
+@media (min-width: 900px){
+  .brand__logo{ height: 32px; }
+}
+
 .brand__name{
   color: var(--white);
   font-weight: 900;
@@ -95,11 +116,12 @@ a{ color:inherit; text-decoration:none; }
 .nav__cta{
   padding: .65rem .95rem;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  background: linear-gradient(180deg, #E2C567, #C9A63A);
   color: #111;
   font-weight: 950;
   border: 1px solid rgba(0,0,0,.15);
   white-space: nowrap;
+  box-shadow: 0 10px 22px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
 }
 
 /* burger button */
@@ -146,7 +168,7 @@ a{ color:inherit; text-decoration:none; }
   font-weight: 950;
   padding: 12px 12px;
   border-radius: 14px;
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  background: linear-gradient(180deg, #E2C567, #C9A63A);
   border: 1px solid rgba(0,0,0,.15);
 }
 
@@ -160,14 +182,14 @@ a{ color:inherit; text-decoration:none; }
 /* =========================================================
    PAGE + CARD
    ========================================================= */
-.page{ padding: 18px 0 34px; }
-.page__inner{ display:flex; flex-direction:column; gap: 14px; }
+.page{ padding: 22px 0 42px; }
+.page__inner{ display:flex; flex-direction:column; gap: 16px; }
 
 .card{
   background: var(--white);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(16,19,26,.10);
+  border-radius: 22px;
+  box-shadow: 0 18px 44px rgba(16,19,26,.10);
   padding: 16px;
 }
 
@@ -177,9 +199,13 @@ a{ color:inherit; text-decoration:none; }
 .hero{
   position: relative;
   overflow:hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(16,19,26,.10);
+  box-shadow: 0 24px 58px rgba(16,19,26,.12);
   background:
-    radial-gradient(800px 280px at 85% 15%, rgba(216,181,91,.22), transparent 60%),
-    linear-gradient(180deg, rgba(11,13,18,.05), rgba(11,13,18,0));
+    radial-gradient(1100px 420px at 85% 5%, rgba(216,181,91,.22), transparent 60%),
+    radial-gradient(900px 380px at 10% 0%, rgba(11,13,18,.06), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
 }
 
 .hero__badge{
@@ -188,26 +214,28 @@ a{ color:inherit; text-decoration:none; }
   align-items:center;
   padding: 8px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(185,146,46,.25);
+  border: 1px solid rgba(185,146,46,.28);
   background: rgba(216,181,91,.12);
   color:#2A2416;
   font-weight: 950;
   font-size: .92rem;
+  box-shadow: 0 10px 26px rgba(185,146,46,.10);
 }
 
 .hero__title{
   margin: 12px 0 10px;
-  font-size: 1.85rem;
+  font-size: clamp(1.55rem, 4.4vw, 2.05rem);
   line-height: 1.12;
-  letter-spacing: -.35px;
+  letter-spacing: -.55px;
 }
 
 .hero__text{
   margin:0;
-  color: var(--muted);
-  font-weight: 750;
+  color: rgba(90,98,114,.95);
+  font-weight: 780;
   line-height: 1.65;
-  max-width: 62ch;
+  max-width: 52ch;
+  font-size: 1.02rem;
 }
 
 .hero__actions{
@@ -218,7 +246,7 @@ a{ color:inherit; text-decoration:none; }
 }
 
 .hero__checks{
-  margin-top: 12px;
+  margin-top: 14px;
   display:flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -227,27 +255,14 @@ a{ color:inherit; text-decoration:none; }
   display:inline-flex;
   align-items:center;
   gap:8px;
-  padding: 8px 10px;
-  border-radius: 14px;
-  border: 1px solid var(--stroke);
-  background: rgba(16,19,26,.03);
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(16,19,26,.10);
+  background:
+    radial-gradient(420px 120px at 20% 0%, rgba(216,181,91,.16), transparent 60%),
+    rgba(16,19,26,.02);
   font-weight: 900;
-}
-
-@media (max-width: 520px){
-  .hero__title{ font-size: 1.55rem; }
-}
-
-/* bullets onder elkaar (als je ze gebruikt) */
-.hero__bullets{
-  margin-top: 12px;
-  display:flex;
-  flex-direction:column;
-  gap: 6px;
-}
-.bullet{
-  font-weight: 900;
-  color: var(--muted);
+  box-shadow: 0 12px 24px rgba(16,19,26,.06);
 }
 
 /* =========================================================
@@ -271,15 +286,16 @@ a{ color:inherit; text-decoration:none; }
 .btn:active{ transform: translateY(1px); }
 
 .btn--gold{
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  background: linear-gradient(180deg, #E2C567, #C9A63A);
   color: #111;
   border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 10px 24px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
 }
 
 .btn--ghost{
-  background: transparent;
+  background: rgba(255,255,255,.72);
   color: var(--text);
-  border: 1px solid var(--stroke);
+  border: 1px solid rgba(16,19,26,.12);
 }
 
 .btn--primary{
@@ -288,6 +304,8 @@ a{ color:inherit; text-decoration:none; }
   background: linear-gradient(180deg, #1A1F2A, #0B0D12);
   color: var(--white);
   border: 1px solid rgba(11,13,18,.2);
+  border-radius: 999px;
+  box-shadow: 0 18px 38px rgba(16,19,26,.18);
 }
 
 /* =========================================================
@@ -300,7 +318,6 @@ a{ color:inherit; text-decoration:none; }
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .sectionHead__title{
   margin:0;
   font-size: 1.45rem;
@@ -327,13 +344,13 @@ a{ color:inherit; text-decoration:none; }
 .rating__muted{ color: var(--muted); font-weight: 800; }
 
 /* =========================================================
-   CATEGORIES GRID (HOME) – FOTO BLOKKEN
+   CATEGORIES GRID (HOME)
    ========================================================= */
 .catGrid{
   margin-top: 10px;
   display:grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 18px;
 }
 @media (min-width: 720px){
   .catGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -341,60 +358,35 @@ a{ color:inherit; text-decoration:none; }
 
 .catCard{
   position: relative;
-  border: 1px solid var(--stroke);
-  border-radius: 18px;
+  border: 1px solid rgba(16,19,26,.10);
+  border-radius: 22px;
   background: #fff;
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
   overflow:hidden;
   padding: 0;
   min-height: 220px;
+  box-shadow: 0 18px 40px rgba(16,19,26,.10);
 }
-
-.catCard__tag{
-  position:absolute;
-  top: 10px;
-  right: 10px;
-  font-size: .78rem;
-  font-weight: 950;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(11,13,18,.55);
-  color: rgba(255,255,255,.92);
-  backdrop-filter: blur(6px);
-}
-
-.catCard__tag--active{
-  border-color: rgba(185,146,46,.35);
-  background: rgba(11,13,18,.42);
-  color: #fff;
-}
-
 .catCard__image{
   width: 100%;
   height: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
 }
 .catCard__image img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  display:block;
 }
 
 .catCard--active{
-  outline: 2px solid rgba(216,181,91,.35);
-  box-shadow: 0 18px 30px rgba(216,181,91,.18);
+  outline: 2px solid rgba(216,181,91,.30);
+  box-shadow: 0 26px 54px rgba(185,146,46,.18);
 }
 
 .catCard--soon{
-  opacity: .75;
+  opacity: .6;
   pointer-events:none;
-}
-
-@media (max-width: 520px){
-  .catCard__image{ aspect-ratio: 3 / 2; }
+  filter: saturate(.9) contrast(.98);
 }
 
 /* =========================================================
@@ -406,28 +398,33 @@ a{ color:inherit; text-decoration:none; }
   flex-direction:column;
   gap: 12px;
 }
-
 .pkg{
   position: relative;
   display:flex;
   gap: 12px;
   padding: 14px;
-  border-radius: var(--radius2);
-  border: 2px solid var(--stroke);
-  background: #fff;
+  border-radius: 20px;
+  border: 2px solid rgba(16,19,26,.10);
+  background:
+    radial-gradient(600px 160px at 80% 0%, rgba(216,181,91,.12), transparent 60%),
+    linear-gradient(180deg,#ffffff,#fbfbfc);
   cursor:pointer;
+  box-shadow: 0 16px 34px rgba(16,19,26,.08);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+@media (hover:hover){
+  .pkg:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 22px 46px rgba(16,19,26,.12);
+  }
 }
 
 .pkg--best{
-  border-color: rgba(185,146,46,.35);
-  box-shadow: 0 16px 26px rgba(185,146,46,.10);
+  border-color: rgba(185,146,46,.30);
+  box-shadow: 0 22px 46px rgba(185,146,46,.14);
 }
 
-.pkg__radio{
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
-}
+.pkg__radio{ position:absolute; opacity:0; pointer-events:none; }
 
 .pkg__dot{
   width: 18px;
@@ -438,9 +435,7 @@ a{ color:inherit; text-decoration:none; }
   flex: 0 0 auto;
   position: relative;
 }
-.pkg__radio:checked + .pkg__dot{
-  border-color: rgba(185,146,46,.75);
-}
+.pkg__radio:checked + .pkg__dot{ border-color: rgba(185,146,46,.75); }
 .pkg__radio:checked + .pkg__dot::after{
   content:"";
   position:absolute;
@@ -456,8 +451,8 @@ a{ color:inherit; text-decoration:none; }
   justify-content:space-between;
   gap: 10px;
 }
-.pkg__name{ font-weight: 950; font-size: 1.1rem; }
-.pkg__desc{ color: var(--muted); font-weight: 750; margin-top: 2px; }
+.pkg__name{ font-weight: 950; font-size: 1.1rem; letter-spacing:-.2px; }
+.pkg__desc{ color: var(--muted); font-weight: 750; margin-top: 2px; opacity:.92; }
 .pkg__price{ font-weight: 950; font-size: 1.15rem; }
 
 .pkg__meta{
@@ -469,11 +464,11 @@ a{ color:inherit; text-decoration:none; }
 
 .pill{
   font-size: .85rem;
-  font-weight: 900;
+  font-weight: 850;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid var(--stroke);
-  background: rgba(16,19,26,.03);
+  border: 1px solid rgba(16,19,26,.10);
+  background: rgba(16,19,26,.025);
   color: var(--muted);
 }
 .pill--gold{
@@ -490,27 +485,34 @@ a{ color:inherit; text-decoration:none; }
   gap: 10px;
 }
 .feature{
-  border: 1px solid var(--stroke);
-  background: rgba(16,19,26,.02);
-  border-radius: 14px;
+  border: 1px solid rgba(16,19,26,.10);
+  background: rgba(255,255,255,.75);
+  border-radius: 16px;
   padding: 10px 12px;
   font-weight: 850;
+  box-shadow: 0 12px 24px rgba(16,19,26,.06);
 }
 @media (max-width: 520px){
   .featuresGrid{ grid-template-columns: 1fr; }
 }
 
-/* Note */
+/* NOTE (algemeen) — LET OP: wordt ook gebruikt in examen (goalBox) */
 .note{
   margin-top: 14px;
-  border: 1px solid rgba(185,146,46,.22);
-  background: rgba(216,181,91,.10);
-  border-radius: 16px;
+  border: 1px solid rgba(185,146,46,.20);
+  background:
+    radial-gradient(700px 220px at 85% 0%, rgba(216,181,91,.18), transparent 60%),
+    rgba(216,181,91,.10);
+  border-radius: 18px;
   padding: 12px 12px;
   color:#2A2416;
   font-weight: 800;
   line-height: 1.6;
+  box-shadow: 0 16px 34px rgba(185,146,46,.10);
 }
+
+/* ✅ Alleen de “home disclaimer” weg (jouw CBR-blok had note--compact) */
+.note--compact{ display:none !important; }
 
 /* =========================================================
    FOOTER
@@ -520,13 +522,14 @@ a{ color:inherit; text-decoration:none; }
   align-items:center;
   justify-content:space-between;
   gap: 12px;
-  padding: 14px 4px 6px;
+  padding: 18px 4px 6px;
   color: var(--muted);
+  border-top: 1px solid rgba(16,19,26,.08);
 }
 .footer__left{ display:flex; align-items:center; gap: 10px; }
 .footer__logo{ height: 26px; width:auto; opacity:.95; }
 .footer__brand{ font-weight: 950; color: var(--text); }
-.footer__muted{ color: var(--muted); font-weight: 750; }
+.footer__muted{ color: var(--muted); font-weight: 800; }
 .footer__right{ font-weight: 900; }
 
 /* =========================================================
@@ -542,31 +545,28 @@ a{ color:inherit; text-decoration:none; }
 .exam-hero-image img{
   width: 100%;
   height: clamp(240px, 42vh, 460px);
-  object-fit: contain;          /* teksten in je banner blijven zichtbaar */
+  object-fit: contain;
   object-position: center;
-  display:block;
-  background: var(--black);     /* luxe zwart erachter */
+  background: var(--black);
 }
 
-/* “15 examens” pill */
 .exam-count-wrapper{ text-align:center; }
 .exam-count{
   display:inline-block;
-  margin: 14px auto 10px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 900;
-  color: #2A2416;
+  margin: 16px auto 22px;
+  padding: 8px 18px;
+  border-radius:999px;
   background: rgba(216,181,91,.18);
-  border: 1px solid rgba(185,146,46,.35);
+  border:1px solid rgba(216,181,91,.35);
+  font-weight:900;
+  color:#2A2416;
 }
 
-/* exam cards */
 .examItem{
   border-radius: 20px;
-  border: 1px solid rgba(185,146,46,.22);
   background: linear-gradient(180deg,#ffffff,#faf7ef);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06), inset 0 0 0 1px rgba(255,255,255,.6);
+  border: 1px solid rgba(216,181,91,.22);
+  box-shadow: 0 14px 30px rgba(0,0,0,.08);
   padding: 16px;
   margin-bottom: 14px;
   transition: transform .15s ease, box-shadow .15s ease;
@@ -574,7 +574,7 @@ a{ color:inherit; text-decoration:none; }
 @media (hover:hover){
   .examItem:hover{
     transform: translateY(-2px);
-    box-shadow: 0 18px 36px rgba(185,146,46,.18), inset 0 0 0 1px rgba(255,255,255,.7);
+    box-shadow: 0 18px 36px rgba(185,146,46,.18);
   }
 }
 
@@ -589,7 +589,6 @@ a{ color:inherit; text-decoration:none; }
   font-weight: 800;
   font-size: 14px;
 }
-
 .examItem__start{
   margin-top: 12px;
   width: 100%;
@@ -601,73 +600,76 @@ a{ color:inherit; text-decoration:none; }
   cursor: pointer;
   background: linear-gradient(180deg,#e0bf66,#c9a63a);
   color:#111;
-  box-shadow: 0 8px 18px rgba(185,146,46,.35), inset 0 -2px 0 rgba(0,0,0,.15);
-  transition: transform .1s ease, filter .15s ease;
+  box-shadow: 0 10px 24px rgba(201,166,58,.45), inset 0 -2px 0 rgba(0,0,0,.15);
 }
-.examItem__start:active{
-  transform: translateY(1px);
-  filter: brightness(.96);
-}
+.examItem__start:active{ transform: translateY(1px); }
 
 /* =========================================================
    EXAM UI (examen.html)
    ========================================================= */
-.examTop{
-  width: min(1100px, 92vw);
-  margin: 0 auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap: 12px;
-  padding: 12px 0;
-}
-.examTop__title{
-  color: var(--white);
-  font-weight: 900;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+body.examPage{
+  background:
+    radial-gradient(900px 320px at 85% 5%, rgba(216,181,91,.16), transparent 60%),
+    var(--bg);
 }
 
+/* Topbar luxe goud accent */
+body.examPage .topbar{
+  background:
+    radial-gradient(900px 260px at 75% 10%, rgba(216,181,91,.14), transparent 60%),
+    linear-gradient(180deg, rgba(11,13,18,.98), rgba(11,13,18,.92));
+  border-bottom: 1px solid rgba(216,181,91,.18);
+}
+
+/* Timer pill (als je de pillTimer gebruikt) */
 .pillTimer{
-  padding: 8px 10px;
+  padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.08);
-  color: var(--white);
+  border: 1px solid rgba(216,181,91,.22);
+  background: rgba(11,13,18,.55);
+  color: rgba(255,255,255,.95);
   font-weight: 950;
   font-variant-numeric: tabular-nums;
+  letter-spacing: .6px;
+  box-shadow: 0 16px 34px rgba(0,0,0,.30), inset 0 0 0 1px rgba(216,181,91,.10);
 }
 
+/* Exam card */
 .examCard{
-  border-radius: 18px;
+  border-radius: 22px;
   border: 1px solid rgba(216,181,91,.18);
   background: var(--white);
-  box-shadow: 0 22px 50px rgba(16,19,26,.14);
+  box-shadow: 0 26px 60px rgba(16,19,26,.16);
   overflow:hidden;
   display:flex;
-  flex-direction:column; /* altijd onder elkaar */
+  flex-direction:column;
 }
 
+/* Media (foto) */
 .examMedia{
   position: relative;
   width: 100%;
-  background: radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-              rgba(16,19,26,.02);
-  border-bottom: 1px solid var(--stroke);
-  height: clamp(220px, 34vh, 440px);
+  background:
+    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
+    #0B0D12;
+  border-bottom: 1px solid rgba(185,146,46,.16);
+  height: clamp(220px, 34vh, 460px);
   overflow: hidden;
 }
 .examMedia img{
   width: 100%;
   height: 100%;
   display:block;
-  object-fit: contain; /* belangrijk: teksten in de vraagfoto blijven zichtbaar */
+  object-fit: contain;     /* ✅ teksten in je vraagfoto blijven zichtbaar */
   object-position: center;
 }
 
-.examBody{ padding: 16px; position:relative; z-index:1; background:var(--white); }
+.examBody{
+  padding: 18px;
+  background:var(--white);
+}
 
+/* Meta */
 .examMeta{
   display:flex;
   justify-content:space-between;
@@ -682,17 +684,19 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(185,146,46,.25);
   background: rgba(216,181,91,.12);
   color:#2A2416;
-  font-weight: 900;
+  font-weight: 950;
   font-size: .90rem;
 }
 
 #questionText{
-  margin: 0 0 10px;
-  font-size: 1.25rem;
+  margin: 6px 0 10px;
+  font-size: 1.28rem;
   line-height: 1.45;
-  letter-spacing: -.1px;
+  letter-spacing: -.15px;
+  font-weight: 950;
 }
 
+/* Answers */
 .answers{
   display:flex;
   flex-direction:column;
@@ -706,44 +710,57 @@ a{ color:inherit; text-decoration:none; }
   align-items:flex-start;
   gap: 12px;
   padding: 14px 14px;
-  border-radius: 16px;
+  border-radius: 18px;
   border: 1px solid rgba(16,19,26,.12);
   background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
   cursor:pointer;
-  font-weight: 900;
+  font-weight: 950;
   font-size: 1.08rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
   box-shadow: 0 10px 22px rgba(16,19,26,.06);
+  transition: transform .12s ease, box-shadow .15s ease, filter .15s ease, border-color .12s ease;
+  color: var(--text);
 }
+.answer span{ color: var(--text); text-decoration:none; }
+
 .answerKey{
   flex: 0 0 auto;
   width: 36px;
   height: 36px;
   border-radius: 12px;
-  border: 1px solid rgba(216,181,91,.22);
+  border: 1px solid rgba(185,146,46,.22);
   display:flex;
   align-items:center;
   justify-content:center;
-  background: var(--white);
+  background: rgba(216,181,91,.10);
+  color:#2A2416;
   font-weight: 950;
   font-size: 1rem;
   margin-top: 1px;
 }
+@media (hover:hover){
+  .answer:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(16,19,26,.10);
+    border-color: rgba(185,146,46,.22);
+    filter: brightness(1.01);
+  }
+}
 
 .answer.selected{ border-color: rgba(216,181,91,.55); background: rgba(216,181,91,.12); }
-.answer.correct{ border-color: rgba(6,118,71,.45); background: rgba(6,118,71,.08); }
-.answer.wrong{ border-color: rgba(180,35,24,.45); background: rgba(180,35,24,.08); }
+.answer.correct{ border-color: rgba(6,118,71,.40); background: rgba(6,118,71,.08); }
+.answer.wrong{ border-color: rgba(180,35,24,.40); background: rgba(180,35,24,.08); }
 
+/* Explain */
 .explain{
   margin-top: 12px;
   padding: 14px;
-  border-radius: 16px;
-  border: 1px solid var(--stroke);
-  background: rgba(16,19,26,.02);
+  border-radius: 18px;
+  border: 1px solid rgba(185,146,46,.16);
+  background: linear-gradient(180deg, #ffffff, #fbf7ef);
+  box-shadow: 0 10px 22px rgba(16,19,26,.06);
 }
-.explain.good{ border-color: rgba(6,118,71,.25); background: rgba(6,118,71,.06); }
-.explain.bad{ border-color: rgba(180,35,24,.25); background: rgba(180,35,24,.06); }
 .explainTitle{ font-weight: 950; margin-bottom: 6px; font-size: 1.05rem; }
 .explainText{ color: var(--muted); font-weight: 750; line-height: 1.6; font-size: 1.02rem; }
 
@@ -751,12 +768,13 @@ a{ color:inherit; text-decoration:none; }
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap: 10px;
+  gap: 12px;
   margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--stroke);
+  padding-top: 14px;
+  border-top: 1px solid rgba(16,19,26,.10);
 }
 
+/* Mobile tweaks */
 @media (max-width: 520px){
   #questionText{ font-size: 1.18rem; }
   .answer{ font-size: 1.06rem; padding: 14px 12px; }
@@ -765,18 +783,33 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* =========================================================
+   EXAM = “APP MODE” SCROLL GEDRAG (alleen inhoud scrolt)
+   ========================================================= */
+body.examPage{
+  height: 100vh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body.examPage{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+/* Alleen de examBody scrollt als het niet past */
+body.examPage .examBody{
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =========================================================
    RESULTAAT (resultaat.html)
    ========================================================= */
-details{
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-}
+details{ box-shadow: 0 10px 22px rgba(16,19,26,.06); }
 details summary{ outline: none; }
 details summary::-webkit-details-marker{ display:none; }
+details summary{ position: relative; padding-right: 34px; }
 
-details summary{
-  position: relative;
-  padding-right: 34px;
-}
 details summary::after{
   content: "▾";
   position: absolute;
@@ -796,7 +829,6 @@ details summary::after{
 }
 details[open] summary::after{ content: "▴"; }
 details[open]{ border-color: rgba(185,146,46,.25) !important; }
-
 #bar{ border-radius: 999px; }
 
 @media (min-width: 720px){
@@ -804,7 +836,7 @@ details[open]{ border-color: rgba(185,146,46,.25) !important; }
 }
 
 /* =========================================================
-   INSTELLINGEN (instellingen.html) – compact + luxe
+   INSTELLINGEN (instellingen.html)
    ========================================================= */
 .settingsGrid{
   display:flex;
@@ -831,7 +863,7 @@ details[open]{ border-color: rgba(185,146,46,.25) !important; }
   background:#fff;
 }
 
-/* Toggle (mooier dan checkbox) */
+/* Toggle */
 .toggleLux{
   position: relative;
   width: 52px;
@@ -875,1519 +907,4 @@ details[open]{ border-color: rgba(185,146,46,.25) !important; }
   transform: translateX(22px);
   background: linear-gradient(180deg, var(--gold), var(--gold2));
   border-color: rgba(0,0,0,.08);
-}
-
-/* =========================================================
-   GEEF GAS — EXAMENPAGINA LUXE (zelfde vibe als examens.html)
-   Plak onderaan styles.css
-   ========================================================= */
-
-body.examPage{
-  background:
-    radial-gradient(900px 260px at 50% 0%, rgba(216,181,91,.10), transparent 60%),
-    var(--bg);
-}
-
-/* Topbar iets luxer (goud accent) */
-body.examPage .topbar{
-  background: rgba(11,13,18,.96);
-  border-bottom: 1px solid rgba(216,181,91,.22);
-}
-
-/* Titel + timer premium */
-body.examPage .examTop__title{
-  color: rgba(255,255,255,.92);
-  font-weight: 950;
-}
-body.examPage .pillTimer{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(216,181,91,.10);
-  color: #fff;
-}
-
-/* Exam card: premium rand + diepe schaduw */
-body.examPage .examCard{
-  border: 1px solid rgba(185,146,46,.18);
-  border-radius: 22px;
-  box-shadow: 0 26px 60px rgba(16,19,26,.16);
-  overflow: hidden;
-}
-
-/* Foto / media: luxe donkere achtergrond, NIET croppen (teksten zichtbaar) */
-body.examPage .examMedia{
-  height: clamp(220px, 34vh, 440px) !important;
-  background:
-    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-    #0B0D12;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  overflow: hidden !important;
-}
-body.examPage .examMedia img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain !important; /* ✅ geen zoom/crop */
-  object-position: center;
-  display: block;
-}
-
-/* Body padding iets ruimer */
-body.examPage .examBody{
-  padding: 18px;
-}
-
-/* Chip (categorie) dezelfde luxe pill */
-body.examPage .chip{
-  border-color: rgba(185,146,46,.25);
-  background: rgba(216,181,91,.12);
-  color:#2A2416;
-  font-weight: 950;
-}
-
-/* Vraagtekst iets meer “premium” */
-body.examPage #questionText{
-  font-weight: 950;
-  letter-spacing: -.2px;
-}
-
-/* Antwoorden: luxe cards */
-body.examPage .answer{
-  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
-  border: 1px solid rgba(16,19,26,.12);
-  border-radius: 18px;
-  box-shadow: 0 12px 26px rgba(16,19,26,.06);
-  transition: transform .12s ease, box-shadow .15s ease, filter .15s ease;
-}
-@media (hover:hover){
-  body.examPage .answer:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 18px 34px rgba(16,19,26,.10);
-  }
-}
-
-body.examPage .answerKey{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(255,255,255,.95);
-}
-
-/* States */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.12);
-}
-body.examPage .answer.correct{
-  border-color: rgba(6,118,71,.45);
-  background: rgba(6,118,71,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.45);
-  background: rgba(180,35,24,.08);
-}
-
-/* Uitleg box premium */
-body.examPage .explain{
-  border-radius: 18px;
-  background: linear-gradient(180deg, #ffffff, #fbfbfc);
-  box-shadow: 0 12px 26px rgba(16,19,26,.06);
-}
-
-/* Footer / knoppen onderin: strak en consistent */
-body.examPage .examFooter{
-  gap: 12px;
-}
-
-/* Maak jouw knoppen dezelfde luxe stijl als examens */
-body.examPage .btn--gold{
-  background: linear-gradient(180deg,#e0bf66,#c9a63a);
-  border: none;
-  color:#111;
-  box-shadow: 0 10px 22px rgba(185,146,46,.28);
-}
-body.examPage .btn--ghost{
-  background: rgba(255,255,255,.9);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-}
-
-/* Als je “Vorige / Volgende / Voorlezen” naast elkaar wil */
-body.examPage .examNavBtns{
-  display:flex;
-  gap:10px;
-}
-body.examPage .examNavBtns > *{
-  flex: 1 1 auto;
-}
-
-/* ================================
-   GEEF GAS — LUXE EXAM PAGE (override)
-   Plak onderaan styles.css
-   ================================ */
-
-/* Zorg dat “blauwe link look” verdwijnt */
-body.examPage .examBody,
-body.examPage #questionText,
-body.examPage .answer,
-body.examPage .answer span{
-  color: var(--text) !important;
-}
-
-/* Vraagtekst iets luxer */
-body.examPage #questionText{
-  font-weight: 950;
-  font-size: 1.22rem;
-  letter-spacing: -.2px;
-}
-
-/* Chip links (Taxi/Wetgeving) luxer */
-body.examPage .chip{
-  border-color: rgba(185,146,46,.28);
-  background: rgba(216,181,91,.14);
-  color: #2A2416;
-  font-weight: 950;
-}
-
-/* “Vraag x van y” rustiger */
-body.examPage #chipProgress{
-  color: rgba(90,98,114,.9) !important;
-  font-weight: 900;
-}
-
-/* Antwoordkaarten — premium */
-body.examPage .answer{
-  background: linear-gradient(180deg, #ffffff, #fbfbfc);
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-  font-weight: 950;
-}
-
-/* Letter badge (A/B/C) meer luxe */
-body.examPage .answerKey{
-  border: 1px solid rgba(185,146,46,.22);
-  background: rgba(216,181,91,.10);
-  color: #2A2416;
-  font-weight: 950;
-}
-
-/* Hover (alleen devices met hover) */
-@media (hover:hover){
-  body.examPage .answer:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 16px 30px rgba(16,19,26,.10);
-    border-color: rgba(185,146,46,.22);
-  }
-}
-
-/* Geselecteerd: subtiel goud */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.10);
-}
-
-/* Correct/Wrong: luxe (niet fel) */
-body.examPage .answer.correct{
-  border-color: rgba(6,118,71,.35);
-  background: rgba(6,118,71,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.35);
-  background: rgba(180,35,24,.08);
-}
-
-/* Knoppen onderin: strak */
-body.examPage .examFooter{
-  border-top: 1px solid rgba(16,19,26,.08);
-}
-
-/* Voorlezen/Vorige = premium ghost */
-body.examPage .btn--ghost{
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 20px rgba(16,19,26,.06);
-}
-
-/* Volgende = premium goud */
-body.examPage .btn--gold{
-  background: linear-gradient(180deg, #e0bf66, #c9a63a);
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow: 0 10px 22px rgba(185,146,46,.30),
-              inset 0 -2px 0 rgba(0,0,0,.14);
-}
-
-/* De “Mode/Norm” regel: verbergen (maakt luxe) */
-body.examPage #modeLabel,
-body.examPage #normLabel{
-  font-weight: 950;
-}
-body.examPage .examBody .muted[style*="Mode:"]{
-  display:none !important;
-}
-
-/* =========================================
-   EXAM PAGE — PREMIUM LUXE (FINAL)
-   Plak onderaan styles.css
-   ========================================= */
-
-body.examPage .page{
-  padding-top: 14px;
-}
-
-/* progress bar onder topbar */
-body.examPage .examProgress{
-  height: 6px;
-  background: rgba(255,255,255,.08);
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-body.examPage .examProgress__bar{
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--gold2), var(--gold));
-  box-shadow: 0 6px 18px rgba(185,146,46,.35);
-  border-radius: 0 999px 999px 0;
-}
-
-/* exam card meer premium */
-body.examPage .examCard{
-  border: 1px solid rgba(185,146,46,.18);
-  box-shadow: 0 22px 50px rgba(16,19,26,.12);
-  overflow: hidden;
-}
-
-/* image: altijd luxe, geen rare randen */
-body.examPage .examMedia{
-  background:
-    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-    rgba(16,19,26,.02);
-}
-body.examPage .examMedia img{
-  object-fit: contain;
-  background: transparent;
-}
-
-/* meta rechts (Vraag x van y) */
-body.examPage .examMeta__right{
-  color: rgba(90,98,114,.9);
-  font-weight: 900;
-}
-
-/* vraag */
-body.examPage #questionText{
-  margin-top: 6px;
-  font-weight: 950;
-  letter-spacing: -.2px;
-  color: var(--text);
-}
-
-/* antwoorden: GEEN blauw, premium */
-body.examPage .answer,
-body.examPage .answer .answerText{
-  color: var(--text) !important;
-  font-weight: 950;
-}
-body.examPage .answer{
-  background: linear-gradient(180deg, #ffffff, #fbfbfc);
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-@media (hover:hover){
-  body.examPage .answer:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 16px 30px rgba(16,19,26,.10);
-    border-color: rgba(185,146,46,.22);
-  }
-}
-
-/* letter badge luxe goud */
-body.examPage .answerKey{
-  border: 1px solid rgba(185,146,46,.22);
-  background: rgba(216,181,91,.10);
-  color: #2A2416;
-  font-weight: 950;
-}
-
-/* selectie/feedback subtiel */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.10);
-}
-body.examPage .answer.correct{
-  border-color: rgba(6,118,71,.35);
-  background: rgba(6,118,71,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.35);
-  background: rgba(180,35,24,.08);
-}
-
-/* footer buttons: premium */
-body.examPage .btn--ghost{
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 20px rgba(16,19,26,.06);
-}
-body.examPage .btn--gold{
-  background: linear-gradient(180deg, #e0bf66, #c9a63a);
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow: 0 10px 22px rgba(185,146,46,.30),
-              inset 0 -2px 0 rgba(0,0,0,.14);
-}
-
-/* ================================
-   EXAM TOPBAR – PREMIUM BRAND LOOK
-   ================================ */
-
-.examTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 12px 16px;
-}
-
-/* Logo links */
-.examTop__brand img{
-  height: 28px;
-  width: auto;
-  opacity: .95;
-}
-
-/* Timer rechts – focuspunt */
-.pillTimer{
-  font-size: 1rem;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 950;
-  background: rgba(216,181,91,.14);
-  border: 1px solid rgba(216,181,91,.35);
-  color: #fff;
-  box-shadow: 0 6px 18px rgba(216,181,91,.18);
-}
-
-/* Verberg titeltekst volledig */
-.examTop__title{
-  display: none !important;
-}
-
-/* =========================================================
-   GEEF GAS — LUXE EXAMEN PAGINA (plak onderaan)
-   Past bij examens pagina: cream/goud, geen blauw
-   ========================================================= */
-
-body.examPage{
-  background:
-    radial-gradient(900px 320px at 85% 5%, rgba(216,181,91,.16), transparent 60%),
-    var(--bg);
-}
-
-/* TOPBAR: strak, rustig, luxe */
-body.examPage .topbar{
-  background: rgba(11,13,18,.96);
-  border-bottom: 1px solid rgba(216,181,91,.18);
-}
-body.examPage .examTop{
-  padding: 14px 0;
-}
-body.examPage .pillTimer{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(216,181,91,.10);
-  box-shadow: 0 10px 24px rgba(0,0,0,.22);
-}
-
-/* CARD: premium */
-body.examPage .examCard{
-  border: 1px solid rgba(185,146,46,.18);
-  box-shadow:
-    0 22px 55px rgba(16,19,26,.14),
-    inset 0 0 0 1px rgba(255,255,255,.55);
-}
-
-/* FOTO: niet croppen (teksten blijven zichtbaar) */
-body.examPage .examMedia{
-  height: clamp(220px, 34vh, 460px) !important;
-  background:
-    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-    #0B0D12;
-  overflow: hidden !important;
-  border-bottom: 1px solid rgba(185,146,46,.16);
-}
-body.examPage .examMedia img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain !important; /* ✅ geen ingezoom / geen crop */
-  object-position: center;
-}
-
-/* Vraagtekst: iets luxer */
-body.examPage #questionText{
-  font-size: 1.28rem;
-  letter-spacing: -.15px;
-}
-
-/* Chip + progress iets netter */
-body.examPage .chip{
-  border-color: rgba(185,146,46,.22);
-  background: rgba(216,181,91,.10);
-  font-weight: 950;
-}
-body.examPage #chipProgress{
-  color: rgba(90,98,114,.95);
-}
-
-/* ANTWOORDEN: cream/goud, geen blauw */
-body.examPage .answer{
-  background: linear-gradient(180deg, #ffffff, #fbf7ef);
-  border: 1px solid rgba(185,146,46,.16);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-  border-radius: 18px;
-}
-body.examPage .answer span{
-  color: var(--text) !important;   /* ✅ forceer geen blauw */
-  text-decoration: none !important;
-}
-body.examPage .answer .answerKey{
-  border-color: rgba(185,146,46,.22);
-  background: rgba(216,181,91,.10);
-  font-weight: 950;
-}
-
-/* Subtiele hover lift */
-@media (hover:hover){
-  body.examPage .answer:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 16px 30px rgba(185,146,46,.14);
-  }
-}
-
-/* Selected / correct / wrong: premium kleuren */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.12);
-}
-body.examPage .answer.correct{
-  border-color: rgba(6,118,71,.40);
-  background: rgba(6,118,71,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.40);
-  background: rgba(180,35,24,.08);
-}
-
-/* EXPLAIN box: luxer */
-body.examPage .explain{
-  border: 1px solid rgba(185,146,46,.16);
-  background: linear-gradient(180deg, #ffffff, #fbf7ef);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-}
-
-/* Buttons: ghost + gold premium */
-body.examPage .btn--ghost{
-  background: rgba(255,255,255,.75);
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 10px 22px rgba(16,19,26,.05);
-}
-body.examPage .btn--gold{
-  background: linear-gradient(180deg,#e0bf66,#c9a63a);
-  border: none;
-  box-shadow:
-    0 10px 22px rgba(185,146,46,.28),
-    inset 0 -2px 0 rgba(0,0,0,.14);
-}
-body.examPage .btn--gold:active,
-body.examPage .btn--ghost:active{
-  transform: translateY(1px);
-}
-
-/* Nav buttons netjes als groep */
-body.examPage .examNavBtns{
-  display:flex;
-  gap: 10px;
-}
-
-/* Kleine polish voor mobiel */
-@media (max-width: 520px){
-  body.examPage #questionText{ font-size: 1.18rem; }
-  body.examPage .answer{ padding: 14px 12px; }
-}
-
-/* =========================================================
-   GEEF GAS — LUXE EXAMEN PAGE OVERRIDE (PLAK ONDERAAN)
-   Doel: dezelfde luxe stijl als examens-pagina
-   Werkt op: <body class="theme examPage">
-   ========================================================= */
-
-/* TOPBAR (rustig + premium glow) */
-body.examPage .topbar{
-  background:
-    radial-gradient(600px 160px at 15% 20%, rgba(216,181,91,.12), transparent 60%),
-    rgba(11,13,18,.96);
-  border-bottom: 1px solid rgba(216,181,91,.22);
-}
-body.examPage .examTop{
-  padding: 14px 0;
-}
-body.examPage .examTop__title{
-  color: rgba(255,255,255,.88);
-  font-weight: 900;
-  letter-spacing: .2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* TIMER (glass + goud) */
-body.examPage .pillTimer{
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-weight: 950;
-  font-variant-numeric: tabular-nums;
-
-  background:
-    linear-gradient(180deg, rgba(216,181,91,.22), rgba(185,146,46,.22)),
-    rgba(255,255,255,.06);
-
-  border: 1px solid rgba(216,181,91,.35);
-  box-shadow:
-    0 8px 22px rgba(0,0,0,.25),
-    inset 0 0 0 1px rgba(255,255,255,.18);
-
-  color: #fff;
-}
-
-/* EXAM CARD (netter + luxe rand) */
-body.examPage .examCard{
-  border: 1px solid rgba(216,181,91,.18);
-  box-shadow: 0 22px 50px rgba(16,19,26,.14);
-}
-
-/* FOTO: altijd zichtbaar, niet croppen (teksten blijven zichtbaar) */
-body.examPage .examMedia{
-  height: clamp(220px, 34vh, 440px) !important;
-  background:
-    radial-gradient(900px 260px at 70% 15%, rgba(216,181,91,.10), transparent 60%),
-    rgba(16,19,26,.02);
-  overflow: hidden !important;
-}
-body.examPage .examMedia img{
-  width: 100%;
-  height: 100%;
-  object-fit: contain !important;
-  object-position: center;
-  display: block;
-  background: transparent;
-}
-
-/* CHIP (Taxi/Wetgeving) wat luxer */
-body.examPage .chip{
-  border-color: rgba(216,181,91,.28);
-  background: rgba(216,181,91,.12);
-  color: #2A2416;
-  font-weight: 950;
-}
-
-/* VRAAGTEKST iets chiquer */
-body.examPage #questionText{
-  letter-spacing: -.15px;
-}
-
-/* ANTWOORDEN (premium) */
-body.examPage .answer{
-  background: linear-gradient(180deg, #ffffff, #fbfbfc);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-}
-@media (hover:hover){
-  body.examPage .answer:hover{
-    transform: translateY(-1px);
-    box-shadow: 0 16px 30px rgba(16,19,26,.10);
-    filter: brightness(1.01);
-  }
-}
-body.examPage .answerKey{
-  border-color: rgba(216,181,91,.30);
-  font-weight: 950;
-}
-
-/* SELECTED / CORRECT / WRONG (rustig) */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.12);
-}
-body.examPage .answer.correct{
-  border-color: rgba(46,204,113,.45);
-  background: rgba(46,204,113,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(180,35,24,.45);
-  background: rgba(180,35,24,.08);
-}
-
-/* KNOPPEN onderaan (iets strakker + consistent) */
-body.examPage .btn--ghost{
-  background: rgba(16,19,26,.02);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 8px 18px rgba(16,19,26,.05);
-}
-body.examPage .btn--gold{
-  background: linear-gradient(180deg, #e0bf66, #c9a63a);
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow:
-    0 10px 22px rgba(185,146,46,.22),
-    inset 0 -2px 0 rgba(0,0,0,.14);
-}
-body.examPage .btn--gold:active,
-body.examPage .btn--ghost:active{
-  transform: translateY(1px);
-}
-
-/* NAV knoppen layout */
-body.examPage .examNavBtns{
-  display:flex;
-  gap: 10px;
-}
-
-/* =========================================================
-   GEEF GAS — LUXE POLISH PACK (HOME + EXAMEN)
-   Plak HELEMAAL ONDERAAN styles.css
-   ========================================================= */
-
-/* ---------- Algemeen luxe “papier” gevoel ---------- */
-body.theme{
-  background:
-    radial-gradient(900px 420px at 70% -10%, rgba(216,181,91,.14), transparent 60%),
-    radial-gradient(700px 380px at 10% 0%, rgba(11,13,18,.06), transparent 55%),
-    var(--bg);
-}
-
-/* Cards nét iets chiquer */
-.card{
-  border-color: rgba(16,19,26,.10);
-  box-shadow: 0 18px 44px rgba(16,19,26,.10);
-}
-
-/* ---------- HOME (index) ---------- */
-
-/* Hero wat luxer + rustiger */
-.hero{
-  border: 1px solid rgba(16,19,26,.10);
-  border-radius: 22px;
-  box-shadow: 0 22px 52px rgba(16,19,26,.12);
-  background:
-    radial-gradient(900px 320px at 85% 10%, rgba(216,181,91,.20), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
-}
-
-/* Badge iets chicer */
-.hero__badge{
-  border-color: rgba(185,146,46,.28);
-  background: rgba(216,181,91,.12);
-  box-shadow: 0 10px 24px rgba(185,146,46,.10);
-}
-
-/* Buttons: goud iets dieper + premium shadow */
-.btn--gold,
-.nav__cta{
-  background: linear-gradient(180deg, #E2C567, #C9A63A);
-  box-shadow: 0 10px 22px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
-}
-.btn--gold:active,
-.nav__cta:active{
-  filter: brightness(.98);
-}
-
-/* Ghost buttons iets rustiger */
-.btn--ghost{
-  background: rgba(255,255,255,.70);
-  border-color: rgba(16,19,26,.12);
-}
-
-/* Categorie cards (foto) extra premium rand + shadow */
-.catCard{
-  box-shadow: 0 16px 34px rgba(16,19,26,.10);
-}
-.catCard__image img{
-  transform: scale(1.01);
-}
-.catCard--active{
-  outline: 2px solid rgba(216,181,91,.30);
-  box-shadow: 0 22px 46px rgba(185,146,46,.18);
-}
-
-/* Packages net strakker */
-.pkg{
-  border-color: rgba(16,19,26,.12);
-  box-shadow: 0 14px 30px rgba(16,19,26,.08);
-}
-.pkg--best{
-  border-color: rgba(185,146,46,.30);
-  box-shadow: 0 18px 40px rgba(185,146,46,.14);
-}
-
-/* ---------- EXAMEN (examen.html) ---------- */
-
-/* Zwarte topbar nog luxer */
-body.examPage .topbar{
-  background:
-    radial-gradient(900px 260px at 75% 10%, rgba(216,181,91,.14), transparent 60%),
-    linear-gradient(180deg, rgba(11,13,18,.98), rgba(11,13,18,.92));
-  border-bottom: 1px solid rgba(216,181,91,.16);
-}
-
-/* VERVANG titel door logo (zonder HTML te veranderen) */
-body.examPage .examTop__title{
-  color: transparent;           /* tekst verbergen */
-  text-shadow: none;
-  user-select: none;
-  position: relative;
-  padding-left: 34px;
-}
-body.examPage .examTop__title::before{
-  content:"";
-  position:absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 26px;
-  height: 26px;
-  background: url("assets/geefgas.PNG") center/contain no-repeat;
-  filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
-}
-
-/* Timer pill: chiquer + beter contrast */
-body.examPage .pillTimer{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(11,13,18,.55);
-  box-shadow: 0 16px 34px rgba(0,0,0,.30), inset 0 0 0 1px rgba(216,181,91,.10);
-  color: rgba(255,255,255,.95);
-  font-weight: 950;
-  letter-spacing: .6px;
-  padding: 10px 14px;
-}
-
-/* Exam kaart: premium “papier” */
-body.examPage .examCard{
-  border: 1px solid rgba(216,181,91,.16);
-  box-shadow: 0 22px 52px rgba(16,19,26,.14);
-}
-
-/* Antwoorden: GEEN blauw, wel luxe */
-body.examPage .answer{
-  color: var(--text) !important;                 /* <-- voorkomt blauwe tekst */
-  background: linear-gradient(180deg, #FFFFFF, #FBFBFC);
-  border: 1px solid rgba(16,19,26,.12);
-  box-shadow: 0 10px 22px rgba(16,19,26,.06);
-}
-body.examPage .answer span{
-  color: var(--text) !important;                 /* extra zekerheid */
-}
-body.examPage .answerKey{
-  border-color: rgba(216,181,91,.22);
-  background: rgba(216,181,91,.10);
-  color: #2A2416 !important;
-}
-
-/* Selected / correct / wrong subtieler en luxer */
-body.examPage .answer.selected{
-  border-color: rgba(216,181,91,.55);
-  background: rgba(216,181,91,.12);
-}
-body.examPage .answer.correct{
-  border-color: rgba(46,204,113,.45);
-  background: rgba(46,204,113,.08);
-}
-body.examPage .answer.wrong{
-  border-color: rgba(255,90,90,.45);
-  background: rgba(255,90,90,.08);
-}
-
-/* Footer knoppen: beter in balans */
-body.examPage .examFooter{
-  border-top-color: rgba(16,19,26,.10);
-}
-
-/* Optioneel: als je “Je moet 32 van de 40…” in een blok zet met class="passNote" */
-.passNote{
-  margin-top: 14px;
-  padding: 14px 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(185,146,46,.22);
-  background: linear-gradient(180deg, rgba(216,181,91,.14), rgba(216,181,91,.08));
-  color: #2A2416;
-  font-weight: 900;
-  text-align: center;
-  box-shadow: 0 14px 30px rgba(185,146,46,.12);
-}
-
-/* =========================================================
-   GEEF GAS — HOME LUXE UPGRADE (index.html)
-   Plak HELEMAAL ONDERAAN styles.css
-   ========================================================= */
-
-/* Page spacing iets premium */
-.page{ padding: 22px 0 42px; }
-.page__inner{ gap: 16px; }
-
-/* HERO: chicer “glass + gold glow” */
-.hero{
-  border-radius: 24px;
-  border: 1px solid rgba(16,19,26,.10);
-  background:
-    radial-gradient(1100px 420px at 85% 5%, rgba(216,181,91,.22), transparent 60%),
-    radial-gradient(900px 380px at 10% 0%, rgba(11,13,18,.06), transparent 58%),
-    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-  box-shadow: 0 24px 58px rgba(16,19,26,.12);
-  overflow: hidden;
-}
-
-/* Badge iets eleganter */
-.hero__badge{
-  border: 1px solid rgba(185,146,46,.28);
-  background: rgba(216,181,91,.12);
-  color:#2A2416;
-  box-shadow: 0 10px 26px rgba(185,146,46,.10);
-}
-
-/* Titel: strakker + mooier contrast */
-.hero__title{
-  letter-spacing: -.55px;
-  font-size: clamp(1.55rem, 4.4vw, 2.05rem);
-}
-.hero__text{
-  font-weight: 780;
-  font-size: 1.02rem;
-  color: rgba(90,98,114,.95);
-}
-
-/* Buttons: premium gold + beter hover */
-.btn--gold, .nav__cta{
-  background: linear-gradient(180deg, #E3C86E, #C9A63A);
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow: 0 10px 24px rgba(185,146,46,.22), inset 0 -2px 0 rgba(0,0,0,.14);
-}
-@media (hover:hover){
-  .btn--gold:hover, .nav__cta:hover{
-    filter: brightness(1.03);
-    transform: translateY(-1px);
-  }
-}
-.btn--ghost{
-  background: rgba(255,255,255,.72);
-  border-color: rgba(16,19,26,.12);
-}
-
-/* Checks: als “luxe pills” */
-.check{
-  border-radius: 16px;
-  background:
-    radial-gradient(420px 120px at 20% 0%, rgba(216,181,91,.16), transparent 60%),
-    rgba(16,19,26,.02);
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 12px 24px rgba(16,19,26,.06);
-}
-
-/* Categorieën cards: sterker premium effect */
-.catCard{
-  border-radius: 22px;
-  box-shadow: 0 18px 40px rgba(16,19,26,.10);
-  border: 1px solid rgba(16,19,26,.10);
-}
-.catCard__image{
-  border-radius: 22px;
-  overflow: hidden;
-}
-.catCard__image img{
-  transform: scale(1.01);
-}
-.catCard--active{
-  outline: 2px solid rgba(216,181,91,.30);
-  box-shadow: 0 26px 54px rgba(185,146,46,.18);
-}
-.catCard--soon{
-  filter: saturate(.88) contrast(.98);
-}
-
-/* Pakketten: radio-kaarten nog luxer */
-.pkg{
-  border-radius: 20px;
-  border: 2px solid rgba(16,19,26,.10);
-  box-shadow: 0 16px 34px rgba(16,19,26,.08);
-  background:
-    radial-gradient(700px 180px at 12% 0%, rgba(216,181,91,.10), transparent 60%),
-    #fff;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-@media (hover:hover){
-  .pkg:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 22px 46px rgba(16,19,26,.12);
-  }
-}
-.pkg--best{
-  border-color: rgba(185,146,46,.30);
-  box-shadow: 0 22px 46px rgba(185,146,46,.14);
-}
-
-/* Pills rustiger */
-.pill{
-  border-color: rgba(16,19,26,.10);
-  background: rgba(16,19,26,.025);
-}
-.pill--gold{
-  background: rgba(216,181,91,.14);
-  border-color: rgba(185,146,46,.25);
-}
-
-/* Direct starten knop: echt premium */
-.btn--primary{
-  border-radius: 18px;
-  box-shadow: 0 20px 46px rgba(11,13,18,.22);
-}
-@media (hover:hover){
-  .btn--primary:hover{
-    filter: brightness(1.04);
-    transform: translateY(-1px);
-  }
-}
-
-/* Features: iets meer “kaart” */
-.feature{
-  border-radius: 16px;
-  background: rgba(255,255,255,.75);
-  border-color: rgba(16,19,26,.10);
-  box-shadow: 0 12px 24px rgba(16,19,26,.06);
-}
-
-/* Note: luxe waarschuwing */
-.note{
-  border-color: rgba(185,146,46,.20);
-  background:
-    radial-gradient(700px 220px at 85% 0%, rgba(216,181,91,.18), transparent 60%),
-    rgba(216,181,91,.10);
-  box-shadow: 0 16px 34px rgba(185,146,46,.10);
-}
-
-/* Footer iets strakker */
-.footer{
-  margin-top: 6px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(16,19,26,.08);
-}
-
-/* =========================================================
-   GEEF G A S — LUXE & RUST OVERRIDE (ALLES ONDERAAN PLAKKEN)
-   Doel: minder drukte, premium uitstraling, goud/zwart/wit
-   ========================================================= */
-
-/* ---------- ALGEMEEN RUST ---------- */
-.hero__badge{
-  background: rgba(216,181,91,.12);
-  border: 1px solid rgba(216,181,91,.25);
-  color:#2A2416;
-  font-weight:900;
-}
-
-.hero__text{
-  max-width: 48ch;
-  font-weight: 750;
-}
-
-/* minder schreeuwerige titels */
-.hero__title{
-  font-size: 1.75rem;
-  line-height: 1.15;
-}
-
-/* ---------- CHECKS (minder druk) ---------- */
-.check{
-  background: rgba(16,19,26,.02);
-  border: 1px solid rgba(16,19,26,.10);
-  font-weight: 850;
-}
-
-/* ---------- CATEGORIE BLOKKEN (LUXE FOTO KAARTEN) ---------- */
-.catCard{
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 18px 36px rgba(0,0,0,.12);
-  padding: 0;
-}
-
-.catCard__image{
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-.catCard__image img{
-  width:100%;
-  height:100%;
-  object-fit: cover;
-  display:block;
-}
-
-/* actieve categorie extra premium */
-.catCard--active{
-  outline: 2px solid rgba(216,181,91,.45);
-  box-shadow: 0 22px 44px rgba(216,181,91,.22);
-}
-
-/* binnenkort rustiger */
-.catCard--soon{
-  opacity:.6;
-  filter: grayscale(.15);
-}
-
-/* ---------- PAKKETTEN RUSTIGER ---------- */
-.pkg{
-  border-radius: 20px;
-  box-shadow: 0 14px 28px rgba(0,0,0,.08);
-}
-
-.pkg__name{
-  font-weight: 950;
-}
-
-.pkg__price{
-  font-weight: 950;
-}
-
-/* ---------- BUTTONS (LUXE GOUD) ---------- */
-.btn--gold,
-.btn--primary{
-  background: linear-gradient(180deg, #e0bf66, #c9a63a);
-  color:#111;
-  box-shadow: 0 10px 24px rgba(201,166,58,.45);
-}
-
-.btn--ghost{
-  border: 1px solid rgba(16,19,26,.12);
-  background: transparent;
-  font-weight: 850;
-}
-
-/* ---------- FOOTER RUST ---------- */
-.footer{
-  border-top: 1px solid rgba(16,19,26,.10);
-  padding-top: 18px;
-}
-
-/* =========================================================
-   EXAMENS PAGINA — ZELFDE LUXE LOOK ALS HOME
-   ========================================================= */
-
-/* hero afbeelding */
-.exam-hero-image img{
-  border-radius: 24px;
-  box-shadow: 0 26px 60px rgba(0,0,0,.35);
-}
-
-/* 15 examens badge (rustig & goud) */
-.exam-count{
-  display:inline-block;
-  margin: 16px auto 22px;
-  padding: 8px 18px;
-  border-radius:999px;
-  background: rgba(216,181,91,.18);
-  border:1px solid rgba(216,181,91,.35);
-  font-weight:900;
-  color:#2A2416;
-}
-
-/* exam kaarten */
-.examItem{
-  border-radius: 20px;
-  background: linear-gradient(180deg,#ffffff,#faf7ef);
-  border: 1px solid rgba(216,181,91,.22);
-  box-shadow: 0 14px 30px rgba(0,0,0,.08);
-}
-
-.examItem__title{
-  font-weight:950;
-}
-
-.examItem__meta{
-  color: var(--muted);
-  font-weight: 800;
-}
-
-/* start knop */
-.examItem__start{
-  background: linear-gradient(180deg,#e0bf66,#c9a63a);
-  color:#111;
-  font-weight:950;
-  border-radius:999px;
-  box-shadow:0 10px 24px rgba(201,166,58,.45);
-}
-
-/* =========================================================
-   EXAMEN PAGINA — ZELFDE LUXE RUST ALS EXAMENS
-   ========================================================= */
-
-/* bovenbalk mooier (geen blauwe tekst) */
-body.examPage .topbar{
-  background: rgba(11,13,18,.97);
-  border-bottom:1px solid rgba(216,181,91,.25);
-}
-
-/* titel vervangen gevoel: logo-achtig */
-body.examPage .examTop__title{
-  font-weight: 950;
-  letter-spacing:.2px;
-}
-
-/* timer luxe pill */
-body.examPage .pillTimer{
-  background: rgba(216,181,91,.15);
-  border:1px solid rgba(216,181,91,.35);
-  color:#fff;
-  font-weight:950;
-}
-
-/* exam card */
-body.examPage .examCard{
-  border-radius: 24px;
-  box-shadow: 0 26px 60px rgba(0,0,0,.18);
-  border:1px solid rgba(216,181,91,.22);
-}
-
-/* afbeelding NOOIT snijden */
-body.examPage .examMedia img{
-  object-fit: contain !important;
-  background:#0B0D12;
-}
-
-/* vraagtekst rustiger */
-#questionText{
-  font-size:1.35rem;
-  font-weight:900;
-}
-
-/* antwoorden luxe */
-body.examPage .answer{
-  border-radius: 18px;
-  background: linear-gradient(180deg,#ffffff,#fbfbfc);
-  border:1px solid rgba(16,19,26,.12);
-  box-shadow:0 10px 22px rgba(0,0,0,.06);
-}
-
-body.examPage .answer.selected{
-  background: rgba(216,181,91,.12);
-  border-color: rgba(216,181,91,.55);
-}
-
-body.examPage .answer.correct{
-  background: rgba(46,204,113,.10);
-}
-
-body.examPage .answer.wrong{
-  background: rgba(231,76,60,.10);
-}
-
-/* uitlegblok luxe */
-.explain{
-  border-radius: 18px;
-  font-weight: 850;
-}
-
-/* onderkant rustiger */
-.examFooter{
-  border-top:1px solid rgba(16,19,26,.12);
-  padding-top:14px;
-}
-
-/* =========================
-   LUXE OVERRIDE – GEEFGAS
-   ========================= */
-
-.hero--lux {
-  text-align: center;
-  padding: 42px 26px;
-  background: linear-gradient(180deg,#FBF7ED,#F5F6F8);
-}
-
-.hero__badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 13px;
-  background: #F2E8CC;
-  color: #6B5600;
-  margin-bottom: 16px;
-}
-
-.hero__title {
-  font-size: 30px;
-  line-height: 1.25;
-  margin-bottom: 12px;
-}
-
-.hero__text {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 26px;
-}
-
-.hero__checks {
-  margin-top: 18px;
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  font-weight: 700;
-  color: #333;
-}
-
-.btn--xl {
-  padding: 14px 26px;
-  font-size: 16px;
-}
-
-.sectionTitle {
-  font-size: 22px;
-  margin-bottom: 4px;
-}
-
-.sectionSub {
-  color: #777;
-  margin-bottom: 16px;
-}
-
-.catGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-}
-
-.catCard {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12);
-}
-
-.catCard img {
-  width: 100%;
-  display: block;
-}
-
-.catOverlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 14px;
-  background: linear-gradient(transparent,rgba(0,0,0,.6));
-  color: #fff;
-  font-weight: 800;
-  font-size: 18px;
-}
-
-.catCard--soon {
-  opacity: .5;
-}
-
-.footer {
-  margin-top: 40px;
-  padding: 26px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #777;
-}
-
-/* =========================================================
-   GEEF GAS — HOME LUXE CLEAN OVERRIDE (onderaan plakken)
-   Doel: minder drukte, meer premium spacing + focus
-   ========================================================= */
-
-.hero--clean .hero__text--short{
-  max-width: 52ch;
-}
-
-.hero__checks--mini{
-  margin-top: 14px;
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-  align-items:flex-start;
-}
-
-.hero__checks--mini .check{
-  padding: 10px 12px;
-  border-radius: 16px;
-  box-shadow: 0 10px 22px rgba(16,19,26,.05);
-}
-
-/* categorie cards iets strakker */
-.catCard{
-  box-shadow: 0 16px 30px rgba(16,19,26,.08);
-}
-.catCard__image{
-  aspect-ratio: 16 / 10;
-}
-
-/* pakketten: iets meer luxe rust */
-.pkg{
-  border-radius: 20px;
-  background:
-    radial-gradient(600px 160px at 80% 0%, rgba(216,181,91,.12), transparent 60%),
-    linear-gradient(180deg,#ffffff,#fbfbfc);
-  box-shadow: 0 14px 28px rgba(16,19,26,.08);
-}
-.pkg__name{ letter-spacing: -.2px; }
-.pkg__desc{ opacity: .9; }
-
-/* pillen wat rustiger (minder “druk”) */
-.pill{
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 850;
-}
-
-/* Direct starten knop extra premium */
-.btn--primary{
-  border-radius: 999px;
-  padding: 1rem 1.1rem;
-  box-shadow: 0 18px 38px rgba(16,19,26,.18);
-}
-
-/* disclaimer compacter & rustiger */
-.note--compact{
-  margin-top: 14px;
-  padding: 12px 12px;
-  font-weight: 800;
-  border-radius: 18px;
-  color: #2A2416;
-}
-
-/* footer clean */
-.footer--clean{
-  padding-top: 18px;
-}
-.footer--clean .footer__muted{
-  font-weight: 800;
-}
-
-/* Verberg disclaimer onder pakketten (CBR-tekst) */
-.note,
-.note--compact{
-  display: none !important;
-}
-
-/* Luxe trust-blok onder pakketten */
-.note{
-  background: linear-gradient(135deg, #fbf6e9, #f3ead2);
-  border: 1px solid #e6d7ab;
-  color: transparent; /* originele tekst verbergen */
-  position: relative;
-  padding: 28px 22px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.06);
-}
-
-/* Premium boodschap */
-.note::after{
-  content: "Gemaakt voor kandidaten die in één keer willen slagen.";
-  color: #1a1a1a;
-  font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: .25px;
-  display: block;
-}
-
-/* ===== LUXE NORM NOTE (examen.html) ===== */
-body.examPage .ggNormNote{
-  text-align:center;
-  padding: 14px 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(185,146,46,.26);
-  background: linear-gradient(180deg, rgba(216,181,91,.14), rgba(216,181,91,.08));
-  box-shadow: 0 12px 26px rgba(16,19,26,.08);
-  font-weight: 900;
-  color: #1a1a1a;
-}
-
-/* ===== EXAM: geen scroll / vast scherm ===== */
-body.examPage{
-  height: 100vh;
-  overflow: hidden;        /* voorkomt scroll */
-}
-
-body.examPage .page{
-  height: calc(100vh - 64px); /* 64px = approx hoogte topbar */
-  overflow: hidden;
-}
-
-body.examPage .page__inner{
-  height: 100%;
-}
-
-/* Zorg dat de examCard binnen het scherm blijft */
-body.examPage .examCard{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Alleen de BODY (met antwoorden) mag scrollen als het echt niet past */
-body.examPage .examBody{
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Foto blok blijft vast */
-body.examPage .examMedia{
-  flex: 0 0 auto;
-}
-
-/* ================================
-   EXAMEN = APP-MODE (GEEN SCROLL)
-   ================================ */
-
-body.examPage,
-body.examPage html {
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-/* voorkom bounce / pull-down op mobiel */
-body.examPage {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-}
-
-/* alleen de inhoud mag scrollen ALS het nodig is */
-body.examPage .examBody {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 120px);
-}
-
-/* === TOPBAR BRAND: logo iets groter + luxer === */
-.topbar .brand{
-  gap: 10px;
-}
-
-.topbar .brand__logo{
-  height: 34px;          /* was vaak ~22-26px */
-  width: auto;
-  display: block;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
-}
-
-/* iPhone: nog nét iets groter */
-@media (max-width: 420px){
-  .topbar .brand__logo{ height: 36px; }
-}
-
-/* Desktop/tablet: iets rustiger */
-@media (min-width: 900px){
-  .topbar .brand__logo{ height: 32px; }
-}
-
-/* Als je de naam wél gebruikt, ook netter */
-.topbar .brand__name{
-  font-weight: 900;
-  letter-spacing: .2px;
 }
