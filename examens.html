@@ -14,12 +14,12 @@
 <!-- HEADER -->
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="index.html">
+    <a class="brand" href="index.html" aria-label="GeefGas Home">
       <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas logo">
       <span class="brand__name">GeefGas</span>
     </a>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Hoofdmenu">
       <a class="nav__link" href="index.html">Home</a>
       <a class="nav__link" href="instellingen.html">Instellingen</a>
     </nav>
@@ -31,20 +31,21 @@
   <div class="container page__inner">
 
     <!-- HERO AFBEELDING -->
-    <section class="exam-hero-image">
+    <section class="exam-hero-image" aria-label="Taxi examens banner">
       <img
         src="assets/taxi-examens.PNG"
         alt="Taxi examens – GeefGas"
+        loading="eager"
       >
     </section>
 
     <!-- BADGE -->
-    <div class="exam-count-wrapper">
-      <div class="exam-count">15 examens</div>
+    <div class="exam-count-wrapper" aria-label="Aantal examens">
+      <div class="exam-count" id="examCount">— examens</div>
     </div>
 
     <!-- EXAMENS -->
-    <section>
+    <section aria-label="Examenlijst">
       <div id="examList"></div>
     </section>
 
@@ -55,34 +56,54 @@
 <script>
 (function () {
   const listEl = document.getElementById("examList");
+  const countEl = document.getElementById("examCount");
 
-  const exams =
-    window.EXAM_DATA &&
-    Array.isArray(window.EXAM_DATA.exams)
-      ? window.EXAM_DATA.exams.filter(e => e.category === "Taxi")
-      : [];
+  const data = window.EXAM_DATA;
+  const all = (data && Array.isArray(data.exams)) ? data.exams : [];
 
-  if (!exams.length) {
-    listEl.innerHTML = "<p class='muted'>Geen examens gevonden.</p>";
+  // Alleen Taxi
+  const exams = all.filter(e => String(e.category).toLowerCase() === "taxi");
+
+  // Badge altijd correct
+  countEl.textContent = `${exams.length} examens`;
+
+  // Als exam-data.js niet goed geladen is
+  if (!all.length) {
+    listEl.innerHTML = "<p class='muted'>Examendata niet gevonden. Controleer of <strong>exam-data.js</strong> goed geladen wordt.</p>";
     return;
   }
 
+  if (!exams.length) {
+    listEl.innerHTML = "<p class='muted'>Geen taxi examens gevonden.</p>";
+    return;
+  }
+
+  // Sort: Examen 1..15 op basis van nummer in id
+  exams.sort((a,b) => {
+    const an = Number(String(a.id).match(/\\d+/)?.[0] || 9999);
+    const bn = Number(String(b.id).match(/\\d+/)?.[0] || 9999);
+    return an - bn;
+  });
+
+  // Render cards
   exams.forEach(exam => {
     const card = document.createElement("div");
     card.className = "examItem";
 
+    const qCount = Array.isArray(exam.questions) ? exam.questions.length : 0;
+    const mins = Number(exam.durationMinutes || 30);
+
     card.innerHTML = `
       <div class="examItem__head">
         <div>
-          <div class="examItem__title">${exam.title}</div>
+          <div class="examItem__title">${exam.title || "Examen"}</div>
           <div class="examItem__meta">
-            ${exam.questions.length} vragen •
-            ${exam.durationMinutes} min
+            ${qCount} vragen • ${mins} min
           </div>
         </div>
       </div>
 
-      <button class="examItem__start">
+      <button class="examItem__start" type="button" aria-label="Start ${exam.title || "examen"}">
         Start
       </button>
     `;
