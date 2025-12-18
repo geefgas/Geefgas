@@ -945,3 +945,125 @@ body.examPage .examFooter{
     font-size: 1.00rem !important;
   }
 }
+
+/* =========================================================
+   EXAMEN – FINAL FIX (vast scherm, header zwart, foto past, footer compact)
+   Plak HELEMAAL ONDERAAN styles.css
+   ========================================================= */
+
+:root{
+  --ggTopbarH: 64px; /* header hoogte */
+}
+
+/* 1) Hele pagina vast: GEEN scroll */
+html, body{ height: 100%; }
+body.examPage{
+  height: 100dvh;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+/* 2) Header altijd boven, volledig zwart */
+body.examPage .topbar{
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 5000;
+  background: #0B0D12 !important;   /* volledig zwart */
+  border-bottom: 1px solid rgba(216,181,91,.18);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 3) Pagina start lager (niet onder header) */
+body.examPage .page{
+  height: 100dvh;
+  overflow: hidden !important;
+  padding-top: calc(var(--ggTopbarH) + 12px) !important; /* << lager */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+}
+
+/* 4) Binnenruimte vult exact de rest van het scherm */
+body.examPage .page__inner{
+  height: calc(100dvh - var(--ggTopbarH) - 24px - env(safe-area-inset-bottom)) !important;
+  overflow: hidden !important;
+}
+
+/* 5) Exam card vult de beschikbare hoogte */
+body.examPage .examCard{
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+}
+
+/* 6) FOTO: altijd volledig zichtbaar en NIET onder header */
+body.examPage .examMedia{
+  flex: 0 0 auto;
+  height: clamp(160px, 24dvh, 240px) !important; /* compacter zodat alles past */
+  background: #0B0D12 !important;
+  overflow: hidden !important;
+  border-bottom: 1px solid rgba(185,146,46,.16);
+}
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;   /* nooit half/crop */
+  object-position: center !important;
+  display: block;
+}
+
+/* 7) Exam body: vast, geen scroll */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  overflow: hidden !important;      /* GEEN scroll */
+  display: flex;
+  flex-direction: column;
+  padding: 16px !important;
+}
+
+/* 8) Maak het doel-blok compacter (scheelt ruimte) */
+body.examPage #goalBox.note{
+  margin-top: 10px !important;
+  padding: 10px 12px !important;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* 9) Footer: compacter + altijd zichtbaar + blokkeert antwoorden niet */
+body.examPage .examFooter{
+  margin-top: auto; /* duwt footer naar onder */
+  padding-top: 10px !important;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+  border-top: 1px solid rgba(16,19,26,.10);
+  background: #fff;
+  box-shadow: 0 -10px 25px rgba(0,0,0,.06);
+}
+
+/* 10) Knoppen netjes op één lijn (iPad fix) */
+body.examPage .examFooter{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+body.examPage #prevBtn,
+body.examPage #nextBtn{
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+/* 11) Extra compact op kleinere hoogtes (voorkomt dat C wegvalt) */
+@media (max-height: 740px){
+  body.examPage .examMedia{
+    height: clamp(130px, 20dvh, 190px) !important;
+  }
+  body.examPage .answer{
+    padding: 12px 12px !important;
+    font-size: 1.02rem !important;
+  }
+  body.examPage #questionText{
+    font-size: 1.16rem !important;
+    margin: 6px 0 8px !important;
+  }
+  /* Als het nóg krap is: doelblok verbergen (zodat antwoorden nooit verdwijnen) */
+  body.examPage #goalBox{ display: none !important; }
+}
