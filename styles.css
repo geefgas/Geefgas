@@ -33,7 +33,6 @@
    ========================================================= */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
-
 body.theme{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -83,7 +82,6 @@ a{ color:inherit; text-decoration:none; }
   min-width: 150px;
 }
 
-/* ✅ Logo groter + luxe shadow */
 .brand__logo{
   height: 34px;
   width:auto;
@@ -176,7 +174,6 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(0,0,0,.15);
 }
 
-/* responsive nav */
 @media (max-width: 720px){
   .nav{ display:none; }
   .nav__mobile{ display:block; }
@@ -195,78 +192,6 @@ a{ color:inherit; text-decoration:none; }
   border-radius: 22px;
   box-shadow: 0 18px 44px rgba(16,19,26,.10);
   padding: 16px;
-}
-
-/* =========================================================
-   HERO (HOME)
-   ========================================================= */
-.hero{
-  position: relative;
-  overflow:hidden;
-  border-radius: 24px;
-  border: 1px solid rgba(16,19,26,.10);
-  box-shadow: 0 24px 58px rgba(16,19,26,.12);
-  background:
-    radial-gradient(1100px 420px at 85% 5%, rgba(216,181,91,.22), transparent 60%),
-    radial-gradient(900px 380px at 10% 0%, rgba(11,13,18,.06), transparent 58%),
-    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-}
-
-.hero__badge{
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(185,146,46,.28);
-  background: rgba(216,181,91,.12);
-  color:#2A2416;
-  font-weight: 950;
-  font-size: .92rem;
-  box-shadow: 0 10px 26px rgba(185,146,46,.10);
-}
-
-.hero__title{
-  margin: 12px 0 10px;
-  font-size: clamp(1.55rem, 4.4vw, 2.05rem);
-  line-height: 1.12;
-  letter-spacing: -.55px;
-}
-
-.hero__text{
-  margin:0;
-  color: rgba(90,98,114,.95);
-  font-weight: 780;
-  line-height: 1.65;
-  max-width: 52ch;
-  font-size: 1.02rem;
-}
-
-.hero__actions{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-}
-
-.hero__checks{
-  margin-top: 14px;
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.check{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding: 10px 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(16,19,26,.10);
-  background:
-    radial-gradient(420px 120px at 20% 0%, rgba(216,181,91,.16), transparent 60%),
-    rgba(16,19,26,.02);
-  font-weight: 900;
-  box-shadow: 0 12px 24px rgba(16,19,26,.06);
 }
 
 /* =========================================================
@@ -302,18 +227,8 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(16,19,26,.12);
 }
 
-.btn--primary{
-  width: 100%;
-  margin-top: 14px;
-  background: linear-gradient(180deg, #1A1F2A, #0B0D12);
-  color: var(--white);
-  border: 1px solid rgba(11,13,18,.2);
-  border-radius: 999px;
-  box-shadow: 0 18px 38px rgba(16,19,26,.18);
-}
-
 /* =========================================================
-   NOTE (algemeen) — LET OP: wordt ook gebruikt in examen (goalBox)
+   NOTE (algemeen)
    ========================================================= */
 .note{
   margin-top: 14px;
@@ -328,27 +243,7 @@ a{ color:inherit; text-decoration:none; }
   line-height: 1.6;
   box-shadow: 0 16px 34px rgba(185,146,46,.10);
 }
-
-/* ✅ Alleen de “home disclaimer” weg */
 .note--compact{ display:none !important; }
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-.footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  padding: 18px 4px 6px;
-  color: var(--muted);
-  border-top: 1px solid rgba(16,19,26,.08);
-}
-.footer__left{ display:flex; align-items:center; gap: 10px; }
-.footer__logo{ height: 26px; width:auto; opacity:.95; }
-.footer__brand{ font-weight: 950; color: var(--text); }
-.footer__muted{ color: var(--muted); font-weight: 800; }
-.footer__right{ font-weight: 900; }
 
 /* =========================================================
    EXAMENS PAGE (examens.html)
@@ -369,12 +264,35 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* =========================================================
-   EXAM UI (examen.html) — BASE
+   EXAM UI (examen.html)
    ========================================================= */
 body.examPage{
   background:
     radial-gradient(900px 320px at 85% 5%, rgba(216,181,91,.16), transparent 60%),
     var(--bg);
+}
+
+/* ✅ HEADER 100% ZWART (definitief) */
+body.theme.examPage header.topbar,
+body.theme.examPage header.topbar#ggTopbar,
+body.theme.examPage .topbar{
+  background: #000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(255,255,255,.10) !important;
+}
+
+/* Header iets compacter */
+body.theme.examPage .topbar__inner{
+  padding: 8px 0 !important;
+  background: transparent !important;
+}
+
+/* Zorg dat header container nooit schermhoogte krijgt */
+body.theme.examPage header.topbar .container{
+  height: auto !important;
+  overflow: visible !important;
 }
 
 /* Exam card */
@@ -388,19 +306,22 @@ body.examPage{
   flex-direction:column;
 }
 
-/* Media (foto) */
-.examMedia{
+/* Media (foto) — blok + NOOIT crop */
+body.theme.examPage .examMedia{
   width: 100%;
   background: #0B0D12;
-  border-bottom: 1px solid rgba(185,146,46,.16);
+  border-bottom: 1px solid rgba(255,255,255,.06);
   overflow: hidden;
+  /* vaste hoogte zodat de foto “in een blok” zit */
+  height: clamp(170px, 26vh, 280px);
 }
 
-/* IMPORTANT: foto moet VOLLEDIGE breedte pakken + niets afsnijden */
-.examMedia img{
-  width: 100%;
-  height: auto;               /* 🔥 vult breedte, geen crop */
-  display:block;
+body.theme.examPage .examMedia img{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;   /* ✅ nooit afsnijden */
+  object-position: center !important;
+  display: block;
 }
 
 /* Body */
@@ -483,7 +404,7 @@ body.examPage{
 .answer.correct{ border-color: rgba(6,118,71,.40); background: rgba(6,118,71,.08); }
 .answer.wrong{ border-color: rgba(180,35,24,.40); background: rgba(180,35,24,.08); }
 
-/* Footer */
+/* Footer (basis) */
 .examFooter{
   display:flex;
   justify-content:space-between;
@@ -494,119 +415,13 @@ body.examPage{
   border-top: 1px solid rgba(16,19,26,.10);
 }
 
-/* =========================================================
-   iOS Safari safe-area (onderbalk)
-   ========================================================= */
-.examFooter{
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
-  margin-bottom: env(safe-area-inset-bottom);
-}
-body.examPage .examBody{
-  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+/* ✅ iOS Safari safe-area (onderbalk) — GEEN dubbele ruimte */
+body.theme.examPage .examFooter{
+  padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+  margin-bottom: 0 !important; /* 🔥 dit was de extra “balk” */
 }
 
-/* =========================================================
-   EXAMEN — DEFINITIEF STRAK + STABIEL (OVERRIDE)
-   - Header 100% zwart
-   - Foto: 100% breedte, niets afgesneden
-   - Volgende rechts, Vorige links
-   ========================================================= */
-
-/* Header 100% zwart (zonder gradient) */
-body.examPage .topbar{
-  background: #000 !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 1px solid rgba(255,255,255,.10) !important;
-}
-
-/* Header iets compacter */
-body.examPage .topbar__inner{
-  padding: 8px 0 !important;
-}
-
-/* Zorg dat header container nooit schermhoogte krijgt */
-body.examPage header.topbar .container{
-  height: auto !important;
-  overflow: visible !important;
-}
-
-/* Knoppen: Vorige links / Volgende rechts netjes */
-body.examPage .examFooter{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: 24px !important;
-}
-
-body.examPage #prevBtn{
-  min-width: 140px;
-  margin-right: auto;
-  opacity: .85;
-}
-
-body.examPage #nextBtn{
-  min-width: 190px;
-  margin-left: auto;
-  box-shadow: 0 12px 28px rgba(185,146,46,.35);
-}
-
-/* Foto: altijd volle breedte, geen crop */
-body.examPage .examMedia{
-  background:#0B0D12;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  padding: 0;
-}
-
-body.examPage .examMedia img{
-  width: 100% !important;
-  height: auto !important;       /* 🔥 dit zorgt dat hij niet “smaller” wordt door contain */
-  max-width: 100% !important;
-  object-fit: unset !important;  /* geen contain/crop gedrag */
-}
-
-/* Extra strak op kleinere hoogte (optioneel) */
-@media (max-height: 740px){
-  body.examPage #questionText{ font-size: 1.16rem; margin: 6px 0 8px; }
-  body.examPage .answer{ padding: 12px 12px; font-size: 1.02rem; }
-}
-
-/* =========================================================
-   EXAMEN – HARD ZWARTE HEADER + KNOPPEN LINKS/RECHTS (override)
-   Plak HELEMAAL ONDERAAN styles.css
-   ========================================================= */
-
-/* 1) Header echt zwart (geen transparantie/blur/gradient) */
-body.theme.examPage header.topbar,
-body.theme.examPage header.topbar#ggTopbar,
-body.theme.examPage .topbar{
-  background: #000 !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 1px solid rgba(255,255,255,.10) !important;
-}
-
-/* Zorg dat inner niets “terugkleurt” */
-body.theme.examPage .topbar__inner{
-  background: transparent !important;
-}
-
-/* 2) Foto blijft NOOIT afgesneden, en vult de breedte van de balk */
-body.theme.examPage .examMedia{
-  width: 100% !important;
-  overflow: hidden;
-}
-body.theme.examPage .examMedia img{
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;   /* nooit crop */
-  object-position: center !important;
-  display: block;
-}
-
-/* 3) Footer: Vorige links, Volgende rechts (strak) */
+/* Knoppen: Vorige links / Volgende rechts (werkt met jouw <div> wrapper) */
 body.theme.examPage .examFooter > div{
   width: 100% !important;
   display: flex !important;
@@ -614,17 +429,28 @@ body.theme.examPage .examFooter > div{
   gap: 14px !important;
 }
 
-/* Vorige links */
 body.theme.examPage #prevBtn{
   margin-right: auto !important;
+  min-width: 140px;
+  opacity: .85;
 }
 
-/* Volgende rechts */
 body.theme.examPage #nextBtn{
   margin-left: auto !important;
+  min-width: 190px;
+  box-shadow: 0 12px 28px rgba(185,146,46,.35);
 }
 
-/* Optioneel: beide knoppen dezelfde hoogte/strakker */
-body.theme.examPage .examFooter .btn{
-  min-height: 44px;
+/* Kleine schermhoogtes: iets strakker */
+@media (max-height: 740px){
+  body.theme.examPage .examMedia{ height: clamp(140px, 22vh, 220px); }
+  body.theme.examPage #questionText{ font-size: 1.16rem; margin: 6px 0 8px; }
+  body.theme.examPage .answer{ padding: 12px 12px; font-size: 1.02rem; }
+}
+
+/* iPad */
+@media (min-width: 768px){
+  body.theme.examPage #prevBtn{ min-width: 160px; }
+  body.theme.examPage #nextBtn{ min-width: 220px; }
+  body.theme.examPage .examMedia{ height: 300px; }
 }
