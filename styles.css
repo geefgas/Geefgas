@@ -2363,3 +2363,31 @@ body.examPage .examBody {
   -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 120px);
 }
+
+/* === TOPBAR BRAND: logo iets groter + luxer === */
+.topbar .brand{
+  gap: 10px;
+}
+
+.topbar .brand__logo{
+  height: 34px;          /* was vaak ~22-26px */
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+
+/* iPhone: nog nét iets groter */
+@media (max-width: 420px){
+  .topbar .brand__logo{ height: 36px; }
+}
+
+/* Desktop/tablet: iets rustiger */
+@media (min-width: 900px){
+  .topbar .brand__logo{ height: 32px; }
+}
+
+/* Als je de naam wél gebruikt, ook netter */
+.topbar .brand__name{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
