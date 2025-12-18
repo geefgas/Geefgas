@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>GeefGas – Examen</title>
 
-  <!-- iOS "web app" hints (werkt alleen als je via beginscherm opent) -->
+  <!-- iOS "web app" hints (alleen effect als via beginscherm geopend) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0B0D12">
@@ -15,24 +15,34 @@
 
   <style>
     html, body { height: 100%; }
-    body { overscroll-behavior: none; }
+    body { margin:0; overscroll-behavior: none; }
 
     /* Topbar show/hide (optioneel) */
     .ggTopbarHide { transform: translateY(-110%); transition: transform .25s ease; }
     .ggTopbarShow { transform: translateY(0); transition: transform .25s ease; }
 
-    /* Start overlay */
-    #ggFsHint{
-      position: fixed;
-      inset: 0;
-      background: rgba(11,13,18,.92);
-      color: #fff;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
+    /* iOS/Safari: gebruik visualViewport hoogte zodat knoppen niet achter browserbalk vallen */
+    :root{
+      --vvh: 100dvh; /* fallback */
+      --safeBottom: env(safe-area-inset-bottom);
+      --safeTop: env(safe-area-inset-top);
+      --footerPad: 12px;
+      --footerH: 82px; /* reserve, wordt automatisch netjes door sticky */
+    }
+
+    /* Hele pagina vast (geen body scroll) */
+    body.theme.examPage{
+      height: var(--vvh);
+      overflow: hidden;
+    }
+
+    main.page{
+      height: calc(var(--vvh) - 0px);
+      overflow: hidden;
+      padding-bottom: 0 !important;
+    }
+    .page__inner{
+      height: 100%;
     }
 
     /* Timer blok IN de topbar */
@@ -49,6 +59,7 @@
       -webkit-backdrop-filter: blur(10px);
       user-select: none;
       font-variant-numeric: tabular-nums;
+      -webkit-tap-highlight-color: transparent;
     }
     .ggTopTimer__time{
       color: rgba(255,255,255,.92);
@@ -64,49 +75,45 @@
     }
     .ggRings svg{ display:block; }
 
-    /* Alleen de inhoud scrolt, niet de pagina */
-    .ggBodyScroll{
-      max-height: calc(100dvh - 130px);
+    /* Exam card vult scherm */
+    .examCard{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Alleen de inhoud scrolt */
+    .examBody{
+      flex: 1 1 auto;
       overflow: auto;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
+
+      /* ruimte zodat content nooit achter sticky footer valt */
+      padding-bottom: calc(var(--footerH) + var(--footerPad) + var(--safeBottom));
     }
 
-    .ggFadeBottom{ position: relative; }
-    .ggFadeBottom::after{
-      content:"";
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height: 28px;
-      pointer-events:none;
-      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,1));
+    /* Footer altijd klikbaar en boven browser UI */
+    .examFooter{
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      background: #fff;
+
+      /* extra ruimte onderin voor iPhone safe-area */
+      padding-bottom: calc(var(--footerPad) + var(--safeBottom));
+
+      /* beetje “bar” gevoel */
+      box-shadow: 0 -10px 24px rgba(16,19,26,.06);
     }
+
+    /* Fade onderaan weghalen (kan clicks soms irritant maken) */
+    .ggFadeBottom::after{ display:none !important; }
   </style>
 </head>
 
 <body class="theme examPage">
-
-<!-- Start overlay -->
-<div id="ggFsHint">
-  <div>
-    <div style="font-size:22px; font-weight:950; margin-bottom:10px;">
-      Start examen
-    </div>
-    <div style="opacity:.90; font-weight:850; line-height:1.55;" id="ggHintText">
-      Tik op Start om fullscreen te starten
-    </div>
-
-    <div style="margin-top:14px; opacity:.72; font-weight:800; font-size:13px;" id="ggHintSub">
-      Tip: Voeg toe aan beginscherm voor echte app-modus (zonder browserbalk).
-    </div>
-
-    <button type="button" id="ggHintBtn"
-      style="margin-top:18px; padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08); color:#fff; font-weight:900;">
-      Start
-    </button>
-  </div>
-</div>
 
 <header class="topbar ggTopbarShow" id="ggTopbar">
   <div class="container topbar__inner" style="display:flex; align-items:center; gap:12px;">
@@ -148,7 +155,7 @@
       </div>
 
       <!-- CONTENT -->
-      <div class="examBody ggBodyScroll ggFadeBottom" id="examBody">
+      <div class="examBody" id="examBody">
 
         <div class="examMeta">
           <div class="chip" id="chipCategory">Examen</div>
@@ -168,12 +175,12 @@
         <!-- DOEL BLOK -->
         <div class="note" id="goalBox" style="margin-top:14px;"></div>
 
-        <div class="examFooter">
+        <!-- FOOTER (sticky) -->
+        <div class="examFooter" id="examFooter">
           <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
           <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
         </div>
 
-        <div style="height:18px;"></div>
       </div>
     </section>
 
@@ -184,70 +191,30 @@
 (function(){
   const $ = id => document.getElementById(id);
 
-  /* ================= Detect ================= */
-  const ua = navigator.userAgent || "";
-  const isIOS = /iPhone|iPad|iPod/i.test(ua);
-  const isStandalone = window.matchMedia?.("(display-mode: standalone)")?.matches
-    || window.navigator.standalone === true;
+  /* ================= iOS viewport fix (zodat knop niet achter browserbalk valt) ================= */
+  function applyVisualViewport(){
+    const vv = window.visualViewport;
+    const h = vv ? vv.height : window.innerHeight;
+    document.documentElement.style.setProperty("--vvh", h + "px");
 
-  /* ================= Fullscreen behavior ================= */
-  let appStarted = false;
-
-  function requestFullscreenIfPossible(){
-    // iOS Safari: fullscreen API werkt niet “zoals een app”
-    if (isIOS) return;
-
-    const el = document.documentElement;
-    const fn = el.requestFullscreen || el.webkitRequestFullscreen;
-    if (fn) { try { fn.call(el); } catch(e){} }
-  }
-
-  function lockBodyScroll(){
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    window.scrollTo(0,0);
-
-    // kleine trick om browserbalk soms te minimaliseren (niet gegarandeerd)
-    setTimeout(() => window.scrollTo(0, 1), 50);
-    setTimeout(() => window.scrollTo(0, 0), 120);
-  }
-
-  function startAppMode(){
-    if(appStarted) return;
-    appStarted = true;
-    $("ggFsHint").style.display = "none";
-    requestFullscreenIfPossible();
-    lockBodyScroll();
-    hideTopbarSoon();
-  }
-
-  // Hint tekst aanpassen op iOS (belangrijk: Safari kan browserbalk niet forceren verbergen)
-  (function(){
-    const hint = $("ggHintText");
-    const sub = $("ggHintSub");
-
-    if (isIOS && !isStandalone){
-      hint.textContent = "Tik op Start om te beginnen (Safari toont altijd de browserbalk)";
-      sub.textContent = "Voor echte app-modus: Deel ▸ ‘Zet op beginscherm’ en open vanaf je icoon.";
-    } else if (isIOS && isStandalone){
-      hint.textContent = "Tik op Start om te beginnen (app-modus)";
-      sub.textContent = "Tip: Houd je telefoon horizontaal voor foto’s.";
-    } else {
-      hint.textContent = "Tik op Start om fullscreen te starten";
-      sub.textContent = "Tip: Houd je telefoon horizontaal als je foto’s wil zien.";
+    // meet footer hoogte zodat examBody padding altijd klopt
+    const footer = $("examFooter");
+    if (footer){
+      const fh = Math.ceil(footer.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--footerH", fh + "px");
     }
-  })();
+  }
+  applyVisualViewport();
+  window.addEventListener("resize", applyVisualViewport);
+  if (window.visualViewport){
+    window.visualViewport.addEventListener("resize", applyVisualViewport);
+    window.visualViewport.addEventListener("scroll", applyVisualViewport);
+  }
 
-  $("ggHintBtn").addEventListener("click", startAppMode);
-
-  // Anti overscroll bounce (alleen als body locked is)
-  document.addEventListener("touchmove", (e)=>{
-    if (document.body.style.overflow === "hidden") {
-      const scroller = $("examBody");
-      if (scroller && scroller.contains(e.target)) return;
-      e.preventDefault();
-    }
-  }, { passive:false });
+  // pagina niet laten “springen”
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
+  window.scrollTo(0,0);
 
   /* ================= Topbar auto-hide ================= */
   let topbarTimer = null;
@@ -355,12 +322,7 @@
     const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
     const qNr = String(idx + 1).padStart(2,"0");
     const filename = `taxi_e${examNr}_q${qNr}.PNG`;
-
-    // Jij zei: je gooit assets los (root) erin -> dus eerst root proberen
-    return [
-      filename,
-      `assets/${filename}`
-    ];
+    return [ filename, `assets/${filename}` ];
   }
 
   function loadFirstWorkingImage(imgEl, wrapEl, candidates){
@@ -411,6 +373,7 @@
 
     updateHud();
     hideTopbarSoon();
+    applyVisualViewport();
   }
 
   function choose(i){
@@ -444,6 +407,7 @@
     }
 
     hideTopbarSoon();
+    applyVisualViewport();
   }
 
   $("prevBtn").addEventListener("click", ()=>{
