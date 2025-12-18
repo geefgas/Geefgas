@@ -1067,3 +1067,47 @@ body.examPage #nextBtn{
   /* Als het nóg krap is: doelblok verbergen (zodat antwoorden nooit verdwijnen) */
   body.examPage #goalBox{ display: none !important; }
 }
+
+/* =========================================================
+   FINAL TWEAKS – foto perfect + header iets hoger
+   ========================================================= */
+
+/* Header iets hoger (minder verticale ruimte) */
+:root{
+  --ggTopbarH: 56px; /* was ±64px */
+}
+
+body.examPage .topbar__inner{
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* Pagina iets hoger laten starten */
+body.examPage .page{
+  padding-top: calc(var(--ggTopbarH) + 6px) !important;
+}
+
+/* ---------------------------------------------------------
+   FOTO: altijd volledig IN het blok, geen zwarte randen
+   --------------------------------------------------------- */
+body.examPage .examMedia{
+  height: clamp(170px, 26dvh, 260px) !important;
+  background: #0B0D12 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.examPage .examMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;   /* vult hele blok */
+  object-position: center center !important;
+}
+
+/* iPhone / kleinere schermen: iets lager zodat alles past */
+@media (max-height: 740px){
+  body.examPage .examMedia{
+    height: clamp(150px, 22dvh, 210px) !important;
+  }
+}
