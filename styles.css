@@ -927,3 +927,47 @@ body.examPage .examBody{
 body.examPage .btn--gold{
   margin-bottom: env(safe-area-inset-bottom);
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* GEEN SCROLL */
+}
+
+.examPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header blijft boven */
+.topbar {
+  flex: 0 0 auto;
+}
+
+/* Examen neemt ALLE ruimte */
+.page {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card vult scherm */
+.examCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content vast */
+.examBody {
+  flex: 1;
+  overflow: hidden; /* CRUCIAAL */
+}
+
+/* Footer altijd zichtbaar */
+.examFooter {
+  flex: 0 0 auto;
+  padding-bottom: env(safe-area-inset-bottom);
+}
