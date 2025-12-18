@@ -303,7 +303,7 @@ const TAXI_EXAMEN_5 = {
     q(12,"Service","Klant wil stilte. Wat is het beste?",["Blijven praten","Vragen of klant liever stilte heeft en dat respecteren","Klant uitlachen"],1),
     q(13,"Service","Klant wil dat je de airco uitzet maar het beslaat. Wat doe je?",["Airco uitzetten en niets zeggen","Uitleggen dat zicht en veiligheid belangrijk zijn en een compromis zoeken","Ramen dicht en doorrijden zonder zicht"],1),
     q(14,"Service","Wat hoort bij een representatieve taxi?",["Rommel is oké","Schoon en netjes interieur","Alleen een groot logo"],1),
-    q(15,"Service","Wat is het beste als een klant een kwetsbare/passieve houding heeft?",["Snel en hard rijden zodat het klaar is","Rustig en comfortabel rijden en duidelijk communiceren","De klant negeren"],1),
+    q(15,"Service","Wat is het beste als een klant een kwetsbare/passieve houding heeft?",[" Harder rijden zodat het snel voorbij is","Rustig en comfortabel rijden en duidelijk communiceren","De klant negeren"],1),
 
     q(16,"Grenzen","Klant vraagt om onredelijke eisen (bijv. schreeuwt). Wat is het beste?",["Alles toestaan","Rustig grenzen stellen en professioneel blijven","Terugschreeuwen"],1),
     q(17,"Grenzen","Wanneer is ‘stoppen met de rit’ het meest verdedigbaar?",["Bij elke kleine irritatie","Als veiligheid of orde ernstig in gevaar komt en je veilig kunt stoppen","Als klant geen fooi geeft"],1),
@@ -314,11 +314,11 @@ const TAXI_EXAMEN_5 = {
     q(21,"Route/verwachting","Klant zegt: ‘Dit duurt te lang.’ Wat is professioneel?",["‘Niet zeuren.’","Uitleggen (drukte/omleiding) en aangeven dat je veilig rijdt","Gas geven en door rood"],1),
     q(22,"Route/verwachting","Klant denkt dat jij expres omrijdt. Wat is het beste?",["Boos worden","Feitelijk uitleggen (route/drukte) en evt. alternatief bespreken","Klant uitzetten op de snelweg"],1),
     q(23,"Transparantie","Wat helpt het meest tegen discussies onderweg?",["Zwijgen tot aankomst","Vooraf duidelijkheid en onderweg korte updates bij wijzigingen","Altijd zeggen dat alles duur is"],1),
-    q(24,"Transparantie","Wat is professioneel als je iets niet zeker weet (bestemming/ingang)?",["Gokken","Even vragen/confirmatie bij klant","Doorrijden en hopen"],1),
+    q(24,"Transparantie","Wat is professioneel als je iets niet zeker weet (bestemming/ingang)?",["Gokken","Even vragen/bevestigen bij de klant","Doorrijden en hopen"],1),
     q(25,"Transparantie","Wat is een goede manier om misverstanden te voorkomen bij ophalen?",["Nooit bellen","Kort bevestigen: naam/locatie/ingang","Meteen wegrijden als klant niet direct klaar staat"],1),
 
     q(26,"Klanttypes","Wat is het beste bij een klant die veel vragen stelt?",["Irriteren en kortaf zijn","Rustig en duidelijk antwoord geven, zonder afleiding","Alle vragen negeren"],1),
-    q(27,"Klanttypes","Een klant is zenuwachtig (bijv. ziekenhuis). Wat is professioneel?",["Hard remmen en sportief rijden","Rustig, voorspelbaar rijden en geruststellen waar passend","Veel grappen maken over ongeluk"],0),
+    q(27,"Klanttypes","Een klant is zenuwachtig (bijv. ziekenhuis). Wat is professioneel?",["Rustig, voorspelbaar rijden en geruststellen waar passend","Hard remmen en sportief rijden","Veel grappen maken over ongeluk"],0),
     q(28,"Klanttypes","Klant is dronken maar rustig. Wat is het beste?",["Altijd ruzie zoeken","Rustig blijven en grenzen bewaken; veiligheid en hygiëne meewegen","De klant filmen"],1),
     q(29,"Klanttypes","Klant heeft haast voor trein/vlucht. Wat is professioneel?",["Regels overtreden om te ‘helpen’","Uitleggen dat je veilig en volgens regels rijdt","Snelste weg via trottoir nemen"],1),
     q(30,"Klanttypes","Klant is slechthorend. Wat helpt het meest?",["Zachter praten en wegkijken","Duidelijk articuleren en eventueel laten tonen/opschrijven","Snel praten zodat je klaar bent"],1),
@@ -331,7 +331,7 @@ const TAXI_EXAMEN_5 = {
 
     q(36,"Nazorg","Wat is professioneel aan het einde van de rit?",["Zonder kijken wegrijden","Klant kort bedanken en controleren of alles mee is","Klant vragen om review voordat hij uitstapt"],1),
     q(37,"Nazorg","Klant laat iets liggen en belt later. Wat is beste houding?",["Niet opnemen","Helpen volgens procedure en rustig blijven","Zeggen dat het niet jouw probleem is"],1),
-    q(38,"Beeldvorming","Wat beïnvloedt klantbeleving het meest?",["Alleen snelheid","Houding, communicatie, comfort en veiligheid","Alleen het merk auto"],1),
+    q(38,"Beeldvorming","Wat heeft de meeste invloed op hoe een klant de rit ervaart?",["Alleen snelheid","Houding, communicatie, comfort en veiligheid","Alleen het merk auto"],1),
     q(39,"Beeldvorming","Wat is het beste antwoord op: ‘Jij bent onvriendelijk.’?",["‘Dat klopt.’","‘Het spijt me dat het zo overkomt, wat kan ik beter doen?’","‘Dan loop je maar.’"],1),
     q(40,"Samenvatting","Wat is de kern van professioneel klantcontact?",["Klant altijd gelijk geven","Respectvol, duidelijk, rustig en oplossingsgericht blijven","Klant onder druk zetten"],1),
 
