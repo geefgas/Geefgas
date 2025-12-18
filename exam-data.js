@@ -107,8 +107,8 @@ const TAXI_EXAMEN_2 = {
     q(9,"Ritregistratie","Wat is het beste bij twijfel over een handeling in de BCT?",["Zelf iets invullen dat ‘ongeveer’ klopt","Procedure raadplegen/bedrijf vragen en correct handelen","Negeer het tot morgen"],1),
     q(10,"Ritregistratie","Als je iets verkeerd hebt geregistreerd, wat is het meest professioneel?",["Laten staan, niemand merkt het","Corrigeren volgens procedure zodat het herleidbaar klopt","Alles verwijderen"],1),
 
-    q(11,"Storingen","Wat is een storingsprocedure in de praktijk?",["Doorrijden alsof er niets is","Vastgelegde stappen om bij defect toch correct te registreren","Alleen de telefoon uitzetten"],1),
-    q(12,"Storingen","Wat is meestal fout bij een storing?",["Niets doen en hopen dat het weggaat","Handelen zonder registratie/zonder procedure","Rustig melden en procedure volgen"],1),
+    q(11,"Storingen","Wat is een storingsprocedure in de praktijk?",["Doorrijden alsof er niets is","Vastgelegde stappen volgen om bij defect toch correct te registreren","Alleen de telefoon uitzetten"],1),
+    q(12,"Storingen","Wat moet je doen als de BCT (boordcomputer taxi) defect is?",["Niets doen en hopen dat het vanzelf werkt","en tot die tijd handmatig je rij- en rusttijden bijhouden","gewoon doorwerken zonder registratie"],1),
     q(13,"Controle","Bij controle vraagt men om registratie. Wat is juist?",["Je zegt dat je het later wel toont","Je toont/overhandigt wat gevraagd wordt volgens regels","Je toont alleen je pinbon"],1),
     q(14,"Controle","Wat kan controle lastig maken als je administratie rommelig is?",["Het weer","Onverklaarbare gaten/tegenstrijdigheden","Je stoelpositie"],1),
     q(15,"Controle","Wat is de beste houding bij vragen over registratie?",["Kortaf en geïrriteerd","Rustig uitleggen en meewerken","Alles ontkennen"],1),
