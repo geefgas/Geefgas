@@ -237,7 +237,7 @@ const TAXI_EXAMEN_4 = {
 
     q(11,"Planning","Waarom is planning belangrijk voor veilig taxiwerk?",["Voor meer discussies","Om stress en haast te verminderen","Om altijd de langste route te kiezen"],1),
     q(12,"Planning","Je loopt vertraging op. Wat is de beste keuze?",["Regels overtreden om in te halen","Rustig blijven, veilig rijden en zo nodig communiceren","Boos worden op andere weggebruikers"],1),
-    q(13,"Haast","Wat is het grootste gevaar van ‘haast-rijden’?",["Je rijdt zuiniger","Meer fouten, minder overzicht en meer risico","Je maakt minder stops"],1),
+    q(13,"Haast","Wat is het grootste gevaar van ‘gehaast-rijden’?",["Je rijdt zuiniger","Meer fouten, minder overzicht en meer risico","Je maakt minder stops"],1),
     q(14,"Stress","Wat is een goede manier om stress te verlagen tijdens werk?",["Meer appen met collega’s","Rustig ademhalen, pauze pakken en prioriteit geven aan veiligheid","Sneller rijden zodat het voorbij is"],1),
     q(15,"Stress","Welke keuze is het meest professioneel bij hoge werkdruk?",["Veiligheid blijft altijd boven snelheid","Altijd alles aannemen","Nooit pauzeren"],0),
 
@@ -251,12 +251,12 @@ const TAXI_EXAMEN_4 = {
     q(22,"Afstand","Waarom helpt extra volgafstand bij vermoeidheid?",["Omdat je dan harder mag","Je krijgt meer tijd om te reageren","Omdat je sneller aankomt"],1),
     q(23,"Rit aannemen","Je voelt je te moe voor nog een rit. Wat is het beste?",["Toch aannemen voor de omzet","Niet aannemen; veiligheid gaat voor","Aannemen en halverwege stoppen op rijbaan"],1),
     q(24,"Pauze-inhoud","Wat is beter tijdens een pauze om alert te worden?",["Even bewegen en frisse lucht","Blijven zitten en scrollen","Warm eten en meteen door"],0),
-    q(25,"Pauzeduur","Wat is een verstandig uitgangspunt bij vermoeidheid?",["Korte pauze kan al helpen, maar alleen als je daarna weer echt fit bent","Altijd 30 seconden is genoeg","Nooit pauzeren want dat kost tijd"],0),
+    q(25,"Pauzeduur","Wat is een verstandig uitgangspunt bij vermoeidheid?",["Korte pauze kan al helpen, maar alleen als je daarna weer echt fit bent","Altijd 30 seconden rusten is meer dan genoeg","Nooit pauzeren want dat kost tijd"],0),
 
     q(26,"Slaap","Wat is het risico van te weinig slaap meerdere dagen achter elkaar?",["Je went eraan","Cumulatieve vermoeidheid en slechtere prestaties","Je wordt juist beter"],1),
     q(27,"Slaap","Wat is een signaal dat je niet fit genoeg bent om te rijden?",["Je bent wat stiller","Je merkt moeite met focus/ogengevoel zwaar","Je hebt zin in koffie"],1),
     q(28,"Rustmoment","Wanneer is een rustmoment extra belangrijk?",["Na een bijna-incident of schrikmoment","Alleen als klant klaagt","Alleen bij regen"],0),
-    q(29,"Schrikmoment","Na een schrikmoment (bijna-botsing): wat is beste aanpak?",["Doorrijden en vergeten","Even veilig stoppen/ademhalen en pas verder als rustig","Boos achtervolgen"],1),
+    q(29,"Schrikmoment","wat is beste aanpak na een schrikmoment (bijna-botsing)?",["Doorrijden en vergeten","Even veilig stoppen/ademhalen en pas verder gaan als je rustig bent","Boos achtervolgen"],1),
     q(30,"Agressie van buitenaf","Andere weggebruikers provoceren. Wat is het beste?",["Terug provoceren","Rustig blijven en afstand houden","Direct vol gas ernaast"],1),
 
     q(31,"Telefoon/afleiding","Waarom is afleiding extra gevaarlijk bij vermoeidheid?",["Omdat je dan beter oplet","Omdat je aandacht al beperkt is en sneller wegvalt","Omdat je dan zuiniger rijdt"],1),
