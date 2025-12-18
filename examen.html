@@ -13,36 +13,89 @@
   <script src="exam-data.js"></script>
 
   <style>
-    :root{
-      --vvh: 100vh;
-      --topbar-h: 60px;
-      --footer-h: 64px; /* compact */
-    }
+    /* =========================================
+       STABIELE iOS LAYOUT FIX (geen body fixed)
+       ========================================= */
+    html, body { height: 100%; }
+    body { margin:0; overscroll-behavior: none; }
 
-    html, body{
-      height: 100%;
-      margin: 0;
-    }
-
-    /* GEEN SCROLL */
+    /* BELANGRIJK: overschrijf oude "body.examPage { position: fixed; inset:0; }" uit styles.css */
     body.examPage{
-      height: var(--vvh);
-      overflow: hidden !important;
-      overscroll-behavior: none;
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      -webkit-overflow-scrolling: auto;
-      touch-action: manipulation;
+      position: static !important;
+      inset: auto !important;
+      width: auto !important;
+      height: auto !important;
+      overflow: hidden !important;     /* geen pagina-scroll */
+    }
+    html{
+      overflow: hidden !important;     /* geen pagina-scroll */
     }
 
-    /* Timer blok IN de topbar */
+    /* App container: header + content vullen viewport */
+    .ggApp{
+      height: 100dvh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Header altijd zichtbaar (geen hide) */
+    header.topbar{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    /* Content gebied */
+    main.page{
+      padding: 10px 0 0 !important;
+      overflow: hidden;
+    }
+    .page__inner{
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Exam card vult de resterende hoogte */
+    .examCard{
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto; /* media / body / footer */
+      overflow: hidden;
+    }
+
+    /* Afbeelding: op mobiel kleiner zodat knoppen + antwoorden passen */
+    .examMedia{
+      height: clamp(150px, 24vh, 260px) !important;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(16,19,26,.08);
+    }
+
+    /* Body: GEEN scroll. Als het te krap is, maken we spacing kleiner via media queries */
+    #examBody{
+      overflow: hidden;
+      padding: 14px 16px !important;
+    }
+
+    /* Footer altijd zichtbaar en compact */
+    .examFooter{
+      border-top: 1px solid rgba(16,19,26,.08);
+      background: #fff;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom)) !important;
+    }
+    .examFooter .btn{
+      padding: 12px 14px !important;
+      border-radius: 14px !important;
+    }
+
+    /* Timer in topbar */
     .ggTopTimer{
       margin-left: auto;
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 10px;                 /* compacter */
+      padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid rgba(216,181,91,.22);
       background: rgba(11,13,18,.72);
@@ -59,181 +112,101 @@
       min-width: 54px;
       text-align: right;
     }
-    .ggRings{ width:42px; height:42px; display:grid; place-items:center; border-radius:999px; }
+    .ggRings{ width: 40px; height: 40px; display:grid; place-items:center; }
     .ggRings svg{ display:block; }
 
-    main.page{
-      height: calc(var(--vvh) - var(--topbar-h));
-      overflow: hidden;
-      padding-top: 12px;
-      padding-bottom: 0;
-    }
-    .page__inner{ height: 100%; }
-
-    .examCard{
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .examMedia{ flex: 0 0 auto; }
-
-    #examBody{
-      flex: 1 1 auto;
-      overflow: hidden !important;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Maak tekst/ruimte iets compacter zodat C niet verdwijnt */
-    #questionText{
-      margin: 6px 0 10px;
-    }
+    /* Kleinere spacing op kleine iPhones zodat antwoord C niet verstopt */
     @media (max-width: 420px){
-      #questionText{ font-size: 1.14rem; line-height: 1.32; }
-      .answer{ padding: 12px 12px; }
-      .answerKey{ width: 32px; height: 32px; border-radius: 10px; }
-      .answers{ gap: 10px; margin-top: 10px; }
+      #questionText{ font-size: 1.12rem !important; margin: 6px 0 10px !important; }
+      .answers{ gap: 10px !important; }
+      .answer{ padding: 12px 12px !important; font-size: 1.00rem !important; }
+      .answerKey{ width: 32px !important; height: 32px !important; border-radius: 12px !important; }
+      .examMedia{ height: clamp(140px, 22vh, 230px) !important; }
+      #examBody{ padding: 12px 14px !important; }
+      .examFooter{ padding: 10px 14px calc(10px + env(safe-area-inset-bottom)) !important; }
+      .examFooter .btn{ padding: 11px 12px !important; }
     }
-
-    /* FOOTER: fixed + compact + safe-area */
-    .examFooter{
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9999;
-      background: #fff;
-      border-top: 1px solid rgba(16,19,26,.10);
-      padding: 8px 12px calc(env(safe-area-inset-bottom) + 8px); /* compacter */
-      pointer-events: auto;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .examFooter__inner{
-      width: min(1100px, 92vw);
-      margin: 0 auto;
-      display:flex;
-      gap: 10px;
-    }
-    .examFooter__inner > button{
-      flex: 1 1 0;
-      padding: .75rem .9rem;  /* compacter dan default .9rem */
-      border-radius: 14px;
-    }
-
-    /* Zorg dat note/uitleg niet “duwen” buiten beeld */
-    #explainBox{ margin-top: 10px; }
-    #goalBox{ margin-top: 10px !important; }
   </style>
 </head>
 
 <body class="theme examPage">
 
-<header class="topbar" id="ggTopbar">
-  <div class="container topbar__inner" style="display:flex; align-items:center; gap:12px;">
-    <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
-      <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
-      <span class="brand__name" style="display:none;">GeefGas</span>
-    </a>
+<div class="ggApp">
 
-    <button class="ggTopTimer" id="ggTopTimerBtn" type="button" aria-label="Timer en voortgang">
-      <span class="ggRings" aria-hidden="true">
-        <svg width="42" height="42" viewBox="0 0 44 44">
-          <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
-          <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
-          <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
-            stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
-            transform="rotate(-90 22 22)"/>
-          <circle id="ggQRing" cx="22" cy="22" r="13" fill="none"
-            stroke="rgba(216,181,91,.92)" stroke-width="4" stroke-linecap="round"
-            transform="rotate(-90 22 22)"/>
-        </svg>
-      </span>
-      <span class="ggTopTimer__time" id="timerPill">--:--</span>
-    </button>
-  </div>
-</header>
+  <header class="topbar" id="ggTopbar">
+    <div class="container topbar__inner" style="display:flex; align-items:center; gap:12px;">
 
-<main class="page">
-  <div class="container page__inner">
-    <section class="examCard" id="examCard">
+      <a class="brand" id="ggExit" href="examens.html" aria-label="Terug naar examens">
+        <img class="brand__logo" src="assets/geefgas.PNG" alt="GeefGas">
+        <span class="brand__name" style="display:none;">GeefGas</span>
+      </a>
 
-      <div class="examMedia" id="mediaWrap" style="display:none;">
-        <img id="questionImage" alt="Vraag afbeelding">
-      </div>
+      <button class="ggTopTimer" id="ggTopTimerBtn" type="button" aria-label="Timer en voortgang">
+        <span class="ggRings" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 44 44">
+            <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="4"/>
+            <circle cx="22" cy="22" r="13" fill="none" stroke="rgba(216,181,91,.20)" stroke-width="4"/>
+            <circle id="ggTimeRing" cx="22" cy="22" r="18" fill="none"
+              stroke="rgba(255,255,255,.92)" stroke-width="4" stroke-linecap="round"
+              transform="rotate(-90 22 22)"/>
+            <circle id="ggQRing" cx="22" cy="22" r="13" fill="none"
+              stroke="rgba(216,181,91,.92)" stroke-width="4" stroke-linecap="round"
+              transform="rotate(-90 22 22)"/>
+          </svg>
+        </span>
+        <span class="ggTopTimer__time" id="timerPill">--:--</span>
+      </button>
 
-      <div class="examBody" id="examBody">
-        <div class="examMeta">
-          <div class="chip" id="chipCategory">Examen</div>
-          <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container page__inner">
+
+      <section class="examCard">
+
+        <div class="examMedia" id="mediaWrap" style="display:none;">
+          <img id="questionImage" alt="Vraag afbeelding">
         </div>
 
-        <h2 id="questionText">—</h2>
+        <div class="examBody" id="examBody">
 
-        <div class="answers" id="answers"></div>
+          <div class="examMeta">
+            <div class="chip" id="chipCategory">Examen</div>
+            <div class="muted" id="progressText" style="font-weight:900;">Vraag 1</div>
+          </div>
 
-        <div class="explain" id="explainBox" style="display:none;">
-          <div class="explainTitle" id="explainTitle"></div>
-          <div class="explainText" id="explainText"></div>
+          <h2 id="questionText">—</h2>
+
+          <div class="answers" id="answers"></div>
+
+          <div class="explain" id="explainBox" style="display:none;">
+            <div class="explainTitle" id="explainTitle"></div>
+            <div class="explainText" id="explainText"></div>
+          </div>
+
+          <div class="note" id="goalBox" style="margin-top:12px;"></div>
         </div>
 
-        <div class="note" id="goalBox" style="margin-top:14px;"></div>
-      </div>
+        <div class="examFooter">
+          <div style="display:flex; gap:10px; justify-content:space-between; align-items:center;">
+            <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
+            <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
+          </div>
+        </div>
 
-    </section>
-  </div>
-</main>
+      </section>
 
-<div class="examFooter" id="examFooter">
-  <div class="examFooter__inner">
-    <button class="btn btn--ghost" id="prevBtn" type="button">Vorige</button>
-    <button class="btn btn--gold" id="nextBtn" type="button">Volgende</button>
-  </div>
+    </div>
+  </main>
+
 </div>
 
 <script>
 (function(){
   const $ = id => document.getElementById(id);
 
-  /* iPhone Safari: visualViewport hoogte */
-  function setVVH(){
-    const h = (window.visualViewport && window.visualViewport.height)
-      ? window.visualViewport.height
-      : window.innerHeight;
-    document.documentElement.style.setProperty("--vvh", h + "px");
-  }
-
-  function setTopbarH(){
-    const tb = $("ggTopbar");
-    if(!tb) return;
-    document.documentElement.style.setProperty("--topbar-h", Math.ceil(tb.getBoundingClientRect().height) + "px");
-  }
-
-  function setFooterH(){
-    const ft = $("examFooter");
-    if(!ft) return;
-    document.documentElement.style.setProperty("--footer-h", Math.ceil(ft.getBoundingClientRect().height) + "px");
-  }
-
-  function relayout(){
-    setVVH();
-    setTopbarH();
-    setFooterH();
-    fitToViewport();
-  }
-
-  if (window.visualViewport){
-    window.visualViewport.addEventListener("resize", relayout);
-    window.visualViewport.addEventListener("scroll", relayout);
-  }
-  window.addEventListener("resize", relayout);
-
-  /* voorkom dat Safari de pagina alsnog sleept */
-  document.addEventListener("touchmove", (e)=>{ e.preventDefault(); }, { passive:false });
-
-  /* Exit confirm + back protect */
+  /* ================= Exit confirm + back protect ================= */
   $("ggExit").addEventListener("click", (e)=>{
     if(!confirm("Weet je zeker dat je het examen wilt verlaten?")){
       e.preventDefault();
@@ -249,7 +222,7 @@
     }
   };
 
-  /* Helpers */
+  /* ================= Helpers ================= */
   function fmt(sec){
     sec = Math.max(0, Math.floor(sec));
     const m = String(Math.floor(sec/60)).padStart(2,"0");
@@ -269,7 +242,7 @@
     try{ if (navigator.vibrate) navigator.vibrate(ms); }catch(e){}
   }
 
-  /* Load exam */
+  /* ================= Load exam ================= */
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
   const exam = exams.find(e => String(e.id) === String(examId));
@@ -290,12 +263,12 @@
     `<strong>Doel:</strong> Je moet <strong>${pass}</strong> van de <strong>${total}</strong> vragen goed hebben.` +
     ` <span style="opacity:.9;">(Max ${maxFout} fouten)</span>`;
 
-  /* State */
+  /* ================= State ================= */
   let idx = 0;
   let chosen = new Array(total).fill(null);
   let locked = false;
 
-  /* Timer + Rings */
+  /* ================= Timer + Rings ================= */
   const totalTime = Number(exam.durationMinutes || 30) * 60;
   let time = totalTime;
 
@@ -306,9 +279,11 @@
     $("timerPill").textContent = fmt(time);
     const timePct = totalTime ? (time / totalTime) : 0;
     setRing(timeRing, timePct);
+
     const qPct = total ? (idx / total) : 0;
     setRing(qRing, qPct);
   }
+  updateHud();
 
   const timerInt = setInterval(()=>{
     time--;
@@ -317,7 +292,7 @@
     if(time <= 0) finish(true);
   }, 1000);
 
-  /* Images */
+  /* ================= Image naming (ROOT first, fallback assets/) ================= */
   function buildImageCandidates(){
     const examNr = String(exam.id).match(/\d+/)?.[0] || "1";
     const qNr = String(idx + 1).padStart(2,"0");
@@ -330,7 +305,6 @@
     function tryNext(){
       if(i >= candidates.length){
         wrapEl.style.display = "none";
-        fitToViewport();
         return;
       }
       imgEl.onerror = () => { i++; tryNext(); };
@@ -339,27 +313,7 @@
     tryNext();
   }
 
-  /* Fit: alles in 1 scherm */
-  function fitToViewport(){
-    const vvh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--vvh")) || window.innerHeight;
-    const topH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 60;
-    const footerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--footer-h")) || 64;
-
-    const available = vvh - topH - footerH - 10; // marge
-    const card = $("examCard");
-    if(!card) return;
-
-    card.style.height = Math.max(320, available) + "px";
-
-    const media = $("mediaWrap");
-    if(media && media.style.display !== "none"){
-      // iets kleiner zodat antwoorden passen
-      const mediaH = Math.max(130, Math.min(240, Math.floor(available * 0.30)));
-      media.style.height = mediaH + "px";
-    }
-  }
-
-  /* Render */
+  /* ================= Render ================= */
   function render(){
     const q = questions[idx];
     locked = false;
@@ -367,11 +321,13 @@
     $("progressText").textContent = `Vraag ${idx+1} van ${total}`;
     $("questionText").textContent = q.prompt || "";
 
+    // image
     const img = $("questionImage");
     const wrap = $("mediaWrap");
     wrap.style.display = "block";
     loadFirstWorkingImage(img, wrap, buildImageCandidates());
 
+    // answers
     const a = $("answers");
     a.innerHTML = "";
 
@@ -391,7 +347,6 @@
     $("explainBox").style.display = "none";
 
     updateHud();
-    relayout();
   }
 
   function choose(i){
@@ -423,8 +378,6 @@
       $("explainTitle").textContent = (c !== null && i === c) ? "Goed" : "Niet goed";
       $("explainText").textContent = questions[idx].explanation;
     }
-
-    relayout();
   }
 
   $("prevBtn").addEventListener("click", ()=>{
@@ -463,7 +416,6 @@
     location.href = "resultaat.html";
   }
 
-  relayout();
   render();
 })();
 </script>
