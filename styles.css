@@ -2419,3 +2419,44 @@ body {
   padding-bottom: calc(90px + env(safe-area-inset-bottom));
   padding-bottom: calc(90px + constant(safe-area-inset-bottom));
 }
+
+/* ===== Fix: knoppen altijd zichtbaar (ook bij korte content) ===== */
+
+/* container van Vorige/Volgende — pas class aan indien nodig */
+.exam-navigation,
+.navigation-buttons,
+.bottom-navigation {
+  position: sticky;          /* i.p.v. fixed */
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+
+  background: #fff;
+  z-index: 9999;
+
+  /* zorgt dat er visueel 'op' de content ligt zonder overlap-issues */
+  margin-top: 16px;
+}
+
+/* zorg dat er ALTIJD genoeg scrollruimte is zodat Safari kan 'inklappen' */
+html, body {
+  min-height: 100%;
+}
+
+body {
+  padding-bottom: calc(120px + env(safe-area-inset-bottom));
+}
+
+/* Alleen iOS: geef extra “onderruimte” zodat de browserbar nooit overlapt */
+@supports (-webkit-touch-callout: none) {
+  body {
+    padding-bottom: calc(160px + env(safe-area-inset-bottom));
+  }
+}
