@@ -1231,4 +1231,10 @@ body.examPage #nextBtn{
   body.examPage .examMedia{
     height: 300px;
   }
+
+   /* FIX: voorkom dat header .container schermhoogte krijgt */
+body.examPage header.topbar .container{
+  height: auto !important;
+  overflow: visible !important;
+}
 }
