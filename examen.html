@@ -14,10 +14,32 @@
 
   <style>
     /* =========================================
-       STABIELE iOS LAYOUT FIX (geen body fixed)
+       STABIELE iOS LAYOUT FIX + CONSISTENCY LOCK
        ========================================= */
+
     html, body { height: 100%; }
     body { margin:0; overscroll-behavior: none; }
+
+    /* ✅ iOS/Safari: voorkom auto-tekst-schaal verschillen tussen iPhones */
+    body.examPage{
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    /* ✅ Forceer voorspelbare basis typografie binnen exam UI
+       (maakt Dynamic Type / Tekstgrootte minder invloedrijk) */
+    body.examPage,
+    body.examPage .ggApp,
+    body.examPage .examCard,
+    body.examPage #examBody,
+    body.examPage #questionText,
+    body.examPage .answer,
+    body.examPage .btn,
+    body.examPage .chip,
+    body.examPage .ggTopTimer,
+    body.examPage .ggTopTimer__time{
+      font-size: 16px;
+    }
 
     /* BELANGRIJK: overschrijf oude "body.examPage { position: fixed; inset:0; }" uit styles.css */
     body.examPage{
@@ -78,6 +100,20 @@
       padding: 14px 16px !important;
     }
 
+    /* ✅ Vraag iets consistenter/chiquer (stabieler tussen toestellen) */
+    #questionText{
+      font-size: 21px;
+      line-height: 1.42;
+      letter-spacing: -.25px;
+      font-weight: 950;
+    }
+
+    /* ✅ Antwoorden: vaste leesbaarheid (minder afhankelijk van instellingen) */
+    .answer{
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
     /* Footer altijd zichtbaar en compact */
     .examFooter{
       border-top: 1px solid rgba(16,19,26,.08);
@@ -87,6 +123,12 @@
     .examFooter .btn{
       padding: 12px 14px !important;
       border-radius: 14px !important;
+
+      /* ✅ voorkom dat labels wrappen of hoogte verschillen */
+      white-space: nowrap;
+      line-height: 1;
+      font-size: 16px;
+      min-height: 54px;
     }
 
     /* Timer in topbar */
@@ -117,14 +159,14 @@
 
     /* Kleinere spacing op kleine iPhones zodat antwoord C niet verstopt */
     @media (max-width: 420px){
-      #questionText{ font-size: 1.12rem !important; margin: 6px 0 10px !important; }
+      #questionText{ font-size: 18px !important; margin: 6px 0 10px !important; }
       .answers{ gap: 10px !important; }
-      .answer{ padding: 12px 12px !important; font-size: 1.00rem !important; }
+      .answer{ padding: 12px 12px !important; font-size: 16px !important; }
       .answerKey{ width: 32px !important; height: 32px !important; border-radius: 12px !important; }
       .examMedia{ height: clamp(140px, 22vh, 230px) !important; }
       #examBody{ padding: 12px 14px !important; }
       .examFooter{ padding: 10px 14px calc(10px + env(safe-area-inset-bottom)) !important; }
-      .examFooter .btn{ padding: 11px 12px !important; }
+      .examFooter .btn{ padding: 11px 12px !important; min-height: 52px !important; }
     }
   </style>
 </head>
