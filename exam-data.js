@@ -683,8 +683,8 @@ const TAXI_EXAMEN_11 = {
     q(9,"Handhaving","Wat is onprofessioneel bij een controle?",["Beleefd blijven","Agressief/denigrerend reageren","Duidelijk antwoorden"],1),
     q(10,"Handhaving","Wanneer is ‘ik wist het niet’ meestal géén goede verdediging?",["Altijd","Bij regels die je hoort te kennen als chauffeur","Als de klant het vroeg"],1),
 
-    q(11,"Boetes","Hoe voorkom je misverstanden over de kosten het best?",["Pas na afloop praten","Vooraf of zo vroeg mogelijk duidelijkheid geven","Nooit uitleg geven"],1),
-    q(12,"Boetes","Klant wil dat je op een plek stopt waar het verboden is. Wie loopt risico op boete?",["Alleen klant","Jij als bestuurder (en mogelijk bedrijf)","Niemand"],1),
+    q(11,"Boetes","Hoe voorkom je misverstanden over de kosten?",["Pas na afloop praten","Vooraf of zo vroeg mogelijk duidelijkheid geven","Nooit uitleg geven"],1),
+    q(12,"Boetes","Klant wil dat je op een plek stopt waar het verboden is. Wie loopt een risico op een boete?",["Alleen klant","Jij als bestuurder (en mogelijk bedrijf)","Niemand"],1),
     q(13,"Boetes","Wat is professioneel bij een parkeerboete tijdens werk?",["Verstoppen","Melden/registreren volgens bedrijfsafspraak","Op social media zetten"],1),
     q(14,"Boetes","Wat is het beste bij discussie over ‘omrijden’?",["Escaleren","Feitelijk uitleggen en verwijzen naar afspraken/routekeuze","Klant uitlachen"],1),
     q(15,"Boetes","Wat is de grootste fout bij tijdsdruk?",["Rustig blijven","Regels overtreden om tijd in te halen","Vooruit plannen"],1),
@@ -707,17 +707,17 @@ const TAXI_EXAMEN_11 = {
     q(29,"Papierwerk","Wanneer is ‘achteraf invullen uit geheugen’ risicovol?",["Nooit","Omdat fouten sneller ontstaan en controle lastig is","Omdat klanten dat willen"],1),
     q(30,"Papierwerk","Wat is professioneel bij onzekerheid over procedure?",["Zelf iets bedenken","Procedure checken of collega/leiding vragen","Niets doen"],1),
 
-    q(31,"Gedrag & sancties","Waarom kan onprofessioneel gedrag (schelden/dreigen) extra problemen geven?",["Het helpt bij fooi","Het kan klachten en handhaving verergeren","Het is verplicht"],1),
+    q(31,"Gedrag & sancties","Waarom kan onprofessioneel gedrag (schelden/dreigen) extra problemen geven?",["Het is helemaal geen probleem","Het kan leiden tot juridische gevolgen","Het is juist stoer"],1),
     q(32,"Gedrag & sancties","Wat is de beste manier om een conflict te verminderen?",["Stem verheffen","Rustig blijven en grenzen aangeven","Klant provoceren"],1),
     q(33,"Gedrag & sancties","Wat is slim als je merkt dat je emotioneel wordt?",["Doorzetten","Even pauze/ademen en professioneel blijven","Terugpakken op klant"],1),
-    q(34,"Gedrag & sancties","Wat is fout bij klantklachten?",["Doorverwijzen naar procedure","Bewijs vernietigen","Rustig blijven"],1),
+    q(34,"Gedrag & sancties","Wat is fout bij klachten van klanten?",["Doorverwijzen naar procedure","Bewijs vernietigen","Rustig blijven"],1),
     q(35,"Gedrag & sancties","Wat is het beste bij een onterechte beschuldiging?",["Escaleren","Feitelijk blijven en procedure volgen","Klant bedreigen"],1),
 
     q(36,"Praktijkregel","Navigatie stuurt je een verboden straat in. Wat is juist?",["Navigatie gaat altijd voor","Verkeersborden gaan voor","Snel doorrijden"],1),
     q(37,"Praktijkregel","Stoppen op de busbaan ‘heel even’ om klant te laten uitstappen is:",["Altijd toegestaan","Risicovol en meestal verboden; kies veilige plek","Verplicht"],1),
-    q(38,"Praktijkregel","Waarom is ‘ik was maar 1 minuut’ geen goed argument bij fout parkeren?",["Omdat tijd niet telt","Omdat het nog steeds verboden/onveilig kan zijn","Omdat klanten dat willen"],1),
+    q(38,"Praktijkregel","Waarom is ‘ik was maar 1 minuut weg’ geen goed argument bij fout parkeren?",["Omdat tijd niet telt","Omdat het nog steeds verboden/onveilig kan zijn","Omdat klanten dat willen"],1),
     q(39,"Praktijkregel","Wat is het beste als klant jou pusht om te haasten?",["Sneller rijden","Rustig blijven: veiligheid boven tijd","Boos worden"],1),
-    q(40,"Samenvatting","Wat is de kern van ‘juridisch slim’ taxiwerken?",["Regels buigen voor klant","Volgens regels werken, feiten vastleggen, professioneel blijven","Alles mondeling doen"],1),
+    q(40,"Samenvatting","Wat is de kern van ‘juridisch slim’ werken?",["Regels overtreden voor een klant","Volgens regels werken, feiten vastleggen, professioneel blijven","Alles mondeling doen"],1),
 
   ]
 };
