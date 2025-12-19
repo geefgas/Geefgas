@@ -736,21 +736,21 @@ const TAXI_EXAMEN_12 = {
   questions: [
 
     q(1,"Tarieven","Wat is het meest professioneel als een klant vóór vertrek vraagt: ‘Wat gaat dit ongeveer kosten?’",["Zeggen: ‘geen idee’","Een eerlijke indicatie geven en uitleggen waarvan het afhangt","Een willekeurig laag bedrag noemen"],1),
-    q(2,"Tarieven","Wat voorkomt de meeste tariefdiscussies?",["Geen uitleg geven","Vooraf heldere afspraken/indicatie geven","Pas achteraf praten"],1),
+    q(2,"Tarieven","Wat voorkomt meestal een discussie over tarief?",["Geen uitleg geven","Vooraf heldere afspraken/indicatie geven","Pas achteraf uitleggen"],1),
     q(3,"Tarieven","Klant vraagt om ‘vaste prijs’. Wat is het beste?",["Altijd weigeren","Alleen doen als het duidelijk is en volgens bedrijfsregels/afspraken","Zeggen: ‘we zien wel’"],1),
     q(4,"Tarieven","Wanneer is het slim om extra kosten (tol/parkeren) te benoemen?",["Pas bij aankomst","Zo vroeg mogelijk (liefst vooraf)","Nooit, dat schrikt af"],1),
     q(5,"Tarieven","Klant zegt: ‘Rij om, ik wil langs de supermarkt’. Wat is professioneel?",["Gewoon doen zonder iets te zeggen","Kort afstemmen wat dit betekent voor tijd/prijs","Boos weigeren"],1),
 
     q(6,"Taximeter","Wat is de meest veilige/professionele manier om met meterinstellingen te werken?",["Tijdens het rijden rommelen","Alleen instellen als je stilstaat en volgens procedure","Op gevoel laten staan"],1),
     q(7,"Taximeter","Je merkt dat je meter mogelijk verkeerd staat. Wat doe je?",["Negeert het","Stoppen/handelen volgens procedure vóór je doorrijdt","Achteraf corrigeren op papier"],1),
-    q(8,"Taximeter","Wat is het grootste probleem van ‘meter uit’ rijden zonder afspraak?",["Klant vindt het leuk","Ontransparant en risico op klacht/handhaving","Je rijdt dan zuiniger"],1),
+    q(8,"Taximeter","Wat is het grootste probleem van rijden zonder meter aan zonder overleg? ",["Klant vindt het leuk","Ontransparant en risico op klacht/handhaving","Je rijdt dan zuiniger"],1),
     q(9,"Taximeter","Een klant wil dat je de meter niet aanzet zodat het goedkoper lijkt. Wat is juist?",["Doen, klant bepaalt","Weigeren en volgens regels/afspraken werken","Alleen bij korte rit"],1),
     q(10,"Taximeter","Wat is professioneel als je niet zeker weet of je ‘meter’ of ‘vast tarief’ moet gebruiken?",["Gokken","Vooraf checken (bedrijf/afspraak) en duidelijk communiceren","Pas na afloop vragen"],1),
 
     q(11,"Wachttijd","Klant wil ‘2 minuten’ pinnen/iets halen. Wat is het beste?",["Altijd gratis wachten","Afstemmen of/hoe wachttijd wordt berekend en wat redelijk is","Direct weg rijden zonder iets te zeggen"],1),
     q(12,"Wachttijd","Waarom is wachttijd een gevoelig onderwerp?",["Omdat het altijd verboden is","Omdat klanten snel verrast zijn als het niet is besproken","Omdat het nooit voorkomt"],1),
     q(13,"Wachttijd","Wat is het meest klantvriendelijk als wachten niet kan (drukke plek/veiligheid)?",["Boos worden","Uitleggen en een alternatief bieden (veiligere plek/afspraak)","Klanten laten uitstappen midden op de weg"],1),
-    q(14,"Wachttijd","Klant wil dat je in een verboden zone wacht. Wat doe je?",["Toch blijven staan","Niet doen; kies een toegestane plek of maak andere afspraak","Alarmlichten aan en klaar"],1),
+    q(14,"Wachttijd","Klant wil dat je in een verboden zone wacht. Wat doe je?",["Toch blijven staan","Niet doen; kies een toegestane plek of spreek iets anders af","Alarmlichten aan en klaar"],1),
     q(15,"Wachttijd","Wat is professioneel bij een lange wachttijd door file/brug open?",["Niets zeggen","Klant kort informeren en transparant blijven","Meter uitzetten zonder overleg"],1),
 
     q(16,"Bon","Een klant vraagt om een bon. Wat is juist?",["Dat hoeft nooit","Je verstrekt die volgens werkwijze/afspraken","Alleen bij contant"],1),
@@ -766,7 +766,7 @@ const TAXI_EXAMEN_12 = {
     q(25,"Betaling","Wat is het meest professioneel bij twijfel of betaling is gelukt (pin)?",["Gokken en doorrijden","Controleer transactie en communiceer rustig","Klant beschuldigen"],1),
 
     q(26,"Transparantie","Welke uitspraak is het meest professioneel?",["‘We zien wel wat het kost’","‘Ik geef u een indicatie en licht toe waar het van afhangt’","‘Kost altijd hetzelfde’"],1),
-    q(27,"Transparantie","Wanneer bespreek je routekeuze het liefst?",["Nooit","Bij twijfel of als klant vraagt, kort en rustig","Pas na aankomst"],1),
+    q(27,"Transparantie","Wanneer bespreek je routekeuze het liefst?",["Nooit","Vooraf om discussies te voorkomen","Pas na aankomst"],1),
     q(28,"Transparantie","Klant zegt: ‘Je rijdt expres om’. Wat is het beste?",["Escaleren","Kalm uitleggen (verkeer/veiligheid/afspraken) en transparant blijven","Klant uitlachen"],1),
     q(29,"Transparantie","Wat is een goede manier om misverstanden over tol/parkeren te voorkomen?",["Niet noemen","Vooraf benoemen en akkoord vragen","Achteraf pas zeggen"],1),
     q(30,"Transparantie","Waarom is ‘duidelijkheid’ een onderdeel van klantgerichtheid?",["Omdat klanten anders niet betalen","Omdat het vertrouwen en rust geeft","Omdat het sneller is"],1),
@@ -775,13 +775,13 @@ const TAXI_EXAMEN_12 = {
     q(32,"Praktijkcase","Klant vraagt om ‘kortste route altijd’. Wat is professioneel?",["Altijd blind de kortste route","Uitleg: kortste is niet altijd snel/veilig; kies logisch en stem af bij twijfel","Altijd de langste route"],1),
     q(33,"Praktijkcase","Je moet omrijden door afsluiting. Wat is het beste?",["Niets zeggen","Klant kort informeren en veilige omleiding kiezen","Door de afzetting rijden"],1),
     q(34,"Praktijkcase","Klant vraagt halverwege: ‘Waarom is het bedrag al zo hoog?’",["Boos worden","Rustig uitleggen (afstand/tijd/wachttijd) en transparant blijven","Zeggen: ‘dat is nou eenmaal zo’"],1),
-    q(35,"Praktijkcase","Klant wil ‘even snel’ stop bij pinautomaat in verboden zone. Wat doe je?",["Toch stoppen","Alternatief: veilige/legale plek zoeken","Midden op de busbaan stoppen"],1),
+    q(35,"Praktijkcase","Klant wil ‘even snel’ stoppen bij pinautomaat in een verboden zone. Wat doe je?",["Toch stoppen","Alternatief: veilige/toegestane plek zoeken","Midden op de busbaan stoppen"],1),
 
     q(36,"Service","Wat is professioneel als klant ontevreden is over prijs maar jij hebt alles netjes uitgelegd?",["Discussie winnen","Rustig blijven en verwijzen naar bon/afspraak/procedure","Klant uitschelden"],1),
     q(37,"Service","Wat is slim bij veel toeristen/anderstaligen om tariefmisverstanden te voorkomen?",["Sneller praten","Duidelijk, simpel uitleggen en bevestigen (bestemming/indicatie)","Niets zeggen"],1),
     q(38,"Service","Wat is het beste als je merkt dat jij iets onduidelijk hebt uitgelegd?",["Doen alsof het nooit gebeurde","Corrigeren: kort en eerlijk uitleggen","Klant de schuld geven"],1),
     q(39,"Service","Klant wil een ‘extra korting’ zonder reden. Wat is professioneel?",["Direct toegeven","Beleefd aangeven wat mogelijk is binnen regels/bedrijf","Boos worden"],1),
-    q(40,"Samenvatting","Wat is de kern van professioneel omgaan met prijs in taxiwerk?",["Prijs geheim houden","Transparant, eerlijk en volgens afspraken/regels werken","Altijd de klant laten bepalen"],1),
+    q(40,"Samenvatting","Wat is de kern van professioneel omgaan met prijs tijdens taxiwerkzaamheden?",["Prijs geheim houden","Transparant, eerlijk en volgens afspraken/regels werken","Altijd de klant laten bepalen"],1),
 
   ]
 };
