@@ -2717,3 +2717,74 @@ body.examPage .examBody.is-changing{
   opacity: .6;
   transform: translateY(4px);
 }
+
+/* =========================================================
+   iPhone CONSISTENCY LOCK (examen)
+   Doel: dezelfde look op vrijwel alle iPhones, ongeacht tekstgrootte
+   ========================================================= */
+
+body.examPage{
+  /* iOS tekst-auto-resize uit */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* stabiele viewport op iOS */
+  min-height: 100dvh;
+}
+
+/* Forceer “vaste” typografie in de exam UI */
+body.examPage,
+body.examPage .examCard,
+body.examPage .examBody,
+body.examPage #questionText,
+body.examPage .answer,
+body.examPage .btn,
+body.examPage .chip,
+body.examPage .pillTimer{
+  font-size: 16px; /* basis */
+}
+
+/* Vraag iets groter maar vast (geen iOS scaling) */
+body.examPage #questionText{
+  font-size: 21px;
+  line-height: 1.42;
+}
+
+/* Antwoorden vast en voorspelbaar */
+body.examPage .answer{
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+/* Knoppen vast (geen wrap / geen hoogte-jumps) */
+body.examPage .examFooter .btn{
+  font-size: 16px;
+  line-height: 1;
+  min-height: 54px;
+  white-space: nowrap;
+}
+
+/* Layout: card blijft stabiel binnen viewport */
+body.examPage .page{
+  min-height: calc(100dvh - 64px);
+}
+
+body.examPage .examCard{
+  height: calc(100dvh - 140px); /* topbar + footer */
+  overflow: hidden;
+  display:flex;
+  flex-direction: column;
+}
+
+/* Alleen body scrolt */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+/* Safe-area ruimte onderin (iPhone notch/onderbalk) */
+body.examPage .examBody{
+  padding-bottom: calc(120px + env(safe-area-inset-bottom));
+}
