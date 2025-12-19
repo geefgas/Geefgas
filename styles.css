@@ -2581,3 +2581,63 @@ body.examPage .btn--next:disabled{
 body.examPage .examFooter .btn:active{
   transform: translateY(1px);
 }
+
+/* =========================================
+   EXAM FOOTER — strak afsnijden + hoger
+   ========================================= */
+
+:root{
+  --footerLift: 12px;      /* ≈ 1 cm omhoog */
+  --footerRadius: 20px;
+}
+
+/* 1️⃣ Witte footer: alleen zo hoog als nodig */
+body.examPage .examFooter{
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+
+  background: #fff;
+  border-radius: var(--footerRadius) var(--footerRadius) 0 0;
+
+  /* BELANGRIJK: geen extra hoogte */
+  height: auto;
+  min-height: unset;
+
+  padding: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+
+  /* geen schaduw naar beneden */
+  box-shadow: 0 -10px 30px rgba(16,19,26,.12);
+
+  /* verplaats HELE blok omhoog */
+  transform: translateY(calc(-1 * var(--footerLift)));
+
+  /* snijden exact op rand */
+  overflow: hidden;
+}
+
+/* 2️⃣ Knoppen exact binnen de witte rand */
+body.examPage .examFooter .examNavBtns,
+body.examPage .examFooter{
+  display: flex;
+  gap: 12px;
+}
+
+/* 3️⃣ Knoppen iets hoger en volledig zichtbaar */
+body.examPage .examFooter .btn{
+  min-height: 54px;
+  border-radius: 18px;
+  margin: 0; /* voorkomt extra ruimte */
+}
+
+/* 4️⃣ Content krijgt ruimte zodat niks overlapt */
+body.examPage .examBody{
+  padding-bottom: calc(
+    54px +              /* knophoogte */
+    14px +              /* padding footer */
+    var(--footerLift) + 
+    16px +              /* extra lucht */
+    env(safe-area-inset-bottom)
+  ) !important;
+}
