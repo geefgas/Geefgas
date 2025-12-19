@@ -2641,3 +2641,21 @@ body.examPage .examBody{
     env(safe-area-inset-bottom)
   ) !important;
 }
+
+/* =========================================
+   EXAM FOOTER — nog strakker afsnijden bovenkant
+   ========================================= */
+
+:root{
+  --footerCropTop: 10px;   /* hoeveel wit we boven weg-snijden */
+}
+
+/* Snijd de witte container verder af aan de bovenkant */
+body.examPage .examFooter{
+  padding-top: calc(14px - var(--footerCropTop));
+}
+
+/* Extra zekerheid: knoppen blijven volledig zichtbaar */
+body.examPage .examFooter .btn{
+  margin-top: 0;
+}
