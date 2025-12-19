@@ -2305,10 +2305,7 @@ body.examPage .ggNormNote{
   color: #1a1a1a;
 }
 
-/* ===== EXAM: geen scroll / vast scherm ===== */
-body.examPage{
-  height: 100vh;
-  overflow: hidden;        /* voorkomt scroll */
+
 }
 
 body.examPage .page{
@@ -2339,15 +2336,7 @@ body.examPage .examMedia{
   flex: 0 0 auto;
 }
 
-/* ================================
-   EXAMEN = APP-MODE (GEEN SCROLL)
-   ================================ */
 
-body.examPage,
-body.examPage html {
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
 }
 
 /* voorkom bounce / pull-down op mobiel */
@@ -2459,4 +2448,31 @@ body {
   body {
     padding-bottom: calc(160px + env(safe-area-inset-bottom));
   }
+}
+
+/* =========================================
+   FIX: Vorige/Volgende altijd zichtbaar (iOS/Safari)
+   Plak helemaal onderaan
+   ========================================= */
+
+/* Laat exam page normaal scrollen */
+body.examPage{
+  height: auto !important;
+  overflow: auto !important;
+  position: static !important;
+}
+
+/* Maak ruimte onderin zodat knoppen nooit overlappen */
+body.examPage .examBody{
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Zet de knoppenrij “vast” aan de onderkant van de kaart */
+body.examPage .examFooter{
+  position: sticky;
+  bottom: 0;
+  background: var(--white);
+  z-index: 10;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
