@@ -921,16 +921,16 @@ const TAXI_EXAMEN_14 = {
 
 const TAXI_EXAMEN_15 = {
   id: "taxi-examen-15",
-  title: "Taxi Examen 15 – Klantservice & afhandeling",
+  title: "Taxi Examen 15 – Klantenservice & afhandeling",
   category: "Taxi",
   durationMinutes: 30,
   passMinCorrect: 32,
   questions: [
 
-    q(1,"Klantenservice","Wat is het belangrijkste doel van goede klantservice in taxiwerk?",["Meer fooi","Veilig, prettig en betrouwbaar vervoer","Zo snel mogelijk klaar zijn"],1),
+    q(1,"Klantenservice","Wat is het belangrijkste doel van een goede Klantenservice bij een taxibedrijf?",["Meer fooi","Veilig, prettig en betrouwbaar vervoer","Zo snel mogelijk klaar zijn"],1),
     q(2,"Klantenservice","Wat is een professioneel begin van elke rit?",["Direct wegrijden","Bestemming bevestigen en rustig starten","Eerst bellen"],1),
     q(3,"Klantenservice","Waarom is een rustige houding belangrijk?",["Voor imago","Om escalatie en stress te voorkomen","Omdat klanten dat eisen"],1),
-    q(4,"Klantenservice","Wat is onprofessioneel klantgedrag van de chauffeur?",["Luisteren","Sarcastisch reageren","Duidelijk uitleggen"],1),
+    q(4,"Klantenservice","Wat is een onprofessioneel gedrag naar de klanten toe?",["Luisteren","Sarcastisch reageren","Duidelijk uitleggen"],1),
     q(5,"Klantenservice","Hoe ga je om met een ongeduldige klant?",["Negeren","Rustig blijven en professioneel communiceren","Terug snauwen"],1),
 
     q(6,"Communicatie","Wat is de beste manier om misverstanden te voorkomen?",["Zo weinig mogelijk zeggen","Duidelijk en tijdig communiceren","Pas na afloop uitleggen"],1),
@@ -973,7 +973,7 @@ const TAXI_EXAMEN_15 = {
     q(37,"Ethiek","Wat doe je als een klant iets illegaals vraagt?",["Meewerken","Weigeren en professioneel blijven","Negeren"],1),
     q(38,"Ethiek","Waarom zijn grenzen stellen belangrijk?",["Voor controle","Voor veiligheid en respect","Voor snelheid"],1),
     q(39,"Ethiek","Wat is onethisch gedrag?",["Regels volgen","Misbruik maken van onwetende klanten","Uitleg geven"],1),
-    q(40,"Samenvatting","Wat is de kern van uitstekende klantservice in taxiwerk?",["Altijd gelijk krijgen","Veilig, eerlijk, duidelijk en respectvol handelen","Zo veel mogelijk ritten"],1),
+    q(40,"Samenvatting","Wat is een uitstekende gedrag van een taxichauffeur?",["Altijd gelijk krijgen","Veilig, eerlijk, duidelijk en respectvol handelen","Zo veel mogelijk ritten"],1),
 
   ]
 };
