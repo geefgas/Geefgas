@@ -2593,3 +2593,54 @@ body.examPage .examNavBtns{
 body.examPage .examNavBtns > *{
   flex: 1 1 0;
 }
+
+/* =========================================
+   EXAM LAYOUT — vast + hoger + geen schuiven
+   ========================================= */
+
+/* 1️⃣ Gebruik dynamische viewport (iOS fix) */
+body.examPage{
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* 2️⃣ Pagina als vast frame */
+body.examPage .page{
+  height: calc(100dvh - 64px); /* topbar hoogte */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12px; /* 👉 examen iets hoger */
+}
+
+/* 3️⃣ Exam card vaste positie + vaste hoogte */
+body.examPage .examCard{
+  height: calc(100dvh - 140px); /* topbar + footer */
+  width: 100%;
+  max-width: 1100px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden; /* niks mag buiten bewegen */
+}
+
+/* 4️⃣ Media (foto) blijft vast */
+body.examPage .examMedia{
+  flex: 0 0 auto;
+}
+
+/* 5️⃣ ALLEEN body (vraag/antwoorden) mag scrollen */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  padding-bottom: 24px; /* rust */
+  scrollbar-gutter: stable; /* voorkomt spring bij scrollbar */
+}
+
+/* 6️⃣ Footer blijft vast en beïnvloedt layout niet */
+body.examPage .examFooter{
+  flex: 0 0 auto;
+}
