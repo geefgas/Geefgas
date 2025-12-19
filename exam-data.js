@@ -799,7 +799,7 @@ const TAXI_EXAMEN_13 = {
   passMinCorrect: 32,
   questions: [
 
-    q(1,"Veiligheid","Wat is altijd je eerste verantwoordelijkheid als taxichauffeur?",["Op tijd aankomen","Veiligheid van jezelf, passagiers en anderen","Zo veel mogelijk ritten rijden"],1),
+    q(1,"Veiligheid","Wat is de belangrijkste regel voor een taxichauffeur?",["Op tijd aankomen","Eigen Veiligheid, passagiers en anderen","Zo veel mogelijk ritten rijden"],1),
     q(2,"PAMAN","Waar staat de letter P in PAMAN voor?",["Parkeren","Persoonlijke veiligheid","Professionaliteit"],1),
     q(3,"PAMAN","Wat betekent ‘Andermans veiligheid’?",["Alleen passagiers","Iedereen in en rond de situatie","Alleen collega’s"],1),
     q(4,"PAMAN","Wat is het doel van ‘Markeren’ bij een incident?",["Foto’s maken voor social media","De plek zichtbaar/veilig maken voor anderen","De klant laten schrikken"],1),
@@ -811,8 +811,8 @@ const TAXI_EXAMEN_13 = {
     q(9,"Agressie","Wat doe je als je je onveilig voelt door een passagier?",["Doorrijden en hopen dat het stopt","Veilig stoppen en hulp inschakelen","De deuren op slot doen en doorrijden"],1),
     q(10,"Agressie","Wat is géén professionele reactie bij agressie?",["Kalm blijven","Intimideren of dreigen","Grenzen aangeven"],1),
 
-    q(11,"Ongeval","Je bent betrokken bij een ongeval met letsel. Wat is stap 1?",["Foto’s maken","Zorgen voor veiligheid (PAMAN)","De rit afronden"],1),
-    q(12,"Ongeval","Wanneer mag je een ongevalslocatie verlaten?",["Altijd direct","Pas als veiligheid en afhandeling geregeld zijn","Zodra de klant dat wil"],1),
+    q(11,"Ongeval","Je bent betrokken bij een ongeval met letsel. Wat is stap 1?",["Foto’s maken","Zorgen voor eigen veiligheid (PAMAN)","De rit afronden"],1),
+    q(12,"Ongeval","Wanneer mag je een ongevalslocatie verlaten?",["Altijd direct","Pas als het veili en alles afgehandeld is","Zodra de klant dat wil"],1),
     q(13,"Ongeval","Wat is juist bij een ongeval zonder letsel?",["Doorrijden","Veilig handelen en gegevens uitwisselen","Alleen foto maken"],1),
     q(14,"Ongeval","Waarom is markeren belangrijk bij een ongeval?",["Voor bewijs","Om vervolgincidenten te voorkomen","Voor de verzekering alleen"],1),
     q(15,"Ongeval","Wat doe je als je twijfelt of iemand letsel heeft?",["Niets","Alarmeren en professioneel laten beoordelen","Doorrijden"],1),
@@ -821,28 +821,28 @@ const TAXI_EXAMEN_13 = {
     q(17,"Nood","Wat doe je bij bewusteloosheid van een passagier?",["Afwachten","112 bellen en instructies volgen","Naar bestemming rijden"],1),
     q(18,"Nood","Waarom is kalm blijven cruciaal in noodsituaties?",["Voor de uitstraling","Voor overzicht en juiste beslissingen","Omdat klanten dat verwachten"],1),
     q(19,"Nood","Wat is géén taak van jou bij een medische noodsituatie?",["Hulp inschakelen","Diagnose stellen","Veilig handelen"],1),
-    q(20,"Nood","Wat doe je als een klant weigert hulp maar jij het niet vertrouwt?",["Luisteren en doorrijden","Toch veiligheid vooropstellen en hulp inschakelen","Boos worden"],1),
+    q(20,"Nood","Wat doe je als een klant hulp weigert maar jij het niet vertrouwt?",["Luisteren en doorrijden","Toch veiligheid vooropstellen en hulp inschakelen","Boos worden"],1),
 
     q(21,"Veilig stoppen","Waar stop je bij nood het liefst?",["Midden op de rijbaan","Op een veilige, toegestane plek","Op een kruispunt"],1),
     q(22,"Veilig stoppen","Waarom is een veilige stopplek belangrijk?",["Voor de boete","Voor veiligheid van alle weggebruikers","Voor snelheid"],1),
     q(23,"Veilig stoppen","Wat doe je met alarmlichten bij nood?",["Nooit gebruiken","Gebruiken om zichtbaarheid te vergroten","Alleen ’s nachts"],1),
-    q(24,"Veilig stoppen","Wat is onjuist bij veilig stoppen?",["Rustig handelen","Andere weggebruikers waarschuwen","Paniek veroorzaken"],1),
+    q(24,"Veilig stoppen","Wat is onjuist bij veilig stoppen?",["Rustig handelen","Paniek veroorzaken","Andere weggebruikers waarschuwen"],1),
     q(25,"Veilig stoppen","Wat doe je na veilig stoppen?",["Discussie voeren","Situatie beoordelen en PAMAN volgen","Direct wegrijden"],1),
 
     q(26,"Persoonlijke veiligheid","Wat helpt jouw persoonlijke veiligheid het meest?",["Discussies winnen","Grenzen stellen en procedures kennen","Harder rijden"],1),
     q(27,"Persoonlijke veiligheid","Waarom is nachtwerk extra risicovol?",["Meer klanten","Minder zicht en meer onvoorspelbaarheid","Lagere tarieven"],1),
     q(28,"Persoonlijke veiligheid","Wat doe je als je merkt dat je spanning oploopt?",["Negeren","Rustmoment nemen","Doorpushen"],1),
     q(29,"Persoonlijke veiligheid","Wat is verstandig bij bedreiging?",["Held uithangen","Veiligheid voorop en hulp inschakelen","De klant confronteren"],1),
-    q(30,"Persoonlijke veiligheid","Wat is géén goede veiligheidsmaatregel?",["Voorbereid zijn","Regels kennen","Conflicten opzoeken"],1),
+    q(30,"Persoonlijke veiligheid","Wat is géén goede veiligheidsmaatregel?",["Voorbereid zijn","Conflicten opzoeken","Regels kennen"],1),
 
     q(31,"Nazorg","Waarom is rapporteren na incident belangrijk?",["Voor roddels","Voor opvolging, leren en administratie","Voor social media"],1),
     q(32,"Nazorg","Wat doe je na een heftig incident?",["Direct doorwerken","Rust nemen en melden volgens procedure","Alles vergeten"],1),
     q(33,"Nazorg","Met wie bespreek je een incident?",["Iedereen","Volgens bedrijfsafspraken","Alleen klanten"],1),
     q(34,"Nazorg","Waarom is nazorg ook onderdeel van professionaliteit?",["Omdat het moet","Omdat het helpt veilig te blijven werken","Omdat klanten dat eisen"],1),
-    q(35,"Nazorg","Wat is onprofessioneel na een incident?",["Reflecteren","Melden","Stoer doen en bagatelliseren"],1),
+    q(35,"Nazorg","Wat is onprofessioneel na een incident?",["Reflecteren","Stoer doen en bagatelliseren","Melden"],1),
 
     q(36,"Verkeer","Klant zegt: ‘Rij sneller, ik ben te laat’. Wat doe je?",["Toegeven","Veilig blijven en regels volgen","Door rood rijden"],1),
-    q(37,"Verkeer","Waarom blijven verkeersregels gelden bij stress?",["Voor boetes","Voor veiligheid","Voor planning"],1),
+    q(37,"Verkeer","Waarom blijven verkeersregels gelden bij stres?",["Voor boetes","Voor veiligheid","Voor planning"],1),
     q(38,"Verkeer","Wat is de beste reactie op druk van de klant?",["Discussie","Rustige uitleg en veiligheid voorop","Negeren"],1),
     q(39,"Verkeer","Wat is het grootste risico bij toegeven aan druk?",["Tijdverlies","Onveilige situaties","Lagere fooi"],1),
     q(40,"Samenvatting","Wat is de kern van veilig taxiwerk?",["Snelheid","Veiligheid, rust en professioneel handelen","Altijd toegeven"],1),
