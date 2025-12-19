@@ -683,7 +683,7 @@ const TAXI_EXAMEN_11 = {
     q(9,"Handhaving","Wat is onprofessioneel bij een controle?",["Beleefd blijven","Agressief/denigrerend reageren","Duidelijk antwoorden"],1),
     q(10,"Handhaving","Wanneer is ‘ik wist het niet’ meestal géén goede verdediging?",["Altijd","Bij regels die je hoort te kennen als chauffeur","Als de klant het vroeg"],1),
 
-    q(11,"Boetes","Wat voorkomt misverstanden over kosten het best?",["Pas na afloop praten","Vooraf of zo vroeg mogelijk duidelijkheid geven","Nooit uitleg geven"],1),
+    q(11,"Boetes","Hoe voorkom je misverstanden over de kosten het best?",["Pas na afloop praten","Vooraf of zo vroeg mogelijk duidelijkheid geven","Nooit uitleg geven"],1),
     q(12,"Boetes","Klant wil dat je op een plek stopt waar het verboden is. Wie loopt risico op boete?",["Alleen klant","Jij als bestuurder (en mogelijk bedrijf)","Niemand"],1),
     q(13,"Boetes","Wat is professioneel bij een parkeerboete tijdens werk?",["Verstoppen","Melden/registreren volgens bedrijfsafspraak","Op social media zetten"],1),
     q(14,"Boetes","Wat is het beste bij discussie over ‘omrijden’?",["Escaleren","Feitelijk uitleggen en verwijzen naar afspraken/routekeuze","Klant uitlachen"],1),
