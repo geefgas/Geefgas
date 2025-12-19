@@ -865,7 +865,7 @@ const TAXI_EXAMEN_14 = {
 
     q(1,"Wetgeving","Wat is het belangrijkste doel van taxiwet- en regelgeving?",["Meer winst","Veiligheid, betrouwbaarheid en eerlijkheid in taxivervoer","Alleen administratie"],1),
     q(2,"Wetgeving","Als chauffeur ben je verantwoordelijk voor…",["Alleen klanttevredenheid","Je eigen handelen: veilig en volgens regels werken","Alleen het voertuig"],1),
-    q(3,"Wetgeving","Wat is het risico van ‘regels buigen omdat het rustig is’?",["Geen","Handhaving/boete én onveiligheid","Alleen een waarschuwing"],1),
+    q(3,"Wetgeving","Wat is het risico van ‘regels overtreden omdat het rustig is’?",["Geen risico","Handhaving/boete én onveilige sitatie","Alleen een waarschuwing"],1),
     q(4,"Wetgeving","Wat is het beste bij twijfel over een regel?",["Gokken","Regel checken of navraag doen vóór je handelt","Klant laten kiezen"],1),
     q(5,"Wetgeving","Wat is onprofessioneel bij regels?",["Zorgvuldig handelen","Bewust ‘net doen alsof’ bij controle","Duidelijk communiceren"],1),
 
@@ -875,13 +875,13 @@ const TAXI_EXAMEN_14 = {
     q(9,"ILT","Waarom is ‘meewerken’ verstandig?",["Omdat ILT altijd gelijk heeft","Omdat het escalatie voorkomt en hoort bij professionaliteit","Omdat je dan geen boete kunt krijgen"],1),
     q(10,"ILT","Wat is géén slimme reactie bij controle?",["Kalm blijven","Agressief reageren","Duidelijk antwoorden"],1),
 
-    q(11,"Documenten","Waarom zijn documenten/registraties in taxi belangrijk?",["Voor reclame","Voor aantoonbaarheid bij toezicht en administratie","Alleen voor pinbetalingen"],1),
+    q(11,"Documenten","Waarom zijn documenten/registraties in taxi belangrijk?",["Voor reclame","Om aan te kunnen tonen bij toezicht en administratie controlle","Alleen voor pinbetalingen"],1),
     q(12,"Documenten","Wat is de beste gewoonte vóór je dienst?",["Pas checken als er controle is","Kort checken of alles actueel/aanwezig is","Niets checken"],1),
     q(13,"Documenten","Wat is het risico van ‘vergeten’ verplicht document?",["Geen","Boete/handhaving en rit kan stilvallen","Alleen tijdverlies"],1),
     q(14,"Documenten","Wat doe je als je merkt dat een document verlopen is?",["Toch rijden","Niet rijden tot het geregeld is","Alleen korte ritten rijden"],1),
     q(15,"Documenten","Wat is professioneel als klant vraagt of je bevoegd bent?",["Klant uitlachen","Rustig uitleggen en professioneel blijven","Boos worden"],1),
 
-    q(16,"Vergunningen","Wie moet zorgen dat de bedrijfsvoorwaarden voor taxi kloppen?",["Alleen de passagier","De ondernemer/het bedrijf; jij checkt basics vóór je rijdt","Alleen de garage"],1),
+    q(16,"Vergunningen","Wie moet zorgen dat de bedrijfsvoorwaarden voor taxi kloppen?",["Alleen de passagier","De ondernemer/het bedrijf; jij checkt alleen de basiszaken voordat je gaat rijden","Alleen de garage"],1),
     q(17,"Vergunningen","Wat is verstandig als je voor een nieuwe opdrachtgever gaat rijden?",["Blind starten","Eerst checken of je volgens regels mag rijden (afspraken/registratie)","Alleen kijken of er een logo is"],1),
     q(18,"Vergunningen","Wat is het risico van rijden buiten de juiste voorwaarden?",["Alleen slechte review","Handhaving/boete en mogelijk stilzetten","Geen, zolang je veilig rijdt"],1),
     q(19,"Vergunningen","Wat is het beste bij onduidelijke opdracht (bijv. soort vervoer)?",["Toch rijden","Eerst duidelijkheid krijgen wat het is en of het mag","Klant laten bepalen"],1),
@@ -896,7 +896,7 @@ const TAXI_EXAMEN_14 = {
     q(26,"Ritadministratie","Wat is het grootste nut van correcte ritgegevens (tijd/rit/bestemming)?",["Alleen voor navigatie","Controle, administratie en klachtenafhandeling","Alleen voor de klant"],1),
     q(27,"Ritadministratie","Wat is verstandig als je merkt dat een registratie fout is gegaan?",["Verbergen","Corrigeren volgens procedure/afspraken","Niets doen"],1),
     q(28,"Ritadministratie","Waarom is ‘achteraf invullen uit je hoofd’ risicovol?",["Het is sneller","Fouten/handhaving en onbetrouwbare administratie","Het is klantvriendelijk"],1),
-    q(29,"Ritadministratie","Wanneer hoort je registratie ‘bij’ te zijn?",["Alleen bij controle","Doorlopend tijdens het werk","Alleen in de nacht"],1),
+    q(29,"Ritadministratie","Wanneer hoort je registratie aanwezig te zijn?",["Alleen bij controle","Doorlopend tijdens het werk","Alleen in de nacht"],1),
     q(30,"Ritadministratie","Wat is onjuist bij administratie?",["Zorgvuldig bijhouden","Creatief invullen om beter uit te komen","Transparant werken"],1),
 
     q(31,"Tarieven & transparantie","Wat is professioneel bij onduidelijkheid over tarief/prijs?",["Niets zeggen","Vooraf/zo snel mogelijk duidelijk bespreken","Achteraf verrassen"],1),
