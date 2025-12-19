@@ -2644,3 +2644,27 @@ body.examPage .examBody{
 body.examPage .examFooter{
   flex: 0 0 auto;
 }
+
+/* =========================================
+   FIX: footer blokkeert laatste antwoord (C)
+   Plak helemaal onderaan
+   ========================================= */
+
+/* Stel 1 plek in hoeveel de footer “inneemt” */
+:root{
+  --examFooterH: 86px;      /* dezelfde waarde als je footer height */
+  --examFooterLift: 12px;   /* dezelfde waarde als je lift */
+}
+
+/* Maak ALTIJD genoeg ruimte onder de antwoorden */
+body.examPage .examBody{
+  padding-bottom: calc(var(--examFooterH) + var(--examFooterLift) + 28px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Extra zekerheid: laatste antwoord krijgt nog wat marge */
+body.examPage .answers{
+  padding-bottom: 16px;
+}
+body.examPage .answer:last-child{
+  margin-bottom: 22px;
+}
