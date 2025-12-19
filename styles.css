@@ -2532,3 +2532,64 @@ body.examPage .examFooter .btn{
 body.examPage .examBody{
   scrollbar-gutter: stable;
 }
+
+/* =========================================
+   EXAM FOOTER — mooier + iets hoger (floating bar)
+   Plak helemaal onderaan
+   ========================================= */
+
+:root{
+  --examFooterH: 86px;      /* totale hoogte balk */
+  --examFooterLift: 12px;   /* hoeveel hoger hij “zweeft” */
+}
+
+body.examPage .examFooter{
+  /* vast onderin, maar “zwevend” */
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+
+  height: var(--examFooterH);
+  box-sizing: border-box;
+
+  /* mooier: floating card */
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(16,19,26,.10);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(16,19,26,.14);
+
+  /* spacing */
+  padding: 12px 14px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+
+  /* iets hoger */
+  transform: translateY(calc(-1 * var(--examFooterLift)));
+
+  /* center binnen de card */
+  width: calc(100% - 24px);
+  margin: 0 auto;
+}
+
+/* Zorg dat je content nooit onder de zwevende balk verdwijnt */
+body.examPage .examBody{
+  padding-bottom: calc(var(--examFooterH) + var(--examFooterLift) + 20px + env(safe-area-inset-bottom));
+}
+
+/* Knoppen netter: zelfde hoogte, mooie radius */
+body.examPage .examFooter .btn{
+  min-height: 52px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+
+/* Als je knoppen in .examNavBtns staan: gelijke breedte */
+body.examPage .examNavBtns{
+  width: 100%;
+  display:flex;
+  gap: 10px;
+}
+body.examPage .examNavBtns > *{
+  flex: 1 1 0;
+}
