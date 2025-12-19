@@ -621,11 +621,11 @@ const TAXI_EXAMEN_10 = {
 
     q(11,"Brand","Wat doe je bij brand in het voertuig?",["Doorrijden","Stoppen en evacueren","Ramen dicht"],1),
     q(12,"Brand","Wat neem je mee bij evacuatie?",["Bagage","Mensen","Telefoon"],1),
-    q(13,"Brand","Wanneer gebruik je een brandblusser?",["Altijd","Alleen als veilig en klein","Nooit"],1),
-    q(14,"Brand","Wat is prioriteit bij brand?",["Auto","Levens","Verzekering"],1),
+    q(13,"Brand","Wanneer gebruik je een brandblusser?",["Altijd","Bij een klein beginnende brand en als het veilig is","Nooit"],1),
+    q(14,"Brand","Wat is prioriteit bij brand?",["Auto","Veiligheid van personen","Verzekering"],1),
     q(15,"Brand","Wat doe je na brandincident?",["Weglopen","Melden en vastleggen","Rijden"],1),
 
-    q(16,"Medisch","Passagier wordt plots onwel. Wat doe je?",["Negeren","Veilig stoppen en hulp","Doorrijden"],1),
+    q(16,"Medisch","Passagier wordt plots onwel. Wat doe je?",["Negeren","Veilig stoppen Alarmeren en Noodzakelijke hulp verlenen","Doorrijden"],1),
     q(17,"Medisch","Wanneer bel je 112?",["Bij twijfel","Bij ernstige klachten","Nooit"],1),
     q(18,"Medisch","Wat doe je tot hulp arriveert?",["Niets","Kalmeren en veiligheid bieden","Discussie"],1),
     q(19,"Medisch","Wat is fout bij medische nood?",["Rust","Eigen diagnose stellen","Luisteren"],1),
@@ -634,7 +634,7 @@ const TAXI_EXAMEN_10 = {
     q(21,"Agressie","Klant wordt agressief. Wat doe je eerst?",["Tegendreigen","De-escaleren","Rijden"],1),
     q(22,"Agressie","Wanneer stop je de rit?",["Nooit","Als veiligheid in gevaar komt","Bij discussie"],1),
     q(23,"Agressie","Wat helpt bij agressie?",["Stem verheffen","Rustige houding","Filmen"],1),
-    q(24,"Agressie","Wanneer alarmeren?",["Bij gevaar","Altijd","Na afloop"],1),
+    q(24,"Agressie","U bent met uw taxi betrokken bij een verkeersongeval. Een passagier klaagt over pijn. Wat doe je?",["De rit afmaken en later melden","De situatie veilig maken en 112 alarmeren","niks"],1),
     q(25,"Agressie","Wat vermijd je?",["Grenzen","Discussie","Veiligheid"],1),
 
     q(26,"Noodsituatie","Wat doe je bij paniek in de auto?",["Schreeuwen","Rust uitstralen","Sneller rijden"],1),
@@ -643,17 +643,17 @@ const TAXI_EXAMEN_10 = {
     q(29,"Noodsituatie","Wat is fout gedrag?",["Overzicht","Paniek zaaien","Communicatie"],1),
     q(30,"Noodsituatie","Wat staat altijd centraal?",["Planning","Veiligheid","Omzet"],1),
 
-    q(31,"Nazorg","Waarom incident rapporteren?",["Onnodig","Voor verantwoording en leren","Voor straf"],1),
+    q(31,"Nazorg","Waarom incident rapporteren?",["Onnodig","Voor verantwoording en leren van de situatie","Voor straf"],1),
     q(32,"Nazorg","Wat noteer je na incident?",["Meningen","Feiten","Geruchten"],1),
     q(33,"Nazorg","Wat doe je bij klachten na noodsituatie?",["Negeer","Doorverwijzen volgens procedure","Discussie"],1),
     q(34,"Nazorg","Wat helpt bij verwerking?",["Ontkennen","Bespreken","Doorrijden"],1),
-    q(35,"Nazorg","Wat is professioneel?",["Bagatelliseren","Serieus nemen","Boos"],1),
+    q(35,"Nazorg","Wat is professioneel?",["Bagatelliseren","Klant serieus nemen","Boos"],1),
 
     q(36,"Verantwoordelijkheid","Wie beslist bij nood?",["Klant","Chauffeur","Centrale"],1),
-    q(37,"Verantwoordelijkheid","Waarom deze verantwoordelijkheid?",["Omzet","Veiligheid","Tijd"],1),
+    q(37,"Verantwoordelijkheid","Waarom is het belangrijk dat de chauffeur verantwoordelijkheid neemt?",["Omzet","Veiligheid","Tijd"],1),
     q(38,"Verantwoordelijkheid","Wat is juiste houding?",["Afwachten","Actief en rustig handelen","Paniek"],1),
-    q(39,"Verantwoordelijkheid","Wat is doel van noodprocedures?",["Regels","Bescherming van mensen","Administratie"],1),
-    q(40,"Samenvatting","Wat is kern bij calamiteiten?",["Snel weg","Veilig, rustig en volgens procedure handelen","Discussie winnen"],1),
+    q(39,"Verantwoordelijkheid","Wat is het doel van noodprocedures?",["Regels","Bescherming van mensen","Administratie"],1),
+    q(40,"Samenvatting","Wat is een kern bij calamiteiten?",["Snel weg","Veilig, rustig en volgens procedure handelen","Discussie winnen"],1),
 
   ]
 };
