@@ -416,14 +416,14 @@ const TAXI_EXAMEN_7 = {
   questions: [
 
     q(1,"Planning","Waarom is een realistische planning belangrijk?",["Voor hogere snelheid","Om afspraken na te komen en stress te voorkomen","Alleen voor de centrale"],1),
-    q(2,"Planning","Je ziet dat een rit waarschijnlijk te laat aankomt. Wat is professioneel?",["Niets zeggen","Tijdig klant informeren","Harder rijden"],1),
+    q(2,"Planning","Je ziet dat je waarschijnlijk te laat komt voor een rit. Wat is professioneel?",["Niets zeggen","Tijdig klant informeren","Harder rijden"],1),
     q(3,"Planning","Wat helpt om piekmomenten beter aan te kunnen?",["Alles aannemen","Vooruit plannen en prioriteiten stellen","Rusten overslaan"],1),
     q(4,"Planning","Waarom is buffertijd tussen ritten verstandig?",["Voor extra omzet","Voor onvoorziene vertragingen","Alleen voor luxe ritten"],1),
     q(5,"Planning","Wat is een teken van slechte planning?",["Rust tijdens dienst","Structurele haast en stress","Tijd overhouden"],1),
 
     q(6,"Centrale","Wat is het voordeel van goed samenwerken met de centrale?",["Meer boetes","Duidelijke opdrachten en minder misverstanden","Minder verantwoordelijkheid"],1),
     q(7,"Centrale","Je ontvangt onduidelijke instructies. Wat doe je?",["Gokken","Vragen om verduidelijking","Rit weigeren zonder uitleg"],1),
-    q(8,"Centrale","Waarom is terugkoppeling na een probleemrit belangrijk?",["Voor roddels","Voor kwaliteitsverbetering","Dat is verplicht altijd"],1),
+    q(8,"Centrale","Waarom is terugkoppeling na een probleem met de klant belangrijk?",["Voor roddels","Voor kwaliteitsverbetering","Dat is verplicht altijd"],1),
     q(9,"Centrale","Wat is professioneel bij een fout van de centrale?",["Boos reageren","Rustig melden en meedenken","Op social media klagen"],1),
     q(10,"Centrale","Wanneer neem je contact op met de centrale?",["Alleen bij nood","Bij relevante wijzigingen of problemen","Bij elke kleine twijfel"],1),
 
@@ -455,7 +455,7 @@ const TAXI_EXAMEN_7 = {
     q(32,"Werkhouding","Waarom is duidelijk communiceren belangrijk?",["Voor discussie","Om verwachtingen te managen","Alleen bij problemen"],1),
     q(33,"Werkhouding","Wat is een teken van vakvolwassenheid?",["Geen fouten maken","Fouten herkennen en herstellen","Altijd gelijk hebben"],1),
     q(34,"Werkhouding","Hoe voorkom je mentale overbelasting?",["Meer werken","Balans zoeken en pauzes respecteren","Klachten negeren"],1),
-    q(35,"Werkhouding","Wat helpt bij duurzame inzetbaarheid?",["Altijd nachtdiensten","Gezonde werkgewoonten","Alleen ervaring"],1),
+    q(35,"Werkhouding","Wat helpt bij duurzame inzetbaarheid?",["Altijd nachtdiensten","Gezonde werkgewoontes","Alleen ervaring"],1),
 
     q(36,"Samenwerking","Waarom is respectvolle samenwerking belangrijk?",["Voor gezelligheid","Voor soepele dienstverlening","Alleen voor collega’s"],1),
     q(37,"Samenwerking","Wat doe je bij meningsverschil met collega?",["Escaleren","Rustig bespreken","Negeer en roddel"],1),
