@@ -376,19 +376,19 @@ const TAXI_EXAMEN_6 = {
     q(20,"Stoppen/parkeren","Wat is de beste keuze als je geen legale stopplek ziet?",["Toch stoppen","Doorrijden naar eerstvolgende legale/veilige plek","Stoppen op de rijbaan en hopen"],1),
 
     q(21,"Bijzondere passagiers","Klant heeft veel boodschappen. Wat is best bij in-/uitladen?",["Haasten en gooien","Rustig helpen waar redelijk en veilig","De klant alles zelf laten doen als straf"],1),
-    q(22,"Bijzondere passagiers","Een klant met beperkte mobiliteit stapt langzaam in. Wat is best?",["Onrustig worden","Geduld, hulp waar veilig, en tijd nemen","Hard optrekken zodra deur bijna dicht is"],1),
-    q(23,"Bijzondere passagiers","Klant reist met breekbare spullen. Wat is best?",["Hard rijden zodat het snel klaar is","Rustig en soepel rijden, spullen stabiel plaatsen","Spullen op schoot laten zonder gordel"],1),
+    q(22,"Bijzondere passagiers","Een klant met beperkte mobiliteit stapt langzaam in. Wat is best?",["Onrustig worden","Geduld, hulp waar nodig, en rustig de tijd nemen","Hard optrekken zodra deur bijna dicht is"],1),
+    q(23,"Bijzondere passagiers","Klant reist met breekbare spullen. Wat is best?",["Hard rijden zodat dit snel voorbij is","Rustig en soepel rijden, spullen stabiel plaatsen","Spullen op schoot laten zonder gordel"],1),
     q(24,"Bijzondere passagiers","Klant is zichtbaar geëmotioneerd. Wat is professioneel?",["Grappen maken","Rustig blijven en geen onnodige druk zetten","Direct vragen om review"],1),
     q(25,"Bijzondere passagiers","Kinderen stappen in en rennen om de auto. Wat is best?",["Direct wegrijden","Eerst zorgen dat iedereen veilig zit en omgeving vrij is","Toeteren en gas geven"],1),
 
-    q(26,"Weersituaties","Wat is het beste bij hevige regen tijdens halen/brengen?",["Zelfde aanpak als altijd","Extra tijd nemen voor instap/uitstap en zichtbaarheid","Sneller rijden zodat je uit de regen bent"],1),
+    q(26,"Weersituaties","Wat is het beste bij hevige regen tijdens halen/brengen?",["Zelfde aanpak als altijd","Extra tijd nemen voor instappen/uitstappen","Sneller rijden zodat je uit de regen bent"],1),
     q(27,"Weersituaties","Bij gladheid moet je stoppen om klant uit te laten stappen. Wat is best?",["Op helling stoppen","Een vlakke, stabiele plek kiezen","In bocht stoppen"],1),
-    q(28,"Weersituaties","Waarom zijn natte stoepen/curbs extra risicovol bij uitstappen?",["Omdat ze mooier glimmen","Omdat uitglijden/valrisico groter is","Omdat het geluid harder is"],1),
+    q(28,"Weersituaties","Waarom zijn natte stoepen/curbs extra risicovol bij uitstappen?",["Omdat ze mooier glimmen","Omdat de risico op uitglijden/vallen groter is","Omdat het geluid harder is"],1),
     q(29,"Weersituaties","Klant wil uitstappen in een plas naast de stoeprand. Wat doe je?",["Toch laten uitstappen","Een drogere/veiligere plek zoeken indien mogelijk","De klant laten springen"],1),
     q(30,"Weersituaties","Wat is een goede keuze bij mist in een ophaalzone?",["Sneller rijden om door te kunnen","Langzamer, meer afstand en extra alert op voetgangers","Groot licht in de stad aanzetten en toeteren"],1),
 
-    q(31,"Routepraktijk","Je navigatie leidt je een drukke voetgangerszone in. Wat is best?",["Toch doorrijden","Alternatieve route kiezen die past bij de situatie","Stoppen en wachten tot het leeg is midden in de zone"],1),
-    q(32,"Routepraktijk","Klant wil ‘zo dicht mogelijk’ bij ingang in een smalle straat. Wat doe je?",["Exact voor de deur stoppen, ongeacht risico","Uitleggen en kiezen voor veilig uitstappen op korte loopafstand","Inhalen en dwars parkeren"],1),
+    q(31,"Routepraktijk","Je navigatie leidt je een drukke voetgangerszone in. Wat is de beste om te doen?",["Toch doorrijden","Alternatieve route kiezen die past bij de situatie","Stoppen en wachten tot het leeg is midden in de zone"],1),
+    q(32,"Routepraktijk","Klant wil ‘zo dicht mogelijk’ bij de ingang uitstappen in een smalle straat. Wat doe je?",["Exact voor de deur stoppen, ongeacht risico","Uitleggen en kiezen voor veilig uitstappen op korte loopafstand","Inhalen en dwars parkeren"],1),
     q(33,"Routepraktijk","Je mist een afslag naar de bestemming. Wat is best?",["Direct abrupt terugsturen","Rustig doorrijden en via veilige route corrigeren","Midden op de weg achteruit rijden"],1),
     q(34,"Routepraktijk","Waarom is het handig om bij drukte een ‘meeting point’ af te spreken?",["Omdat het altijd gratis is","Omdat het chaos voorkomt en tijd bespaart","Omdat je dan geen gordel hoeft"],1),
     q(35,"Routepraktijk","Klant zegt: ‘Ik sta bij de hoofdingang’ maar er zijn meerdere ingangen. Wat doe je?",["Gokken","Vragen om herkenningspunt of exacte ingang","Boos worden dat klant vaag is"],1),
@@ -396,7 +396,7 @@ const TAXI_EXAMEN_6 = {
     q(36,"Veiligheid algemeen","Wat is de beste check vóór je een deur laat openen in drukte?",["Niets, klant ziet zelf wel","Spiegels/omgeving checken en zo nodig waarschuwen","Gas geven zodat fietsers stoppen"],1),
     q(37,"Veiligheid algemeen","Wat doe je als iemand bijna de deur open trekt terwijl er fietsers aankomen?",["Laat maar gebeuren","Waarschuwen en deur dicht houden tot het veilig is","De deur juist extra ver open zetten"],1),
     q(38,"Veiligheid algemeen","Klant vraagt ‘kun je hier even snel keren?’ terwijl het onoverzichtelijk is. Wat doe je?",["Doen, want klant vraagt","Weigeren en veilige plek zoeken om te keren of route volgen","Keren met hoge snelheid"],1),
-    q(39,"Veiligheid algemeen","Waarom is ‘korte stop’ bij een rotonde extra risicovol?",["Omdat rotondes altijd leeg zijn","Omdat verkeer van meerdere richtingen komt en zicht wisselt","Omdat je daar altijd gratis mag staan"],1),
+    q(39,"Veiligheid algemeen","Waarom is ‘korte stop’ bij een rotonde extra risicovol?",["Omdat rotondes altijd leeg zijn","Omdat verkeer van meerdere richtingen komen","Omdat je daar altijd gratis mag staan"],1),
     q(40,"Samenvatting","Wat is de beste kernregel bij halen/brengen?",["Altijd precies voor de deur","Veiligheid en overzicht gaan vóór gemak","Snelheid is belangrijker dan veiligheid"],1),
 
   ]
