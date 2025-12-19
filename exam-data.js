@@ -673,7 +673,7 @@ const TAXI_EXAMEN_11 = {
 
     q(1,"Wetgeving","Waarom bestaan taxiregels in de praktijk vooral?",["Voor extra winst","Voor veiligheid en betrouwbaarheid","Omdat taxi’s sneller zijn"],1),
     q(2,"Wetgeving","Wat is het risico van ‘even snel’ regels negeren omdat het rustig is?",["Geen risico","Boete/sanctie + veiligheidsschade","Alleen boze klant"],1),
-    q(3,"Wetgeving","Wat is de meest professionele houding als je een regel niet 100% zeker weet?",["Doen alsof je het weet","Navraag doen/regels checken vóór je handelt","Gewoon doen, je merkt het wel"],1),
+    q(3,"Wetgeving","Wat is een professionele houding als je een regel niet 100% zeker weet?",["Doen alsof je het weet","Navraag doen/regels checken vóór je handelt","Gewoon doen, je merkt het wel"],1),
     q(4,"Wetgeving","Wat is een goede basisregel voor bewijs/registratie?",["Alles zelf verzinnen","Feiten vastleggen volgens procedure","Niets vastleggen"],1),
     q(5,"Wetgeving","Wie moet zich aan de verkeersregels houden tijdens taxiwerk?",["Alleen andere weggebruikers","Iedereen, dus ook jij","Alleen privé-auto’s"],1),
 
