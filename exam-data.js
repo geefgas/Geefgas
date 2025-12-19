@@ -517,7 +517,7 @@ const TAXI_EXAMEN_8 = {
 
     q(31,"Morele druk","Klant probeert je onder druk te zetten. Wat doe je?",["Toegeven","Bij je professionele keuze blijven","Rit stoppen direct"],1),
     q(32,"Morele druk","Waarom is druk weerstaan belangrijk?",["Voor status","Voor veiligheid en integriteit","Voor tijd"],1),
-    q(33,"Morele druk","Wat is een fout bij morele druk?",["Twijfelen","Grenzen loslaten","Uitleg geven"],1),
+    q(33,"Morele druk","Wat is een fout bij morele druk?",["Twijfelen","Geen grenzen stellen","Uitleg geven"],1),
     q(34,"Morele druk","Wat helpt bij weerstand tegen druk?",["Onzekerheid","Zelfvertrouwen en regels kennen","Discussie"],1),
     q(35,"Morele druk","Wat is het effect van toegeven aan druk?",["Rust","Meer verwachtingen later","Tevreden klant"],1),
 
