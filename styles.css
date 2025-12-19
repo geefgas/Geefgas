@@ -2476,3 +2476,59 @@ body.examPage .examFooter{
   z-index: 10;
   padding-bottom: calc(12px + env(safe-area-inset-bottom));
 }
+
+/* =========================================
+   EXAM: footer altijd exact vast (geen ‘jump’)
+   Plak helemaal onderaan
+   ========================================= */
+
+:root{
+  --examFooterH: 78px; /* pas aan als je knoppen hoger/lager moeten */
+}
+
+/* Maak de examCard een vaste viewport-container */
+body.examPage .page{
+  min-height: calc(100dvh - 64px); /* topbar ~64px */
+}
+
+body.examPage .examCard{
+  height: calc(100dvh - 64px);
+  display:flex;
+  flex-direction: column;
+  overflow: hidden; /* binnen de card, niet op body */
+}
+
+/* Media blijft boven, footer blijft onder */
+body.examPage .examMedia{ flex: 0 0 auto; }
+body.examPage .examFooter{
+  flex: 0 0 auto;
+  height: var(--examFooterH);
+  box-sizing: border-box;
+
+  position: sticky;
+  bottom: 0;
+  background: var(--white);
+  z-index: 20;
+
+  padding: 12px 0;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+/* Alleen de body scrolt (en reserveert ruimte voor footer) */
+body.examPage .examBody{
+  flex: 1 1 auto;
+  overflow-y: scroll;              /* altijd scrollbaar => geen spring */
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--examFooterH) + env(safe-area-inset-bottom));
+}
+
+/* Voorkom knophoogte-wissels door wrap */
+body.examPage .examFooter .btn{
+  min-height: 48px;
+  white-space: nowrap;
+}
+
+/* (Bonus) moderne browsers: scrollbar ruimte stabiel */
+body.examPage .examBody{
+  scrollbar-gutter: stable;
+}
