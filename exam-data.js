@@ -976,6 +976,257 @@ const TAXI_EXAMEN_15 = {
     q(40,"Samenvatting","Wat is een uitstekende gedrag van een taxichauffeur?",["Altijd gelijk krijgen","Veilig, eerlijk, duidelijk en respectvol handelen","Zo veel mogelijk ritten"],1),
 
   ]
+
+   const TAXI_EXAMEN_16 = {
+  id: "taxi-examen-16",
+  title: "Taxi Examen 16 – Essentiële Examenvragen",
+  category: "Taxi",
+  durationMinutes: 30,
+  passMinCorrect: 32,
+  questions: [
+
+    q(1,"Chauffeurskaart","Wanneer mag je een taxi besturen?",[
+      "Alleen met een geldige chauffeurskaart",
+      "Met alleen rijbewijs B",
+      "Als de ondernemer toestemming geeft"
+    ],0),
+
+    q(2,"Controle","Wat moet je doen bij controle door politie of ILT?",[
+      "Altijd meewerken en documenten tonen",
+      "Alleen antwoorden als je dat wilt",
+      "Eerst de taxicentrale bellen"
+    ],0),
+
+    q(3,"Boordcomputer","Wat registreert de boordcomputer taxi (BCT)?",[
+      "Alleen ritprijzen",
+      "Rij- en werktijden",
+      "Navigatiegegevens"
+    ],1),
+
+    q(4,"Verantwoordelijkheid","Wie is verantwoordelijk bij rijden zonder geldige chauffeurskaart?",[
+      "De taxiondernemer",
+      "De passagier",
+      "De chauffeur"
+    ],2),
+
+    q(5,"Rij- en rusttijden","Waarom zijn rij- en rusttijden verplicht?",[
+      "Voor belastingdoeleinden",
+      "Voor verkeersveiligheid",
+      "Voor klantenservice"
+    ],1),
+
+    q(6,"Sanctie","Wat kan een gevolg zijn van herhaalde overtredingen?",[
+      "Alleen waarschuwing",
+      "Intrekking chauffeurskaart",
+      "Geen gevolgen"
+    ],1),
+
+    q(7,"Verzekering","Welke verzekering moet altijd geldig zijn?",[
+      "Particuliere autoverzekering",
+      "WA-taxi verzekering",
+      "Alleen inzittendenverzekering"
+    ],1),
+
+    q(8,"Aansprakelijkheid","Bij een ongeval door jouw fout is aansprakelijk:",[
+      "De passagier",
+      "De chauffeur/verzekering",
+      "De gemeente"
+    ],1),
+
+    q(9,"Vermoeidheid","Wat moet je doen als je te moe bent om veilig te rijden?",[
+      "Doorrijden tot einde dienst",
+      "Stoppen of pauze nemen",
+      "Meer koffie drinken"
+    ],1),
+
+    q(10,"Documenten","Welke documenten moet je bij controle kunnen tonen?",[
+      "Alleen rijbewijs",
+      "Rijbewijs, chauffeurskaart en BCT",
+      "Kentekenbewijs"
+    ],1),
+
+    q(11,"Zorgplicht","Wat betekent zorgplicht?",[
+      "Alleen klant tevreden houden",
+      "Verantwoordelijk zijn voor veilige rit",
+      "De snelste route kiezen"
+    ],1),
+
+    q(12,"Rit weigeren","Wanneer mag je een rit weigeren?",[
+      "Als het regent",
+      "Bij onveilige of verboden situatie",
+      "Als klant haast heeft"
+    ],1),
+
+    q(13,"ILT","Wat mag een ILT-inspecteur doen?",[
+      "Alleen observeren",
+      "Controleren en bekeuren",
+      "Alleen waarschuwen"
+    ],1),
+
+    q(14,"Boete","Wie krijgt de boete bij fout parkeren?",[
+      "De klant",
+      "De chauffeur",
+      "De taxicentrale"
+    ],1),
+
+    q(15,"Rijgedrag","Wat wordt verwacht van een taxichauffeur?",[
+      "Sneller rijden dan anderen",
+      "Professioneler rijgedrag",
+      "Alleen klant volgen"
+    ],1),
+
+    q(16,"Fraude","Wat valt onder taxifraude?",[
+      "Te laat komen",
+      "Bewust verkeerde registratie",
+      "Geen wisselgeld"
+    ],1),
+
+    q(17,"Klachten","Wat kan een ernstige klacht veroorzaken?",[
+      "Geen gevolgen",
+      "Onderzoek of sanctie",
+      "Alleen een waarschuwing"
+    ],1),
+
+    q(18,"Werkgever","Ben je zelf verantwoordelijk bij overtredingen?",[
+      "Nee, werkgever is verantwoordelijk",
+      "Ja, altijd",
+      "Alleen bij controles"
+    ],1),
+
+    q(19,"Veiligheid","Wat staat altijd voorop?",[
+      "Planning",
+      "Veiligheid",
+      "Winst"
+    ],1),
+
+    q(20,"Examen","Wat toetst het taxi-examen?",[
+      "Alleen verkeersregels",
+      "Kennis, verantwoordelijkheid en gedrag",
+      "Alleen rijvaardigheid"
+    ],1),
+
+    q(21,"Alcohol/drugs","Wat is de regel voor alcohol of drugs tijdens dienst?",[
+      "Kleine hoeveelheid mag",
+      "Nul tolerantie",
+      "Alleen geen drugs"
+    ],1),
+
+    q(22,"Medicatie","Wat moet je doen bij medicatie die rijvaardigheid beïnvloedt?",[
+      "Gewoon doorrijden",
+      "Niet rijden en melden",
+      "Alleen rustiger rijden"
+    ],1),
+
+    q(23,"Ongeval","Wat is de eerste prioriteit bij een ongeval?",[
+      "Schadeformulier",
+      "Veiligheid van mensen",
+      "Foto’s maken"
+    ],1),
+
+    q(24,"Gevonden voorwerp","Wat doe je met gevonden eigendommen?",[
+      "Zelf houden",
+      "Volgens procedure afhandelen",
+      "Weggooien"
+    ],1),
+
+    q(25,"Privacy","Hoe ga je om met klantgegevens?",[
+      "Vrij gebruiken",
+      "Beschermen en beperkt gebruiken",
+      "Delen met collega’s"
+    ],1),
+
+    q(26,"Camera","Wat geldt bij cameragebruik in taxi?",[
+      "Altijd filmen en delen",
+      "Alleen volgens regels en privacy",
+      "Niet melden aan klant"
+    ],1),
+
+    q(27,"Route","Wie bepaalt de route?",[
+      "Altijd de chauffeur",
+      "In overleg met de klant",
+      "Altijd navigatie"
+    ],1),
+
+    q(28,"Weersomstandigheden","Wat doe je bij extreme weersomstandigheden?",[
+      "Doorrijden zoals normaal",
+      "Rijstijl aanpassen of rit weigeren",
+      "Sneller rijden"
+    ],1),
+
+    q(29,"Gordels","Wat is jouw verantwoordelijkheid bij gordelgebruik?",[
+      "Niets",
+      "Klanten informeren en verzoeken",
+      "Alleen bij kinderen"
+    ],1),
+
+    q(30,"Kinderen","Hoe vervoer je kinderen?",[
+      "Zonder regels",
+      "Volgens wettelijke veiligheidsregels",
+      "Op schoot"
+    ],1),
+
+    q(31,"Werkdruk","Wat doe je bij tijdsdruk?",[
+      "Harder rijden",
+      "Veilig blijven rijden",
+      "Regels negeren"
+    ],1),
+
+    q(32,"Verkeersovertreding","Mag je verkeersregels overtreden voor klant?",[
+      "Ja, bij haast",
+      "Nee, nooit",
+      "Alleen ’s nachts"
+    ],1),
+
+    q(33,"Tarief","Wat doe je bij onduidelijkheid over prijs?",[
+      "Niets zeggen",
+      "Uitleg geven vooraf",
+      "Achteraf bespreken"
+    ],1),
+
+    q(34,"Werkonderbreking","Wanneer stop je direct met rijden?",[
+      "Bij lichte stress",
+      "Bij onveiligheid of storing",
+      "Bij file"
+    ],1),
+
+    q(35,"Rit annuleren","Wanneer mag je een rit beëindigen?",[
+      "Als klant onveilig gedrag vertoont",
+      "Als klant belt",
+      "Als route langer is"
+    ],0),
+
+    q(36,"Controle weigeren","Mag je een controle weigeren?",[
+      "Ja, altijd",
+      "Nee",
+      "Alleen zonder reden"
+    ],1),
+
+    q(37,"Boordcomputer fout","Wat doe je bij storing van BCT?",[
+      "Doorrijden",
+      "Volgens procedure handelen",
+      "BCT uitzetten"
+    ],1),
+
+    q(38,"Professionaliteit","Wat hoort bij professioneel gedrag?",[
+      "Respect, rust en duidelijkheid",
+      "Snelheid en assertiviteit",
+      "Alleen winst"
+    ],0),
+
+    q(39,"Verantwoordelijkheid","Wie bewaakt veilige uitvoering van rit?",[
+      "De klant",
+      "De chauffeur",
+      "De navigatie"
+    ],1),
+
+    q(40,"Laatste check","Wat doe je aan het einde van je dienst?",[
+      "Direct naar huis",
+      "Auto nalopen en rit afsluiten",
+      "Boordcomputer uitzetten zonder controle"
+    ],1),
+
+  ]
+};
 };
  const exams = [
   TAXI_EXAMEN_1,
@@ -992,7 +1243,8 @@ const TAXI_EXAMEN_15 = {
   TAXI_EXAMEN_12,
   TAXI_EXAMEN_13,
   TAXI_EXAMEN_14,
-  TAXI_EXAMEN_15
+  TAXI_EXAMEN_15,
+  TAXI_EXAMEN_16
 ];
 
 window.EXAM_DATA = { exams };
