@@ -10,7 +10,10 @@
   <meta name="theme-color" content="#0B0D12">
 
   <link rel="stylesheet" href="styles.css">
+
+  <!-- ✅ Data: makkelijk + moeilijk -->
   <script src="exam-data.js"></script>
+  <script src="exam-data-hard.js"></script>
 
   <style>
     /* =========================================
@@ -299,9 +302,21 @@
     return arr;
   }
 
-  /* ================= Load exam ================= */
+  /* ================= Load exam (✅ EASY/HARD support) ================= */
+  const difficulty = localStorage.getItem("ggDifficulty");
+  if(!difficulty){
+    // pas aan als jouw pagina anders heet:
+    location.href = "difficulty.html";
+    return;
+  }
+  const isHard = (difficulty === "hard");
+
   const examId = localStorage.getItem("gg_examId");
-  const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+
+  const easyExams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const hardExams = (window.EXAM_DATA_HARD && Array.isArray(window.EXAM_DATA_HARD.exams)) ? window.EXAM_DATA_HARD.exams : [];
+
+  const exams = isHard ? hardExams : easyExams;
   const exam = exams.find(e => String(e.id) === String(examId));
 
   if(!exam || !Array.isArray(exam.questions) || !exam.questions.length){
