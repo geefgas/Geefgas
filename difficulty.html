@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeefGas – Kies niveau</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b0f14;color:#fff}
+    .wrap{max-width:800px;margin:0 auto;padding:24px}
+    h1{margin-bottom:8px}
+    .grid{display:grid;gap:16px}
+    @media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:#121a24;border:1px solid #223048;border-radius:16px;padding:20px}
+    button{width:100%;padding:14px;border:0;border-radius:12px;font-weight:800;cursor:pointer}
+    .easy{background:#2b7cff;color:#fff}
+    .hard{background:#ff3b57;color:#fff}
+    p{color:#ccc}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Kies niveau</h1>
+    <p>Wil je oefenen of echt getest worden?</p>
+
+    <div class="grid">
+      <div class="card">
+        <button class="easy" onclick="setLevel('easy')">Makkelijk</button>
+        <p>Basis oefenen</p>
+      </div>
+
+      <div class="card">
+        <button class="hard" onclick="setLevel('hard')">Moeilijk (strikvragen)</button>
+        <p>Strengere vragen & valkuilen</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setLevel(level){
+      localStorage.setItem("ggDifficulty", level);
+      window.location.href = "examens.html";
+    }
+  </script>
+</body>
+</html>
