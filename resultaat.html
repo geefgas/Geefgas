@@ -112,6 +112,8 @@
       .replaceAll("'","&#039;");
   }
 
+  const LETTERS = "ABCDE";
+
   // ---- Resultaat ophalen ----
   let result = null;
   try {
@@ -201,18 +203,42 @@
   const qMap = new Map();
   questions.forEach(q => qMap.set(String(q.id), q));
 
+  // Helper: haal gekozen index "orig" uit attempt (werkt met oude en nieuwe opslag)
+  function getChosenOrig(a){
+    if (typeof a?.chosenOrig === "number") return a.chosenOrig;     // nieuwe
+    if (typeof a?.chosen === "number") return a.chosen;             // oude
+    return null;
+  }
+
+  // Helper: haal gekozen index "shown" (alleen als aanwezig)
+  function getChosenShown(a){
+    if (typeof a?.chosenShown === "number") return a.chosenShown;
+    return null;
+  }
+
+  // Helper: haal correct orig
+  function getCorrectOrig(a, q){
+    if (typeof a?.correctIndexOrig === "number") return a.correctIndexOrig;
+    if (typeof q?.correctIndex === "number") return q.correctIndex;
+    if (typeof a?.correctIndex === "number") return a.correctIndex;
+    return null;
+  }
+
+  // Bepaal fouten
   const wrong = attempt
     .map(a => {
       const q = qMap.get(String(a.id));
       if (!q) return null;
 
-      const chosen = (typeof a.chosen === "number") ? a.chosen : null;
-      const correctIndex = (typeof q.correctIndex === "number")
-        ? q.correctIndex
-        : ((typeof a.correctIndex === "number") ? a.correctIndex : null);
+      const chosenOrig = getChosenOrig(a);
+      const chosenShown = getChosenShown(a);
+      const correctOrig = getCorrectOrig(a, q);
 
-      const isWrong = (chosen === null) ? true : (correctIndex !== null && chosen !== correctIndex);
-      return { a, q, chosen, correctIndex, isWrong };
+      const isWrong = (chosenOrig === null)
+        ? true
+        : (correctOrig !== null && chosenOrig !== correctOrig);
+
+      return { a, q, chosenOrig, chosenShown, correctOrig, isWrong };
     })
     .filter(x => x && x.isWrong);
 
@@ -232,18 +258,24 @@
   reviewList.innerHTML = "";
   wrong.forEach((item) => {
     const q = item.q;
-    const chosen = item.chosen;
-    const correctIndex = item.correctIndex;
+    const chosenOrig = item.chosenOrig;
+    const chosenShown = item.chosenShown;
+    const correctOrig = item.correctOrig;
 
     const chosenText =
-      (chosen === null) ? "(geen antwoord)" :
-      (Array.isArray(q.options) && q.options[chosen]) ? q.options[chosen] : "(onbekend)";
+      (chosenOrig === null) ? "(geen antwoord)" :
+      (Array.isArray(q.options) && q.options[chosenOrig]) ? q.options[chosenOrig] : "(onbekend)";
 
     const correctText =
-      (correctIndex === null) ? "(onbekend)" :
-      (Array.isArray(q.options) && q.options[correctIndex]) ? q.options[correctIndex] : "(onbekend)";
+      (correctOrig === null) ? "(onbekend)" :
+      (Array.isArray(q.options) && q.options[correctOrig]) ? q.options[correctOrig] : "(onbekend)";
 
     const nr = idToNr.get(String(q.id)) || "?";
+
+    const chosenLetter = (typeof chosenShown === "number" && LETTERS[chosenShown]) ? LETTERS[chosenShown] : "";
+    // correctShown kan in attempt zitten (nieuw), maar als die er niet is, laten we letter leeg
+    const correctShown = (typeof item.a?.correctIndexShown === "number") ? item.a.correctIndexShown : null;
+    const correctLetter = (typeof correctShown === "number" && LETTERS[correctShown]) ? LETTERS[correctShown] : "";
 
     const details = document.createElement("details");
     details.style.border = "1px solid rgba(16,19,26,.12)";
@@ -262,8 +294,18 @@
       </summary>
 
       <div style="margin-top:12px; line-height:1.6;">
-        <div><strong>Jouw antwoord:</strong> <span style="color:#b42318; font-weight:900;">${esc(chosenText)}</span></div>
-        <div><strong>Goed antwoord:</strong> <span style="color:#067647; font-weight:900;">${esc(correctText)}</span></div>
+        <div>
+          <strong>Jouw antwoord:</strong>
+          <span style="color:#b42318; font-weight:900;">
+            ${chosenLetter ? `(${esc(chosenLetter)}) ` : ""}${esc(chosenText)}
+          </span>
+        </div>
+        <div>
+          <strong>Goed antwoord:</strong>
+          <span style="color:#067647; font-weight:900;">
+            ${correctLetter ? `(${esc(correctLetter)}) ` : ""}${esc(correctText)}
+          </span>
+        </div>
         ${q.explanation ? `<div style="margin-top:10px;"><strong>Uitleg:</strong> <span class="muted" style="font-weight:750;">${esc(q.explanation)}</span></div>` : ""}
       </div>
     `;
