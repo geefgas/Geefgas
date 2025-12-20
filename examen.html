@@ -26,8 +26,7 @@
       text-size-adjust: 100%;
     }
 
-    /* ✅ Forceer voorspelbare basis typografie binnen exam UI
-       (maakt Dynamic Type / Tekstgrootte minder invloedrijk) */
+    /* ✅ Forceer voorspelbare basis typografie binnen exam UI */
     body.examPage,
     body.examPage .ggApp,
     body.examPage .examCard,
@@ -41,19 +40,17 @@
       font-size: 16px;
     }
 
-    /* BELANGRIJK: overschrijf oude "body.examPage { position: fixed; inset:0; }" uit styles.css */
     body.examPage{
       position: static !important;
       inset: auto !important;
       width: auto !important;
       height: auto !important;
-      overflow: hidden !important;     /* geen pagina-scroll */
+      overflow: hidden !important;
     }
     html{
-      overflow: hidden !important;     /* geen pagina-scroll */
+      overflow: hidden !important;
     }
 
-    /* App container: header + content vullen viewport */
     .ggApp{
       height: 100dvh;
       display: grid;
@@ -62,14 +59,12 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* Header altijd zichtbaar (geen hide) */
     header.topbar{
       position: sticky;
       top: 0;
       z-index: 1000;
     }
 
-    /* Content gebied */
     main.page{
       padding: 10px 0 0 !important;
       overflow: hidden;
@@ -79,28 +74,24 @@
       overflow: hidden;
     }
 
-    /* Exam card vult de resterende hoogte */
     .examCard{
       height: 100%;
       display: grid;
-      grid-template-rows: auto 1fr auto; /* media / body / footer */
+      grid-template-rows: auto 1fr auto;
       overflow: hidden;
     }
 
-    /* Afbeelding: op mobiel kleiner zodat knoppen + antwoorden passen */
     .examMedia{
       height: clamp(150px, 24vh, 260px) !important;
       overflow: hidden;
       border-bottom: 1px solid rgba(16,19,26,.08);
     }
 
-    /* Body: GEEN scroll. Als het te krap is, maken we spacing kleiner via media queries */
     #examBody{
       overflow: hidden;
       padding: 14px 16px !important;
     }
 
-    /* ✅ Vraag iets consistenter/chiquer (stabieler tussen toestellen) */
     #questionText{
       font-size: 21px;
       line-height: 1.42;
@@ -108,13 +99,11 @@
       font-weight: 950;
     }
 
-    /* ✅ Antwoorden: vaste leesbaarheid (minder afhankelijk van instellingen) */
     .answer{
       font-size: 17px;
       line-height: 1.35;
     }
 
-    /* Footer altijd zichtbaar en compact */
     .examFooter{
       border-top: 1px solid rgba(16,19,26,.08);
       background: #fff;
@@ -123,15 +112,12 @@
     .examFooter .btn{
       padding: 12px 14px !important;
       border-radius: 14px !important;
-
-      /* ✅ voorkom dat labels wrappen of hoogte verschillen */
       white-space: nowrap;
       line-height: 1;
       font-size: 16px;
       min-height: 54px;
     }
 
-    /* Timer in topbar */
     .ggTopTimer{
       margin-left: auto;
       display: flex;
@@ -157,7 +143,6 @@
     .ggRings{ width: 40px; height: 40px; display:grid; place-items:center; }
     .ggRings svg{ display:block; }
 
-    /* Kleinere spacing op kleine iPhones zodat antwoord C niet verstopt */
     @media (max-width: 420px){
       #questionText{ font-size: 18px !important; margin: 6px 0 10px !important; }
       .answers{ gap: 10px !important; }
@@ -284,6 +269,36 @@
     try{ if (navigator.vibrate) navigator.vibrate(ms); }catch(e){}
   }
 
+  /* ================= Deterministic shuffle (fix "altijd B") ================= */
+  function hashStr(str){
+    // FNV-1a 32-bit
+    let h = 2166136261;
+    for(let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function mulberry32(seed){
+    return function(){
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function shuffledOrder(n, seedStr){
+    const rnd = mulberry32(hashStr(seedStr));
+    const arr = Array.from({length:n}, (_,i)=>i);
+    for(let i=n-1;i>0;i--){
+      const j = Math.floor(rnd() * (i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   /* ================= Load exam ================= */
   const examId = localStorage.getItem("gg_examId");
   const exams = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
@@ -307,8 +322,12 @@
 
   /* ================= State ================= */
   let idx = 0;
-  let chosen = new Array(total).fill(null);
+  let chosen = new Array(total).fill(null);      // chosen index in SHUFFLED order
   let locked = false;
+
+  // per vraag: map van weergegeven index -> originele index
+  let orderMap = new Array(total).fill(null);   // e.g. [2,0,1]
+  let correctShown = new Array(total).fill(null); // correcte index in SHUFFLED order
 
   /* ================= Timer + Rings ================= */
   const totalTime = Number(exam.durationMinutes || 30) * 60;
@@ -373,14 +392,31 @@
     const a = $("answers");
     a.innerHTML = "";
 
+    const opts = Array.isArray(q.options) ? q.options : [];
+    const n = opts.length;
+
+    // maak/onthoud shuffle per vraag (stabiel)
+    if(!orderMap[idx] || orderMap[idx].length !== n){
+      const seedStr = `${String(exam.id)}|q${String(q.id ?? (idx+1))}|${q.prompt ?? ""}`;
+      orderMap[idx] = shuffledOrder(n, seedStr);
+
+      const cOrig = (typeof q.correctIndex === "number") ? q.correctIndex : null;
+      correctShown[idx] = (cOrig === null) ? null : orderMap[idx].indexOf(cOrig);
+    }
+
     const letters = "ABCDE";
-    (q.options || []).forEach((opt,i)=>{
+
+    orderMap[idx].forEach((origIndex, shownIndex)=>{
+      const optText = opts[origIndex];
+
       const b = document.createElement("button");
       b.type = "button";
       b.className = "answer";
-      b.innerHTML = `<span class="answerKey">${letters[i] || (i+1)}</span><span>${opt}</span>`;
-      if(chosen[idx] === i) b.classList.add("selected");
-      b.addEventListener("click", ()=>choose(i));
+      b.innerHTML = `<span class="answerKey">${letters[shownIndex] || (shownIndex+1)}</span><span>${optText}</span>`;
+
+      if(chosen[idx] === shownIndex) b.classList.add("selected");
+
+      b.addEventListener("click", ()=>choose(shownIndex));
       a.appendChild(b);
     });
 
@@ -391,24 +427,24 @@
     updateHud();
   }
 
-  function choose(i){
+  function choose(shownIndex){
     if(locked) return;
-    chosen[idx] = i;
+    chosen[idx] = shownIndex;
 
-    const c = (typeof questions[idx].correctIndex === "number") ? questions[idx].correctIndex : null;
+    const cShown = (typeof correctShown[idx] === "number") ? correctShown[idx] : null;
 
     document.querySelectorAll(".answer").forEach((b,n)=>{
-      b.classList.toggle("selected", n === i);
+      b.classList.toggle("selected", n === shownIndex);
       b.classList.remove("correct","wrong");
     });
 
     locked = true;
 
-    if(c !== null){
+    if(cShown !== null){
       const nodes = document.querySelectorAll(".answer");
-      if(nodes[c]) nodes[c].classList.add("correct");
-      if(i !== c && nodes[i]) {
-        nodes[i].classList.add("wrong");
+      if(nodes[cShown]) nodes[cShown].classList.add("correct");
+      if(shownIndex !== cShown && nodes[shownIndex]) {
+        nodes[shownIndex].classList.add("wrong");
         haptic(60);
       } else {
         haptic(18);
@@ -417,7 +453,7 @@
 
     if(questions[idx].explanation){
       $("explainBox").style.display = "block";
-      $("explainTitle").textContent = (c !== null && i === c) ? "Goed" : "Niet goed";
+      $("explainTitle").textContent = (cShown !== null && shownIndex === cShown) ? "Goed" : "Niet goed";
       $("explainText").textContent = questions[idx].explanation;
     }
   }
@@ -437,7 +473,24 @@
 
     let goed = 0;
     chosen.forEach((a,i)=>{
-      if(a !== null && a === questions[i].correctIndex) goed++;
+      if(a !== null && typeof correctShown[i] === "number" && a === correctShown[i]) goed++;
+    });
+
+    // attempt: sla zowel gekozen letter-index als originele index op (handig voor analyse)
+    const attempt = chosen.map((shownChosen, i)=>{
+      const map = orderMap[i] || [];
+      const origChosen = (shownChosen === null) ? null : map[shownChosen];
+
+      const cOrig = (typeof questions[i].correctIndex === "number") ? questions[i].correctIndex : null;
+      const cShown = (typeof correctShown[i] === "number") ? correctShown[i] : null;
+
+      return {
+        id: questions[i].id,
+        chosenShown: shownChosen,
+        chosenOrig: origChosen,
+        correctIndexOrig: cOrig,
+        correctIndexShown: cShown
+      };
     });
 
     localStorage.setItem("gg_result", JSON.stringify({
@@ -448,11 +501,7 @@
       correctCount: goed,
       passMinCorrect: pass,
       timeUp: !!timeUp,
-      attempt: chosen.map((a,i)=>({
-        id: questions[i].id,
-        chosen: a,
-        correctIndex: questions[i].correctIndex
-      }))
+      attempt
     }));
 
     location.href = "resultaat.html";
