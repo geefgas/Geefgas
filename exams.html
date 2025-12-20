@@ -1,1 +1,132 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GeefGas – Examens</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --card:#121a24; --stroke:#223048; --text:#ffffff; --muted:rgba(255,255,255,.72);
+      --easy:#2b7cff; --hard:#ff3b57;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+    .topbar{position:sticky;top:0;background:rgba(11,15,20,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--stroke)}
+    .container{width:min(980px,100%);margin:0 auto;padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    h1{margin:0;font-size:20px}
+    .meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .badge{border:1px solid var(--stroke);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px}
+    .badge.easy{border-color:rgba(43,124,255,.5); color:#b9d4ff}
+    .badge.hard{border-color:rgba(255,59,87,.5); color:#ffc2ca}
+    .btn{border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--text);border-radius:12px;padding:10px 12px;cursor:pointer}
+    .btn:hover{background:rgba(255,255,255,.05)}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;padding:16px}
+    @media(min-width:780px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--stroke);border-radius:16px;padding:16px}
+    .title{font-weight:800;margin:0 0 6px}
+    .sub{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.4}
+    .actions{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .small{font-size:13px;color:var(--muted)}
+    .cta{border:0;border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:700}
+    .cta.easy{background:var(--easy);color:#fff}
+    .cta.hard{background:var(--hard);color:#fff}
+    .empty{padding:20px;margin:16px;border:1px dashed rgba(255,255,255,.18);border-radius:16px;color:var(--muted);line-height:1.5}
+  </style>
+</head>
+<body>
 
+  <div class="topbar">
+    <div class="container">
+      <div class="row">
+        <h1>Taxi Examens</h1>
+        <div class="meta">
+          <span id="difficultyBadge" class="badge">Niveau: …</span>
+          <button class="btn" id="changeDifficulty">Wijzig niveau</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" style="display:none"></div>
+  </div>
+
+  <!-- Jouw bestaande makkelijke data -->
+  <script src="exam-data.js"></script>
+  <!-- Nieuwe moeilijke data -->
+  <script src="exam-data-hard.js"></script>
+
+  <script>
+    // --- Guard: niveau moet gekozen zijn ---
+    const difficulty = localStorage.getItem("ggDifficulty");
+    if (!difficulty) window.location.href = "difficulty.html";
+
+    // --- UI badge ---
+    const badge = document.getElementById("difficultyBadge");
+    const isHard = difficulty === "hard";
+    badge.textContent = "Niveau: " + (isHard ? "Moeilijk (strikvragen)" : "Makkelijk");
+    badge.classList.add(isHard ? "hard" : "easy");
+
+    document.getElementById("changeDifficulty").addEventListener("click", () => {
+      window.location.href = "difficulty.html";
+    });
+
+    // --- Data samenstellen ---
+    const easyExams = (window.EXAM_DATA && window.EXAM_DATA.exams) ? window.EXAM_DATA.exams : [];
+    const hardExams = (window.EXAM_DATA_HARD && window.EXAM_DATA_HARD.exams) ? window.EXAM_DATA_HARD.exams : [];
+
+    const chosenExams = isHard ? hardExams : easyExams;
+
+    // --- Render ---
+    const grid = document.getElementById("grid");
+    const empty = document.getElementById("empty");
+
+    if (!chosenExams.length) {
+      empty.style.display = "block";
+      empty.innerHTML = isHard
+        ? "<b>Moeilijk niveau is in opbouw.</b><br>We voegen strikexamens per examen toe. Kies tijdelijk <b>Makkelijk</b> of kom later terug."
+        : "Geen examens gevonden.";
+    } else {
+      chosenExams.forEach(exam => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const title = document.createElement("p");
+        title.className = "title";
+        title.textContent = exam.title;
+
+        const sub = document.createElement("p");
+        sub.className = "sub";
+        sub.textContent = `Duur: ${exam.durationMinutes} min • Slagen: ${exam.passMinCorrect}/${exam.questions.length} • Categorie: ${exam.category}`;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const small = document.createElement("div");
+        small.className = "small";
+        small.textContent = isHard ? "Let op: strikvragen (hoger niveau)" : "Basis oefenen (makkelijk)";
+
+        const btn = document.createElement("button");
+        btn.className = "cta " + (isHard ? "hard" : "easy");
+        btn.textContent = "Start examen";
+        btn.addEventListener("click", () => {
+          // Hier koppel jij jouw bestaande start-route.
+          // Voorbeeld: window.location.href = `exam.html?id=${encodeURIComponent(exam.id)}`
+          alert("Start: " + exam.id);
+        });
+
+        actions.appendChild(small);
+        actions.appendChild(btn);
+
+        card.appendChild(title);
+        card.appendChild(sub);
+        card.appendChild(actions);
+
+        grid.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
