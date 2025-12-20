@@ -977,7 +977,6 @@ const TAXI_EXAMEN_15 = {
 
   ]
 };
-};
  const exams = [
   TAXI_EXAMEN_1,
   TAXI_EXAMEN_2,
