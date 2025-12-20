@@ -7,46 +7,9 @@
 
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Laad beide datasets -->
+  <!-- Data: makkelijk + moeilijk -->
   <script src="exam-data.js"></script>
   <script src="exam-data-hard.js"></script>
-
-  <style>
-    /* Klein, netjes difficulty blok (werkt ook zonder styles.css aan te passen) */
-    .difficultyBar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin:14px 0 10px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
-    }
-    .difficultyBadge{
-      font-weight:700;
-      font-size:14px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .difficultyBadge--easy{ border-color: rgba(43,124,255,.55); }
-    .difficultyBadge--hard{ border-color: rgba(255,59,87,.55); }
-
-    .difficultyBtn{
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.06);
-      color:inherit;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:700;
-      cursor:pointer;
-    }
-  </style>
 </head>
 
 <body class="theme">
@@ -79,15 +42,13 @@
       >
     </section>
 
-    <!-- DIFFICULTY BAR -->
-    <div class="difficultyBar" aria-label="Niveau selectie">
-      <div id="difficultyBadge" class="difficultyBadge">Niveau: …</div>
-      <button id="changeDifficulty" class="difficultyBtn" type="button">Wijzig niveau</button>
-    </div>
-
-    <!-- BADGE -->
+    <!-- BADGES -->
     <div class="exam-count-wrapper" aria-label="Aantal examens">
       <div class="exam-count" id="examCount">— examens</div>
+      <div class="exam-count" id="difficultyBadge" style="margin-top:8px; font-size:14px; opacity:.85;">Niveau: —</div>
+      <button id="changeDifficulty" style="margin-top:10px" class="examItem__start" type="button">
+        Wijzig niveau
+      </button>
     </div>
 
     <!-- EXAMENS -->
@@ -101,65 +62,58 @@
 <!-- SCRIPT -->
 <script>
 (function () {
-  // 1) Difficulty check
+  const listEl = document.getElementById("examList");
+  const countEl = document.getElementById("examCount");
+  const badgeEl = document.getElementById("difficultyBadge");
+  const changeBtn = document.getElementById("changeDifficulty");
+
+  // 1) difficulty moet gekozen zijn
   const difficulty = localStorage.getItem("ggDifficulty");
   if (!difficulty) {
-    // Als nog niet gekozen -> stuur naar difficulty pagina
+    // pas aan als jouw pagina anders heet:
     window.location.href = "difficulty.html";
     return;
   }
 
-  const isHard = difficulty === "hard";
-
-  // 2) Badge + knop
-  const badgeEl = document.getElementById("difficultyBadge");
+  const isHard = (difficulty === "hard");
   badgeEl.textContent = "Niveau: " + (isHard ? "Moeilijk (strikvragen)" : "Makkelijk");
-  badgeEl.classList.add(isHard ? "difficultyBadge--hard" : "difficultyBadge--easy");
 
-  document.getElementById("changeDifficulty").addEventListener("click", () => {
+  changeBtn.addEventListener("click", () => {
     window.location.href = "difficulty.html";
   });
 
-  // 3) Pak juiste dataset
-  const easyData = window.EXAM_DATA;
-  const hardData = window.EXAM_DATA_HARD;
-
-  const easyAll = (easyData && Array.isArray(easyData.exams)) ? easyData.exams : [];
-  const hardAll = (hardData && Array.isArray(hardData.exams)) ? hardData.exams : [];
+  // 2) juiste dataset kiezen
+  const easyAll = (window.EXAM_DATA && Array.isArray(window.EXAM_DATA.exams)) ? window.EXAM_DATA.exams : [];
+  const hardAll = (window.EXAM_DATA_HARD && Array.isArray(window.EXAM_DATA_HARD.exams)) ? window.EXAM_DATA_HARD.exams : [];
 
   const all = isHard ? hardAll : easyAll;
 
-  const listEl = document.getElementById("examList");
-  const countEl = document.getElementById("examCount");
-
-  // 4) Guard: data ontbreekt
-  if (!all.length) {
-    listEl.innerHTML = isHard
-      ? "<p class='muted'><strong>Moeilijk niveau is nog leeg of niet goed geladen.</strong><br>Controleer of <strong>exam-data-hard.js</strong> bestaat en <code>window.EXAM_DATA_HARD</code> zet.</p>"
-      : "<p class='muted'>Examendata niet gevonden. Controleer of <strong>exam-data.js</strong> goed geladen wordt.</p>";
-    countEl.textContent = "0 examens";
-    return;
-  }
-
-  // 5) Alleen Taxi
+  // Alleen Taxi
   const exams = all.filter(e => String(e.category).toLowerCase() === "taxi");
 
+  // Badge altijd correct
   countEl.textContent = `${exams.length} examens`;
+
+  if (!all.length) {
+    listEl.innerHTML = isHard
+      ? "<p class='muted'><strong>Moeilijk niveau heeft nog geen examens gevonden.</strong><br>Controleer of <strong>exam-data-hard.js</strong> goed geladen wordt.</p>"
+      : "<p class='muted'>Examendata niet gevonden. Controleer of <strong>exam-data.js</strong> goed geladen wordt.</p>";
+    return;
+  }
 
   if (!exams.length) {
     listEl.innerHTML = "<p class='muted'>Geen taxi examens gevonden.</p>";
     return;
   }
 
-  // 6) Sort op nummer in id (taxi-examen-1, taxi-examen-2, etc.)
+  // Sort op nummer in id (pakt ook -hard netjes)
   exams.sort((a,b) => {
-    const an = Number(String(a.id).match(/\\d+/)?.[0] || 9999);
-    const bn = Number(String(b.id).match(/\\d+/)?.[0] || 9999);
+    const an = Number(String(a.id).match(/\d+/)?.[0] || 9999);
+    const bn = Number(String(b.id).match(/\d+/)?.[0] || 9999);
     return an - bn;
   });
 
-  // 7) Render cards
-  listEl.innerHTML = "";
+  // Render cards
   exams.forEach(exam => {
     const card = document.createElement("div");
     card.className = "examItem";
