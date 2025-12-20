@@ -977,28 +977,97 @@ const TAXI_EXAMEN_15 = {
 
   ]
 };
- const exams = [
-  TAXI_EXAMEN_1,
-  TAXI_EXAMEN_2,
-  TAXI_EXAMEN_3,
-  TAXI_EXAMEN_4,
-  TAXI_EXAMEN_5,
-  TAXI_EXAMEN_6,
-  TAXI_EXAMEN_7,
-  TAXI_EXAMEN_8,
-  TAXI_EXAMEN_9,
-  TAXI_EXAMEN_10,
-  TAXI_EXAMEN_11,
-  TAXI_EXAMEN_12,
-  TAXI_EXAMEN_13,
-  TAXI_EXAMEN_14,
-  TAXI_EXAMEN_15,
-  TAXI_EXAMEN_16
-];
 
-window.EXAM_DATA = { exams };
-window.EXAMS = exams;
-window.exams = exams;
-window.ggExams = exams;
+   /* =========================
+   TAXI EXAMEN 16
+   Onderwerp: Essentiële examenvragen (mix)
+   ========================= */
+
+  const TAXI_EXAMEN_16 = {
+    id: "taxi-examen-16",
+    title: "Taxi Examen 16 – Essentiële examenvragen",
+    category: "Taxi",
+    durationMinutes: 30,
+    passMinCorrect: 32,
+    questions: [
+
+      q(1,"Wetgeving","Welke combinatie is verplicht om taxivervoer te mogen uitvoeren?",["Rijbewijs B en KvK","Geldige taxipas en geldige vergunning","Alleen een boordcomputer"],1),
+      q(2,"BCT","Wat is het hoofddoel van de BCT?",["Kilometers bijhouden voor onderhoud","Ritten en werktijden registreren volgens regels","Alleen navigatie tonen"],1),
+      q(3,"Controle","Wat is correct gedrag bij een controle?",["Discussie aangaan","Meewerken en documenten tonen","Wegrijden"],1),
+      q(4,"Veiligheid","Wat staat altijd centraal tijdens taxiwerk?",["Omzet","Veiligheid","Snelheid"],1),
+      q(5,"Klantenservice","Wat is een professioneel begin van elke rit?",["Direct wegrijden","Bestemming bevestigen en rustig starten","Eerst bellen"],1),
+
+      q(6,"Taxipas","Mag je taxipas uitlenen?",["Ja","Nee","Alleen aan collega"],1),
+      q(7,"ILT","Wat is een taak van ILT?",["Ritten plannen","Controle op naleving taxiwetgeving","Tarief bepalen"],1),
+      q(8,"Ritregistratie","Waarom is ritregistratie belangrijk?",["Alleen voor marketing","Voor controle/handhaving en administratie","Alleen voor klanttevredenheid"],1),
+      q(9,"Voertuig","Wat controleer je vóór de dienst begint?",["Alleen ruitenwisservloeistof","Banden/verlichting/remmen (basisveiligheid)","Alleen radio en airco"],1),
+      q(10,"Vermoeidheid","Wat is de veiligste eerste stap als je slaperig wordt?",["Nog snel één rit afmaken","Zo snel mogelijk veilig pauzeren","Harder rijden zodat je sneller klaar bent"],1),
+
+      q(11,"Tarieven","Wat voorkomt meestal een discussie over tarief?",["Geen uitleg geven","Vooraf heldere afspraken/indicatie geven","Pas achteraf uitleggen"],1),
+      q(12,"Bon","Een klant vraagt om een bon. Wat is juist?",["Dat hoeft nooit","Je verstrekt die volgens werkwijze/afspraken","Alleen bij contant"],1),
+      q(13,"Agressie","Klant wordt agressief. Wat doe je eerst?",["Tegendreigen","De-escaleren","Rijden"],1),
+      q(14,"Noodsituatie","Wat is de eerste stap bij een noodsituatie?",["Foto maken","Veiligheid waarborgen","Doorrijden"],1),
+      q(15,"Privacy","Wat is het veiligste uitgangspunt bij klantgegevens?",["Alles bewaren","Alleen bewaren wat nodig is en netjes beveiligen","Alles delen met collega’s"],1),
+
+      q(16,"Werk- vs privétijd","Wanneer mag een taxi privé worden gebruikt zonder taxirit-registratie?",["Wanneer de chauffeur geen passagiers vervoert","Alleen als het voertuig niet voor taxivervoer wordt gebruikt en BCT correct op privé/buiten dienst staat","Wanneer de rit minder dan 10 kilometer is"],1),
+      q(17,"Handhaving","Waarom is handhaving noodzakelijk?",["Om chauffeurs te pesten","Om ervoor te zorgen dat iedereen zich aan de regels houdt.","Voor administratie"],1),
+      q(18,"Integriteit","Wat is integriteit in taxiwerk?",["Doen alsof je niets hoort","Eerlijk, betrouwbaar en respectvol handelen","Altijd gelijk willen krijgen"],1),
+      q(19,"Route","Wat is professioneel als je iets niet zeker weet (bestemming/ingang)?",["Gokken","Even vragen/bevestigen bij de klant","Doorrijden en hopen"],1),
+      q(20,"Stoppen/parkeren","Wat is de beste keuze als je geen legale stopplek ziet?",["Toch stoppen","Doorrijden naar eerstvolgende legale/veilige plek","Stoppen op de rijbaan en hopen"],1),
+
+      q(21,"Kindervervoer","Wat is het belangrijkste bij vervoer van kinderen?",["Snel aankomen","Veiligheid","Rust"],1),
+      q(22,"Medicatie","Wat is verstandig bij medicatie die slaperigheid kan veroorzaken?",["Doorrijden, je went eraan","Niet rijden / eerst advies volgen en veiligheid voorop","Dubbele koffie en rijden"],1),
+      q(23,"Ongeval","Je bent betrokken bij een aanrijding. Wat doe je eerst?",["Discussie","Veilig stoppen","Doorrijden"],1),
+      q(24,"Nazorg","Waarom incident rapporteren?",["Onnodig","Voor verantwoording en leren van de situatie","Voor straf"],1),
+      q(25,"Samenwerking","Wat is het voordeel van duidelijke afspraken?",["Meer regels","Minder misverstanden","Minder vrijheid"],1),
+
+      q(26,"Apparatuur","Wat doe je als je BCT/apparaat los zit of slecht leest?",["Negeer het","Veilig stoppen en het oplossen/laten oplossen","Tijdens rijden prutsen"],1),
+      q(27,"Datakwaliteit","Welke situatie is het meest verdacht bij controle?",["Consistente registratie","Veel ritten zonder logische verklaring","Netjes afgeronde ritten"],1),
+      q(28,"Service","Wat is professioneel aan het einde van de rit?",["Zonder kijken wegrijden","Klant kort bedanken en controleren of alles mee is","Klant vragen om review voordat hij uitstapt"],1),
+      q(29,"Ethiek","Wat doe je bij een verzoek dat niet mag?",["Toch doen","Uitleggen en weigeren","Negeren"],1),
+      q(30,"Aansprakelijkheid","Wie draagt de eindverantwoordelijkheid voor veilig rijgedrag?",["De klant","De chauffeur","De navigatie"],1),
+
+      q(31,"Weer","Welke omstandigheden verhogen vermoeidheidsbelasting?",["Heldere dag, rustige weg","Regen/donker/drukke stad","Korte rit in woonwijk"],1),
+      q(32,"Telefoon","Wat is de veiligste regel voor handelingen op je telefoon?",["Snel tijdens rijden","Alleen als je veilig stilstaat","Alleen op snelweg"],1),
+      q(33,"Rijstijl","Wat is de beste rijstijl bij verminderde alertheid?",["Sportief en snel","Rustig, voorspelbaar, meer afstand","Kort op je voorganger"],1),
+      q(34,"Keuring","Waarom is een taxi-keuring/controle belangrijk?",["Voor extra fooi","Voor veiligheid en voldoen aan eisen","Voor gratis onderhoud"],1),
+      q(35,"Representatie","Waarom is een schoon interieur belangrijk?",["Alleen voor Instagram","Hygiëne, kwaliteit, veiligheid, vertrouwen en naleving van de regels.","Alleen voor de keuring"],1),
+
+      q(36,"Tarieven","Wanneer is het slim om extra kosten (tol/parkeren) te benoemen?",["Pas bij aankomst","Zo vroeg mogelijk (liefst vooraf)","Nooit, dat schrikt af"],1),
+      q(37,"Conflicten","Wat helpt het meest om een conflict te kalmeren?",["Klant onderbreken","Rustige toon en erkenning van gevoel","Klant belachelijk maken"],1),
+      q(38,"Rit weigeren","Wanneer is ‘stoppen met de rit’ het meest verdedigbaar?",["Bij elke kleine irritatie","Als veiligheid of orde ernstig in gevaar komt en je veilig kunt stoppen","Als klant geen fooi geeft"],1),
+      q(39,"PAMAN","Wat is het doel van ‘Markeren’ bij een incident?",["Foto’s maken voor social media","De plek zichtbaar/veilig maken voor anderen","De klant laten schrikken"],1),
+      q(40,"Samenvatting","Wat is de basis om taxiwerk te doen?",["Klanttevredenheid","Voldoen aan wet- en regelgeving","Snel rijden"],1)
+
+    ]
+  };
+
+  /* =========================
+     EXAMS ARRAY (1 t/m 16)
+     ========================= */
+
+  const exams = [
+    TAXI_EXAMEN_1,
+    TAXI_EXAMEN_2,
+    TAXI_EXAMEN_3,
+    TAXI_EXAMEN_4,
+    TAXI_EXAMEN_5,
+    TAXI_EXAMEN_6,
+    TAXI_EXAMEN_7,
+    TAXI_EXAMEN_8,
+    TAXI_EXAMEN_9,
+    TAXI_EXAMEN_10,
+    TAXI_EXAMEN_11,
+    TAXI_EXAMEN_12,
+    TAXI_EXAMEN_13,
+    TAXI_EXAMEN_14,
+    TAXI_EXAMEN_15,
+    TAXI_EXAMEN_16
+  ];
+
+  window.EXAM_DATA = { exams };
+  window.EXAMS = exams;
+  window.exams = exams;
+  window.ggExams = exams;
 
 })();
