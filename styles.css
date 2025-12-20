@@ -2642,32 +2642,58 @@ body.examPage .examBody{
   ) !important;
 }
 
-
-/* ===== Fix: examen (mobiel) content niet onder knoppen ===== */
-
-/* iPhone safe-area support */
+/* ===== EXAMEN MOBIEL FIX (iPhone / Safari) ===== */
 :root{
   --safe-bottom: env(safe-area-inset-bottom);
+  --exam-nav-h: 92px; /* hoogte van jouw Vorige/Volgende balk */
 }
 
-/* Zorg dat de pagina altijd kan scrollen */
+/* Zorg dat de pagina normaal kan scrollen */
 html, body{
   height: auto;
   min-height: 100%;
 }
 
-/* Geef ruimte onderaan zodat tekst niet achter de knoppen valt */
-.page, main, .page__inner, .container{
-  padding-bottom: calc(140px + var(--safe-bottom)) !important;
+/* Belangrijk: voorkom 100vh bugs op iPhone */
+.page, main{
+  min-height: 100dvh;
 }
 
-/* Als je een vaste onderbalk hebt met knoppen */
-.examNav, .bottomBar, .footerNav, .examFooter{
-  padding-bottom: calc(12px + var(--safe-bottom)) !important;
+/* Geef ALLEEN op de examenpagina ruimte onderaan.
+   (Dit pakt bijna altijd goed omdat jij naar examen.html navigeert) */
+body:has(.examNav),
+body:has(.exam-footer),
+body:has(.examItem__start),
+body:has(#question),
+body:has(#answers){
+  padding-bottom: calc(var(--exam-nav-h) + var(--safe-bottom) + 16px);
 }
 
-/* Antwoordknoppen mogen meerdere regels netjes tonen */
+/* Als jouw knoppenbalk fixed is: hij mag nooit content overlappen */
+.examNav,
+.exam-footer,
+.examFooter,
+.bottomBar,
+.footerNav{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: calc(10px + var(--safe-bottom));
+  z-index: 9999;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+}
+
+/* Antwoordtekst mag netjes doorlopen */
 .answer, .option, .choice, .mcqOption, button.option{
   white-space: normal !important;
   line-height: 1.25;
+}
+
+/* Optioneel: banner iets lager zodat er meer plek is voor de vraag */
+.exam-hero-image img{
+  max-height: 220px;
+  width: 100%;
+  object-fit: cover;
 }
