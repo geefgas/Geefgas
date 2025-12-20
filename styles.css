@@ -2697,3 +2697,54 @@ body:has(#answers){
   width: 100%;
   object-fit: cover;
 }
+
+/* ==============================
+   EXAM FIX (mobiel/iPhone)
+   - voorkomt dat antwoorden onder de knoppen verdwijnen
+   - safe-area support (iPhone)
+   ============================== */
+
+:root{
+  --safe-bottom: env(safe-area-inset-bottom);
+  --exam-nav-h: 96px; /* hoogte knoppenbalk */
+}
+
+/* Zorg dat je pagina normaal kan scrollen */
+html, body{
+  height: auto !important;
+  min-height: 100%;
+}
+
+/* Maak ruimte onderin zodat content NOOIT achter knoppen valt */
+body{
+  padding-bottom: calc(var(--exam-nav-h) + var(--safe-bottom) + 14px);
+}
+
+/* Knoppenbalk altijd zichtbaar, maar zonder overlap-problemen */
+.examNav{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+
+  padding: 12px 16px;
+  padding-bottom: calc(12px + var(--safe-bottom));
+
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Knoppen naast elkaar netjes */
+.examNav{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Antwoordvakken mogen altijd doorlopen */
+button, .option, .answer, .choice{
+  white-space: normal;
+}
