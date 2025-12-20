@@ -1,8 +1,9 @@
 /* =========================================================
    GeefGas — exam-data-hard.js
-   Taxi Examens (MOEILIJK)
+   Taxi Examens (MOEILIJK / STRIKVRAGEN)
    - Examen 1 (40 vragen)
-   - Examen 2 (40 vragen)  <-- NIEUW
+   - Examen 2 (40 vragen)
+   - Examen 3 (40 vragen)  <-- NIEUW
    ========================================================= */
 
 (function () {
@@ -274,8 +275,7 @@
   };
 
   /* =========================
-     TAXI EXAMEN 2 (HARD)  <-- NIEUW
-     Strikvragen met minder “weggevers”
+     TAXI EXAMEN 2 (HARD)
      ========================= */
 
   const TAXI_EXAMEN_2_HARD = {
@@ -286,7 +286,6 @@
     passMinCorrect: 32,
     questions: [
 
-      // 1) Administratie / documenten / apparatuur
       q(1,"Administratie & documenten","Je start je dienst, maar je ontdekt dat één verplicht document nét verlopen is. Wat is de meest verdedigbare keuze?",[
         "Eerst één rit doen en daarna regelen",
         "Niet starten met werk; eerst herstellen/regelen",
@@ -317,7 +316,6 @@
         "Melding uitzetten en nooit meer aanzetten"
       ],1),
 
-      // 2) Wet- en regelgeving / naleving
       q(6,"Wet- en regelgeving","Een klant zegt: ‘Je hoeft de regels niet zo strikt te nemen, ik vind het prima’. Wat is het juiste uitgangspunt?",[
         "Klant bepaalt de spelregels",
         "Regels blijven gelden; jij blijft verantwoordelijk",
@@ -348,7 +346,6 @@
         "Stil gaan staan tot iemand achter je toetert"
       ],1),
 
-      // 3) Ritvoorbereiding
       q(11,"Ritvoorbereiding","Een klant heeft twee mogelijke ingangen genoemd. Wat voorkomt mislopen het best?",[
         "Gissen en doorrijden tot je iemand ziet",
         "Korte bevestiging: exacte ingang/kenmerk/meeting point afspreken",
@@ -379,7 +376,6 @@
         "Direct optrekken zodat je sneller weg bent"
       ],1),
 
-      // 4) Verantwoorde verkeersdeelname
       q(16,"Verkeersdeelname","Een passagier wil dat je ‘even snel’ een appje stuurt naar iemand. Wat is het beste?",[
         "Doen als je één hand aan het stuur houdt",
         "Alleen doen als je veilig stilstaat (of weigeren als het niet kan)",
@@ -410,7 +406,6 @@
         "Hard optrekken zodat de klant merkt dat je controle hebt"
       ],1),
 
-      // 5) Calamiteiten / PAMAN / verstoringen
       q(21,"Calamiteiten","Je ziet een kleine aanrijding zonder zichtbare letsels. Wat is een goede eerste prioriteit?",[
         "Kijken wie schuld heeft",
         "Veiligheid/overzicht: gevaar verminderen en pas dan afhandelen",
@@ -441,7 +436,6 @@
         "Zeggen dat ‘de gemeente weer moeilijk doet’"
       ],1),
 
-      // 6) Communicatie / klanten
       q(26,"Communicatie","Welke formulering voorkomt vaak discussie over routekeuze?",[
         "‘Ik rijd zoals ik wil’",
         "‘Er zijn twee logische routes; wilt u voorkeur of zal ik de snelste/veiligste nemen?’",
@@ -472,7 +466,6 @@
         "Zeggen dat je geen tijd hebt voor uitleg"
       ],0),
 
-      // 7) Agressie / conflict / eigen gedrag
       q(31,"Conflictsituatie","Wat is vaak de beste ‘eerste’ interventie bij oplopende irritatie?",[
         "Grappen maken zodat het luchtig wordt",
         "Rustig samenvatten wat de klant wil en grenzen/opties geven",
@@ -503,7 +496,6 @@
         "Een veilige stopplek zoeken"
       ],1),
 
-      // 8) Klachtenprocedure
       q(36,"Klachtenprocedure","Wat is het meest nuttig om te doen direct na een incident dat mogelijk een klacht wordt?",[
         "Alles vergeten zodat je rustig blijft",
         "Feiten kort vastleggen volgens procedure (tijd, plek, afspraak, wat gezegd is)",
@@ -516,7 +508,6 @@
         "Sarcastisch doen zodat de klant stopt"
       ],1),
 
-      // 9) Geografisch inzicht NL (globaal)
       q(38,"Geografie NL","Welke stad ligt het meest logisch in Oost-Nederland?",[
         "Arnhem",
         "Haarlem",
@@ -539,12 +530,284 @@
   };
 
   /* =========================
+     TAXI EXAMEN 3 (HARD)  <-- NIEUW
+     Focus: strik (realistische scenario’s)
+     - ritvoorbereiding (Eindterm 3)
+     - veilig/professioneel rijden (Eindterm 4)
+     - verstoringen/calamiteiten (Eindterm 5)
+     - communicatie/klanten/conflict/klachten (Eindterm 6-10)
+     - administratie/apparatuur (Eindterm 1)
+     - geo NL (Eindterm 11)
+     ========================= */
+
+  const TAXI_EXAMEN_3_HARD = {
+    id: "taxi-examen-3-hard",
+    title: "Taxi Examen 3 – Moeilijk",
+    category: "Taxi",
+    durationMinutes: 35,
+    passMinCorrect: 32,
+    questions: [
+
+      // Ritvoorbereiding / halen & brengen
+      q(1,"Ritvoorbereiding","Je moet iemand ophalen bij een ziekenhuis waar meerdere ingangen zijn (SEH, polikliniek, hoofdingang). Wat is de meest professionele start?",[
+        "Naar hoofdingang rijden en wachten tot je gebeld wordt",
+        "Vooraf exacte ingang/afdeling + herkenningspunt afstemmen en een veilige ophaalplek kiezen",
+        "Rondjes rijden totdat je iemand ziet zwaaien"
+      ],1),
+
+      q(2,"Ritvoorbereiding","Een klant geeft een locatie door via WhatsApp-pin, maar jij ziet dat het in een autoluwe zone valt. Wat doe je?",[
+        "Toch erin; taxi’s mogen vaak wel",
+        "Veilig alternatief afspreken (meeting point) en dit kort uitleggen",
+        "Stoppen vóór de zone en de klant laten zoeken"
+      ],1),
+
+      q(3,"Halen/brengen","De klant wil uitstappen ‘aan de overkant’ terwijl er een fietsstrook en veel verkeer is. Wat is het meest verdedigbaar?",[
+        "Stoppen zodra je een gaatje ziet",
+        "Doorrijden naar een veilige plek en klant daar laten uitstappen (eventueel korte loopafstand)",
+        "Alarmlichten aan en deur open"
+      ],1),
+
+      q(4,"Halen/brengen","Je staat in een korte stopzone en klant appt: “2 minuten”. Wat is professioneel?",[
+        "Blijven staan tot hij er is, want dat is service",
+        "Doorstroming respecteren: doorrijden/ronde maken en duidelijke afspraak/meeting point",
+        "Op de stoep parkeren, dan hindert het niemand"
+      ],1),
+
+      q(5,"Ritvoorbereiding","Wat is een subtiele maar belangrijke check vóór vertrek bij drukte?",[
+        "Kijken of je muzieklijst klaar staat",
+        "Omgeving checken i.v.m. voetgangers/fietsers vóór je wegrijdt",
+        "Claxon testen"
+      ],1),
+
+      // Administratie / apparatuur
+      q(6,"Administratie & BCT","Je komt erachter dat je één rit per ongeluk in de verkeerde status hebt gezet. Wat is het meest professioneel?",[
+        "Laten staan; corrigeren geeft alleen aandacht",
+        "Corrigeren volgens procedure zodat het herleidbaar klopt",
+        "Alles verwijderen zodat niemand het ziet"
+      ],1),
+
+      q(7,"Administratie & documenten","Een klant vraagt om een zakelijke factuur met specifieke gegevens. Wat is het beste uitgangspunt?",[
+        "Zeggen dat dat niet kan",
+        "Volgens procedure: bon/factuur leveren zoals jouw systeem/bedrijf dat regelt",
+        "Mondeling bedrag noemen en klaar"
+      ],1),
+
+      q(8,"Apparatuur","Tijdens het rijden valt je bon-printer uit en klant vraagt direct om bon bij aankomst. Wat is het meest professioneel?",[
+        "Zeggen: ‘bonnen bestaan niet’",
+        "Bij aankomst alternatief aanbieden (bijv. digitaal) en het netjes registreren",
+        "De rit annuleren halverwege"
+      ],1),
+
+      q(9,"Administratie & privacy","Je bewaart klantgegevens ‘voor het geval dat’. Wat is het veiligste uitgangspunt?",[
+        "Alles bewaren, dat is handig",
+        "Alleen noodzakelijke gegevens bewaren en veilig omgaan met opslag/toegang",
+        "Alles delen met collega’s zodat iedereen kan helpen"
+      ],1),
+
+      q(10,"Administratie & BCT","Wat roept bij controle vaak de meeste vragen op?",[
+        "Een drukke avond met veel ritten",
+        "Onverklaarbare gaten of patroon dat niet aansluit bij werkzaamheden",
+        "Een korte pauze tussen ritten"
+      ],1),
+
+      // Verkeersdeelname / professioneel rijden
+      q(11,"Verkeersdeelname","De klant zit achterin zonder gordel en zegt: “Het hoeft toch niet?”. Wat is het meest correct?",[
+        "Niets zeggen; klant is volwassen",
+        "Rustig aangeven dat veiligheid voorop staat en vertrekken pas als het veilig is",
+        "Alleen iets zeggen als er politie is"
+      ],1),
+
+      q(12,"Verkeersdeelname","Je rijdt een woonwijk in waar veel kinderen spelen en het is schemerig. Wat is de meest professionele rijstijl?",[
+        "Constant tempo, maar ruim blijven kijken en snelheid aanpassen aan situatie",
+        "Snel erdoorheen zodat het gevaar korter duurt",
+        "Kort op je voorganger zodat je mee kunt"
+      ],0),
+
+      q(13,"Verkeersdeelname","Je merkt dat je eigen frustratie oploopt door een lastige klant. Wat is slim?",[
+        "Doorpraten tot je gelijk krijgt",
+        "Rustig blijven, korte zinnen, eventueel veilig pauzemoment/stop als nodig",
+        "Harder rijden zodat het sneller voorbij is"
+      ],1),
+
+      q(14,"Verkeersdeelname","De navigatie stuurt je een busbaan op (bord: verboden). Wat is het juiste uitgangspunt?",[
+        "Als taxi mag je dat meestal",
+        "Borden/wegmarkering gaan voor; route aanpassen",
+        "Even erop, dan eraf"
+      ],1),
+
+      q(15,"Verkeersdeelname","Wat is vaak de grootste fout bij tijdsdruk?",[
+        "Klant informeren dat het druk is",
+        "Risico nemen en regels ‘oprekken’ om tijd in te halen",
+        "Een omleiding kiezen"
+      ],1),
+
+      // Calamiteiten / verstoringen
+      q(16,"Calamiteiten","Je komt bij een ongeval en er is veel verkeer. Wat is de beste eerste stap volgens veilig handelen?",[
+        "Direct hulp verlenen zonder omgeving te checken",
+        "Eigen veiligheid en omgeving eerst veilig maken (overzicht/markeren), daarna handelen",
+        "Doorrijden om ruimte te maken"
+      ],1),
+
+      q(17,"Calamiteiten","Een passagier krijgt een paniekaanval en wil dat je “door rijdt”. Wat is het meest verdedigbaar?",[
+        "Doorrijden; klant beslist",
+        "Veilig stoppen, rust creëren en indien nodig hulp inschakelen",
+        "Raam open en harder rijden"
+      ],1),
+
+      q(18,"Calamiteiten","Je voertuig krijgt plots een rood waarschuwingslampje (veiligheidskritisch). Wat is het meest professioneel?",[
+        "Rit afmaken als het nog rijdt",
+        "Zo snel mogelijk veilig stoppen en procedure volgen (laten controleren)",
+        "Radio uitzetten, dan zie je het lampje niet"
+      ],1),
+
+      q(19,"Verstoringen","Een wegafsluiting zorgt voor omrijden. Wat is het meest professioneel richting klant?",[
+        "Niets zeggen, dat voorkomt discussie",
+        "Kort uitleggen wat er speelt en welke logische route je kiest",
+        "Zeggen dat het ‘altijd wat is’"
+      ],1),
+
+      q(20,"Verstoringen","De klant klaagt over vertraging door file en vraagt om ‘alternatief via woonwijkjes’. Wat is het beste?",[
+        "Altijd doen; klant betaalt",
+        "Overwegen als het veilig/legaal/logisch is; anders kort uitleggen en veilig blijven",
+        "Door rood rijden zodat je alsnog op tijd bent"
+      ],1),
+
+      // Communicatie / klanten
+      q(21,"Communicatie","Welke openingszin verlaagt meestal de kans op misverstanden?",[
+        "‘Waarheen?’ en direct wegrijden",
+        "‘Goedemiddag, bestemming is … klopt dat? Heeft u routevoorkeur?’",
+        "‘We zien wel waar we uitkomen’"
+      ],1),
+
+      q(22,"Communicatie","Een klant corrigeert je constant (“nee, daar links!”) terwijl jij borden volgt. Wat is professioneel?",[
+        "In discussie gaan en bewijzen dat je gelijk hebt",
+        "Rustig afstemmen: ‘Wilt u de route bepalen of zal ik borden/navigatie volgen?’",
+        "De klant negeren en expres anders rijden"
+      ],1),
+
+      q(23,"Omgang met klanten","Klant vraagt om onredelijk verzoek (bijv. uitstappen op gevaarlijke plek). Wat is beste reactie?",[
+        "Direct weigeren zonder uitleg",
+        "Kalm uitleggen en alternatief bieden dat veilig/toegestaan is",
+        "Toestaan als de klant belooft snel te zijn"
+      ],1),
+
+      q(24,"Omgang met klanten","Een stille klant lijkt gespannen. Wat is passend gedrag?",[
+        "Veel vragen stellen om hem te laten praten",
+        "Neutraal, rustig rijden en korte, behulpzame communicatie als dat past",
+        "Sportief rijden om het snel af te ronden"
+      ],1),
+
+      q(25,"Tarieven","Klant vraagt aan het begin: “Wordt dit duurder als het druk is?” Wat is meest professioneel?",[
+        "Ontwijken; anders discussie",
+        "Kort uitleggen welke factoren prijs beïnvloeden (tijd/afstand/wachttijd/extra kosten)",
+        "Zeggen: ‘altijd hetzelfde’"
+      ],1),
+
+      // Conflict / agressie / klachten
+      q(26,"Conflicten","Wat is vaak de beste ‘eerste’ stap bij oplopende irritatie?",[
+        "Terugdrukken met strengheid",
+        "Samenvatten, erkenning geven en grenzen/opties aanbieden",
+        "Zwijgen tot het overgaat"
+      ],1),
+
+      q(27,"Agressie","Welke reactie vergroot het risico op escalatie het meest?",[
+        "Kalm blijven en herhalen wat je wel kunt doen",
+        "Sarcastisch reageren of intimideren",
+        "Rustig grenzen stellen"
+      ],1),
+
+      q(28,"Agressie","Wanneer is stoppen/beëindigen van de rit het best verdedigbaar?",[
+        "Bij elk meningsverschil",
+        "Bij veiligheidsrisico/bedreiging en je kunt veilig stoppen",
+        "Als de klant geen fooi wil geven"
+      ],1),
+
+      q(29,"Klachtenprocedure","Een klant zegt: “Ik ga klagen.” Wat is het beste?",[
+        "Discussie aangaan zodat hij dat niet doet",
+        "Rustig uitleggen hoe de procedure werkt en feiten vastleggen",
+        "Zeggen dat klachten niets doen"
+      ],1),
+
+      q(30,"Klachtenprocedure","Wat noteer je het liefst bij een mogelijk klachtmoment?",[
+        "Alleen hoe irritant de klant was",
+        "Feiten: tijd, locatie, afspraken, wat er gezegd/gedaan is",
+        "Niets; dat kan tegen je werken"
+      ],1),
+
+      // Veiligheid / voertuig / gedrag
+      q(31,"Voertuig & veiligheid","Je ontdekt vlak vóór vertrek dat een band er ‘net’ zacht uitziet. Wat is het meest professioneel?",[
+        "Doorrijden; dat trekt wel bij",
+        "Eerst checken/oppompen/controle; veiligheid gaat voor",
+        "Alleen sneller rijden zodat je eerder klaar bent"
+      ],1),
+
+      q(32,"Voertuig & veiligheid","Wat is de meest verdedigbare aanpak bij beslagen ramen vlak vóór vertrek?",[
+        "Rijden met klein kiertje",
+        "Eerst zicht herstellen (ontwasemen/ventilatie) en dan pas rijden",
+        "Met doekje wrijven tijdens het rijden"
+      ],1),
+
+      q(33,"Veiligheid algemeen","Wat is de beste ‘anti-dooring’ routine bij uitstappen in druk stadsverkeer?",[
+        "Deur zelf openzetten voor de klant",
+        "Spiegels + schoudercheck en klant instrueren te wachten tot het veilig is",
+        "Alarmlichten aan en direct laten uitstappen"
+      ],1),
+
+      q(34,"Fitheid","Welke combinatie is het meest risicovol voor fouten?",[
+        "Goede slaap + rustige dagdienst",
+        "Weinig slaap + nacht + regen + druk stadsverkeer",
+        "Korte ritten in woonwijk"
+      ],1),
+
+      q(35,"Fitheid","Je merkt dat je focus wegvalt. Wat is meest professioneel?",[
+        "Nog snel de laatste rit",
+        "Veilig pauzeren en pas doorgaan als je weer fit bent",
+        "Extra koffie en door"
+      ],1),
+
+      // Geografisch inzicht
+      q(36,"Geografie NL","Welke stad ligt in Noord-Brabant?",[
+        "Eindhoven",
+        "Zwolle",
+        "Leeuwarden"
+      ],0),
+
+      q(37,"Geografie NL","Welke combinatie is het meest logisch (noord → zuid)?",[
+        "Groningen → Zwolle → Maastricht",
+        "Maastricht → Utrecht → Leeuwarden",
+        "Rotterdam → Arnhem → Amsterdam"
+      ],0),
+
+      q(38,"Geografie NL","Welke provincie grenst aan België en ligt in het zuidwesten?",[
+        "Zeeland",
+        "Drenthe",
+        "Flevoland"
+      ],0),
+
+      q(39,"Geografie NL","Welke stad ligt in Gelderland?",[
+        "Arnhem",
+        "Haarlem",
+        "Delft"
+      ],0),
+
+      // Samenvatting
+      q(40,"Samenvatting","Wat is de beste samenvatting van professioneel taxiwerk (moeilijk niveau)?",[
+        "Altijd zo snel mogelijk klaar zijn",
+        "Veilig, aantoonbaar correct en klantgericht binnen regels en procedures",
+        "Zo min mogelijk communicatie zodat je geen discussie krijgt"
+      ],1),
+
+    ]
+  };
+
+  /* =========================
      EXAMS ARRAY (HARD)
      ========================= */
 
   const exams = [
     TAXI_EXAMEN_1_HARD,
-    TAXI_EXAMEN_2_HARD
+    TAXI_EXAMEN_2_HARD,
+    TAXI_EXAMEN_3_HARD
   ];
 
   window.EXAM_DATA_HARD = { exams };
