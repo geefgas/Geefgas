@@ -2641,3 +2641,33 @@ body.examPage .examBody{
     env(safe-area-inset-bottom)
   ) !important;
 }
+
+
+/* ===== Fix: examen (mobiel) content niet onder knoppen ===== */
+
+/* iPhone safe-area support */
+:root{
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+/* Zorg dat de pagina altijd kan scrollen */
+html, body{
+  height: auto;
+  min-height: 100%;
+}
+
+/* Geef ruimte onderaan zodat tekst niet achter de knoppen valt */
+.page, main, .page__inner, .container{
+  padding-bottom: calc(140px + var(--safe-bottom)) !important;
+}
+
+/* Als je een vaste onderbalk hebt met knoppen */
+.examNav, .bottomBar, .footerNav, .examFooter{
+  padding-bottom: calc(12px + var(--safe-bottom)) !important;
+}
+
+/* Antwoordknoppen mogen meerdere regels netjes tonen */
+.answer, .option, .choice, .mcqOption, button.option{
+  white-space: normal !important;
+  line-height: 1.25;
+}
